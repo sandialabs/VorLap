@@ -1,0 +1,12 @@
+id,translation_x,translation_y,translation_z,rotation_x,rotation_y,rotation_z,pitch
+Tower,0,0,0,0,0,0,0
+x,y,z,chord,twist,thickness,offset,airfoil_id
+0,0,0,1,0,1.0,0.5,circular
+0,0,10,1,0,1.0,0.5,circular
+0,0,30,1,0,1.0,0.5,circular
+0,0,60,1,0,1.0,0.5,circular
+0,0,80,1,0,1.0,0.5,circular
+0,0,100,1,0,1.0,0.5,circular
+0,0,120,1,0,1.0,0.5,circular
+0,0,140,1,0,1.0,0.5,circular
+0,0,160,1,0,1.0,0.5,circular

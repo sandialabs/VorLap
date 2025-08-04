@@ -1,0 +1,5 @@
+/build
+/qt*
+/figs
+*.stash
+*.DS_Store
