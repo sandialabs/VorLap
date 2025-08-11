@@ -1,10 +1,13 @@
-import HDF5, FFTW, DelimitedFiles, Printf, FLOWMath, LinearAlgebra
+import HDF5, DelimitedFiles, Printf, FLOWMath, LinearAlgebra
 import Statistics:mean
+using DSP: hann
+using FFTW
 
 import Plots
 Plots.plotlyjs()  # switch backend to PlotlyJS for interactive 3D plots
 Plots.closeall()
 const localpath = splitdir(@__FILE__)[1]
+include("$localpath/VorLap.jl")
 
 # dat_folder now points to the AIRFOIL directory that contains RE* subfolders.
 dat_folder = "$localpath/airfoils/cylinder/"          # (unchanged var name, but used as root)  ### CHANGED
@@ -158,22 +161,51 @@ for (iRe, re_dir) in enumerate(re_dirs)
 
         # function uses Vinf from outer scope (per-Re)
         function compute_fft(signal::Vector{Float64}, dt::Float64, chord::Float64, aoa::Float64)
-            N = length(signal)
-            signal_used = signal
-            fft_vals = FFTW.fft(signal_used)
+            N  = length(signal)
+            fs = 1/dt
             half_N = div(N, 2)
-            freqs = (0:half_N-1) ./ (N * dt)
-            amps = abs.(fft_vals[1:half_N]) ./ N
-            amps[2:end-1] .*= 2
-            phases = angle.(fft_vals[1:half_N])
 
-            # Strouhal against projected major-axis (as you had it)
-            perm_peakamp = sortperm(amps; rev=true)
-            freqs_sorted  = freqs[perm_peakamp]
-            amps_sorted   = amps[perm_peakamp]
-            phases_sorted = phases[perm_peakamp]
+            # DC value (mean) and corresponding amplitude
+            mean_amp = mean(signal)
+
+            # Windowing for spectral part only (not DC calc)
+            x  = signal .- mean_amp
+            w  = hann(N)
+            U  = sum(w.^2) / N
+            xw = w .* x
+
+            # FFT of windowed signal
+            fft_vals = FFTW.fft(xw)
+
+            # Frequency vector
+            freqs = (0:half_N-1) ./ (N * dt)
+
+            # One-sided PSD (power/Hz)
+            Xpos = fft_vals[1:half_N]
+            S = (abs.(Xpos).^2) ./ (fs * N * U)
+            if half_N > 2
+                S[2:end-1] .*= 2
+            end
+
+            # Per-bin power
+            df = fs / N
+            power = S .* df
+
+            # Amplitude from power (so units match original amps)
+            amps = sqrt.(power .* 2)  # factor of 2 here matches RMS sinusoid amplitude scaling
+
+            phases = angle.(Xpos)
+
+            # --- Sort all except DC by power ---
+            perm_peakpow = sortperm(power[2:end]; rev=true) .+ 1  # skip DC bin
+            freqs_sorted  = vcat(0.0, freqs[perm_peakpow])
+            amps_sorted   = vcat(mean_amp, amps[perm_peakpow])
+            phases_sorted = vcat(0.0, phases[perm_peakpow])
+
             STlength = chord*abs(sind(aoa))
             ST_sorted = freqs_sorted * STlength / Vinf
+            
+
             return collect(freqs), amps, phases, ST_sorted, amps_sorted, phases_sorted
         end
 
@@ -183,14 +215,19 @@ for (iRe, re_dir) in enumerate(re_dirs)
         freqs_cf, amps_cf, phases_cf, ST_sorted_cf, amps_sorted_cf, phases_sorted_cf = compute_fft(CF,dt,chord,AOA[iaoa])
 
         if genplots
+
+            signal = VorLap.reconstruct_signal(freqs_cl, amps_cl, phases_cl, timefull)
+
             idx_start = max(1, round(Int, sampledT_startcutoff/dt))
             timeplot = Plots.plot()
             Plots.plot!(timeplot, timefull[idx_start:end], CL[idx_start:end],
                 xlabel="Time (s)", ylabel="CL", legend=true,
                 title="(CL), AOA: $(AOA[iaoa]) (Re=$(Re[iRe]))", lw=2)
+
+            Plots.plot!(timeplot, timefull[idx_start:end], signal[idx_start:end])
             Plots.display(timeplot)
 
-            cfbode = Plots.plot(freqs_cf[2:NFreq], amps_cf[2:NFreq],
+            cfbode = Plots.plot(ST_sorted_cf[2:NFreq], amps_sorted_cf[2:NFreq],
                 xlabel="Frequency (Hz)", ylabel="Magnitude (CF)",
                 title="(CF), AOA: $(AOA[iaoa]) (Re=$(Re[iRe]))",
                 label="Original", marker=:cross, legend=false, lw=2)

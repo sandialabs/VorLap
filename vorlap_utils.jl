@@ -164,7 +164,9 @@ end
 """
     reconstruct_signal(freqs::Vector{Float64}, amps::Vector{Float64}, phases::Vector{Float64}, t::Vector{Float64})
 
-Reconstructs a time-domain signal from FFT amplitude, frequency, and phase data.
+Reconstructs a time-domain signal from frequency, amplitude (peak), and phase (radians).
+- Assumes the DC term is included as `freqs[i]==0` with `amps[i]` equal to the mean value.
+- For f>0, `amps[i]` is the peak amplitude (not RMS).
 
 # Arguments
 - `freqs`: Frequency vector (Hz)
@@ -176,18 +178,35 @@ Reconstructs a time-domain signal from FFT amplitude, frequency, and phase data.
 - `signal`: Time-domain signal as a vector of Float64
 """
 function reconstruct_signal(freqs::Vector{Float64}, amps::Vector{Float64}, phases::Vector{Float64}, tvec::Vector{Float64})
+
+    @assert length(freqs) == length(amps) == length(phases) "freqs/amps/phases must be same length"
+    @assert length(tvec) ≥ 2 "tvec must have at least 2 samples"
+
     dt = tvec[2] - tvec[1]
-    if maximum(freqs) > 2/dt
-        @warn "The maximum frequency after the applied input cutoff parameters is $(maximum(freqs)), while the maximum nyquist frequency possible in the input time vector is $(2/(dt))"
+    fs = 1/dt
+    fnyq = fs/2
+
+    if maximum(freqs) > fnyq + eps(fnyq)
+        @warn "Max frequency $(maximum(freqs)) exceeds Nyquist $(fnyq) Hz implied by tvec; reconstruction will alias."
     end
 
-    signal = zeros(length(tvec))
-    for (i, f) in enumerate(freqs)
+    signal = zeros(Float64, length(tvec))
 
+    # DC (mean) contributions (handles multiple zeros if present)
+    for (A, f) in zip(amps, freqs)
         if iszero(f)
-            signal .+= amps[i]  # DC term
-        else
-            signal .+= amps[i] .* sin.(2π * f .* tvec .+ phases[i])
+            signal .+= A
+        end
+    end
+
+    # Oscillatory terms: use cosine with FFT-style phases
+    ω = 2π .* freqs
+    for i in eachindex(freqs)
+        f = freqs[i]
+        if f > 0.0
+            A = amps[i]          # peak amplitude
+            φ = phases[i]
+            signal += A .* cos.(ω[i] .* tvec .+ φ)
         end
     end
     return signal
