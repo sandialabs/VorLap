@@ -62,7 +62,6 @@ function compute_thrust_torque_spectrum(components, affts::Dict{String, AirfoilF
 
     total_nodes = sum([size(comp.shape_xyz, 1) for comp in components])
     global_force_vector_nodes = zeros(length(viv_params.output_time),3,total_nodes)
-
     for i_inflow = 1:n_inflow
         
         Vinf = LinearAlgebra.normalize(viv_params.inflow_vec).*inflow_speeds[i_inflow]
@@ -139,7 +138,7 @@ function compute_thrust_torque_spectrum(components, affts::Dict{String, AirfoilF
                             end
                         end
                     end
-                    if viv_params.output_azimuth_vinf[1] == azimuths[j_azi] && viv_params.output_azimuth_vinf[1] == inflow_speeds[i_inflow] # output data for just the requested point
+                    if viv_params.output_azimuth_vinf[1] == azimuths[j_azi] && viv_params.output_azimuth_vinf[2] == inflow_speeds[i_inflow] # output data for just the requested point
                         # recreate the time signal for the sampled ST information
                         cl_signal = reconstruct_signal(ST_cl .* (V_eff/STlength), amps_cl, phases_cl, viv_params.output_time)
                         cd_signal = reconstruct_signal(ST_cd .* (V_eff/STlength), amps_cd, phases_cd, viv_params.output_time)
