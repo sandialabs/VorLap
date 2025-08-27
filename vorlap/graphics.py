@@ -1,6 +1,6 @@
 from vorlap.interpolation import resample_airfoil
 from vorlap.structs import Component, VIV_Params
-from vorlap.vorlap_utils import rotationMatrix
+from vorlap.computations import rotationMatrix
 
 
 import numpy as np

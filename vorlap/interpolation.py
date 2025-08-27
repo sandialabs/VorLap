@@ -5,7 +5,7 @@ from vorlap.structs import AirfoilFFT
 import numpy as np
 
 
-from typing import Dict, List, Tuple
+from typing import Dict, List, Tuple, Optional
 
 
 def interpolate_fft_spectrum_batch(afft: AirfoilFFT, Re_vals: np.ndarray, AOA_vals: np.ndarray,

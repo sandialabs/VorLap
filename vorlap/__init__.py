@@ -21,9 +21,10 @@ from .fileio import (
     write_force_time_series
 )
 
-from .vorlap_utils import (
+from .computations import (
     compute_thrust_torque_spectrum,
     compute_thrust_torque_spectrum_optimized,
+    mock_compute_thrust_torque_spectrum,
     reconstruct_signal,
     rotate_vector,
     rotationMatrix
