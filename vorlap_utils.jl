@@ -185,26 +185,25 @@ function reconstruct_signal(freqs::Vector{Float64}, amps::Vector{Float64}, phase
     dt = tvec[2] - tvec[1]
     fs = 1/dt
     fnyq = fs/2
-
     if maximum(freqs) > fnyq + eps(fnyq)
         @warn "Max frequency $(maximum(freqs)) exceeds Nyquist $(fnyq) Hz implied by tvec; reconstruction will alias."
     end
 
     signal = zeros(Float64, length(tvec))
 
-    # DC (mean) contributions (handles multiple zeros if present)
+    # DC (mean)
     for (A, f) in zip(amps, freqs)
         if iszero(f)
             signal .+= A
         end
     end
 
-    # Oscillatory terms: use cosine with FFT-style phases
+    # Oscillatory terms (cosine with FFT phases; amps = peak)
     ω = 2π .* freqs
     for i in eachindex(freqs)
         f = freqs[i]
         if f > 0.0
-            A = amps[i]          # peak amplitude
+            A = amps[i]
             φ = phases[i]
             signal += A .* cos.(ω[i] .* tvec .+ φ)
         end

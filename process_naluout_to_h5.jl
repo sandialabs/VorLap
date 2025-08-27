@@ -10,8 +10,8 @@ const localpath = splitdir(@__FILE__)[1]
 include("$localpath/VorLap.jl")
 
 # dat_folder now points to the AIRFOIL directory that contains RE* subfolders.
-dat_folder = "$localpath/airfoils/cylinder/"          # (unchanged var name, but used as root)  ### CHANGED
-h5_path     = "$localpath/airfoils/cylinder_fft.h5"
+dat_folder = "$localpath/airfoils/NACA0018/"          # (unchanged var name, but used as root)  ### CHANGED
+h5_path     = "$localpath/airfoils/NACA0018_fft.h5"
 
 # --- constants / knobs (same names as before) ---
 Vinf_fallback = 2.0   # used only if no RE subfolders are found                     ### NEW
@@ -165,73 +165,107 @@ for (iRe, re_dir) in enumerate(re_dirs)
             fs = 1/dt
             half_N = div(N, 2)
 
-            # DC value (mean) and corresponding amplitude
+            # --- DC and demean for spectral parts ---
             mean_amp = mean(signal)
-
-            # Windowing for spectral part only (not DC calc)
             x  = signal .- mean_amp
+
+            # --- Windowed path (ONLY for PSD + power sorting) ---
             w  = hann(N)
             U  = sum(w.^2) / N
             xw = w .* x
+            Xw = FFTW.fft(xw)
 
-            # FFT of windowed signal
-            fft_vals = FFTW.fft(xw)
-
-            # Frequency vector
             freqs = (0:half_N-1) ./ (N * dt)
 
-            # One-sided PSD (power/Hz)
-            Xpos = fft_vals[1:half_N]
-            S = (abs.(Xpos).^2) ./ (fs * N * U)
+            # One-sided PSD (power/Hz) from WINDOWED spectrum
+            Xpos_w = Xw[1:half_N]
+            S = (abs.(Xpos_w).^2) ./ (fs * N * U)
             if half_N > 2
                 S[2:end-1] .*= 2
             end
-
-            # Per-bin power
             df = fs / N
-            power = S .* df
+            power = S .* df                      # per-bin power for sorting
 
-            # Amplitude from power (so units match original amps)
-            amps = sqrt.(power .* 2)  # factor of 2 here matches RMS sinusoid amplitude scaling
+            # --- Unwindowed path (for reconstruction amplitudes & phases) ---
+            X = FFTW.fft(x)                      # FFT of demeaned, UNwindowed signal
+            Xpos = X[1:half_N]
 
+            # Amplitude scaling like your original (peak amplitude per cosine)
+            amps = abs.(Xpos) ./ N
+            if half_N > 2
+                amps[2:end-1] .*= 2              # one-sided doubling (no DC/Nyquist)
+            end
+
+            # Phases from UNwindowed FFT
             phases = angle.(Xpos)
 
-            # --- Sort all except DC by power ---
-            perm_peakpow = sortperm(power[2:end]; rev=true) .+ 1  # skip DC bin
-            freqs_sorted  = vcat(0.0, freqs[perm_peakpow])
-            amps_sorted   = vcat(mean_amp, amps[perm_peakpow])
-            phases_sorted = vcat(0.0, phases[perm_peakpow])
+            # Enforce your DC convention: mean at 0 Hz, phase 0
+            amps[1]   = mean_amp
+            phases[1] = 0.0
 
-            STlength = chord*abs(sind(aoa))
-            ST_sorted = freqs_sorted * STlength / Vinf
-            
+            # --- Sort all except DC by POWER (from windowed PSD) ---
+            if length(power) > 1
+                perm_peakpow = sortperm(power[2:end]; rev=true) .+ 1  # skip DC bin
+                freqs_sorted  = vcat(0.0, freqs[perm_peakpow])
+                amps_sorted   = vcat(mean_amp, amps[perm_peakpow])
+                phases_sorted = vcat(0.0, phases[perm_peakpow])
+            else
+                freqs_sorted  = [0.0]
+                amps_sorted   = [mean_amp]
+                phases_sorted = [0.0]
+            end
 
-            return collect(freqs), amps, phases, ST_sorted, amps_sorted, phases_sorted
+            STlength   = chord*abs(sind(aoa))
+            ST_sorted  = freqs_sorted * STlength / Vinf
+
+            # Return: unsorted FFT bins (for reconstruction) + sorted-by-power view
+            return collect(freqs), amps, phases, power, ST_sorted, amps_sorted, phases_sorted
         end
 
-        freqs_cl, amps_cl, phases_cl, ST_sorted_cl, amps_sorted_cl, phases_sorted_cl = compute_fft(CL,dt,chord,AOA[iaoa])
-        freqs_cd, amps_cd, phases_cd, ST_sorted_cd, amps_sorted_cd, phases_sorted_cd = compute_fft(CD,dt,chord,AOA[iaoa])
-        freqs_cm, amps_cm, phases_cm, ST_sorted_cm, amps_sorted_cm, phases_sorted_cm = compute_fft(CM,dt,chord,AOA[iaoa])
-        freqs_cf, amps_cf, phases_cf, ST_sorted_cf, amps_sorted_cf, phases_sorted_cf = compute_fft(CF,dt,chord,AOA[iaoa])
+        freqs_cl, amps_cl, phases_cl, power_cl, ST_sorted_cl, amps_sorted_cl, phases_sorted_cl = compute_fft(CL,dt,chord,AOA[iaoa])
+        freqs_cd, amps_cd, phases_cd, power_cd, ST_sorted_cd, amps_sorted_cd, phases_sorted_cd = compute_fft(CD,dt,chord,AOA[iaoa])
+        freqs_cm, amps_cm, phases_cm, power_cm, ST_sorted_cm, amps_sorted_cm, phases_sorted_cm = compute_fft(CM,dt,chord,AOA[iaoa])
+        freqs_cf, amps_cf, phases_cf, power_cf, ST_sorted_cf, amps_sorted_cf, phases_sorted_cf = compute_fft(CF,dt,chord,AOA[iaoa])
 
         if genplots
 
-            signal = VorLap.reconstruct_signal(freqs_cl, amps_cl, phases_cl, timefull)
-
             idx_start = max(1, round(Int, sampledT_startcutoff/dt))
             timeplot = Plots.plot()
-            Plots.plot!(timeplot, timefull[idx_start:end], CL[idx_start:end],
-                xlabel="Time (s)", ylabel="CL", legend=true,
-                title="(CL), AOA: $(AOA[iaoa]) (Re=$(Re[iRe]))", lw=2)
-
-            Plots.plot!(timeplot, timefull[idx_start:end], signal[idx_start:end])
+            # signal = VorLap.reconstruct_signal(freqs_cf, amps_cf, phases_cf, timefull)
+            # Plots.plot!(timeplot, timefull[idx_start:end], signal[idx_start:end])
+            Plots.plot!(timeplot, timefull[idx_start:end], CF[idx_start:end],
+                xlabel="Time (s)", ylabel="CF", legend=true,
+                title="(CF), AOA: $(AOA[iaoa]) (Re=$(Re[iRe]))", lw=2)
             Plots.display(timeplot)
 
-            cfbode = Plots.plot(ST_sorted_cf[2:NFreq], amps_sorted_cf[2:NFreq],
-                xlabel="Frequency (Hz)", ylabel="Magnitude (CF)",
+            timeplot = Plots.plot(timefull[idx_start:end], CL[idx_start:end],
+                xlabel="Time (s)", ylabel="CL", legend=true,
+                title="(CL), AOA: $(AOA[iaoa]) (Re=$(Re[iRe]))", lw=2)
+            Plots.display(timeplot)
+
+            timeplot = Plots.plot(timefull[idx_start:end], CD[idx_start:end],
+                xlabel="Time (s)", ylabel="CD", legend=true,
+                title="(CD), AOA: $(AOA[iaoa]) (Re=$(Re[iRe]))", lw=2)
+            Plots.display(timeplot)
+
+            cfbode = Plots.plot(freqs_cf[2:NFreq], power_cf[2:NFreq],
+                xlabel="Frequency (Hz)", ylabel="PSD",
                 title="(CF), AOA: $(AOA[iaoa]) (Re=$(Re[iRe]))",
                 label="Original", marker=:cross, legend=false, lw=2)
             Plots.display(cfbode)
+
+            cfbode = Plots.plot(freqs_cl[2:NFreq], power_cl[2:NFreq],
+                xlabel="Frequency (Hz)", ylabel="PSD",
+                title="(CL), AOA: $(AOA[iaoa]) (Re=$(Re[iRe]))",
+                label="Original", marker=:cross, legend=false, lw=2)
+            Plots.display(cfbode)
+
+            cfbode = Plots.plot(freqs_cd[2:NFreq], power_cd[2:NFreq],
+                xlabel="Frequency (Hz)", ylabel="PSD",
+                title="(CD), AOA: $(AOA[iaoa]) (Re=$(Re[iRe]))",
+                label="Original", marker=:cross, legend=false, lw=2)
+            Plots.display(cfbode)
+
         end
 
         # === Store (cap by available length) ===
@@ -306,18 +340,28 @@ CM_Pha_sort = CM_Pha_sort[re_sort_idx, :, :]
 CF_Pha_sort = CF_Pha_sort[re_sort_idx, :, :]
 
 if genplots
-    plot_ = Plots.plot()
-    plot_2 = Plots.plot()
-    for ist = 2:5:22
-        Plots.plot!(plot_, AOA_sort, CF_ST_sort[1,:,ist],
-            xlabel="AOA (deg)", ylabel="ST (CF)", title="ST",
-            label="$ist", marker=:cross, legend=true, lw=2)
-        Plots.plot!(plot_2, AOA_sort, CF_Amp_sort[1,:,ist],
-            xlabel="AOA (Hz)", ylabel="Amp (CF)", title="Amp",
-            label="$ist", marker=:cross, legend=true, lw=2)
+
+
+    ire_indices = single_Re ? [1] : collect(1:size(CF_ST_sort, 1))
+    for iRe in ire_indices
+        plot_ = Plots.plot()
+        plot_2 = Plots.plot()
+        for ist = 2:1:20
+            Plots.plot!(plot_, AOA_sort, CF_ST_sort[iRe,:,ist],
+                xlabel="AOA (deg)", ylabel="ST (CF)", title="ST Re=$(round(Re_sort[iRe]; sigdigits=5))",
+                label="ist=$ist",
+                ylims=(0.0,0.5),
+                marker=:cross, legend=true, lw=2)
+
+            Plots.plot!(plot_2, AOA_sort, CF_Amp_sort[iRe,:,ist],
+                xlabel="AOA (Hz)", ylabel="Amp (CF)", title="Amp Re=$(round(Re_sort[iRe]; sigdigits=5))",
+                label="ist=$ist",
+                marker=:cross, legend=true, lw=2)
+        end
+        Plots.display(plot_2)
+         Plots.display(plot_)
     end
-    Plots.display(plot_2)
-    Plots.display(plot_)
+
 end
 
 HDF5.h5open(h5_path, "w") do file
