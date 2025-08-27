@@ -17,6 +17,21 @@ import os
 import sys
 import glob
 import time
+try:
+    import plotly.graph_objects as go
+    from plotly.offline import plot
+    import plotly.io as pio
+    PLOTLY_AVAILABLE = True
+except ImportError:
+    PLOTLY_AVAILABLE = False
+    print("Warning: Plotly not available. Structure visualization will be disabled.")
+
+try:
+    from PIL import Image, ImageTk
+    PIL_AVAILABLE = True
+except ImportError:
+    PIL_AVAILABLE = False
+    print("Warning: PIL not available. Some image features may be disabled.")
 
 # Add the vorlap package to the path
 sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
@@ -58,8 +73,13 @@ class VorLapGUI:
         self.results_frame = ttk.Frame(self.notebook)
         self.notebook.add(self.results_frame, text="Results")
         
+        # Structure visualization tab
+        self.structure_frame = ttk.Frame(self.notebook)
+        self.notebook.add(self.structure_frame, text="Structure")
+        
         self.setup_parameters_tab()
         self.setup_results_tab()
+        self.setup_structure_tab()
         
     def setup_parameters_tab(self):
         """Setup the parameters configuration tab."""
@@ -141,6 +161,30 @@ class VorLapGUI:
         
         self.progress_bar = ttk.Progressbar(status_frame, mode='indeterminate')
         self.progress_bar.pack(side=tk.RIGHT, padx=10)
+    
+    def setup_structure_tab(self):
+        """Setup the structure visualization tab."""
+        # Control buttons
+        control_frame = ttk.Frame(self.structure_frame)
+        control_frame.pack(fill=tk.X, pady=5)
+        
+        ttk.Button(control_frame, text="Generate Structure Plot", command=self.generate_structure_plot).pack(side=tk.LEFT, padx=5)
+        ttk.Button(control_frame, text="Save Structure Plot", command=self.save_structure_plot).pack(side=tk.LEFT, padx=5)
+        
+        # Structure display frame
+        self.structure_display_frame = ttk.Frame(self.structure_frame)
+        self.structure_display_frame.pack(fill=tk.BOTH, expand=True, pady=5)
+        
+        # Initially show a message
+        self.structure_message_label = ttk.Label(
+            self.structure_display_frame, 
+            text="Load components and generate structure plot to view 3D visualization",
+            font=("Arial", 12)
+        )
+        self.structure_message_label.pack(expand=True)
+        
+        # Store structure plot figure
+        self.structure_fig = None
         
     def populate_parameter_table(self):
         """Populate the parameter table with current VIV_Params values."""
@@ -326,6 +370,16 @@ class VorLapGUI:
             # Update airfoil folder in params
             self.viv_params.airfoil_folder = airfoil_folder
             
+            # Generate structure visualization
+            self.status_label.config(text="Generating structure visualization...")
+            self.root.update()
+            
+            if PLOTLY_AVAILABLE:
+                try:
+                    self.structure_fig = vorlap.calc_structure_vectors_andplot(self.components, self.viv_params)
+                except Exception as e:
+                    print(f"Warning: Could not generate structure plot: {e}")
+            
             # Run analysis
             self.status_label.config(text="Computing thrust and torque spectrum...")
             self.root.update()
@@ -350,6 +404,10 @@ class VorLapGUI:
             
             # Create visualizations
             self.create_visualizations()
+            
+            # Display structure plot if available
+            if self.structure_fig is not None:
+                self.display_structure_plot()
             
             self.progress_bar.stop()
             self.status_label.config(text=f"Analysis completed in {execution_time:.2f} seconds")
@@ -444,6 +502,145 @@ class VorLapGUI:
             canvas = FigureCanvasTkAgg(fig, frame)
             canvas.draw()
             canvas.get_tk_widget().pack(fill=tk.BOTH, expand=True)
+    
+    def generate_structure_plot(self):
+        """Generate and display the structure plot."""
+        try:
+            if not PLOTLY_AVAILABLE:
+                messagebox.showerror("Error", "Plotly is not available. Please install plotly to use structure visualization.")
+                return
+            
+            # Load components if not already loaded
+            if self.components is None:
+                if not os.path.exists(self.components_var.get()):
+                    messagebox.showerror("Error", f"Components folder not found: {self.components_var.get()}")
+                    return
+                self.components = vorlap.load_components_from_csv(self.components_var.get())
+            
+            # Update airfoil folder in params
+            self.viv_params.airfoil_folder = self.airfoil_var.get()
+            
+            # Generate the structure plot using vorlap function
+            self.structure_fig = vorlap.calc_structure_vectors_andplot(self.components, self.viv_params)
+            
+            # Convert plotly figure to static image and display in tkinter
+            self.display_structure_plot()
+            
+        except Exception as e:
+            messagebox.showerror("Structure Plot Error", f"An error occurred: {str(e)}")
+    
+    def display_structure_plot(self):
+        """Display the structure plot in the tkinter interface."""
+        if self.structure_fig is None:
+            return
+        
+        try:
+            # Clear the current display
+            for widget in self.structure_display_frame.winfo_children():
+                widget.destroy()
+            
+            # Method 1: Export as HTML and display instructions
+            # This is the most reliable method since it preserves interactivity
+            html_file = os.path.join(os.path.dirname(__file__), "structure_plot.html")
+            self.structure_fig.write_html(html_file)
+            
+            # Create a frame with instructions and image preview
+            info_frame = ttk.Frame(self.structure_display_frame)
+            info_frame.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
+            
+            # Instructions
+            instructions = f"""3D Structure Visualization Generated!
+
+The interactive 3D plot has been saved as HTML: {html_file}
+
+You can:
+1. Open the HTML file in your web browser for full interactivity
+2. View a static preview below (limited functionality)
+3. Save the plot in various formats using the buttons above
+
+The 3D plot shows:
+- Component airfoil shapes and orientations
+- Rotation axis (black line)
+- Inflow direction (blue line)
+- Chord lines and normal vectors for each component"""
+            
+            ttk.Label(info_frame, text=instructions, justify=tk.LEFT, font=("Arial", 10)).pack(pady=10)
+            
+            # Add button to open HTML in browser
+            button_frame = ttk.Frame(info_frame)
+            button_frame.pack(pady=10)
+            
+            def open_in_browser():
+                import webbrowser
+                webbrowser.open(f"file://{os.path.abspath(html_file)}")
+            
+            ttk.Button(button_frame, text="Open Interactive Plot in Browser", command=open_in_browser).pack()
+            
+            # Try to create a static image preview if PIL is available
+            if PIL_AVAILABLE:
+                try:
+                    # Convert to static image
+                    img_bytes = pio.to_image(self.structure_fig, format="png", width=600, height=400)
+                    
+                    # Load with PIL
+                    from io import BytesIO
+                    img = Image.open(BytesIO(img_bytes))
+                    
+                    # Convert to tkinter PhotoImage
+                    photo = ImageTk.PhotoImage(img)
+                    
+                    # Display image
+                    img_label = ttk.Label(info_frame, image=photo)
+                    img_label.image = photo  # Keep a reference
+                    img_label.pack(pady=10)
+                    
+                except Exception as e:
+                    ttk.Label(info_frame, text=f"Could not generate image preview: {str(e)}", foreground="orange").pack()
+            else:
+                ttk.Label(info_frame, text="Install Pillow (PIL) for static image preview", foreground="gray").pack()
+                
+        except Exception as e:
+            messagebox.showerror("Display Error", f"Error displaying structure plot: {str(e)}")
+    
+    def save_structure_plot(self):
+        """Save the structure plot in various formats."""
+        if self.structure_fig is None:
+            messagebox.showwarning("Warning", "No structure plot to save. Generate a plot first.")
+            return
+        
+        # Ask user for save location and format
+        file_types = [
+            ("HTML", "*.html"),
+            ("PNG", "*.png"),
+            ("SVG", "*.svg"),
+            ("PDF", "*.pdf")
+        ]
+        
+        file_path = filedialog.asksaveasfilename(
+            title="Save Structure Plot",
+            filetypes=file_types,
+            defaultextension=".html"
+        )
+        
+        if file_path:
+            try:
+                ext = os.path.splitext(file_path)[1].lower()
+                if ext == ".html":
+                    self.structure_fig.write_html(file_path)
+                elif ext == ".png":
+                    pio.write_image(self.structure_fig, file_path, format="png")
+                elif ext == ".svg":
+                    pio.write_image(self.structure_fig, file_path, format="svg")
+                elif ext == ".pdf":
+                    pio.write_image(self.structure_fig, file_path, format="pdf")
+                else:
+                    messagebox.showerror("Error", f"Unsupported file format: {ext}")
+                    return
+                
+                messagebox.showinfo("Success", f"Structure plot saved to: {file_path}")
+                
+            except Exception as e:
+                messagebox.showerror("Save Error", f"Error saving plot: {str(e)}")
 
 
 def main():
