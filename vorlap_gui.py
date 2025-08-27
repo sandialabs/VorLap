@@ -17,6 +17,8 @@ import os
 import sys
 import glob
 import time
+
+import vorlap.graphics
 try:
     import plotly.graph_objects as go
     from plotly.offline import plot
@@ -376,7 +378,7 @@ class VorLapGUI:
             
             if PLOTLY_AVAILABLE:
                 try:
-                    self.structure_fig = vorlap.calc_structure_vectors_andplot(self.components, self.viv_params)
+                    self.structure_fig = vorlap.graphics.calc_structure_vectors_andplot(self.components, self.viv_params)
                 except Exception as e:
                     print(f"Warning: Could not generate structure plot: {e}")
             
@@ -521,7 +523,7 @@ class VorLapGUI:
             self.viv_params.airfoil_folder = self.airfoil_var.get()
             
             # Generate the structure plot using vorlap function
-            self.structure_fig = vorlap.calc_structure_vectors_andplot(self.components, self.viv_params)
+            self.structure_fig = vorlap.graphics.calc_structure_vectors_andplot(self.components, self.viv_params)
             
             # Convert plotly figure to static image and display in tkinter
             self.display_structure_plot()
