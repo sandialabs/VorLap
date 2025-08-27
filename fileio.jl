@@ -21,6 +21,7 @@ Loads all component geometry and metadata from CSV files in the given directory.
 """
 function load_components_from_csv(dir::String)
     files = filter(f -> endswith(f, ".csv"), readdir(dir; join=true))
+    sort!(files)  # Sort files for consistent ordering
     components = Component[]
     for file in files
         raw = CSV.File(file; header=false) |> collect

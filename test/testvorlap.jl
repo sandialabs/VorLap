@@ -5,6 +5,7 @@ import DelimitedFiles
 import HDF5 #TODO remove this once debugging done
 import Plots
 using Test
+
 Plots.plotlyjs()  # switch backend to PlotlyJS for interactive 3D plots
 
 # === Top-Level Inputs ===
@@ -28,6 +29,7 @@ viv_params = VorLap.VIV_Params(
 )
 
 nodal_force_time_file = "$path/forces_output.csv"
+nodal_force_time_file_unit = "$path/forces_output_unit.csv"
 
 #TODO: single airfoil verification with test case
 #TODO: translate for GUI
@@ -59,8 +61,8 @@ VorLap.calc_structure_vectors_andplot!(components, viv_params)
 # Also calculate the tilt in the direction of the inflow, which changes the perceived inflow velocity normal to the airfoil
 # calculate the mean thrust and torque about the rotation axis for each azimuth angle to create a surface plot of inflow velocity vs azimuth vs value
 percdiff_matrix, percdiff_info, total_global_force_vector, total_global_moment_vector,global_force_vector_nodes = VorLap.compute_thrust_torque_spectrum(components,affts,viv_params,natfreqs)
-
 VorLap.write_force_time_series(nodal_force_time_file, viv_params.output_time, global_force_vector_nodes)
+# VorLap.write_force_time_series(nodal_force_time_file_unit, viv_params.output_time, global_force_vector_nodes)
 
 data_logged = log10.(max.(percdiff_matrix, 1e-12))  # avoid log(0)
 tick_vals = [1.0, 5.0, 20.0, 50.0, 100.0]  # example: 0.001% to 100%

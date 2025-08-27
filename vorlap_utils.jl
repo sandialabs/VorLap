@@ -62,8 +62,6 @@ function compute_thrust_torque_spectrum(components, affts::Dict{String, AirfoilF
 
     total_nodes = sum([size(comp.shape_xyz, 1) for comp in components])
     global_force_vector_nodes = zeros(length(viv_params.output_time),3,total_nodes)
-
-
     for i_inflow = 1:n_inflow
         
         Vinf = LinearAlgebra.normalize(viv_params.inflow_vec).*inflow_speeds[i_inflow]
@@ -80,7 +78,8 @@ function compute_thrust_torque_spectrum(components, affts::Dict{String, AirfoilF
 
                     inode += 1
 
-                    global_pos = comp.shape_xyz_global[ipt]
+                    global_pos = comp.shape_xyz_global[ipt,:]
+
                     chord = comp.chord[ipt]
                     
                     afid = comp.airfoil_ids[ipt]
@@ -102,7 +101,6 @@ function compute_thrust_torque_spectrum(components, affts::Dict{String, AirfoilF
                     ST_cl, amps_cl, phases_cl = interpolate_fft_spectrum(afft, Re, aoa_deg, :CL; n_freq_depth)
                     ST_cd, amps_cd, phases_cd = interpolate_fft_spectrum(afft, Re, aoa_deg, :CD; n_freq_depth)
                     ST_cf, amps_cf, phases_cf = interpolate_fft_spectrum(afft, Re, aoa_deg, :CF; n_freq_depth)
-
                     Lifts = amps_cl[1].*q
                     Drags = amps_cd[1].*q
 
@@ -122,10 +120,9 @@ function compute_thrust_torque_spectrum(components, affts::Dict{String, AirfoilF
                     global_force_vector = rotate_vector(force_vector_rolled,[0,0,1.0],local_yaw)
                     total_global_force_vector[i_inflow,j_azi,:] = total_global_force_vector[i_inflow,j_azi,:] + global_force_vector
                     total_global_moment_vector[i_inflow,j_azi,:] = total_global_moment_vector[i_inflow,j_azi,:] + (global_force_vector .* global_pos)
-
+                    
                     STlength = chord*abs(sind(aoa_deg))#
                     frequencies_cf = ST_cf .* (V_eff/STlength)
-                    
                     # record the worst case overlap, and where it happened
                     for lstrouhaul = 1:n_freq_depth#axes(frequencies_cf,1)
                         if amps_cf[lstrouhaul]>amplitude_coeff_cutoff
@@ -141,8 +138,7 @@ function compute_thrust_torque_spectrum(components, affts::Dict{String, AirfoilF
                             end
                         end
                     end
-
-                    if viv_params.output_azimuth_vinf[1] == azimuths[j_azi] && viv_params.output_azimuth_vinf[1] == inflow_speeds[i_inflow] # output data for just the requested point
+                    if viv_params.output_azimuth_vinf[1] == azimuths[j_azi] && viv_params.output_azimuth_vinf[2] == inflow_speeds[i_inflow] # output data for just the requested point
                         # recreate the time signal for the sampled ST information
                         cl_signal = reconstruct_signal(ST_cl .* (V_eff/STlength), amps_cl, phases_cl, viv_params.output_time)
                         cd_signal = reconstruct_signal(ST_cd .* (V_eff/STlength), amps_cd, phases_cd, viv_params.output_time)

@@ -1,4 +1,4 @@
-import HDF5, FFTW, DelimitedFiles, Printf, FLOWMath, LinearAlgebra
+import HDF5, FFTW, DelimitedFiles, Printf, LinearAlgebra
 import Statistics:mean
 
 import Plots
