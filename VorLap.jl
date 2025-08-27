@@ -7,7 +7,7 @@ const modulepath = splitdir(@__FILE__)[1]
 Plots.plotlyjs()  # switch backend to PlotlyJS for interactive 3D plots
 
 include("$modulepath/structs.jl")
-include("$modulepath/VorLap_utils.jl")
+include("$modulepath/vorlap_utils.jl")
 include("$modulepath/fileio.jl")
 
 end
