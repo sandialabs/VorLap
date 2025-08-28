@@ -3,6 +3,8 @@ import sys
 import numpy as np
 import matplotlib.pyplot as plt
 
+import vorlap.graphics
+
 # Add the parent directory to the path so we can import vorlap
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 import vorlap
@@ -50,7 +52,7 @@ if "default" not in affts:
 
 # assemble each component into a full structure, and we need the rotation axis
 # plot the full structure surface with a generic airfoil shape
-vorlap.calc_structure_vectors_andplot(components, viv_params)
+vorlap.graphics.calc_structure_vectors_andplot(components, viv_params)
 
 # Calculate the angle of attack relative to inflow for each azimuth angle about the rotation axis
 # Also calculate the tilt in the direction of the inflow, which changes the perceived inflow velocity normal to the airfoil

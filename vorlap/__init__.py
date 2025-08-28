@@ -6,6 +6,8 @@ It includes functionality for loading and processing airfoil data, computing for
 and analyzing vortex-induced vibrations.
 """
 
+from .graphics import calc_structure_vectors_andplot
+from .interpolation import interpolate_fft_spectrum, interpolate_fft_spectrum_batch, interpolate_fft_spectrum_optimized, resample_airfoil
 from .structs import (
     Component,
     AirfoilFFT,
@@ -16,20 +18,16 @@ from .fileio import (
     load_components_from_csv,
     load_airfoil_fft,
     load_airfoil_coords,
-    resample_airfoil,
-    interpolate_fft_spectrum,
-    interpolate_fft_spectrum_optimized,
-    interpolate_fft_spectrum_batch,
     write_force_time_series
 )
 
-from .vorlap_utils import (
+from .computations import (
     compute_thrust_torque_spectrum,
     compute_thrust_torque_spectrum_optimized,
+    mock_compute_thrust_torque_spectrum,
     reconstruct_signal,
     rotate_vector,
-    rotationMatrix,
-    calc_structure_vectors_andplot
+    rotationMatrix
 )
 
 __version__ = "0.1.0"
