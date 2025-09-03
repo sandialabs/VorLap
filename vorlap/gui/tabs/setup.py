@@ -30,8 +30,6 @@ class SimulationSetupTab(ttk.Frame):
         # Top: Sim name/path + full sim save path + Run & Save
         row = 0
         ttk.Label(self, text="Sim Name/Path").grid(row=row, column=0, sticky="w")
-        self.sim_name = ttk.Entry(self)
-        self.sim_name.grid(row=row, column=1, sticky="ew", padx=6, pady=4)
         ttk.Label(self, text="Full Simulation Save Path").grid(row=row, column=2, sticky="w")
         self.sim_save = PathEntry(self, kind="dir", title="Choose simulation save directory")
         self.sim_save.grid(row=row, column=3, sticky="ew", padx=(6, 0))
@@ -61,10 +59,6 @@ class SimulationSetupTab(ttk.Frame):
         self.freq_path.grid(row=1, column=0, sticky="ew", pady=2)
         ttk.Button(lfreq, text="Import", command=self.import_freq).grid(row=1, column=1, padx=6)
         ttk.Label(lfreq, text="Frequencies [Hz]").grid(row=2, column=0, sticky="w", pady=(6, 0))
-        
-        # Set default frequency path
-        # default_path = "../../../componentsHVAWT/freqs.csv"
-        # self.freq_path.set(default_path)
         
         # Horizontal scrollable frame for frequencies
         freq_frame = ttk.Frame(lfreq)
@@ -126,18 +120,16 @@ class SimulationSetupTab(ttk.Frame):
         lcomp.columnconfigure(0, weight=1)
         
         # Set default components path
-        default_path = os.path.join(vorlap.repo_dir, "componentsHVAWT")
+        default_path = os.path.join(vorlap.repo_dir, "data", "components", "componentsHVAWT")
         self.components_path.set(default_path)
 
-        # Set default simulation name
-        self.sim_name.insert(0, "vorlap_simulation")
         
         # Set default save path (same directory as the script)
         default_save_path = vorlap.repo_dir
         self.sim_save.set(default_save_path)
         
         # Default frequency file path
-        default_freq_path = os.path.join(vorlap.repo_dir, "natural_frequencies.csv")
+        default_freq_path = os.path.join(vorlap.repo_dir, "data", "natural_frequencies.csv")
         self.freq_path.set(default_freq_path)
 
         # Initialize with default parameters
@@ -218,7 +210,7 @@ class SimulationSetupTab(ttk.Frame):
         )
 
         # Set airfoil folder to default location
-        airfoil_folder = os.path.join(vorlap.repo_dir, "airfoils")
+        airfoil_folder = os.path.join(vorlap.repo_dir, "data", "airfoils")
 
         return vorlap.VIV_Params(
             fluid_density=params.get("fluid_density", 1.225),
@@ -257,7 +249,6 @@ class SimulationSetupTab(ttk.Frame):
         def run_analysis():
             try:
                 self.app.log("Starting VorLap analysis...\n")
-                self.app.log(f"  Simulation name: {self.sim_name.get()}\n")
                 self.app.log(f"  Save directory: {self.sim_save.get()}\n")
                 
                 # Get parameters
