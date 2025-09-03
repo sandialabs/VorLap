@@ -6,6 +6,11 @@ It includes functionality for loading and processing airfoil data, computing for
 and analyzing vortex-induced vibrations.
 """
 
+import os
+
+# Get the repository root directory (3 levels up from this file)
+repo_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
 from .graphics import calc_structure_vectors_andplot
 from .interpolation import interpolate_fft_spectrum, interpolate_fft_spectrum_batch, interpolate_fft_spectrum_optimized, resample_airfoil
 from .structs import (

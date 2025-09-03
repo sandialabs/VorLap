@@ -13,7 +13,7 @@ setup(
     ],
     author="Sandia National Laboratories",
     author_email="",
-    description="Vortex Lattice Method for Wind Turbine Analysis",
+    description="Generalized Vortex Overlap Fluid Structure Interaction Prediction Code",
     long_description=open("README.md").read(),
     long_description_content_type="text/markdown",
     url="https://github.com/sandialabs/VorLap",

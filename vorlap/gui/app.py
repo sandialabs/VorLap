@@ -16,8 +16,8 @@ import numpy as np
 sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
 import vorlap
 
-from .tabs import SimulationSetupTab, ComponentsTab, PlotsOutputsTab, AnalysisTab
-from .styles import setup_theme_and_styling
+from vorlap.gui.tabs import SimulationSetupTab, GeometryTab, PlotsOutputsTab, AnalysisTab
+from vorlap.gui.styles import setup_theme_and_styling
 
 
 class VorLapApp(tk.Tk):
@@ -49,12 +49,12 @@ class VorLapApp(tk.Tk):
         nb.pack(fill="both", expand=True, padx=8, pady=(8, 0))
 
         self.tab_setup = SimulationSetupTab(nb, self)
-        self.tab_components = ComponentsTab(nb, self)
+        self.tab_geometry = GeometryTab(nb, self)
         self.tab_plots = PlotsOutputsTab(nb, self)
         self.tab_analysis = AnalysisTab(nb, self)
 
         nb.add(self.tab_setup, text="Simulation Setup")
-        nb.add(self.tab_components, text="Components")
+        nb.add(self.tab_geometry, text="Geometry")
         nb.add(self.tab_plots, text="Plots & Outputs")
         nb.add(self.tab_analysis, text="Analysis")
 
@@ -72,36 +72,6 @@ class VorLapApp(tk.Tk):
         except Exception:
             print(s, end="")
         self.status.config(text=s.strip().splitlines()[-1] if s.strip() else "Ready")
-
-    def get_natural_frequencies(self):
-        """Get natural frequencies from the setup tab."""
-        freq_data = self.tab_setup.freq_table.get_all()
-        if not freq_data:
-            # Try to load from default file
-            default_file = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "natural_frequencies.csv")
-            if os.path.exists(default_file):
-                try:
-                    self.natural_frequencies = np.loadtxt(default_file, delimiter=',')
-                    self.log(f"Loaded default natural frequencies from {default_file}\n")
-                    return self.natural_frequencies
-                except Exception as e:
-                    self.log(f"Error loading default frequencies: {str(e)}\n")
-            return None
-            
-        try:
-            frequencies = []
-            for row in freq_data:
-                if len(row) > 0 and row[0].strip():
-                    frequencies.append(float(row[0]))
-            self.natural_frequencies = np.array(frequencies)
-            return self.natural_frequencies
-        except Exception as e:
-            self.log(f"Error parsing frequencies: {str(e)}\n")
-            return None
-
-    def get_components(self):
-        """Get loaded components."""
-        return self.components
 
     def load_airfoils(self, airfoil_folder):
         """Load airfoil FFT data from the specified folder."""
