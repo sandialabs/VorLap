@@ -16,7 +16,7 @@ import numpy as np
 sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
 import vorlap
 
-from vorlap.gui.tabs import SimulationSetupTab, GeometryTab, PlotsOutputsTab, AnalysisTab
+from vorlap.gui.tabs import SimulationSetupTab, PlotsOutputsTab #, AnalysisTab, GeometryTab
 from vorlap.gui.styles import setup_theme_and_styling
 
 
@@ -49,14 +49,14 @@ class VorLapApp(tk.Tk):
         nb.pack(fill="both", expand=True, padx=8, pady=(8, 0))
 
         self.tab_setup = SimulationSetupTab(nb, self)
-        self.tab_geometry = GeometryTab(nb, self)
+        # self.tab_geometry = GeometryTab(nb, self)
         self.tab_plots = PlotsOutputsTab(nb, self)
-        self.tab_analysis = AnalysisTab(nb, self)
+        # self.tab_analysis = AnalysisTab(nb, self)
 
         nb.add(self.tab_setup, text="Simulation Setup")
-        nb.add(self.tab_geometry, text="Geometry")
+        # nb.add(self.tab_geometry, text="Geometry")
         nb.add(self.tab_plots, text="Plots & Outputs")
-        nb.add(self.tab_analysis, text="Analysis")
+        # nb.add(self.tab_analysis, text="Analysis")
 
         # status bar with improved styling
         status_frame = ttk.Frame(self, style='StatusFrame.TFrame')

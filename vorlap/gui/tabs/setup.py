@@ -281,6 +281,10 @@ class SimulationSetupTab(ttk.Frame):
                     self.app.log("Error: No airfoil data loaded\n")
                     return
                 
+                # assemble each component into a full structure, and we need the rotation axis
+                # plot the full structure surface with a generic airfoil shape
+                vorlap.graphics.calc_structure_vectors_andplot(components, viv_params)
+            
                 # Run computation (real or mock)
                 if self.use_mock.get():
                     self.app.log("Running MOCK thrust/torque spectrum computation (fast)...\n")
