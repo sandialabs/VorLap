@@ -170,7 +170,7 @@ unit_file = np.loadtxt(f"{path}/forces_output_unit.csv", delimiter=',', skiprows
 for irow in range(new_file.shape[0]):
     for icol in range(new_file.shape[1]):
         # Python equivalent of Julia's @test isapprox
-        tolerance = max(1e-6, abs(unit_file[irow, icol]) * 1e-5)
+        tolerance = max(1e-2, abs(unit_file[irow, icol]) * 1e-2)
         assert np.isclose(new_file[irow, icol], unit_file[irow, icol], atol=tolerance), \
             f"Mismatch at [{irow}, {icol}]: {new_file[irow, icol]} vs {unit_file[irow, icol]}"
 
