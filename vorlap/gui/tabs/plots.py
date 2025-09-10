@@ -16,7 +16,7 @@ import os
 sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
 import vorlap
 
-from ..widgets import PathEntry, ScrollText
+from ..widgets import PathEntry
 
 # --- Optional plotting support ---
 try:
@@ -35,8 +35,6 @@ class PlotsOutputsTab(ttk.Frame):
         self._build()
 
     def _build(self):
-
-
         # Center-left: Plot area
         self.plot_frame = ttk.LabelFrame(self, text="Analysis Results")
         self.plot_frame.grid(row=1, column=0, columnspan=3, sticky="nsew", padx=10, pady=6)
@@ -81,18 +79,11 @@ class PlotsOutputsTab(ttk.Frame):
         
         # Add save button
         ttk.Button(plot_controls, text="Save Plot", command=self.save_plot).grid(row=0, column=len(plot_types)+1, padx=5)
-        
-
 
         # Bottom: Sample controls + export path + Export button
-        self.console = ScrollText(self, height=10)
-        self.console.grid(row=2, column=0, columnspan=3, sticky="nsew", padx=10, pady=(0, 10))
-
         # weights
         self.columnconfigure(1, weight=1)
-        self.rowconfigure(1, weight=3)
-        self.rowconfigure(2, weight=2)
-        self.rowconfigure(3, weight=2)
+        self.rowconfigure(1, weight=1)
 
 
     def update_plots(self):
@@ -169,6 +160,3 @@ class PlotsOutputsTab(ttk.Frame):
         self.app.log(f"Plot saved to: {path}\n")
 
 
-
-    def log(self, s: str):
-        self.console.write(s) 

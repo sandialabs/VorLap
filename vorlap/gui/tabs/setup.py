@@ -78,46 +78,39 @@ class SimulationSetupTab(ttk.Frame):
         lfreq.columnconfigure(0, weight=1)
         row += 1
 
-        # Simulation Parameters (moved below frequencies)
+        # Simulation Parameters
         lpars = ttk.LabelFrame(self, text="Simulation Parameters")
-        lpars.grid(row=row, column=0, columnspan=6, sticky="nsew", pady=(10, 6))
+        lpars.grid(row=row, column=0, columnspan=6, sticky="ew", pady=(10, 6))
         ttk.Label(lpars, text="File Path").grid(row=0, column=0, sticky="w")
         self.param_path = PathEntry(lpars, kind="file", title="Select parameters CSV", must_exist=True)
         self.param_path.grid(row=1, column=0, sticky="ew", pady=2)
         ttk.Button(lpars, text="Import", command=self.import_params).grid(row=1, column=1, padx=6)
         ttk.Label(lpars, text="Simulation Parameters List").grid(row=2, column=0, sticky="w", pady=(6, 0))
-        self.param_table = EditableTreeview(lpars, columns=["Parameter", "Value"])
-        self.param_table.grid(row=3, column=0, columnspan=2, sticky="nsew", pady=(2, 0))
+        self.param_table = EditableTreeview(lpars, columns=["Description", "Parameter", "Value"], non_editable_columns=["Description"])
+        self.param_table.grid(row=3, column=0, columnspan=2, sticky="ew", pady=(2, 0))
         lpars.columnconfigure(0, weight=1)
-        lpars.rowconfigure(3, weight=1)
+        lpars.rowconfigure(3, weight=0)  # Fixed weight for parameter table (non-collapsible)
         row += 1
 
         # Components section
         lcomp = ttk.LabelFrame(self, text="Component Geometric Definition")
-        lcomp.grid(row=row, column=0, columnspan=6, sticky="nsew", pady=(10, 6))
-        
+        lcomp.grid(row=row, column=0, columnspan=6, sticky="ew", pady=(10, 6))
         ttk.Label(lcomp, text="Components Directory").grid(row=0, column=0, sticky="w")
         self.components_path = PathEntry(lcomp, kind="dir", title="Select components directory", must_exist=True)
         self.components_path.grid(row=1, column=0, sticky="ew", pady=2)
         ttk.Button(lcomp, text="Import", command=self.load_components).grid(row=1, column=1, padx=6)
+        ttk.Label(lcomp, text="Component Geometry List").grid(row=2, column=0, sticky="w", pady=(6, 0))
         
         # Component geometry table
         cols = [
-            "Name","Dx","Dy","Dz","Rx","Ry","Rz","Pitch",
-            "X","Y","Z","Chord","twist","thk%","offset","AirfoilPath"
+            "Component ID", "Translation X", "Translation Y", "Translation Z", 
+            "Rotation X", "Rotation Y", "Rotation Z", "Pitch", 
+            "Segments", "Avg Chord", "Avg Twist", "Avg Thickness"
         ]
         self.geom_table = EditableTreeview(lcomp, columns=cols, height=8)
-        self.geom_table.grid(row=2, column=0, columnspan=3, sticky="nsew", padx=10, pady=(6, 10))
-        
-        # Bottom controls
-        # bottom_comp = ttk.Frame(lcomp)
-        # bottom_comp.grid(row=2, column=0, columnspan=3, sticky="ew", padx=10, pady=(0, 6))
-        # self.geom_path = PathEntry(bottom_comp, kind="savefile", title="Save component geometry as CSV")
-        # self.geom_path.grid(row=0, column=0, sticky="ew")
-        # ttk.Button(bottom_comp, text="Load CSV", command=self.load_geom).grid(row=0, column=1, padx=4)
-        # ttk.Button(bottom_comp, text="Save CSV", command=self.save_geom).grid(row=0, column=2)
-        
+        self.geom_table.grid(row=3, column=0, columnspan=2, sticky="ew", pady=(2, 0))
         lcomp.columnconfigure(0, weight=1)
+        lcomp.rowconfigure(3, weight=0)  # Fixed weight for geometry table (non-collapsible)
         
         # Set default components path
         default_path = os.path.join(vorlap.repo_dir, "data", "components", "componentsHVAWT")
@@ -138,10 +131,44 @@ class SimulationSetupTab(ttk.Frame):
         # Make grid flexible
         for c in range(6):
             self.columnconfigure(c, weight=(1 if c in (1, 3) else 0))
-        self.rowconfigure(row, weight=1)
+        # Set parameter and component sections to have fixed weight (non-collapsible)
+        self.rowconfigure(2, weight=0, minsize=200)  # Frequency section with minimum size
+        self.rowconfigure(3, weight=0, minsize=200)  # Parameter section with minimum size  
+        self.rowconfigure(4, weight=0, minsize=250)  # Component section with minimum size
+
+    def _get_param_descriptions(self):
+        """Get parameter descriptions mapping."""
+        return {
+            "fluid_density": "Fluid density (kg/m³)",
+            "fluid_dynamicviscosity": "Fluid dynamic viscosity (Pa·s)",
+            "rotation_axis_x": "X component of rotation axis vector",
+            "rotation_axis_y": "Y component of rotation axis vector",
+            "rotation_axis_z": "Z component of rotation axis vector",
+            "rotation_axis_offset_x": "X offset of rotation axis (m)",
+            "rotation_axis_offset_y": "Y offset of rotation axis (m)",
+            "rotation_axis_offset_z": "Z offset of rotation axis (m)",
+            "inflow_vec_x": "X component of inflow direction vector",
+            "inflow_vec_y": "Y component of inflow direction vector",
+            "inflow_vec_z": "Z component of inflow direction vector",
+            "azimuth_start": "Starting azimuth angle (degrees)",
+            "azimuth_end": "Ending azimuth angle (degrees)",
+            "azimuth_step": "Step size for azimuth angle (degrees)",
+            "inflow_speed_start": "Starting inflow speed (m/s)",
+            "inflow_speed_end": "Ending inflow speed (m/s)",
+            "inflow_speed_step": "Step size for inflow speed (m/s)",
+            "n_harmonic": "Number of harmonics to consider",
+            "output_time_start": "Output time series start (s)",
+            "output_time_end": "Output time series end (s)",
+            "output_time_step": "Output time series step size (s)",
+            "output_azimuth": "Output azimuth angle (degrees)",
+            "output_vinf": "Output inflow velocity (m/s)",
+            "amplitude_coeff_cutoff": "Amplitude coefficient cutoff threshold",
+            "n_freq_depth": "Number of frequency depth levels",
+        }
 
     def _populate_default_params(self):
         """Populate the parameters table with default VIV_Params values."""
+        descriptions = self._get_param_descriptions()
         default_params = [
             ("fluid_density", "1.225"),
             ("fluid_dynamicviscosity", "1.81e-5"),
@@ -156,10 +183,12 @@ class SimulationSetupTab(ttk.Frame):
             ("inflow_vec_z", "0.0"),
             ("azimuth_start", "0"),
             ("azimuth_end", "255"),
-            ("azimuth_step", "5"),
+            ("azimuth_step", "150"),
+            # ("azimuth_step", "5"),
             ("inflow_speed_start", "2.0"),
             ("inflow_speed_end", "50.0"),
-            ("inflow_speed_step", "0.5"),
+            ("inflow_speed_step", "24.0"),
+            # ("inflow_speed_step", "0.5"),
             ("n_harmonic", "2"),
             ("output_time_start", "0.0"),
             ("output_time_end", "0.01"),
@@ -171,15 +200,16 @@ class SimulationSetupTab(ttk.Frame):
         ]
         
         for param, value in default_params:
-            self.param_table.append_row([param, value])
+            description = descriptions.get(param, "")
+            self.param_table.append_row([description, param, value])
 
     def get_viv_params(self):
         """Create VIV_Params object from the current parameter table."""
         params = {}
         for row in self.param_table.get_all():
-            if len(row) >= 2:
-                key, value = row[0], row[1]
-                if value.strip():  # Only process non-empty values
+            if len(row) >= 3:
+                key, value = row[1], row[2]  # Parameter is at index 1, Value is at index 2
+                if str(value).strip():  # Only process non-empty values
                     try:
                         # Try to convert to float first, then int if it's a whole number
                         float_val = float(value)
@@ -350,13 +380,26 @@ class SimulationSetupTab(ttk.Frame):
                 for widget in self.freq_inner_frame.winfo_children():
                     widget.destroy()
                 
-                # Create labels for each frequency value
+                # Create entry widgets for each frequency value
                 for i, val in enumerate(row):
                     try:
                         freq_val = float(val.strip())
-                        label = ttk.Label(self.freq_inner_frame, text=f"{freq_val:.2f} Hz", 
-                                        relief="solid", borderwidth=1, padding=(8, 4))
-                        label.grid(row=0, column=i, padx=2)
+                        entry = ttk.Entry(self.freq_inner_frame, width=8, justify="center")
+                        entry.insert(0, f"{freq_val:.2f}")
+                        entry.grid(row=0, column=i, padx=2)
+                        
+                        # Add validation to ensure only numeric values
+                        def validate_freq(val, entry_widget=entry):
+                            try:
+                                if val == "":
+                                    return True
+                                float(val)
+                                return True
+                            except ValueError:
+                                return False
+                        
+                        # Bind validation
+                        entry.configure(validate="key", validatecommand=(entry.register(validate_freq), "%P"))
                     except ValueError:
                         # Skip non-numeric values
                         continue
@@ -377,7 +420,28 @@ class SimulationSetupTab(ttk.Frame):
             return
         try:
             self.param_table.clear()
-            self.param_table.load_csv(path)
+            descriptions = self._get_param_descriptions()
+            import csv
+            with open(path, newline="") as f:
+                reader = csv.reader(f)
+                for row in reader:
+                    if len(row) < 2:  # Skip rows with insufficient data
+                        continue
+                    
+                    param_name = str(row[0]).strip()
+                    param_value = row[1]
+                    
+                    # Convert value to float if possible
+                    try:
+                        param_value = float(str(param_value).strip())
+                    except ValueError:
+                        param_value = str(param_value)  # Keep as string if conversion fails
+                    
+                    # Always use predefined description, ignore any description in CSV
+                    description = descriptions.get(param_name, "")
+                    
+                    self.param_table.append_row([description, param_name, param_value])
+            
             self.app.log(f"Loaded parameters: {path}\n")
         except Exception as e:
             messagebox.showerror("Import failed", str(e))
@@ -394,29 +458,34 @@ class SimulationSetupTab(ttk.Frame):
             self.app.components = components
             self.app.log(f"Loaded {len(components)} components from: {components_dir}\n")
             
-            # Update geometry table with first component as example
+            # Update geometry table with component-level information
             if components:
                 self.geom_table.clear()
-                comp = components[0]
-                for i in range(len(comp.shape_xyz)):
-                    # Safely get values with defaults
-                    pitch_val = comp.pitch[0] if len(comp.pitch) > 0 else 0  # pitch is usually a single value
-                    chord_val = comp.chord[i] if i < len(comp.chord) else 0
-                    twist_val = comp.twist[i] if i < len(comp.twist) else 0
-                    thickness_val = comp.thickness[i] if i < len(comp.thickness) else 0.18
-                    offset_val = comp.offset[i] if i < len(comp.offset) else 0
-                    airfoil_id = comp.airfoil_ids[i] if i < len(comp.airfoil_ids) else "default"
+                for comp in components:
+                    # Calculate average values for segments
+                    avg_chord = np.mean(comp.chord) if len(comp.chord) > 0 else 0
+                    avg_twist = np.mean(comp.twist) if len(comp.twist) > 0 else 0
+                    avg_thickness = np.mean(comp.thickness) if len(comp.thickness) > 0 else 0
+                    
+                    # Get pitch value (usually a single value per component)
+                    pitch_val = comp.pitch[0] if len(comp.pitch) > 0 else 0
+                    
+                    # Number of segments
+                    num_segments = len(comp.shape_xyz)
                     
                     row = [
-                        f"Node_{i}",
-                        str(comp.shape_xyz[i, 0]), str(comp.shape_xyz[i, 1]), str(comp.shape_xyz[i, 2]),
-                        "0", "0", "0", str(pitch_val),
-                        str(comp.shape_xyz[i, 0]), str(comp.shape_xyz[i, 1]), str(comp.shape_xyz[i, 2]),
-                        str(chord_val),
-                        str(twist_val),
-                        str(thickness_val),
-                        str(offset_val), 
-                        airfoil_id
+                        str(comp.id),
+                        f"{comp.translation[0]:.3f}",
+                        f"{comp.translation[1]:.3f}",
+                        f"{comp.translation[2]:.3f}",
+                        f"{comp.rotation[0]:.2f}",
+                        f"{comp.rotation[1]:.2f}",
+                        f"{comp.rotation[2]:.2f}",
+                        f"{pitch_val:.2f}",
+                        str(num_segments),
+                        f"{avg_chord:.3f}",
+                        f"{avg_twist:.2f}",
+                        f"{avg_thickness:.3f}"
                     ]
                     self.geom_table.append_row(row)
                     
@@ -445,14 +514,13 @@ class SimulationSetupTab(ttk.Frame):
             messagebox.showerror("Save failed", str(e))
 
     def get_natural_frequencies(self):
-        """Get natural frequencies from the frequency display."""
+        """Get natural frequencies from the frequency entry widgets."""
         frequencies = []
         for widget in self.freq_inner_frame.winfo_children():
             try:
-                # Extract frequency value from label text (e.g., "3.00 Hz" -> 3.00)
-                text = widget.cget("text")
-                freq_val = float(text.replace(" Hz", ""))
+                # Get frequency value from entry widget
+                freq_val = float(widget.get())
                 frequencies.append(freq_val)
             except (ValueError, AttributeError):
                 continue
-        return frequencies if frequencies else None 
+        return np.array(frequencies) if frequencies else None 

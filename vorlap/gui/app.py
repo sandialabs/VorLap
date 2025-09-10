@@ -18,23 +18,15 @@ import vorlap
 
 from vorlap.gui.tabs import SimulationSetupTab, PlotsOutputsTab #, AnalysisTab, GeometryTab
 from vorlap.gui.styles import setup_theme_and_styling
+from vorlap.gui.widgets import ScrollText
 
 
 class VorLapApp(tk.Tk):
     def __init__(self):
         super().__init__()
         self.title("VORtex overLAP Tool")
-        self.geometry("1300x950")
-        self.minsize(1100, 750)
-        
-        # Set window icon if available
-        try:
-            # You can add an icon file here if available
-            # self.iconbitmap("icon.ico")  # Windows
-            # self.iconphoto(False, tk.PhotoImage(file="icon.png"))  # Linux/Mac
-            pass
-        except:
-            pass
+        self.geometry("1300x1200")
+        self.minsize(1300, 1200)
 
         # Apply modern theme and styling
         setup_theme_and_styling(self)
@@ -44,9 +36,14 @@ class VorLapApp(tk.Tk):
         self.natural_frequencies = None
         self.analysis_results = None
 
+        # Use grid for proper resizing behavior
+        self.rowconfigure(0, weight=1, minsize=100)   # Notebook expands with minimum size
+        self.rowconfigure(1, weight=0)   # Console has fixed size
+        self.columnconfigure(0, weight=1)
+
         # Create notebook with padding
         nb = ttk.Notebook(self)
-        nb.pack(fill="both", expand=True, padx=8, pady=(8, 0))
+        nb.grid(row=0, column=0, sticky="ew", padx=8, pady=(8, 0))
 
         self.tab_setup = SimulationSetupTab(nb, self)
         # self.tab_geometry = GeometryTab(nb, self)
@@ -58,21 +55,21 @@ class VorLapApp(tk.Tk):
         nb.add(self.tab_plots, text="Plots & Outputs")
         # nb.add(self.tab_analysis, text="Analysis")
 
-        # status bar with improved styling
-        status_frame = ttk.Frame(self, style='StatusFrame.TFrame')
-        status_frame.pack(fill="x", side="bottom", padx=8, pady=(0, 8))
+        # Persistent console (non-collapsible)
+        console_frame = ttk.LabelFrame(self, text="Console Output")
+        console_frame.grid(row=1, column=0, sticky="ew", padx=8, pady=(0, 8))
+        console_frame.configure(height=200)  # Set fixed height
+        console_frame.pack_propagate(False)  # Prevent shrinking
         
-        self.status = ttk.Label(status_frame, text="Ready", anchor="w", style='Status.TLabel')
-        self.status.pack(fill="x", padx=8, pady=4)
+        self.console = ScrollText(console_frame, height=8)
+        self.console.pack(fill="both", expand=True, padx=8, pady=8)
 
     def log(self, s: str):
         """Log message to console and status bar."""
         try:
-            self.tab_plots.log(s)
+            self.console.write(s)
         except Exception:
             print(s, end="")
-        self.status.config(text=s.strip().splitlines()[-1] if s.strip() else "Ready")
-
     def load_airfoils(self, airfoil_folder):
         """Load airfoil FFT data from the specified folder."""
         try:

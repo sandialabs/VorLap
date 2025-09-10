@@ -79,9 +79,10 @@ class EditableTreeview(ttk.Frame):
     """
     Spreadsheet-like table with CSV load/save and inline cell editing (double-click).
     """
-    def __init__(self, master, columns, show_headings=True, height=8, **kwargs):
+    def __init__(self, master, columns, show_headings=True, height=8, non_editable_columns=None, **kwargs):
         super().__init__(master, **kwargs)
         self.columns = columns
+        self.non_editable_columns = non_editable_columns or []
         self.tree = ttk.Treeview(self, columns=columns, show=("headings" if show_headings else ""))
         for col in columns:
             self.tree.heading(col, text=col)
@@ -143,6 +144,10 @@ class EditableTreeview(ttk.Frame):
         if not row_id or not col_id:
             return
         col = int(col_id.replace("#", "")) - 1
+        
+        # Check if this column is non-editable
+        if self.columns[col] in self.non_editable_columns:
+            return
         bbox = self.tree.bbox(row_id, col_id)
         if not bbox:
             return
