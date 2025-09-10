@@ -26,16 +26,16 @@ viv_params = vorlap.VIV_Params(
     output_azimuth_vinf=(5.0, 2.0),
     amplitude_coeff_cutoff=0.2,
     n_freq_depth=10,
-    airfoil_folder=f"{path}/../../airfoils/"
+    airfoil_folder=f"{path}/../data/airfoils/"
 )
 
 nodal_force_time_file = f"{path}/forces_output.csv"
 
 # First thing, we want to load a CSV that contains the parked natural frequencies 
-natfreqs = np.loadtxt(f"{path}/../../natural_frequencies.csv", delimiter=',')
+natfreqs = np.loadtxt(f"{path}/../data/natural_frequencies.csv", delimiter=',')
 
 # upload a series CSVs that define each component's overall position and rotation, and the shape, chord, twist, thickness, and (optional) airfoil data used 
-components = vorlap.load_components_from_csv(f"{path}/../../componentsHVAWT/")
+components = vorlap.load_components_from_csv(f"{path}/../data/components/componentsHVAWT/")
 
 # If an airfoil file is specified, read that in, otherwise use the default
 affts = {}
