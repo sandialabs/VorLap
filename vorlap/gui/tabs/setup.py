@@ -223,19 +223,19 @@ class SimulationSetupTab(ttk.Frame):
         # Create arrays from start/end/step parameters
         azimuths = np.arange(
             params.get("azimuth_start", 0),
-            params.get("azimuth_end", 255) + params.get("azimuth_step", 5),
+            params.get("azimuth_end", 255),
             params.get("azimuth_step", 5)
         )
         
         inflow_speeds = np.arange(
             params.get("inflow_speed_start", 2.0),
-            params.get("inflow_speed_end", 50.0) + params.get("inflow_speed_step", 0.5),
+            params.get("inflow_speed_end", 50.0),
             params.get("inflow_speed_step", 0.5)
         )
         
         output_time = np.arange(
             params.get("output_time_start", 0.0),
-            params.get("output_time_end", 0.01) + params.get("output_time_step", 0.001),
+            params.get("output_time_end", 0.01),
             params.get("output_time_step", 0.001)
         )
 
