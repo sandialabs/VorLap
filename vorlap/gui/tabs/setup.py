@@ -189,12 +189,10 @@ class SimulationSetupTab(ttk.Frame):
             ("inflow_vec_z", "0.0"),
             ("azimuth_start", "0"),
             ("azimuth_end", "255"),
-            ("azimuth_step", "150"),
-            # ("azimuth_step", "5"),
+            ("azimuth_step", "5"),
             ("inflow_speed_start", "2.0"),
             ("inflow_speed_end", "50.0"),
-            ("inflow_speed_step", "24.0"),
-            # ("inflow_speed_step", "0.5"),
+            ("inflow_speed_step", "0.5"),
             ("n_harmonic", "2"),
             ("output_time_start", "0.0"),
             ("output_time_end", "0.01"),
@@ -316,10 +314,12 @@ class SimulationSetupTab(ttk.Frame):
                 self.app.log("Running thrust/torque spectrum computation...\n")
                 start_time = time.time()
                 
-                percdiff_matrix, percdiff_info, total_global_force_vector, total_global_moment_vector, global_force_vector_nodes = vorlap.compute_thrust_torque_spectrum(
+                # percdiff_matrix, percdiff_info, total_global_force_vector, total_global_moment_vector, global_force_vector_nodes = vorlap.compute_thrust_torque_spectrum(
+                #     components, affts, viv_params, natfreqs
+                # )
+                percdiff_matrix, percdiff_info, total_global_force_vector, total_global_moment_vector, global_force_vector_nodes = vorlap.compute_thrust_torque_spectrum_optimized(
                     components, affts, viv_params, natfreqs
-                )
-                
+                ) 
                 end_time = time.time()
                 execution_time = end_time - start_time
                 self.app.log(f"Computation completed in {execution_time:.4f} seconds\n")
