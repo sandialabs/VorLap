@@ -23,8 +23,8 @@ viv_params = vorlap.VIV_Params(
     inflow_speeds=np.arange(2.0, 50.0, 4.0),  # collect(2.0:0.5:50.0)
     n_harmonic=2,
     output_time=np.arange(0.0, 0.011, 0.001),  # collect(0.0:0.001:0.01)
-    output_azimuth_vinf=(10.0, 34.0),
-    amplitude_coeff_cutoff=0.2,
+    output_azimuth_vinf=(10.0, 6.0),
+    amplitude_coeff_cutoff=0.002,
     n_freq_depth=10,
     airfoil_folder=f"{path}/../../airfoils/"
 )

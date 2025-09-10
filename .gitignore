@@ -3,6 +3,9 @@
 /figs
 *.stash
 *.DS_Store
+*.pdf
+*.csv
+*\figs
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

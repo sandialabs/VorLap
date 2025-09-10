@@ -1,339 +1,435 @@
-"""
-Process NALU output data to HDF5 format for use with VorLap.
-
-This script processes data from .dat files containing time-series data for forces and moments,
-computes FFT for lift, drag, moment, and combined force coefficients, calculates Strouhal numbers,
-sorts the data by amplitude, and writes the processed data to an HDF5 file.
-"""
-
+# build_airfoil_fft.py
 import os
+import re
+import math
 import numpy as np
 import h5py
-import warnings
-# Use numpy's FFT functions
 from numpy.fft import fft
-import glob
-import argparse
+from scipy.signal.windows import hann  # pip install scipy
+import matplotlib.pyplot as plt
+
+# ------------------------ config / knobs ------------------------
+localpath = os.path.dirname(os.path.abspath(__file__))
+
+# dat_folder points to AIRFOIL directory that contains RE* subfolders
+dat_folder = os.path.join(localpath, "../airfoils", "randata", "NACA0018")   # CHANGED (root for RE* dirs)
+h5_path    = os.path.join(localpath, "../airfoils", "NACA0018_fft.h5")
+
+Vinf_fallback = 2.0   # used only if no RE subfolders are found
+chord = 1.0
+span  = 4.0
+fluid_density   = 1.2
+fluid_viscosity = 9.0e-06
+NFreq   = 200
+minFreq = 0.0
+genplots = True
+sampledT_startcutoff = 10.3
+
+# make/ensure figs directory
+figs_dir = os.path.join(localpath, "figs")
+os.makedirs(figs_dir, exist_ok=True)
+
+def _slug(s: str) -> str:
+    """Safe filename piece."""
+    return re.sub(r"[^A-Za-z0-9._-]+", "_", str(s))
+
+def savefig_and_close(fig, path):
+    fig.savefig(path, bbox_inches="tight", dpi=150)
+    plt.close(fig)             # free memory right away
 
 
-def compute_fft(signal, dt, chord, aoa, Vinf):
+# ------------------------ helpers ------------------------
+def parse_re_from_dirname(name: str) -> float:
+    m = re.match(r"^RE(\d+)_([0-9]+)E(\d+)$", name)
+    if not m:
+        return float("nan")
+    base, frac, exp = m.group(1), m.group(2), int(m.group(3))
+    # Match Julia: no exponent bump
+    return float(f"{base}.{frac}e{exp}")
+
+
+def dat_files_in(directory: str):
+    """List .dat files in a directory, or in its ./data_files subdir if none at top level."""
+    fs = [os.path.join(directory, f) for f in os.listdir(directory) if f.endswith(".dat")]
+    if not fs:
+        d2 = os.path.join(directory, "data_files")
+        if os.path.isdir(d2):
+            fs = [os.path.join(d2, f) for f in os.listdir(d2) if f.endswith(".dat")]
+    return sorted(fs)
+
+def safe_load_dat(path: str):
+    """Load .dat with one header row (skiprows=1). Returns np.ndarray or None."""
+    try:
+        arr = np.loadtxt(path, skiprows=1)
+        if arr.ndim == 1:
+            arr = arr.reshape(1, -1)
+        return arr
+    except Exception:
+        print(f"Warning: Skipping {path}, unreadable or no data.")
+        return None
+
+def compute_fft(signal: np.ndarray, dt: float, chord: float, aoa_deg: float, Vinf: float):
     """
-    Compute the FFT of a signal.
-    
-    Args:
-        signal: Time-domain signal
-        dt: Time step
-        chord: Chord length
-        aoa: Angle of attack in degrees
-        Vinf: Freestream velocity
-        
+    Mirror of the Julia compute_fft:
+      - DC from mean(signal)
+      - Demean, windowed PSD for power-based sorting
+      - Unwindowed FFT for amplitudes/phases (cosine convention)
+      - One-sided scaling: double bins 2..end-1 (exclude DC and Nyquist)
+      - Sort non-DC bins by windowed per-bin power (descending)
+      - Convert frequencies -> Strouhal via ST = f * (chord * |sin(aoa)|) / Vinf
     Returns:
-        freqs: Frequency vector
-        amps: Amplitude spectrum
-        phases: Phase spectrum
-        ST_sorted: Sorted Strouhal numbers
-        amps_sorted: Sorted amplitudes
-        phases_sorted: Sorted phases
+      freqs_unsorted, amps_unsorted, phases_unsorted, power_pos, ST_sorted, amps_sorted, phases_sorted
     """
-    N = len(signal)
-    signal_used = signal  # No need to subtract mean, maximum difference in 2:end is 1.6e-16
-    fft_vals = fft(signal_used)
+    N = signal.size
+    fs = 1.0 / dt
     half_N = N // 2
-    
-    # One-sided frequency axis
-    freqs = np.arange(half_N) / (N * dt)
-    
-    # Amplitude spectrum (one-sided)
-    amps = np.abs(fft_vals[:half_N]) / N
-    amps[1:half_N-1] *= 2  # Double non-DC, non-Nyquist components
-    
-    # Phase spectrum
-    phases = np.angle(fft_vals[:half_N])
-    
-    # Strouhal number calculation
-    # Sort by the largest to smallest amplitudes
-    perm_peakamp = np.argsort(amps)[::-1]  # Largest to smallest
-    freqs_sorted = freqs[perm_peakamp]
-    amps_sorted = amps[perm_peakamp]
-    phases_sorted = phases[perm_peakamp]
-    STlength = chord * abs(np.sin(np.radians(aoa)))  # NOTE: ST seems to be dominated by the major axis length, not planform length
+
+    # DC and demean for spectral parts
+    mean_amp = float(np.mean(signal))
+    x = signal - mean_amp
+
+    # Windowed path (for PSD + power sorting)
+    w = hann(N, sym=False)
+    U = np.sum(w**2) / N
+    xw = w * x
+    Xw = fft(xw)
+
+    freqs = np.arange(half_N) / (N * dt)  # 0..(N/2-1)
+    Xpos_w = Xw[:half_N]
+    # One-sided PSD (power/Hz)
+    S = (np.abs(Xpos_w)**2) / (fs * N * U)
+    if half_N > 2:
+        S[1:-1] *= 2.0
+    df = fs / N
+    power = S * df  # per-bin power (for sorting)
+
+    # Unwindowed path (for reconstruction amps & phases)
+    X = fft(x)
+    Xpos = X[:half_N]
+
+    # Peak amplitude per cosine
+    amps = np.abs(Xpos) / N
+    if half_N > 2:
+        amps[1:-1] *= 2.0
+
+    phases = np.angle(Xpos)
+
+    # DC convention: put mean at 0 Hz, phase 0
+    amps[0] = mean_amp
+    phases[0] = 0.0
+
+    # Sort all except DC by POWER (from windowed PSD)
+    if power.size > 1:
+        perm_peakpow = np.argsort(power[1:])[::-1] + 1  # skip DC bin
+        freqs_sorted  = np.concatenate(([0.0], freqs[perm_peakpow]))
+        amps_sorted   = np.concatenate(([mean_amp], amps[perm_peakpow]))
+        phases_sorted = np.concatenate(([0.0],    phases[perm_peakpow]))
+    else:
+        freqs_sorted  = np.array([0.0])
+        amps_sorted   = np.array([mean_amp])
+        phases_sorted = np.array([0.0])
+
+    STlength = chord * abs(math.sin(math.radians(aoa_deg)))
     ST_sorted = freqs_sorted * STlength / Vinf
-    
-    return freqs, amps, phases, ST_sorted, amps_sorted, phases_sorted
 
+    return freqs, amps, phases, power, ST_sorted, amps_sorted, phases_sorted
 
-def process_dat_folder(dat_folder, h5_path, 
-                      Vinf=2.0,
-                      chord=1.0,
-                      span=4.0,
-                      fluid_density=1.2,
-                      fluid_viscosity=9.0e-6,
-                      NFreq=200,
-                      minFreq=0.0,
-                      genplots=True,
-                      sampledT_startcutoff=70.0):
-    """
-    Process a folder of .dat files to create an HDF5 file with FFT data.
-    
-    Args:
-        dat_folder: Path to folder containing .dat files
-        h5_path: Path to output HDF5 file
-        Vinf: Freestream velocity
-        chord: Chord length
-        span: Span length
-        fluid_density: Fluid density
-        fluid_viscosity: Fluid viscosity
-        NFreq: Number of frequencies to store
-        minFreq: Minimum frequency cutoff for Strouhal number calculation
-        genplots: Whether to generate plots
-        sampledT_startcutoff: Time cutoff for plotting
-        
-    Returns:
-        None
-    """
-    # Find all .dat files in the folder
-    files = glob.glob(os.path.join(dat_folder, "*.dat"))
-    N_AOA = len(files)
-    
-    thickness = 0.0  # placeholder, is set elsewhere
-    airfoil_name = "placeholder"
-    
-    # Calculate Reynolds number
-    reynolds = fluid_density * Vinf * chord / fluid_viscosity
-    
-    # Figure out the number of AOAs
-    Re = np.array([reynolds])  # TODO: other reynolds?
-    NRe = len(Re)
-    single_Re = False
-    if NRe == 1:
-        Re = np.array([Re[0], Re[0] + 1e-6])
-        NRe = 2
-        single_Re = True
-    
-    AOA = np.zeros(N_AOA)
-    CL_ST = np.zeros((NRe, N_AOA, NFreq))
-    CD_ST = np.zeros((NRe, N_AOA, NFreq))
-    CM_ST = np.zeros((NRe, N_AOA, NFreq))
-    CF_ST = np.zeros((NRe, N_AOA, NFreq))
-    CL_Amp = np.zeros((NRe, N_AOA, NFreq))
-    CD_Amp = np.zeros((NRe, N_AOA, NFreq))
-    CM_Amp = np.zeros((NRe, N_AOA, NFreq))
-    CF_Amp = np.zeros((NRe, N_AOA, NFreq))
-    CL_Pha = np.zeros((NRe, N_AOA, NFreq))
-    CD_Pha = np.zeros((NRe, N_AOA, NFreq))
-    CM_Pha = np.zeros((NRe, N_AOA, NFreq))
-    CF_Pha = np.zeros((NRe, N_AOA, NFreq))
-    
-    iRe = 0  # TODO: other Reynolds
-    for iaoa, file in enumerate(files):
-        print(f"Processing {file}")
-        filename = os.path.basename(file).split('.')[0]
-        AOA_str = ''.join(filter(lambda x: x.isdigit() or x == '-', filename.split('_')[-1]))
-        AOA[iaoa] = float(AOA_str)
-        airfoil_name = '_'.join(filename.split('_')[:-1])
-        
-        try:
-            thickness_str = ''.join(filter(lambda x: x.isdigit() or x == '-', airfoil_name.split('_')[-1]))
-            thickness = float(thickness_str) / 1000
-        except:
-            thickness = 0.0
-        
-        # Read data (skip headers)
-        data = np.loadtxt(file, skiprows=1)
-        timefull = data[:, 0]
-        dt = timefull[1] - timefull[0]  # NOTE: assumes that the CFD solver uses a fixed time step
-        fpx, fpy = data[:, 1], data[:, 2]
-        fvx, fvy = data[:, 4], data[:, 5]
-        mty = data[:, 8]
-        
-        q = 0.5 * fluid_density * Vinf**2 * chord * span
-        CL_data = (fpy + fvy) / q  # pressure and viscous forces. NOTE: mesh x is assumed to be in the same direction as the flow, +x
-        CD_data = (fpx + fvx) / q
-        CF_data = np.sqrt(CD_data**2 + CL_data**2)
-        CM_data = mty / q
-        
-        # Calculate the number of flow-throughs, and cut out the first
-        time_flowthrough = chord / Vinf  # chord_m/m*s = second/chord
-        total_flowthroughs = timefull[-1] / time_flowthrough  # seconds * chord/seconds = chords
-        
-        # Compute FFT
-        freqs_cl, amps_cl, phases_cl, ST_sorted_cl, amps_sorted_cl, phases_sorted_cl = compute_fft(CL_data, dt, chord, AOA[iaoa], Vinf)
-        freqs_cd, amps_cd, phases_cd, ST_sorted_cd, amps_sorted_cd, phases_sorted_cd = compute_fft(CD_data, dt, chord, AOA[iaoa], Vinf)
-        freqs_cm, amps_cm, phases_cm, ST_sorted_cm, amps_sorted_cm, phases_sorted_cm = compute_fft(CM_data, dt, chord, AOA[iaoa], Vinf)
-        freqs_cf, amps_cf, phases_cf, ST_sorted_cf, amps_sorted_cf, phases_sorted_cf = compute_fft(CF_data, dt, chord, AOA[iaoa], Vinf)
-        
-        if genplots:
+# ------------------------ discover Re directories ------------------------
+all_entries = [os.path.join(dat_folder, f) for f in os.listdir(dat_folder)] if os.path.isdir(dat_folder) else []
+re_dirs = [p for p in all_entries if os.path.isdir(p) and re.match(r"^RE\d+_\d+E\d+$", os.path.basename(p))]
+
+# If no RE* subfolders, treat dat_folder as a single-Re directory
+if not re_dirs:
+    print(f"Info: No RE* subfolders found; using {dat_folder} as a single-Re directory.")
+    re_dirs = [dat_folder]
+
+Re = []
+for d in re_dirs:
+    r = parse_re_from_dirname(os.path.basename(d))
+    if np.isnan(r):
+        r = fluid_density * Vinf_fallback * chord / fluid_viscosity
+        print(f"Warning: Folder {os.path.basename(d)} didn't match RE* pattern; using fallback Re={r}")
+    Re.append(r)
+Re = np.array(Re, dtype=float)
+
+# Use first RE folder to define the ordered AOA file set
+base_files = dat_files_in(re_dirs[0])
+N_AOA = len(base_files)
+if N_AOA == 0:
+    raise RuntimeError(f"No .dat files found in {re_dirs[0]} (or its data_files subdir).")
+
+# ------------------------ alloc outputs ------------------------
+NRe = len(Re)
+single_Re = (NRe == 1)
+
+AOA = np.zeros(N_AOA, dtype=float)
+thickness = 0.0  # placeholder
+airfoil_name = "placeholder"
+
+CL_ST = np.zeros((NRe, N_AOA, NFreq), dtype=float)
+CD_ST = np.zeros((NRe, N_AOA, NFreq), dtype=float)
+CM_ST = np.zeros((NRe, N_AOA, NFreq), dtype=float)
+CF_ST = np.zeros((NRe, N_AOA, NFreq), dtype=float)
+CL_Amp = np.zeros((NRe, N_AOA, NFreq), dtype=float)
+CD_Amp = np.zeros((NRe, N_AOA, NFreq), dtype=float)
+CM_Amp = np.zeros((NRe, N_AOA, NFreq), dtype=float)
+CF_Amp = np.zeros((NRe, N_AOA, NFreq), dtype=float)
+CL_Pha = np.zeros((NRe, N_AOA, NFreq), dtype=float)
+CD_Pha = np.zeros((NRe, N_AOA, NFreq), dtype=float)
+CM_Pha = np.zeros((NRe, N_AOA, NFreq), dtype=float)
+CF_Pha = np.zeros((NRe, N_AOA, NFreq), dtype=float)
+
+# ------------------------ main loops: Re folders, then AOA files ------------------------
+for iRe, re_dir in enumerate(re_dirs):
+    Vinf = Re[iRe] * fluid_viscosity / (fluid_density * chord)
+
+    files_i = dat_files_in(re_dir)
+    filemap = {os.path.basename(f): f for f in files_i}
+
+    for iaoa, f0 in enumerate(base_files):
+        b0 = os.path.basename(f0)
+        file = filemap.get(b0, None)
+        if file is None:
+            print(f"Warning: AOA file '{b0}' not found in {re_dir}; skipping (iRe={iRe}, iaoa={iaoa}).")
+            continue
+
+        print(f"Processing (Re idx={iRe}) {file}")
+        filename = os.path.splitext(os.path.basename(file))[0]
+        AOA_str = re.sub(r"[^\d\-]+", "", filename.split("_")[-1])
+
+        if iRe == 1-1:  # first Re pass
             try:
-                import matplotlib.pyplot as plt
-                
-                idx_start = max(1, int(round(sampledT_startcutoff / dt)))
-                
-                # Time plot
-                plt.figure()
-                plt.plot(timefull[idx_start:], CF_data[idx_start:])
-                plt.xlabel('Time (s)')
-                plt.ylabel('CF')
-                plt.title(f'(CF), AOA: {AOA[iaoa]}')
-                plt.legend(True)
-                plt.show()
-                
-                # Frequency plot
-                plt.figure()
-                plt.plot(freqs_cf[1:NFreq], amps_cf[1:NFreq], 'x-')
-                plt.xlabel('Frequency (Hz)')
-                plt.ylabel('Magnitude (CF)')
-                plt.title(f'(CF), AOA: {AOA[iaoa]}')
-                plt.legend(False)
-                plt.show()
+                AOA[iaoa] = float(AOA_str)
+            except Exception:
+                AOA[iaoa] = np.nan
+            airfoil_name = "_".join(filename.split("_")[:-1])
+            try:
+                thickness_str = re.sub(r"[^\d\-]+", "", airfoil_name.split("_")[-1])
+                thickness = float(thickness_str) / 1000.0
+            except Exception:
+                thickness = 0.0
+        else:
+            try:
+                aoa_chk = float(AOA_str)
+            except Exception:
+                aoa_chk = np.nan
+            if not np.isnan(aoa_chk) and abs(aoa_chk - AOA[iaoa]) > 1e-9:
+                print(f"Warning: AOA mismatch at iaoa={iaoa} between base set ({AOA[iaoa]}) and {re_dir} ({aoa_chk}).")
+
+        # Read data
+        data = safe_load_dat(file)
+        if data is None:
+            continue
+
+        timefull = data[:, 0]
+        if timefull.size < 6001:
+            print(f"Warning: Skipping {file}: timefull length {timefull.size} < 6001")
+            continue
+
+        dt = float(timefull[1] - timefull[0])  # assumes fixed dt
+
+        # Columns (0-based): time=0, fpx=1, fpy=2, fvx=4, fvy=5, mty=8
+        try:
+            fpx, fpy = data[:, 1], data[:, 2]
+            fvx, fvy = data[:, 4], data[:, 5]
+            mty      = data[:, 8]
+        except Exception:
+            print(f"Warning: {file} does not have expected columns; skipping.")
+            continue
+
+        q = 0.5 * fluid_density * Vinf**2 * chord * span
+        CL = (fpy + fvy) / q      # +x is inflow direction
+        CD = (fpx + fvx) / q
+        CF = np.sqrt(CD**2 + CL**2)
+        CM = (mty) / q
+
+        # FFT / PSD per-channel
+        freqs_cl, amps_cl, phases_cl, power_cl, ST_sorted_cl, amps_sorted_cl, phases_sorted_cl = \
+            compute_fft(CL, dt, chord, AOA[iaoa], Vinf)
+        freqs_cd, amps_cd, phases_cd, power_cd, ST_sorted_cd, amps_sorted_cd, phases_sorted_cd = \
+            compute_fft(CD, dt, chord, AOA[iaoa], Vinf)
+        freqs_cm, amps_cm, phases_cm, power_cm, ST_sorted_cm, amps_sorted_cm, phases_sorted_cm = \
+            compute_fft(CM, dt, chord, AOA[iaoa], Vinf)
+        freqs_cf, amps_cf, phases_cf, power_cf, ST_sorted_cf, amps_sorted_cf, phases_sorted_cf = \
+            compute_fft(CF, dt, chord, AOA[iaoa], Vinf)
+
+        # --- Plots (optional) ---
+        if genplots:
+            idx_start = max(0, int(round(sampledT_startcutoff / dt)) - 1)
+            aoa_str = _slug(f"{AOA[iaoa]:.4g}")
+            re_str  = _slug(f"{Re[iRe]:.5g}")
+
+            # CF time series with reconstruction
+            try:
+                from vorlap import reconstruct_signal   # import your package function
             except ImportError:
-                warnings.warn("Matplotlib not available, skipping plots")
-                genplots = False
-        
-        # Store Contents From File, Only Save Frequency up to NFreq
-        if NFreq > len(ST_sorted_cl):
-            warnings.warn("Number of frequencies exceeds those available")
-            NFreq = len(ST_sorted_cl)
-        
+                raise RuntimeError("Could not import vorlap.reconstruct_signal. Make sure VorLap is installed and on PYTHONPATH.")
+
+            signal = reconstruct_signal(freqs_cf, amps_cf, phases_cf, timefull)
+
+            fig = plt.figure()
+            plt.plot(timefull[idx_start:], signal[idx_start:], label="Reconstructed", linewidth=2)
+            plt.plot(timefull[idx_start:], CF[idx_start:], label="Original", linewidth=2)
+            plt.xlabel("Time (s)")
+            plt.ylabel("CF")
+            plt.title(f"(CF), AOA: {AOA[iaoa]} (Re={Re[iRe]:.5g})")
+            plt.xlim(timefull[idx_start], timefull[-1]*0.98)         # cover only the plotted time span
+            plt.ylim(np.min(CF[idx_start:]) * 1.1, np.max(CF[idx_start:]) * 1.1)  # padded range for visibility
+            plt.legend()
+            savefig_and_close(fig, os.path.join(figs_dir, f"CF_time_AOA{aoa_str}_Re{re_str}.png"))
+
+            # CL time series
+            fig = plt.figure()
+            plt.plot(timefull[idx_start:], CL[idx_start:], linewidth=2)
+            plt.xlabel("Time (s)"); plt.ylabel("CL")
+            plt.title(f"(CL), AOA: {AOA[iaoa]} (Re={Re[iRe]:.5g})")
+            savefig_and_close(fig, os.path.join(figs_dir, f"CL_time_AOA{aoa_str}_Re{re_str}.png"))
+
+            # CD time series
+            fig = plt.figure()
+            plt.plot(timefull[idx_start:], CD[idx_start:], linewidth=2)
+            plt.xlabel("Time (s)"); plt.ylabel("CD")
+            plt.title(f"(CD), AOA: {AOA[iaoa]} (Re={Re[iRe]:.5g})")
+            savefig_and_close(fig, os.path.join(figs_dir, f"CD_time_AOA{aoa_str}_Re{re_str}.png"))
+
+            # Bode-like PSDs (skip DC)
+            if freqs_cf.size >= 2:
+                fig = plt.figure()
+                plt.plot(freqs_cf[1:NFreq], power_cf[1:NFreq], marker='x', linewidth=2)
+                plt.xlabel("Frequency (Hz)"); plt.ylabel("PSD")
+                plt.title(f"(CF), AOA: {AOA[iaoa]} (Re={Re[iRe]:.5g})")
+                savefig_and_close(fig, os.path.join(figs_dir, f"CF_psd_AOA{aoa_str}_Re{re_str}.png"))
+
+            if freqs_cl.size >= 2:
+                fig = plt.figure()
+                plt.plot(freqs_cl[1:NFreq], power_cl[1:NFreq], marker='x', linewidth=2)
+                plt.xlabel("Frequency (Hz)"); plt.ylabel("PSD")
+                plt.title(f"(CL), AOA: {AOA[iaoa]} (Re={Re[iRe]:.5g})")
+                savefig_and_close(fig, os.path.join(figs_dir, f"CL_psd_AOA{aoa_str}_Re{re_str}.png"))
+
+            if freqs_cd.size >= 2:
+                fig = plt.figure()
+                plt.plot(freqs_cd[1:NFreq], power_cd[1:NFreq], marker='x', linewidth=2)
+                plt.xlabel("Frequency (Hz)"); plt.ylabel("PSD")
+                plt.title(f"(CD), AOA: {AOA[iaoa]} (Re={Re[iRe]:.5g})")
+                savefig_and_close(fig, os.path.join(figs_dir, f"CD_psd_AOA{aoa_str}_Re{re_str}.png"))
+
+
+        # --- Store (cap by available length) ---
+        if NFreq > ST_sorted_cl.size:
+            print(f"Warning: Number of frequencies ({NFreq}) exceeds available ({ST_sorted_cl.size})")
+            NFreq = ST_sorted_cl.size  # reduce globally (mirrors Julia's behavior)
+            # Also shrink already-allocated arrays along last axis if needed
+            CL_ST = CL_ST[..., :NFreq]; CD_ST = CD_ST[..., :NFreq]; CM_ST = CM_ST[..., :NFreq]; CF_ST = CF_ST[..., :NFreq]
+            CL_Amp = CL_Amp[..., :NFreq]; CD_Amp = CD_Amp[..., :NFreq]; CM_Amp = CM_Amp[..., :NFreq]; CF_Amp = CF_Amp[..., :NFreq]
+            CL_Pha = CL_Pha[..., :NFreq]; CD_Pha = CD_Pha[..., :NFreq]; CM_Pha = CM_Pha[..., :NFreq]; CF_Pha = CF_Pha[..., :NFreq]
+
         CL_ST[iRe, iaoa, :NFreq] = ST_sorted_cl[:NFreq]
         CD_ST[iRe, iaoa, :NFreq] = ST_sorted_cd[:NFreq]
         CM_ST[iRe, iaoa, :NFreq] = ST_sorted_cm[:NFreq]
         CF_ST[iRe, iaoa, :NFreq] = ST_sorted_cf[:NFreq]
+
         CL_Amp[iRe, iaoa, :NFreq] = amps_sorted_cl[:NFreq]
         CD_Amp[iRe, iaoa, :NFreq] = amps_sorted_cd[:NFreq]
         CM_Amp[iRe, iaoa, :NFreq] = amps_sorted_cm[:NFreq]
         CF_Amp[iRe, iaoa, :NFreq] = amps_sorted_cf[:NFreq]
+
         CL_Pha[iRe, iaoa, :NFreq] = phases_sorted_cl[:NFreq]
         CD_Pha[iRe, iaoa, :NFreq] = phases_sorted_cd[:NFreq]
         CM_Pha[iRe, iaoa, :NFreq] = phases_sorted_cm[:NFreq]
         CF_Pha[iRe, iaoa, :NFreq] = phases_sorted_cf[:NFreq]
-    
-    if single_Re:
-        CL_ST[1, :, :] = CL_ST[0, :, :]
-        CD_ST[1, :, :] = CD_ST[0, :, :]
-        CM_ST[1, :, :] = CM_ST[0, :, :]
-        CF_ST[1, :, :] = CF_ST[0, :, :]
-        CL_Amp[1, :, :] = CL_Amp[0, :, :]
-        CD_Amp[1, :, :] = CD_Amp[0, :, :]
-        CM_Amp[1, :, :] = CM_Amp[0, :, :]
-        CF_Amp[1, :, :] = CF_Amp[0, :, :]
-        CL_Pha[1, :, :] = CL_Pha[0, :, :]
-        CD_Pha[1, :, :] = CD_Pha[0, :, :]
-        CM_Pha[1, :, :] = CM_Pha[0, :, :]
-        CF_Pha[1, :, :] = CF_Pha[0, :, :]
-    
-    # Sort the AOA vector and its dependencies
-    aoa_sort_idx = np.argsort(AOA)
-    
-    AOA_sort = AOA[aoa_sort_idx]
-    CL_ST_sort = CL_ST[:, aoa_sort_idx, :]
-    CD_ST_sort = CD_ST[:, aoa_sort_idx, :]
-    CM_ST_sort = CM_ST[:, aoa_sort_idx, :]
-    CF_ST_sort = CF_ST[:, aoa_sort_idx, :]
-    CL_Amp_sort = CL_Amp[:, aoa_sort_idx, :]
-    CD_Amp_sort = CD_Amp[:, aoa_sort_idx, :]
-    CM_Amp_sort = CM_Amp[:, aoa_sort_idx, :]
-    CF_Amp_sort = CF_Amp[:, aoa_sort_idx, :]
-    CL_Pha_sort = CL_Pha[:, aoa_sort_idx, :]
-    CD_Pha_sort = CD_Pha[:, aoa_sort_idx, :]
-    CM_Pha_sort = CM_Pha[:, aoa_sort_idx, :]
-    CF_Pha_sort = CF_Pha[:, aoa_sort_idx, :]
-    
-    if genplots:
-        try:
-            import matplotlib.pyplot as plt
-            
-            # Plot ST vs AOA
-            plt.figure()
-            for ist in range(1, 22, 5):
-                plt.plot(AOA_sort, CF_ST_sort[0, :, ist], 'x-', label=f'{ist}')
-            plt.xlabel('AOA (deg)')
-            plt.ylabel('ST (CF)')
-            plt.title('ST')
-            plt.legend()
-            plt.show()
-            
-            # Plot Amp vs AOA
-            plt.figure()
-            for ist in range(1, 22, 5):
-                plt.plot(AOA_sort, CF_Amp_sort[0, :, ist], 'x-', label=f'{ist}')
-            plt.xlabel('AOA (deg)')
-            plt.ylabel('Amp (CF)')
-            plt.title('Amp')
-            plt.legend()
-            plt.show()
-        except ImportError:
-            warnings.warn("Matplotlib not available, skipping plots")
-    
-    # Write to HDF5 file
-    with h5py.File(h5_path, 'w') as file:
-        file.create_dataset('Airfoilname', data=airfoil_name)
-        file.create_dataset('Re', data=Re)
-        file.create_dataset('Thickness', data=thickness)
-        file.create_dataset('AOA', data=AOA_sort)
-        file.create_dataset('CL_ST', data=CL_ST_sort)
-        file.create_dataset('CD_ST', data=CD_ST_sort)
-        file.create_dataset('CM_ST', data=CM_ST_sort)
-        file.create_dataset('CF_ST', data=CF_ST_sort)
-        file.create_dataset('CL_Amp', data=CL_Amp_sort)
-        file.create_dataset('CD_Amp', data=CD_Amp_sort)
-        file.create_dataset('CM_Amp', data=CM_Amp_sort)
-        file.create_dataset('CF_Amp', data=CF_Amp_sort)
-        file.create_dataset('CL_Pha', data=CL_Pha_sort)
-        file.create_dataset('CD_Pha', data=CD_Pha_sort)
-        file.create_dataset('CM_Pha', data=CM_Pha_sort)
-        file.create_dataset('CF_Pha', data=CF_Pha_sort)
+
+# ------------------------ single-Re duplication ------------------------
+if single_Re:
+    # Duplicate the first slice so downstream code expecting 2 Re slices still works
+    def dup_first(arr):
+        return np.concatenate([arr, arr[:1, ...]], axis=0)
+    CL_ST = dup_first(CL_ST); CD_ST = dup_first(CD_ST); CM_ST = dup_first(CM_ST); CF_ST = dup_first(CF_ST)
+    CL_Amp = dup_first(CL_Amp); CD_Amp = dup_first(CD_Amp); CM_Amp = dup_first(CM_Amp); CF_Amp = dup_first(CF_Amp)
+    CL_Pha = dup_first(CL_Pha); CD_Pha = dup_first(CD_Pha); CM_Pha = dup_first(CM_Pha); CF_Pha = dup_first(CF_Pha)
+
+# ------------------------ sort by AOA ------------------------
+aoa_sort_idx = np.argsort(AOA)
+AOA_sort = AOA[aoa_sort_idx]
+CL_ST_sort = CL_ST[:, aoa_sort_idx, :]
+CD_ST_sort = CD_ST[:, aoa_sort_idx, :]
+CM_ST_sort = CM_ST[:, aoa_sort_idx, :]
+CF_ST_sort = CF_ST[:, aoa_sort_idx, :]
+CL_Amp_sort = CL_Amp[:, aoa_sort_idx, :]
+CD_Amp_sort = CD_Amp[:, aoa_sort_idx, :]
+CM_Amp_sort = CM_Amp[:, aoa_sort_idx, :]
+CF_Amp_sort = CF_Amp[:, aoa_sort_idx, :]
+CL_Pha_sort = CL_Pha[:, aoa_sort_idx, :]
+CD_Pha_sort = CD_Pha[:, aoa_sort_idx, :]
+CM_Pha_sort = CM_Pha[:, aoa_sort_idx, :]
+CF_Pha_sort = CF_Pha[:, aoa_sort_idx, :]
+
+# ------------------------ sort by Re (ascending) ------------------------
+Re_sort_idx = np.argsort(Re)
+Re_sort = Re[Re_sort_idx]
+
+CL_ST_sort = CL_ST_sort[Re_sort_idx, :, :]
+CD_ST_sort = CD_ST_sort[Re_sort_idx, :, :]
+CM_ST_sort = CM_ST_sort[Re_sort_idx, :, :]
+CF_ST_sort = CF_ST_sort[Re_sort_idx, :, :]
+
+CL_Amp_sort = CL_Amp_sort[Re_sort_idx, :, :]
+CD_Amp_sort = CD_Amp_sort[Re_sort_idx, :, :]
+CM_Amp_sort = CM_Amp_sort[Re_sort_idx, :, :]
+CF_Amp_sort = CF_Amp_sort[Re_sort_idx, :, :]
+
+CL_Pha_sort = CL_Pha_sort[Re_sort_idx, :, :]
+CD_Pha_sort = CD_Pha_sort[Re_sort_idx, :, :]
+CM_Pha_sort = CM_Pha_sort[Re_sort_idx, :, :]
+CF_Pha_sort = CF_Pha_sort[Re_sort_idx, :, :]
+
+# ------------------------ optional summary plots like Julia ------------------------
+if genplots:
+    ire_indices = [0] if single_Re else list(range(CF_ST_sort.shape[0]))
+    for iRe in ire_indices:
+        re_str = _slug(f"{Re_sort[iRe]:.5g}")
+
+        # ST vs AOA, multiple ist
+        fig = plt.figure()
+        for ist in range(2, min(20, NFreq)):
+            plt.plot(AOA_sort, CF_ST_sort[iRe, :, ist], marker='x', linewidth=2, label=f"ist={ist}")
+        plt.xlabel("AOA (deg)"); plt.ylabel("ST (CF)")
+        plt.ylim(0.0, 0.5)
+        plt.title(f"ST Re={Re_sort[iRe]:.5g}")
+        plt.legend()
+        savefig_and_close(fig, os.path.join(figs_dir, f"ST_summary_Re{re_str}.png"))
+
+        # Amp vs AOA, multiple ist
+        fig = plt.figure()
+        for ist in range(2, min(20, NFreq)):
+            plt.plot(AOA_sort, CF_Amp_sort[iRe, :, ist], marker='x', linewidth=2, label=f"ist={ist}")
+        plt.xlabel("AOA (deg)"); plt.ylabel("Amp (CF)")
+        plt.title(f"Amp Re={Re_sort[iRe]:.5g}")
+        plt.legend()
+        savefig_and_close(fig, os.path.join(figs_dir, f"Amp_summary_Re{re_str}.png"))
 
 
-if __name__ == "__main__":
-    # Get the module path
-    MODULE_PATH = os.path.dirname(os.path.abspath(__file__))
-    
-    # Default parameters
-    Vinf = 2.0
-    chord = 1.0
-    span = 4.0
-    fluid_density = 1.2
-    fluid_viscosity = 9.0e-6
-    NFreq = 200
-    minFreq = 0.0
-    genplots = True
-    sampledT_startcutoff = 70.0
-    
-    # Parse command line arguments
-    parser = argparse.ArgumentParser(description='Process NALU output data to HDF5 format for use with VorLap.')
-    parser.add_argument('--dat_folder', type=str, default=os.path.join(MODULE_PATH, "airfoils/cylinder/data_files"),
-                        help='Path to folder containing .dat files')
-    parser.add_argument('--h5_path', type=str, default=os.path.join(MODULE_PATH, "airfoils/cylinder_fft.h5"),
-                        help='Path to output HDF5 file')
-    parser.add_argument('--Vinf', type=float, default=Vinf,
-                        help='Freestream velocity')
-    parser.add_argument('--chord', type=float, default=chord,
-                        help='Chord length')
-    parser.add_argument('--span', type=float, default=span,
-                        help='Span length')
-    parser.add_argument('--fluid_density', type=float, default=fluid_density,
-                        help='Fluid density')
-    parser.add_argument('--fluid_viscosity', type=float, default=fluid_viscosity,
-                        help='Fluid viscosity')
-    parser.add_argument('--NFreq', type=int, default=NFreq,
-                        help='Number of frequencies to store')
-    parser.add_argument('--minFreq', type=float, default=minFreq,
-                        help='Minimum frequency cutoff for Strouhal number calculation')
-    parser.add_argument('--genplots', type=bool, default=genplots,
-                        help='Whether to generate plots')
-    parser.add_argument('--sampledT_startcutoff', type=float, default=sampledT_startcutoff,
-                        help='Time cutoff for plotting')
-    
-    args = parser.parse_args()
-    
-    # Process the data
-    process_dat_folder(args.dat_folder, args.h5_path,
-                      Vinf=args.Vinf,
-                      chord=args.chord,
-                      span=args.span,
-                      fluid_density=args.fluid_density,
-                      fluid_viscosity=args.fluid_viscosity,
-                      NFreq=args.NFreq,
-                      minFreq=args.minFreq,
-                      genplots=args.genplots,
-                      sampledT_startcutoff=args.sampledT_startcutoff)
+# ------------------------ write HDF5 ------------------------
+with h5py.File(h5_path, "w") as f:
+    # Strings: store as fixed-length or variable-length ASCII/UTF-8
+    f.create_dataset("Airfoilname", data=np.array(airfoil_name, dtype=h5py.string_dtype("utf-8")))
+    f.create_dataset("Re", data=Re_sort)
+    f.create_dataset("Thickness", data=np.array(thickness))
+    f.create_dataset("AOA", data=AOA_sort)
+
+    f.create_dataset("CL_ST", data=CL_ST_sort)
+    f.create_dataset("CD_ST", data=CD_ST_sort)
+    f.create_dataset("CM_ST", data=CM_ST_sort)
+    f.create_dataset("CF_ST", data=CF_ST_sort)
+
+    f.create_dataset("CL_Amp", data=CL_Amp_sort)
+    f.create_dataset("CD_Amp", data=CD_Amp_sort)
+    f.create_dataset("CM_Amp", data=CM_Amp_sort)
+    f.create_dataset("CF_Amp", data=CF_Amp_sort)
+
+    f.create_dataset("CL_Pha", data=CL_Pha_sort)
+    f.create_dataset("CD_Pha", data=CD_Pha_sort)
+    f.create_dataset("CM_Pha", data=CM_Pha_sort)
+    f.create_dataset("CF_Pha", data=CF_Pha_sort)
+
+print(f"Wrote HDF5: {h5_path}")
