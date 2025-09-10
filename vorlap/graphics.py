@@ -11,16 +11,18 @@ import math
 from typing import List
 
 
-def calc_structure_vectors_andplot(components: List[Component], viv_params: VIV_Params):
+def calc_structure_vectors_andplot(components: List[Component], viv_params: VIV_Params, show_plot: bool = True, return_fig: bool = False):
     """
     Calculates structure vectors and creates a plot.
 
     Args:
         components: List of structural components.
         viv_params: Configuration parameters.
+        show_plot: Whether to display the plot (default: True).
+        return_fig: Whether to return the figure object (default: False).
 
     Returns:
-        fig: Plotly figure object.
+        fig: Plotly figure object if return_fig=True, otherwise None.
     """
     from .fileio import load_airfoil_coords
 
@@ -214,7 +216,12 @@ def calc_structure_vectors_andplot(components: List[Component], viv_params: VIV_
         margin=dict(l=0, r=0, b=0, t=0)
     )
 
-    # Display the figure
-    fig.show()
+    # Display the figure if requested
+    if show_plot:
+        fig.show()
 
-    return fig
+    # Return the figure if requested
+    if return_fig:
+        return fig
+    else:
+        return None

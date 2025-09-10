@@ -9,60 +9,6 @@ from typing import List, Dict, Tuple, Optional, Union, Any
 from .structs import AirfoilFFT, Component, VIV_Params
 
 
-def mock_compute_thrust_torque_spectrum(components: List[Component], 
-                                       affts: Dict[str, AirfoilFFT],
-                                       viv_params: VIV_Params,
-                                       natfreqs: np.ndarray) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
-    """
-    Mock version of compute_thrust_torque_spectrum that returns random data with correct shapes.
-    
-    This function is useful for testing the GUI without running the full computation.
-    All returned arrays have the same shape as the real function but contain random values.
-    
-    Args:
-        components: List of structural components (used only for shape calculation)
-        affts: Dictionary of airfoil FFTs (not used in mock)
-        viv_params: Analysis parameters (used for array sizing)
-        natfreqs: Natural frequencies (not used in mock)
-    
-    Returns:
-        Same structure as real function but with random data:
-        - percdiff_matrix: Random percentages 0-50%
-        - percdiff_info: Mock info strings
-        - total_global_force_vector: Random forces
-        - total_global_moment_vector: Random moments  
-        - global_force_vector_nodes: Random nodal forces over time
-    """
-    # Get dimensions from parameters
-    n_inflow = len(viv_params.inflow_speeds)
-    n_az = len(viv_params.azimuths)
-    n_time = len(viv_params.output_time)
-    total_nodes = sum([comp.shape_xyz.shape[0] for comp in components])
-    
-    # Generate random data with appropriate scaling
-    np.random.seed(42)  # For reproducible "random" results
-    
-    # Percent difference matrix (0-50%)
-    percdiff_matrix = np.random.rand(n_inflow, n_az) * 50.0
-    
-    # Info matrix with mock strings
-    percdiff_info = np.empty((n_inflow, n_az), dtype=object)
-    for i in range(n_inflow):
-        for j in range(n_az):
-            percdiff_info[i, j] = f"Mock: {percdiff_matrix[i, j]:.2f}% at V={viv_params.inflow_speeds[i]:.1f} Az={viv_params.azimuths[j]:.1f}"
-    
-    # Force vectors (scaled to reasonable wind turbine forces)
-    total_global_force_vector = (np.random.rand(n_inflow, n_az, 3) - 0.5) * 2000  # ±1000 N
-    
-    # Moment vectors (scaled to reasonable moments)
-    total_global_moment_vector = (np.random.rand(n_inflow, n_az, 3) - 0.5) * 20000  # ±10000 N-m
-    
-    # Nodal force time series
-    global_force_vector_nodes = (np.random.rand(n_time, 3, total_nodes) - 0.5) * 100  # ±50 N per node
-    
-    return percdiff_matrix, percdiff_info, total_global_force_vector, total_global_moment_vector, global_force_vector_nodes
-
-
 #@profile
 def compute_thrust_torque_spectrum_optimized(components: List[Component], 
                                            affts: Dict[str, AirfoilFFT],
@@ -319,31 +265,119 @@ def compute_thrust_torque_spectrum(components: List[Component],
     return percdiff_matrix, percdiff_info, total_global_force_vector, total_global_moment_vector, global_force_vector_nodes
 
 
-#@profile
-def reconstruct_signal(freqs: np.ndarray, amps: np.ndarray, phases: np.ndarray, tvec: np.ndarray) -> np.ndarray:
+# """
+#     reconstruct_signal(freqs::Vector{Float64}, amps::Vector{Float64}, phases::Vector{Float64}, t::Vector{Float64})
+
+# Reconstructs a time-domain signal from frequency, amplitude (peak), and phase (radians).
+# - Assumes the DC term is included as `freqs[i]==0` with `amps[i]` equal to the mean value.
+# - For f>0, `amps[i]` is the peak amplitude (not RMS).
+
+# # Arguments
+# - `freqs`: Frequency vector (Hz)
+# - `amps`: Amplitudes corresponding to each frequency
+# - `phases`: Phase offsets (radians) corresponding to each frequency
+# - `t`: Time vector (s)
+
+# # Returns
+# - `signal`: Time-domain signal as a vector of Float64
+# """
+# function reconstruct_signal(freqs::Vector{Float64}, amps::Vector{Float64}, phases::Vector{Float64}, tvec::Vector{Float64})
+
+#     @assert length(freqs) == length(amps) == length(phases) "freqs/amps/phases must be same length"
+#     @assert length(tvec) ≥ 2 "tvec must have at least 2 samples"
+
+#     dt = tvec[2] - tvec[1]
+#     fs = 1/dt
+#     fnyq = fs/2
+#     if maximum(freqs) > fnyq + eps(fnyq)
+#         @warn "Max frequency $(maximum(freqs)) exceeds Nyquist $(fnyq) Hz implied by tvec; reconstruction will alias."
+#     end
+
+#     signal = zeros(Float64, length(tvec))
+
+#     # DC (mean)
+#     for (A, f) in zip(amps, freqs)
+#         if iszero(f)
+#             signal .+= A
+#         end
+#     end
+
+#     # Oscillatory terms (cosine with FFT phases; amps = peak)
+#     ω = 2π .* freqs
+#     for i in eachindex(freqs)
+#         f = freqs[i]
+#         if f > 0.0
+#             A = amps[i]
+#             φ = phases[i]
+#             signal += A .* cos.(ω[i] .* tvec .+ φ)
+#         end
+#     end
+#     return signal
+# end
+
+def reconstruct_signal(freqs: np.ndarray,
+                       amps: np.ndarray,
+                       phases: np.ndarray,
+                       tvec: np.ndarray) -> np.ndarray:
     """
-    Reconstructs a time-domain signal from FFT amplitude, frequency, and phase data.
+    Reconstruct a time-domain signal from frequency, peak amplitude, and phase (radians).
+
+    Assumptions / conventions (matching the Julia version):
+    - DC term(s): entries where freqs == 0 carry the mean value in `amps`; all such entries are summed.
+    - For f > 0, `amps` are **peak** amplitudes (not RMS) and phases follow a cosine convention: cos(ωt + φ).
+    - Negative frequencies, if present, are ignored (assumed redundant w.r.t. positive freqs + phases).
 
     Args:
-        freqs: Frequency vector (Hz)
-        amps: Amplitudes corresponding to each frequency
-        phases: Phase offsets (radians) corresponding to each frequency
-        tvec: Time vector (s)
+        freqs  : array of frequencies [Hz]
+        amps   : array of peak amplitudes corresponding to each frequency
+        phases : array of phase offsets [rad] corresponding to each frequency
+        tvec   : time vector [s] (must have at least 2 samples)
 
     Returns:
-        signal: Time-domain signal as a vector of float
+        signal : reconstructed time-domain signal (float64), shape = (len(tvec),)
     """
+    freqs  = np.asarray(freqs, dtype=np.float64)
+    amps   = np.asarray(amps, dtype=np.float64)
+    phases = np.asarray(phases, dtype=np.float64)
+    tvec   = np.asarray(tvec, dtype=np.float64)
+
+    if not (len(freqs) == len(amps) == len(phases)):
+        raise ValueError("freqs/amps/phases must be the same length")
+    if tvec.size < 2:
+        raise ValueError("tvec must have at least 2 samples")
+
     dt = tvec[1] - tvec[0]
-    if np.max(freqs) > 2/dt:
-        print(f"Warning: The maximum frequency after the applied input cutoff parameters is {np.max(freqs)}, while the maximum nyquist frequency possible in the input time vector is {2/dt}")
-    
-    signal = np.zeros(len(tvec))
-    for i, f in enumerate(freqs):
-        if f == 0:
-            signal += amps[i]  # DC term
-        else:
-            signal += amps[i] * np.sin(2 * np.pi * f * tvec + phases[i])
-    
+    fs = 1.0 / dt
+    fnyq = 0.5 * fs
+
+    # Nyquist check with epsilon tolerance
+    eps = np.finfo(np.float64).eps
+    fmax = float(np.max(freqs)) if freqs.size else 0.0
+    if fmax > (fnyq + eps * max(1.0, fnyq)):
+        print(f"Warning: Max frequency {fmax:.6g} Hz exceeds Nyquist {fnyq:.6g} Hz implied by tvec; reconstruction may alias.")
+
+    signal = np.zeros(tvec.shape[0], dtype=np.float64)
+
+    # DC term(s): sum all freqs == 0
+    # Use a tolerance for zero comparison to be robust to tiny numerical noise.
+    zero_mask = np.isclose(freqs, 0.0, rtol=0.0, atol=eps)
+    if np.any(zero_mask):
+        signal += np.sum(amps[zero_mask])
+
+    # Oscillatory terms: f > 0 using cosine convention
+    pos_mask = freqs > 0.0
+    if np.any(pos_mask):
+        fpos = freqs[pos_mask]
+        Apos = amps[pos_mask]
+        Ppos = phases[pos_mask]
+        # ω = 2π f
+        omega = 2.0 * np.pi * fpos
+        # Efficient broadcasting: (n_pos, 1) * (1, n_t) + (n_pos, 1)
+        # then sum over rows to get (n_t,)
+        # But to keep memory modest, loop over components (usually sparse spectral lines).
+        for w, A, phi in zip(omega, Apos, Ppos):
+            signal += A * np.cos(w * tvec + phi)
+
     return signal
 
 
