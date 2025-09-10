@@ -29,7 +29,6 @@ from .fileio import (
 from .computations import (
     compute_thrust_torque_spectrum,
     compute_thrust_torque_spectrum_optimized,
-    mock_compute_thrust_torque_spectrum,
     reconstruct_signal,
     rotate_vector,
     rotationMatrix
