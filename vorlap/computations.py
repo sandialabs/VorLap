@@ -9,60 +9,6 @@ from typing import List, Dict, Tuple, Optional, Union, Any
 from .structs import AirfoilFFT, Component, VIV_Params
 
 
-def mock_compute_thrust_torque_spectrum(components: List[Component], 
-                                       affts: Dict[str, AirfoilFFT],
-                                       viv_params: VIV_Params,
-                                       natfreqs: np.ndarray) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
-    """
-    Mock version of compute_thrust_torque_spectrum that returns random data with correct shapes.
-    
-    This function is useful for testing the GUI without running the full computation.
-    All returned arrays have the same shape as the real function but contain random values.
-    
-    Args:
-        components: List of structural components (used only for shape calculation)
-        affts: Dictionary of airfoil FFTs (not used in mock)
-        viv_params: Analysis parameters (used for array sizing)
-        natfreqs: Natural frequencies (not used in mock)
-    
-    Returns:
-        Same structure as real function but with random data:
-        - percdiff_matrix: Random percentages 0-50%
-        - percdiff_info: Mock info strings
-        - total_global_force_vector: Random forces
-        - total_global_moment_vector: Random moments  
-        - global_force_vector_nodes: Random nodal forces over time
-    """
-    # Get dimensions from parameters
-    n_inflow = len(viv_params.inflow_speeds)
-    n_az = len(viv_params.azimuths)
-    n_time = len(viv_params.output_time)
-    total_nodes = sum([comp.shape_xyz.shape[0] for comp in components])
-    
-    # Generate random data with appropriate scaling
-    np.random.seed(42)  # For reproducible "random" results
-    
-    # Percent difference matrix (0-50%)
-    percdiff_matrix = np.random.rand(n_inflow, n_az) * 50.0
-    
-    # Info matrix with mock strings
-    percdiff_info = np.empty((n_inflow, n_az), dtype=object)
-    for i in range(n_inflow):
-        for j in range(n_az):
-            percdiff_info[i, j] = f"Mock: {percdiff_matrix[i, j]:.2f}% at V={viv_params.inflow_speeds[i]:.1f} Az={viv_params.azimuths[j]:.1f}"
-    
-    # Force vectors (scaled to reasonable wind turbine forces)
-    total_global_force_vector = (np.random.rand(n_inflow, n_az, 3) - 0.5) * 2000  # ±1000 N
-    
-    # Moment vectors (scaled to reasonable moments)
-    total_global_moment_vector = (np.random.rand(n_inflow, n_az, 3) - 0.5) * 20000  # ±10000 N-m
-    
-    # Nodal force time series
-    global_force_vector_nodes = (np.random.rand(n_time, 3, total_nodes) - 0.5) * 100  # ±50 N per node
-    
-    return percdiff_matrix, percdiff_info, total_global_force_vector, total_global_moment_vector, global_force_vector_nodes
-
-
 #@profile
 def compute_thrust_torque_spectrum_optimized(components: List[Component], 
                                            affts: Dict[str, AirfoilFFT],

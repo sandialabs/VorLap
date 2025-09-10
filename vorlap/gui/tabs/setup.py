@@ -34,12 +34,6 @@ class SimulationSetupTab(ttk.Frame):
         self.sim_save = PathEntry(self, kind="dir", title="Choose simulation save directory")
         self.sim_save.grid(row=row, column=3, sticky="ew", padx=(6, 0))
         
-        # Mock mode checkbox
-        self.use_mock = tk.BooleanVar(value=False)
-        self.mock_check = ttk.Checkbutton(self, text="Use Mock Data (Fast)", 
-                                         variable=self.use_mock,
-                                         style='Accent.TCheckbutton')
-        self.mock_check.grid(row=row, column=4, padx=6, sticky="w")
         
         self.run_btn = ttk.Button(self, text="Run & Save", command=self.run_and_save)
         self.run_btn.grid(row=row, column=5, padx=6)
@@ -101,14 +95,26 @@ class SimulationSetupTab(ttk.Frame):
         ttk.Button(lcomp, text="Import", command=self.load_components).grid(row=1, column=1, padx=6)
         ttk.Label(lcomp, text="Component Geometry List").grid(row=2, column=0, sticky="w", pady=(6, 0))
         
-        # Component geometry table
+        # Component geometry table (read-only)
         cols = [
             "Component ID", "Translation X", "Translation Y", "Translation Z", 
             "Rotation X", "Rotation Y", "Rotation Z", "Pitch", 
             "Segments", "Avg Chord", "Avg Twist", "Avg Thickness"
         ]
-        self.geom_table = EditableTreeview(lcomp, columns=cols, height=8)
+        self.geom_table = EditableTreeview(lcomp, columns=cols, height=8, non_editable_columns=cols)
         self.geom_table.grid(row=3, column=0, columnspan=2, sticky="ew", pady=(2, 0))
+        
+        # Add note about CSV editing
+        note_frame = ttk.Frame(lcomp)
+        note_frame.grid(row=4, column=0, columnspan=2, sticky="ew", pady=(5, 0))
+        note_label = ttk.Label(note_frame, 
+                              text="Note: Component geometry must be edited directly in the CSV files due to software limitations. " +
+                                   "Use the 'Import' button to refresh the table after making changes.",
+                              font=('Segoe UI', 9),
+                              foreground='#666666',
+                              wraplength=800)
+        note_label.pack(anchor="w")
+        
         lcomp.columnconfigure(0, weight=1)
         lcomp.rowconfigure(3, weight=0)  # Fixed weight for geometry table (non-collapsible)
         
@@ -306,29 +312,17 @@ class SimulationSetupTab(ttk.Frame):
                 # plot the full structure surface with a generic airfoil shape
                 vorlap.graphics.calc_structure_vectors_andplot(components, viv_params)
             
-                # Run computation (real or mock)
-                if self.use_mock.get():
-                    self.app.log("Running MOCK thrust/torque spectrum computation (fast)...\n")
-                    start_time = time.time()
-                    
-                    percdiff_matrix, percdiff_info, total_global_force_vector, total_global_moment_vector, global_force_vector_nodes = vorlap.mock_compute_thrust_torque_spectrum(
-                        components, affts, viv_params, natfreqs
-                    )
-                    
-                    end_time = time.time()
-                    execution_time = end_time - start_time
-                    self.app.log(f"Mock computation completed in {execution_time:.4f} seconds\n")
-                else:
-                    self.app.log("Running thrust/torque spectrum computation...\n")
-                    start_time = time.time()
-                    
-                    percdiff_matrix, percdiff_info, total_global_force_vector, total_global_moment_vector, global_force_vector_nodes = vorlap.compute_thrust_torque_spectrum(
-                        components, affts, viv_params, natfreqs
-                    )
-                    
-                    end_time = time.time()
-                    execution_time = end_time - start_time
-                    self.app.log(f"Computation completed in {execution_time:.4f} seconds\n")
+                # Run computation
+                self.app.log("Running thrust/torque spectrum computation...\n")
+                start_time = time.time()
+                
+                percdiff_matrix, percdiff_info, total_global_force_vector, total_global_moment_vector, global_force_vector_nodes = vorlap.compute_thrust_torque_spectrum(
+                    components, affts, viv_params, natfreqs
+                )
+                
+                end_time = time.time()
+                execution_time = end_time - start_time
+                self.app.log(f"Computation completed in {execution_time:.4f} seconds\n")
                 
                 # Store results in app
                 self.app.analysis_results = {
