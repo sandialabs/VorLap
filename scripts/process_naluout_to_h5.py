@@ -24,6 +24,7 @@ NFreq   = 200
 minFreq = 0.0
 genplots = True
 sampledT_startcutoff = 10.3
+symmetric_append = True # if the data only contains positive AOA.  VorLap needs both positive and negative, so reverse and prepend along the aoa axis
 
 # make/ensure figs directory
 figs_dir = os.path.join(localpath, "figs")
@@ -383,6 +384,23 @@ CD_Pha_sort = CD_Pha_sort[Re_sort_idx, :, :]
 CM_Pha_sort = CM_Pha_sort[Re_sort_idx, :, :]
 CF_Pha_sort = CF_Pha_sort[Re_sort_idx, :, :]
 
+if symmetric_append:
+    AOA_sort = np.concatenate([-AOA_sort[::-1],AOA_sort])
+    CL_ST_sort = np.concatenate([CL_ST_sort[:, ::-1, :],CL_ST_sort], axis=1)
+    CD_ST_sort = np.concatenate([CD_ST_sort[:, ::-1, :],CD_ST_sort], axis=1)
+    CM_ST_sort = np.concatenate([CM_ST_sort[:, ::-1, :],CM_ST_sort], axis=1)
+    CF_ST_sort = np.concatenate([CF_ST_sort[:, ::-1, :],CF_ST_sort], axis=1)
+
+    CL_Amp_sort = np.concatenate([-CL_Amp_sort[:, ::-1, :],CL_Amp_sort], axis=1)
+    CD_Amp_sort = np.concatenate([CD_Amp_sort[:, ::-1, :],CD_Amp_sort], axis=1)
+    CM_Amp_sort = np.concatenate([-CM_Amp_sort[:, ::-1, :],CM_Amp_sort], axis=1)
+    CF_Amp_sort = np.concatenate([CF_Amp_sort[:, ::-1, :],CF_Amp_sort], axis=1)
+
+    CL_Pha_sort = np.concatenate([CL_Pha_sort[:, ::-1, :],CL_Pha_sort], axis=1)
+    CD_Pha_sort = np.concatenate([CD_Pha_sort[:, ::-1, :],CD_Pha_sort], axis=1)
+    CM_Pha_sort = np.concatenate([CM_Pha_sort[:, ::-1, :],CM_Pha_sort], axis=1)
+    CF_Pha_sort = np.concatenate([CF_Pha_sort[:, ::-1, :],CF_Pha_sort], axis=1)
+
 # ------------------------ optional summary plots like Julia ------------------------
 if genplots:
     ire_indices = [0] if single_Re else list(range(CF_ST_sort.shape[0]))
@@ -432,4 +450,4 @@ with h5py.File(h5_path, "w") as f:
     f.create_dataset("CM_Pha", data=CM_Pha_sort)
     f.create_dataset("CF_Pha", data=CF_Pha_sort)
 
-print(f"Wrote HDF5: {h5_path}")
+print(f"Wrote HDF5: {h5_path} covering Re {Re_sort} and AOA {AOA_sort}")
