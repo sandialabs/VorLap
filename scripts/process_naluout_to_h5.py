@@ -415,7 +415,7 @@ if genplots:
         plt.ylim(0.0, 0.5)
         plt.title(f"ST Re={Re_sort[iRe]:.5g}")
         plt.legend()
-        savefig_and_close(fig, os.path.join(figs_dir, f"ST_summary_Re{re_str}.png"))
+        savefig_and_close(fig, os.path.join(figs_dir, f"STCF_summary_Re{re_str}.png"))
 
         # Amp vs AOA, multiple ist
         fig = plt.figure()
@@ -424,7 +424,28 @@ if genplots:
         plt.xlabel("AOA (deg)"); plt.ylabel("Amp (CF)")
         plt.title(f"Amp Re={Re_sort[iRe]:.5g}")
         plt.legend()
-        savefig_and_close(fig, os.path.join(figs_dir, f"Amp_summary_Re{re_str}.png"))
+        savefig_and_close(fig, os.path.join(figs_dir, f"AmpCF_summary_Re{re_str}.png"))
+
+        fig = plt.figure()
+        plt.plot(AOA_sort, CF_Amp_sort[iRe, :, 1], marker='x', linewidth=2, label=f"ist={ist}")
+        plt.xlabel("AOA (deg)"); plt.ylabel("Mean (CF)")
+        plt.title(f"Mean, Re={Re_sort[iRe]:.5g}")
+        plt.legend()
+        savefig_and_close(fig, os.path.join(figs_dir, f"MeanCF_summary_Re{re_str}.png"))
+
+        fig = plt.figure()
+        plt.plot(AOA_sort, CL_Amp_sort[iRe, :, 1], marker='x', linewidth=2, label=f"ist={ist}")
+        plt.xlabel("AOA (deg)"); plt.ylabel("Mean (CL)")
+        plt.title(f"Mean, Re={Re_sort[iRe]:.5g}")
+        plt.legend()
+        savefig_and_close(fig, os.path.join(figs_dir, f"MeanCL_summary_Re{re_str}.png"))
+
+        fig = plt.figure()
+        plt.plot(AOA_sort, CD_Amp_sort[iRe, :, 1], marker='x', linewidth=2, label=f"ist={ist}")
+        plt.xlabel("AOA (deg)"); plt.ylabel("Mean (CD)")
+        plt.title(f"Mean, Re={Re_sort[iRe]:.5g}")
+        plt.legend()
+        savefig_and_close(fig, os.path.join(figs_dir, f"MeanCD_summary_Re{re_str}.png"))
 
 
 # ------------------------ write HDF5 ------------------------
