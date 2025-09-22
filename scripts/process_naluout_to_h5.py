@@ -44,7 +44,6 @@ def parse_re_from_dirname(name: str) -> float:
     if not m:
         return float("nan")
     base, frac, exp = m.group(1), m.group(2), int(m.group(3))
-    # Match Julia: no exponent bump
     return float(f"{base}.{frac}e{exp}")
 
 
@@ -70,7 +69,7 @@ def safe_load_dat(path: str):
 
 def compute_fft(signal: np.ndarray, dt: float, chord: float, aoa_deg: float, Vinf: float):
     """
-    Mirror of the Julia compute_fft:
+    Assumptions / conventions:
       - DC from mean(signal)
       - Demean, windowed PSD for power-based sorting
       - Unwindowed FFT for amplitudes/phases (cosine convention)
@@ -318,7 +317,7 @@ for iRe, re_dir in enumerate(re_dirs):
         # --- Store (cap by available length) ---
         if NFreq > ST_sorted_cl.size:
             print(f"Warning: Number of frequencies ({NFreq}) exceeds available ({ST_sorted_cl.size})")
-            NFreq = ST_sorted_cl.size  # reduce globally (mirrors Julia's behavior)
+            NFreq = ST_sorted_cl.size
             # Also shrink already-allocated arrays along last axis if needed
             CL_ST = CL_ST[..., :NFreq]; CD_ST = CD_ST[..., :NFreq]; CM_ST = CM_ST[..., :NFreq]; CF_ST = CF_ST[..., :NFreq]
             CL_Amp = CL_Amp[..., :NFreq]; CD_Amp = CD_Amp[..., :NFreq]; CM_Amp = CM_Amp[..., :NFreq]; CF_Amp = CF_Amp[..., :NFreq]
@@ -383,7 +382,6 @@ CD_Pha_sort = CD_Pha_sort[Re_sort_idx, :, :]
 CM_Pha_sort = CM_Pha_sort[Re_sort_idx, :, :]
 CF_Pha_sort = CF_Pha_sort[Re_sort_idx, :, :]
 
-# ------------------------ optional summary plots like Julia ------------------------
 if genplots:
     ire_indices = [0] if single_Re else list(range(CF_ST_sort.shape[0]))
     for iRe in ire_indices:

@@ -322,7 +322,7 @@ def reconstruct_signal(freqs: np.ndarray,
     """
     Reconstruct a time-domain signal from frequency, peak amplitude, and phase (radians).
 
-    Assumptions / conventions (matching the Julia version):
+    Assumptions / conventions:
     - DC term(s): entries where freqs == 0 carry the mean value in `amps`; all such entries are summed.
     - For f > 0, `amps` are **peak** amplitudes (not RMS) and phases follow a cosine convention: cos(ωt + φ).
     - Negative frequencies, if present, are ignored (assumed redundant w.r.t. positive freqs + phases).

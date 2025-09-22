@@ -144,7 +144,7 @@ def calc_structure_vectors_andplot(components: List[Component], viv_params: VIV_
             normalline_local[ipt, :, :] = normalline_scaled_twisted_skewed_translated
 
         # Now that the local point cloud is generated, let's rotate and move it into position
-        # Use Fortran-style (column-major) order to match Julia's reshape behavior
+        # Use Fortran-style (column-major) order
         af_cloud_local = af_coords_local.reshape(-1, af_coords_local.shape[2], order='F')
         chordline_cloud_local = chordline_local.reshape(-1, chordline_local.shape[2], order='F')
         normalline_cloud_local = normalline_local.reshape(-1, normalline_local.shape[2], order='F')
