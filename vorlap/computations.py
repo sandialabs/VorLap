@@ -75,7 +75,14 @@ def compute_thrust_torque_spectrum_optimized(components: List[Component],
                     aoa_deg = math.degrees(aoa_rad)
                     V_eff = math.sqrt(V_normal**2 + V_chord**2)  # Fundamental assumption that spanwise flow doesn't impact lift and drag
                     Re = fluid_density * V_eff * chord / fluid_dynamicviscosity
-                    q = 0.5 * fluid_density * V_eff**2 * chord
+
+                    if ipt == 0:
+                        local_length = 0.0 #TODO: is there a better way to do this without going full on nodes and elements? Maybe just tell people this is how it is calculated
+                        # print("AOA: ",aoa_deg, "Azi: ",azimuths[j_azi], "Vinf: ",Vinf, "Veff: ",V_eff)
+                    else:
+                        local_length = np.linalg.norm(comp.shape_xyz[ipt, :] - comp.shape_xyz[ipt-1, :])
+
+                    q = 0.5 * fluid_density * V_eff**2 * chord * local_length
                     
                     # Optimized interpolation: get all three fields at once
                     results = interpolate_fft_spectrum_optimized(afft, Re, aoa_deg, ['CL', 'CD', 'CF'], n_freq_depth=n_freq_depth)
@@ -85,9 +92,12 @@ def compute_thrust_torque_spectrum_optimized(components: List[Component],
                     
                     Lifts = amps_cl[0] * q
                     Drags = amps_cd[0] * q
-                    
+
+                    # print("CL: ",amps_cl[0], "q: ", q, "Lifts: ", Lifts)
+                    # print("CD: ",amps_cd[0], "q: ", q, "Drags: ", Drags)
+
                     # Calculate the global force vector
-                    chord_vector_rotated = rotate_vector(chord_vector, rotation_axis, azimuths[j_azi])
+                    chord_vector_rotated = rotate_vector(chord_vector, rotation_axis, azimuths[j_azi]*0) # no need to double rotate, keep at 0.
                     local_yaw = math.degrees(math.atan2(chord_vector_rotated[1], chord_vector_rotated[0]))
                     normal_vector_rotated = rotate_vector(normal_vector, rotation_axis, azimuths[j_azi])
                     local_roll = math.degrees(math.atan2(normal_vector_rotated[2], normal_vector_rotated[1]))
@@ -97,6 +107,8 @@ def compute_thrust_torque_spectrum_optimized(components: List[Component],
                     
                     total_global_force_vector[i_inflow, j_azi, :] += global_force_vector
                     total_global_moment_vector[i_inflow, j_azi, :] += global_force_vector * global_pos
+
+                    # print("total_global_force_vector: ", total_global_force_vector[i_inflow, j_azi, :])
                     
                     STlength = chord * abs(math.sin(math.radians(aoa_deg)))
                     frequencies_cf = ST_cf * (V_eff / STlength)

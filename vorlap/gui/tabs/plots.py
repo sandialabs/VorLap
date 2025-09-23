@@ -112,14 +112,14 @@ class PlotsOutputsTab(ttk.Frame):
             force_data = results['total_global_force_vector']
             idx = {'fx': 0, 'fy': 1, 'fz': 2}[plot_type]
             data = force_data[:, :, idx]
-            im = self.ax.imshow(data, extent=extent, aspect='auto', origin='lower', cmap='viridis_r')
+            im = self.ax.imshow(data, extent=extent, aspect='auto', origin='lower', cmap='coolwarm')
             self.ax.set_title(f'Force {plot_type.upper()}')
             label = 'Force (N)'
         elif plot_type.startswith("m"):
             moment_data = results['total_global_moment_vector']
             idx = {'mx': 0, 'my': 1, 'mz': 2}[plot_type]
             data = moment_data[:, :, idx]
-            im = self.ax.imshow(data, extent=extent, aspect='auto', origin='lower', cmap='viridis_r')
+            im = self.ax.imshow(data, extent=extent, aspect='auto', origin='lower', cmap='coolwarm')
             self.ax.set_title(f'Moment {plot_type.upper()}')
             label = 'Moment (N-m)'
         

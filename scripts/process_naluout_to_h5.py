@@ -409,7 +409,7 @@ if genplots:
 
         # ST vs AOA, multiple ist
         fig = plt.figure()
-        for ist in range(2, min(20, NFreq)):
+        for ist in range(1, min(20, NFreq)):
             plt.plot(AOA_sort, CF_ST_sort[iRe, :, ist], marker='x', linewidth=2, label=f"ist={ist}")
         plt.xlabel("AOA (deg)"); plt.ylabel("ST (CF)")
         plt.ylim(0.0, 0.5)
@@ -419,7 +419,7 @@ if genplots:
 
         # Amp vs AOA, multiple ist
         fig = plt.figure()
-        for ist in range(2, min(20, NFreq)):
+        for ist in range(1, min(20, NFreq)):
             plt.plot(AOA_sort, CF_Amp_sort[iRe, :, ist], marker='x', linewidth=2, label=f"ist={ist}")
         plt.xlabel("AOA (deg)"); plt.ylabel("Amp (CF)")
         plt.title(f"Amp Re={Re_sort[iRe]:.5g}")
@@ -427,24 +427,24 @@ if genplots:
         savefig_and_close(fig, os.path.join(figs_dir, f"AmpCF_summary_Re{re_str}.png"))
 
         fig = plt.figure()
-        plt.plot(AOA_sort, CF_Amp_sort[iRe, :, 1], marker='x', linewidth=2, label=f"ist={ist}")
+        plt.plot(AOA_sort, CF_Amp_sort[iRe, :, 0], marker='x', linewidth=2)
         plt.xlabel("AOA (deg)"); plt.ylabel("Mean (CF)")
         plt.title(f"Mean, Re={Re_sort[iRe]:.5g}")
-        plt.legend()
+        # plt.legend()
         savefig_and_close(fig, os.path.join(figs_dir, f"MeanCF_summary_Re{re_str}.png"))
 
         fig = plt.figure()
-        plt.plot(AOA_sort, CL_Amp_sort[iRe, :, 1], marker='x', linewidth=2, label=f"ist={ist}")
+        plt.plot(AOA_sort, CL_Amp_sort[iRe, :, 0], marker='x', linewidth=2)
         plt.xlabel("AOA (deg)"); plt.ylabel("Mean (CL)")
         plt.title(f"Mean, Re={Re_sort[iRe]:.5g}")
-        plt.legend()
+        # plt.legend()
         savefig_and_close(fig, os.path.join(figs_dir, f"MeanCL_summary_Re{re_str}.png"))
 
         fig = plt.figure()
-        plt.plot(AOA_sort, CD_Amp_sort[iRe, :, 1], marker='x', linewidth=2, label=f"ist={ist}")
+        plt.plot(AOA_sort, CD_Amp_sort[iRe, :, 0], marker='x', linewidth=2)
         plt.xlabel("AOA (deg)"); plt.ylabel("Mean (CD)")
         plt.title(f"Mean, Re={Re_sort[iRe]:.5g}")
-        plt.legend()
+        # plt.legend()
         savefig_and_close(fig, os.path.join(figs_dir, f"MeanCD_summary_Re{re_str}.png"))
 
 
