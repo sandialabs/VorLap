@@ -220,7 +220,10 @@ def calc_structure_vectors_andplot(components: List[Component], viv_params: VIV_
 
     # Display the figure if requested
     if show_plot:
-        fig.show(renderer="browser")
+        try:
+            fig.show(renderer="browser")
+        except Exception:
+            fig.show()
 
     # Return the figure if requested
     if return_fig:
