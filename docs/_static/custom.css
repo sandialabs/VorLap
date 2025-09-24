@@ -1,0 +1,70 @@
+/* Custom CSS for VorLap documentation */
+
+/* Improve code block appearance */
+.highlight {
+    background-color: #f8f8f8;
+    border: 1px solid #e1e4e8;
+    border-radius: 6px;
+    padding: 16px;
+    margin: 16px 0;
+}
+
+/* Style for API reference sections */
+.class dt, .function dt, .method dt {
+    background-color: #f6f8fa;
+    border-left: 3px solid #2980b9;
+    padding: 8px 12px;
+    margin-bottom: 8px;
+}
+
+/* Improve table appearance */
+table.docutils {
+    border-collapse: collapse;
+    margin: 16px 0;
+}
+
+table.docutils th,
+table.docutils td {
+    border: 1px solid #d1d5da;
+    padding: 8px 12px;
+}
+
+table.docutils th {
+    background-color: #f6f8fa;
+    font-weight: 600;
+}
+
+/* Style for parameter lists */
+.field-list {
+    margin: 16px 0;
+}
+
+.field-list dt {
+    font-weight: 600;
+    color: #24292e;
+}
+
+/* Improve note and warning boxes */
+.admonition {
+    border-radius: 6px;
+    padding: 16px;
+    margin: 16px 0;
+}
+
+.admonition.note {
+    background-color: #f0f7ff;
+    border-left: 3px solid #0969da;
+}
+
+.admonition.warning {
+    background-color: #fff8f0;
+    border-left: 3px solid #d1242f;
+}
+
+/* Style for code spans */
+code {
+    background-color: rgba(175, 184, 193, 0.2);
+    padding: 2px 4px;
+    border-radius: 3px;
+    font-size: 85%;
+}
