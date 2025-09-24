@@ -103,6 +103,13 @@ def build_executable():
         "--noconfirm",  # Overwrite output directory without confirmation
     ]
     
+    # Add Linux-specific options to improve compatibility
+    if platform_info["system"] == "linux":
+        cmd.extend([
+            "--strip",  # Strip debug symbols to reduce size
+            "--noupx"   # Disable UPX compression for better compatibility
+        ])
+    
     # Add hidden imports
     for import_name in hidden_imports:
         cmd.extend(["--hidden-import", import_name])
