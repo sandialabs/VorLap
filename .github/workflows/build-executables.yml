@@ -24,11 +24,6 @@ jobs:
             executable-suffix: ".exe"
             artifact-name: "VorLap-Windows"
             
-          - os: macos-latest
-            python-version: "3.10"
-            executable-suffix: ""
-            artifact-name: "VorLap-macOS"
-            
           - os: ubuntu-latest
             python-version: "3.10"
             executable-suffix: ""
@@ -52,11 +47,6 @@ jobs:
         # Install additional GUI dependencies for tkinter
         sudo apt-get install -y python3-tk
 
-    - name: Install system dependencies (macOS)
-      if: matrix.os == 'macos-latest'
-      run: |
-        brew install hdf5 pkg-config
-        # Ensure tkinter is available (usually included with Python on macOS)
 
     - name: Install system dependencies (Windows)
       if: matrix.os == 'windows-latest'
@@ -212,12 +202,11 @@ jobs:
         body: |
           ## VorLap Release ${{ github.ref_name }}
           
-          This release includes pre-built executables for Windows, macOS, and Linux.
+          This release includes pre-built executables for Windows and Linux.
           
           ### Downloads
           
           - **Windows**: `VorLap-Windows.zip`
-          - **macOS**: `VorLap-macOS.tar.gz` 
           - **Linux**: `VorLap-Linux.tar.gz`
           
           ### Installation
@@ -233,7 +222,6 @@ jobs:
           ### System Requirements
           
           - **Windows**: Windows 10 or later
-          - **macOS**: macOS 10.14 or later
           - **Linux**: Ubuntu 18.04 or equivalent
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

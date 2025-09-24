@@ -19,9 +19,6 @@ def get_platform_info():
     if system == "windows":
         executable_name = "VorLap.exe"
         icon_file = None  # Add .ico file path if available
-    elif system == "darwin":  # macOS
-        executable_name = "VorLap"
-        icon_file = None  # Add .icns file path if available
     else:  # Linux and other Unix-like systems
         executable_name = "VorLap"
         icon_file = None  # Add .png file path if available
@@ -60,8 +57,6 @@ def get_hidden_imports():
     system = platform.system().lower()
     if system == "windows":
         hidden_imports.extend(['win32api', 'win32gui', 'win32con'])
-    elif system == "darwin":
-        hidden_imports.extend(['Foundation', 'AppKit'])
     
     return hidden_imports
 
@@ -119,14 +114,6 @@ def build_executable():
     # Add icon if available
     if platform_info["icon_file"] and os.path.exists(platform_info["icon_file"]):
         cmd.extend(["--icon", platform_info["icon_file"]])
-    
-    # Add platform-specific options
-    if platform_info["system"] == "darwin":
-        # macOS specific options
-        cmd.extend([
-            "--osx-bundle-identifier", "gov.sandia.vorlap",
-            "--target-arch", "universal2"  # Build universal binary
-        ])
     
     # Add entry point
     cmd.append(entry_point)
