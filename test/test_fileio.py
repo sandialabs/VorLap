@@ -25,14 +25,12 @@ class TestLoadComponentsFromCSV(unittest.TestCase):
         self.temp_dir = tempfile.mkdtemp()
         
         # Create test CSV data
-        self.csv_content = """
-            id,translation_x,translation_y,translation_z,rotation_x,rotation_y,rotation_z,pitch
-            blade1,1.0,2.0,3.0,10.0,20.0,30.0,5.0
-            x,y,z,chord,twist,thickness,offset,airfoil_id
-            0.0,0.0,0.0,1.0,0.0,0.12,0.0,default
-            1.0,0.0,0.0,1.0,5.0,0.12,0.0,default
-            2.0,0.0,0.0,1.0,10.0,0.12,0.0,default
-            """
+        self.csv_content = """id,translation_x,translation_y,translation_z,rotation_x,rotation_y,rotation_z,pitch
+blade1,1.0,2.0,3.0,10.0,20.0,30.0,5.0
+x,y,z,chord,twist,thickness,offset,airfoil_id
+0.0,0.0,0.0,1.0,0.0,0.12,0.0,default
+1.0,0.0,0.0,1.0,5.0,0.12,0.0,default
+2.0,0.0,0.0,1.0,10.0,0.12,0.0,default"""
         
         self.csv_file = os.path.join(self.temp_dir, "blade1.csv")
         with open(self.csv_file, 'w') as f:
@@ -66,13 +64,11 @@ class TestLoadComponentsFromCSV(unittest.TestCase):
     
     def test_load_components_from_csv_no_airfoil_id(self):
         """Test loading components when airfoil_id column is missing."""
-        csv_content_no_airfoil = """
-            id,translation_x,translation_y,translation_z,rotation_x,rotation_y,rotation_z,pitch
-            blade1,1.0,2.0,3.0,10.0,20.0,30.0,5.0
-            x,y,z,chord,twist,thickness,offset
-            0.0,0.0,0.0,1.0,0.0,0.12,0.0
-            1.0,0.0,0.0,1.0,5.0,0.12,0.0
-            """
+        csv_content_no_airfoil = """id,translation_x,translation_y,translation_z,rotation_x,rotation_y,rotation_z,pitch
+blade1,1.0,2.0,3.0,10.0,20.0,30.0,5.0
+x,y,z,chord,twist,thickness,offset
+0.0,0.0,0.0,1.0,0.0,0.12,0.0
+1.0,0.0,0.0,1.0,5.0,0.12,0.0"""
         
         csv_file = os.path.join(self.temp_dir, "blade2.csv")
         with open(csv_file, 'w') as f:
