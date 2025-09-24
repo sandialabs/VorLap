@@ -33,65 +33,6 @@ def get_platform_info():
         "icon_file": icon_file
     }
 
-def find_entry_point():
-    """Find the main entry point for the VorLap application."""
-    # Check for GUI entry points
-    possible_entry_points = [
-        "scripts/launch_gui.py",
-        "scripts/launch_gui_standalone.py", 
-        "vorlap/gui/app.py",
-        "kirklocal/gui.py"
-    ]
-    
-    for entry_point in possible_entry_points:
-        if os.path.exists(entry_point):
-            print(f"Found entry point: {entry_point}")
-            return entry_point
-    
-    # If no GUI found, create a simple launcher
-    launcher_content = '''#!/usr/bin/env python3
-"""
-VorLap GUI Launcher
-Simple launcher for VorLap GUI application
-"""
-
-import sys
-import os
-
-# Add the current directory to Python path
-current_dir = os.path.dirname(os.path.abspath(__file__))
-sys.path.insert(0, current_dir)
-
-try:
-    # Try to import and launch GUI
-    import vorlap.gui.app as gui_app
-    if hasattr(gui_app, 'main'):
-        gui_app.main()
-    else:
-        print("GUI main function not found")
-except ImportError:
-    try:
-        # Fallback to basic CLI interface
-        import vorlap
-        print(f"VorLap {vorlap.__version__} - Command Line Interface")
-        print("GUI not available. Please use VorLap as a Python library:")
-        print("  import vorlap")
-        print("  # See documentation for usage examples")
-    except ImportError as e:
-        print(f"Error importing VorLap: {e}")
-        sys.exit(1)
-
-if __name__ == "__main__":
-    pass
-'''
-    
-    # Create temporary launcher
-    launcher_path = "temp_launcher.py"
-    with open(launcher_path, 'w') as f:
-        f.write(launcher_content)
-    
-    print(f"Created temporary launcher: {launcher_path}")
-    return launcher_path
 
 def get_hidden_imports():
     """Get list of hidden imports needed for PyInstaller."""
@@ -148,11 +89,8 @@ def build_executable():
     # Get platform info
     platform_info = get_platform_info()
     
-    # Find entry point
-    entry_point = find_entry_point()
-    if not entry_point:
-        print("Error: No suitable entry point found!")
-        return False
+    # Set entry point
+    entry_point = "vorlap/gui/app.py"
     
     # Get hidden imports
     hidden_imports = get_hidden_imports()
@@ -232,29 +170,6 @@ def build_executable():
             os.remove("temp_launcher.py")
             print("Cleaned up temporary launcher")
 
-def verify_dependencies():
-    """Verify that all required dependencies are available."""
-    print("Verifying dependencies...")
-    
-    required_packages = ['pyinstaller', 'vorlap']
-    missing_packages = []
-    
-    for package in required_packages:
-        try:
-            __import__(package)
-            print(f"✓ {package}")
-        except ImportError:
-            missing_packages.append(package)
-            print(f"✗ {package}")
-    
-    if missing_packages:
-        print(f"\nMissing packages: {', '.join(missing_packages)}")
-        print("Install them with:")
-        print(f"  pip install {' '.join(missing_packages)}")
-        return False
-    
-    print("All dependencies available!")
-    return True
 
 def main():
     """Main function to build VorLap executable."""
@@ -265,10 +180,6 @@ def main():
     script_dir = os.path.dirname(os.path.abspath(__file__))
     os.chdir(script_dir)
     print(f"Working directory: {script_dir}")
-    
-    # Verify dependencies
-    if not verify_dependencies():
-        sys.exit(1)
     
     # Clean previous builds
     if os.path.exists("dist"):

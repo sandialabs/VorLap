@@ -87,3 +87,7 @@ class VorLapApp(tk.Tk):
         except Exception as e:
             self.log(f"Error loading airfoils: {str(e)}\n")
             return {} 
+        
+if __name__ == "__main__":
+    app = VorLapApp()
+    app.mainloop()
