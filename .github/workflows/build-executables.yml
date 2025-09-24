@@ -1,0 +1,227 @@
+name: Build Executables
+
+on:
+  push:
+    tags:
+      - 'v*'  # Trigger on version tags
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'scripts/**'
+      - 'vorlap/**'
+      - 'build_executable.py'
+  workflow_dispatch:  # Allow manual triggering
+
+jobs:
+  build-executables:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            python-version: "3.10"
+            executable-suffix: ".exe"
+            artifact-name: "VorLap-Windows"
+            
+          - os: ubuntu-20.04
+            python-version: "3.10"
+            executable-suffix: ""
+            artifact-name: "VorLap-Linux"
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    # Platform-specific system dependencies
+    - name: Install system dependencies (Ubuntu)
+      if: matrix.os == 'ubuntu-latest'
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y libhdf5-dev pkg-config
+        # Install additional GUI dependencies for tkinter
+        sudo apt-get install -y python3-tk
+
+
+    - name: Install system dependencies (Windows)
+      if: matrix.os == 'windows-latest'
+      run: |
+        # HDF5 and other dependencies are usually handled by conda/pip on Windows
+        # Ensure tkinter is available (included with standard Python installation)
+        echo "Windows dependencies handled by pip"
+
+    - name: Install Python dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pyinstaller
+        pip install -e .
+
+    - name: Verify installation
+      run: |
+        python -c "import vorlap; print(f'VorLap version: {vorlap.__version__}')"
+        python -c "import tkinter; print('Tkinter available')"
+
+    - name: Build executable
+      run: |
+        python build_executable.py
+
+    - name: Test executable (Ubuntu/macOS)
+      if: matrix.os != 'windows-latest'
+      run: |
+        # Test that the executable can start (non-interactive test)
+        chmod +x dist/VorLap${{ matrix.executable-suffix }}
+        # Note: Can't fully test GUI in headless environment
+        echo "Executable built successfully"
+
+    - name: Test executable (Windows)
+      if: matrix.os == 'windows-latest'
+      run: |
+        # Test that the executable exists and is valid
+        if (Test-Path "dist/VorLap.exe") {
+          Write-Host "Executable built successfully"
+          # Get file info
+          Get-ItemProperty "dist/VorLap.exe" | Select-Object Name, Length, CreationTime
+        } else {
+          Write-Error "Executable not found"
+          exit 1
+        }
+
+    - name: Create distribution package
+      shell: bash
+      run: |
+        # Create a distribution directory with executable and necessary files
+        mkdir -p distribution
+        
+        # Copy executable
+        if [ "${{ matrix.os }}" = "windows-latest" ]; then
+          cp dist/VorLap.exe distribution/
+        else
+          cp dist/VorLap distribution/
+        fi
+        
+        # Copy important files
+        cp README.md distribution/
+        cp LICENSE distribution/
+        cp NOTICE distribution/
+        
+        # Copy sample data (optional - comment out if too large)
+        cp -r data distribution/ || echo "Data directory not copied (may be too large)"
+        
+        # Create a simple README for the distribution
+        cat > distribution/README_EXECUTABLE.txt << EOF
+        VorLap Executable Distribution
+        =============================
+        
+        This package contains the VorLap executable for ${{ matrix.os }}.
+        
+        Usage:
+        ------
+        
+        On Windows:
+          Double-click VorLap.exe or run from command line
+        
+        On macOS/Linux:
+          ./VorLap
+          
+        Or run from terminal:
+          ./VorLap
+        
+        Data Files:
+        -----------
+        Sample data files are included in the 'data' directory.
+        You can use these for testing the application.
+        
+        For more information, see README.md or visit:
+        https://github.com/sandialabs/VorLap
+        EOF
+
+    - name: Upload executable artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ matrix.artifact-name }}
+        path: distribution/
+        retention-days: 30
+
+    # Optional: Create compressed archives for releases
+    - name: Create release archive
+      if: startsWith(github.ref, 'refs/tags/')
+      shell: bash
+      run: |
+        cd distribution
+        if [ "${{ matrix.os }}" = "windows-latest" ]; then
+          # Create ZIP for Windows
+          powershell Compress-Archive -Path * -DestinationPath ../${{ matrix.artifact-name }}.zip
+        else
+          # Create tar.gz for Unix-like systems
+          tar -czf ../${{ matrix.artifact-name }}.tar.gz *
+        fi
+
+    - name: Upload release archive
+      if: startsWith(github.ref, 'refs/tags/')
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ matrix.artifact-name }}-archive
+        path: |
+          ${{ matrix.artifact-name }}.zip
+          ${{ matrix.artifact-name }}.tar.gz
+        retention-days: 90
+
+  # Job to create a GitHub release with all executables
+  create-release:
+    if: startsWith(github.ref, 'refs/tags/')
+    needs: build-executables
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Download all artifacts
+      uses: actions/download-artifact@v4
+      with:
+        path: artifacts/
+
+    - name: Display artifact structure
+      run: |
+        ls -la artifacts/
+
+    - name: Create Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: |
+          artifacts/**/*.zip
+          artifacts/**/*.tar.gz
+        draft: true
+        prerelease: false
+        generate_release_notes: true
+        body: |
+          ## VorLap Release ${{ github.ref_name }}
+          
+          This release includes pre-built executables for Windows and Linux.
+          
+          ### Downloads
+          
+          - **Windows**: `VorLap-Windows.zip`
+          - **Linux**: `VorLap-Linux.tar.gz`
+          
+          ### Installation
+          
+          1. Download the appropriate file for your operating system
+          2. Extract the archive
+          3. Run the VorLap executable
+          
+          ### What's New
+          
+          See the commit history for detailed changes in this release.
+          
+          ### System Requirements
+          
+          - **Windows**: Windows 10 or later
+          - **Linux**: Ubuntu 18.04 or equivalent
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
