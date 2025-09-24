@@ -223,7 +223,12 @@ def calc_structure_vectors_andplot(components: List[Component], viv_params: VIV_
         try:
             fig.show(renderer="browser")
         except Exception:
-            fig.show()
+            # Fallback for headless environments (like CI/CD)
+            try:
+                fig.show(renderer="png")
+            except Exception:
+                # If no renderers work, just skip showing
+                pass
 
     # Return the figure if requested
     if return_fig:
