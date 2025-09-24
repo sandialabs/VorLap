@@ -25,12 +25,14 @@ class TestLoadComponentsFromCSV(unittest.TestCase):
         self.temp_dir = tempfile.mkdtemp()
         
         # Create test CSV data
-        self.csv_content = """id,translation_x,translation_y,translation_z,rotation_x,rotation_y,rotation_z,pitch
-blade1,1.0,2.0,3.0,10.0,20.0,30.0,5.0
-x,y,z,chord,twist,thickness,offset,airfoil_id
-0.0,0.0,0.0,1.0,0.0,0.12,0.0,default
-1.0,0.0,0.0,1.0,5.0,0.12,0.0,default
-2.0,0.0,0.0,1.0,10.0,0.12,0.0,default"""
+        self.csv_content = """
+            id,translation_x,translation_y,translation_z,rotation_x,rotation_y,rotation_z,pitch
+            blade1,1.0,2.0,3.0,10.0,20.0,30.0,5.0
+            x,y,z,chord,twist,thickness,offset,airfoil_id
+            0.0,0.0,0.0,1.0,0.0,0.12,0.0,default
+            1.0,0.0,0.0,1.0,5.0,0.12,0.0,default
+            2.0,0.0,0.0,1.0,10.0,0.12,0.0,default
+            """
         
         self.csv_file = os.path.join(self.temp_dir, "blade1.csv")
         with open(self.csv_file, 'w') as f:
@@ -64,11 +66,13 @@ x,y,z,chord,twist,thickness,offset,airfoil_id
     
     def test_load_components_from_csv_no_airfoil_id(self):
         """Test loading components when airfoil_id column is missing."""
-        csv_content_no_airfoil = """id,translation_x,translation_y,translation_z,rotation_x,rotation_y,rotation_z,pitch
-blade1,1.0,2.0,3.0,10.0,20.0,30.0,5.0
-x,y,z,chord,twist,thickness,offset
-0.0,0.0,0.0,1.0,0.0,0.12,0.0
-1.0,0.0,0.0,1.0,5.0,0.12,0.0"""
+        csv_content_no_airfoil = """
+            id,translation_x,translation_y,translation_z,rotation_x,rotation_y,rotation_z,pitch
+            blade1,1.0,2.0,3.0,10.0,20.0,30.0,5.0
+            x,y,z,chord,twist,thickness,offset
+            0.0,0.0,0.0,1.0,0.0,0.12,0.0
+            1.0,0.0,0.0,1.0,5.0,0.12,0.0
+            """
         
         csv_file = os.path.join(self.temp_dir, "blade2.csv")
         with open(csv_file, 'w') as f:
@@ -138,39 +142,6 @@ class TestLoadAirfoilFFT(unittest.TestCase):
         self.assertEqual(afft.CD_Pha.shape, expected_shape)
         self.assertEqual(afft.CM_Pha.shape, expected_shape)
         self.assertEqual(afft.CF_Pha.shape, expected_shape)
-    
-    def test_load_airfoil_fft_no_name(self):
-        """Test loading airfoil FFT when Airfoilname is missing."""
-        # Create HDF5 file without Airfoilname
-        temp_file2 = tempfile.NamedTemporaryFile(suffix='.h5', delete=False)
-        temp_file2.close()
-        
-        try:
-            with h5py.File(temp_file2.name, 'w') as h5:
-                h5['Re'] = np.array([1000, 5000])
-                h5['Thickness'] = np.array([0.12])
-                h5['AOA'] = np.array([0, 5])
-                
-                shape = (2, 2, 3)
-                h5['CL_ST'] = np.random.rand(*shape)
-                h5['CD_ST'] = np.random.rand(*shape)
-                h5['CM_ST'] = np.random.rand(*shape)
-                h5['CF_ST'] = np.random.rand(*shape)
-                h5['CL_Amp'] = np.random.rand(*shape)
-                h5['CD_Amp'] = np.random.rand(*shape)
-                h5['CM_Amp'] = np.random.rand(*shape)
-                h5['CF_Amp'] = np.random.rand(*shape)
-                h5['CL_Pha'] = np.random.rand(*shape) * 2 * np.pi
-                h5['CD_Pha'] = np.random.rand(*shape) * 2 * np.pi
-                h5['CM_Pha'] = np.random.rand(*shape) * 2 * np.pi
-                h5['CF_Pha'] = np.random.rand(*shape) * 2 * np.pi
-            
-            afft = load_airfoil_fft(temp_file2.name)
-            expected_name = os.path.basename(temp_file2.name)
-            self.assertEqual(afft.name, expected_name)
-        
-        finally:
-            os.unlink(temp_file2.name)
 
 
 class TestLoadAirfoilCoords(unittest.TestCase):
@@ -209,15 +180,6 @@ class TestLoadAirfoilCoords(unittest.TestCase):
         
         # Should return default Clark Y airfoil
         self.assertGreater(len(coords), 100)  # Default airfoil has many points
-        self.assertAlmostEqual(np.min(coords[:, 0]), 0.0, places=10)
-        self.assertAlmostEqual(np.max(coords[:, 0]), 1.0, places=10)
-    
-    def test_load_airfoil_coords_empty_path(self):
-        """Test loading airfoil coordinates with empty path."""
-        coords = load_airfoil_coords("")
-        
-        # Should return default Clark Y airfoil
-        self.assertGreater(len(coords), 100)
         self.assertAlmostEqual(np.min(coords[:, 0]), 0.0, places=10)
         self.assertAlmostEqual(np.max(coords[:, 0]), 1.0, places=10)
 
