@@ -7,13 +7,21 @@ import h5py
 from numpy.fft import fft
 from scipy.signal.windows import hann  # pip install scipy
 import matplotlib.pyplot as plt
+import matplotlib as mpl
+
+plot_cycle = ["#348ABD", "#A60628", "#009E73", "#7A68A6", "#D55E00", "#CC79A7"]
+
+mpl.rcParams["axes.prop_cycle"] = mpl.cycler(color=plot_cycle)
 
 # ------------------------ config / knobs ------------------------
 localpath = os.path.dirname(os.path.abspath(__file__))
 
 # dat_folder points to AIRFOIL directory that contains RE* subfolders
-dat_folder = os.path.join(localpath, "../airfoils", "randata", "NACA0018")   # CHANGED (root for RE* dirs)
-h5_path    = os.path.join(localpath, "../airfoils", "NACA0018_fft.h5")
+# dat_folder = os.path.join(localpath, "../data/airfoils", "NALURuns", "NACA0018")   # CHANGED (root for RE* dirs)
+# h5_path    = os.path.join(localpath, "../data/airfoils", "NACA0018_fft.h5")
+airfoilname = "ffa_w3_211"
+dat_folder = os.path.join(localpath, "../data/airfoils/2024_Ganesh_VIV_Paper_Data", "ffa_data_files_ftt_160", airfoilname)   # CHANGED (root for RE* dirs)
+h5_path    = os.path.join(localpath, "../data/airfoils", f"{airfoilname}.h5")
 
 Vinf_fallback = 2.0   # used only if no RE subfolders are found
 chord = 1.0
@@ -22,9 +30,11 @@ fluid_density   = 1.2
 fluid_viscosity = 9.0e-06
 NFreq   = 200
 minFreq = 0.0
+maxFreq = 1000.0
+NFreq_sort = 20
 genplots = True
-sampledT_startcutoff = 10.3
-symmetric_append = True # if the data only contains positive AOA.  VorLap needs both positive and negative, so reverse and prepend along the aoa axis
+sampledT_startcutoff = 0.1#10.3
+symmetric_append = False # if the data only contains positive AOA.  VorLap needs both positive and negative, so reverse and prepend along the aoa axis
 
 # make/ensure figs directory
 figs_dir = os.path.join(localpath, "figs")
@@ -35,7 +45,7 @@ def _slug(s: str) -> str:
     return re.sub(r"[^A-Za-z0-9._-]+", "_", str(s))
 
 def savefig_and_close(fig, path):
-    fig.savefig(path, bbox_inches="tight", dpi=150)
+    fig.savefig(path, bbox_inches="tight", dpi=150, transparent=True)
     plt.close(fig)             # free memory right away
 
 
@@ -254,6 +264,32 @@ for iRe, re_dir in enumerate(re_dirs):
         freqs_cf, amps_cf, phases_cf, power_cf, ST_sorted_cf, amps_sorted_cf, phases_sorted_cf = \
             compute_fft(CF, dt, chord, AOA[iaoa], Vinf)
 
+
+        def cutoff(freqs, amps, phases, power, ST_sorted, amps_sorted, phases_sorted, fmin, fmax):
+            # Build mask: keep DC (freq==0) and everything >= fmin
+            mask = (freqs == 0) | ((freqs >= fmin) & (freqs <= fmax))
+            return (
+                freqs[mask],
+                amps[mask],
+                phases[mask],
+                power[mask],
+                ST_sorted[mask],
+                amps_sorted[mask],
+                phases_sorted[mask]
+            )
+
+        freqs_cl, amps_cl, phases_cl, power_cl, ST_sorted_cl, amps_sorted_cl, phases_sorted_cl = \
+            cutoff(freqs_cl, amps_cl, phases_cl, power_cl, ST_sorted_cl, amps_sorted_cl, phases_sorted_cl, minFreq, maxFreq)
+
+        freqs_cd, amps_cd, phases_cd, power_cd, ST_sorted_cd, amps_sorted_cd, phases_sorted_cd = \
+            cutoff(freqs_cd, amps_cd, phases_cd, power_cd, ST_sorted_cd, amps_sorted_cd, phases_sorted_cd, minFreq, maxFreq)
+
+        freqs_cm, amps_cm, phases_cm, power_cm, ST_sorted_cm, amps_sorted_cm, phases_sorted_cm = \
+            cutoff(freqs_cm, amps_cm, phases_cm, power_cm, ST_sorted_cm, amps_sorted_cm, phases_sorted_cm, minFreq, maxFreq)
+
+        freqs_cf, amps_cf, phases_cf, power_cf, ST_sorted_cf, amps_sorted_cf, phases_sorted_cf = \
+            cutoff(freqs_cf, amps_cf, phases_cf, power_cf, ST_sorted_cf, amps_sorted_cf, phases_sorted_cf, minFreq, maxFreq)
+
         # --- Plots (optional) ---
         if genplots:
             idx_start = max(0, int(round(sampledT_startcutoff / dt)) - 1)
@@ -273,47 +309,47 @@ for iRe, re_dir in enumerate(re_dirs):
             plt.plot(timefull[idx_start:], CF[idx_start:], label="Original", linewidth=2)
             plt.xlabel("Time (s)")
             plt.ylabel("CF")
-            plt.title(f"(CF), AOA: {AOA[iaoa]} (Re={Re[iRe]:.5g})")
+            plt.title(f"{airfoilname} (CF), AOA: {AOA[iaoa]} (Re={Re[iRe]:.5g})")
             plt.xlim(timefull[idx_start], timefull[-1]*0.98)         # cover only the plotted time span
-            plt.ylim(np.min(CF[idx_start:]) * 1.1, np.max(CF[idx_start:]) * 1.1)  # padded range for visibility
+            plt.ylim(np.min(CF[idx_start:]), np.max(CF[idx_start:]))  # padded range for visibility
             plt.legend()
-            savefig_and_close(fig, os.path.join(figs_dir, f"CF_time_AOA{aoa_str}_Re{re_str}.png"))
+            savefig_and_close(fig, os.path.join(figs_dir, f"CF_time_AOA{aoa_str}{airfoilname}_Re{re_str}.pdf"))
 
             # CL time series
             fig = plt.figure()
             plt.plot(timefull[idx_start:], CL[idx_start:], linewidth=2)
             plt.xlabel("Time (s)"); plt.ylabel("CL")
-            plt.title(f"(CL), AOA: {AOA[iaoa]} (Re={Re[iRe]:.5g})")
-            savefig_and_close(fig, os.path.join(figs_dir, f"CL_time_AOA{aoa_str}_Re{re_str}.png"))
+            plt.title(f"{airfoilname} (CL), AOA: {AOA[iaoa]} (Re={Re[iRe]:.5g})")
+            savefig_and_close(fig, os.path.join(figs_dir, f"CL_time_AOA{aoa_str}{airfoilname}_Re{re_str}.pdf"))
 
             # CD time series
             fig = plt.figure()
             plt.plot(timefull[idx_start:], CD[idx_start:], linewidth=2)
             plt.xlabel("Time (s)"); plt.ylabel("CD")
-            plt.title(f"(CD), AOA: {AOA[iaoa]} (Re={Re[iRe]:.5g})")
-            savefig_and_close(fig, os.path.join(figs_dir, f"CD_time_AOA{aoa_str}_Re{re_str}.png"))
+            plt.title(f"{airfoilname} (CD), AOA: {AOA[iaoa]} (Re={Re[iRe]:.5g})")
+            savefig_and_close(fig, os.path.join(figs_dir, f"CD_time_AOA{aoa_str}{airfoilname}_Re{re_str}.pdf"))
 
             # Bode-like PSDs (skip DC)
             if freqs_cf.size >= 2:
                 fig = plt.figure()
                 plt.plot(freqs_cf[1:NFreq], power_cf[1:NFreq], marker='x', linewidth=2)
-                plt.xlabel("Frequency (Hz)"); plt.ylabel("PSD")
-                plt.title(f"(CF), AOA: {AOA[iaoa]} (Re={Re[iRe]:.5g})")
-                savefig_and_close(fig, os.path.join(figs_dir, f"CF_psd_AOA{aoa_str}_Re{re_str}.png"))
+                plt.xlabel("Frequency (Hz)"); plt.ylabel("PSD (CF)")
+                plt.title(f"{airfoilname} (CF), AOA: {AOA[iaoa]} (Re={Re[iRe]:.5g})")
+                savefig_and_close(fig, os.path.join(figs_dir, f"CF_psd_AOA{aoa_str}{airfoilname}_Re{re_str}.pdf"))
 
             if freqs_cl.size >= 2:
                 fig = plt.figure()
                 plt.plot(freqs_cl[1:NFreq], power_cl[1:NFreq], marker='x', linewidth=2)
-                plt.xlabel("Frequency (Hz)"); plt.ylabel("PSD")
-                plt.title(f"(CL), AOA: {AOA[iaoa]} (Re={Re[iRe]:.5g})")
-                savefig_and_close(fig, os.path.join(figs_dir, f"CL_psd_AOA{aoa_str}_Re{re_str}.png"))
+                plt.xlabel("Frequency (Hz)"); plt.ylabel("PSD (CL)")
+                plt.title(f"{airfoilname} (CL), AOA: {AOA[iaoa]} (Re={Re[iRe]:.5g})")
+                savefig_and_close(fig, os.path.join(figs_dir, f"CL_psd_AOA{aoa_str}{airfoilname}_Re{re_str}.pdf"))
 
             if freqs_cd.size >= 2:
                 fig = plt.figure()
                 plt.plot(freqs_cd[1:NFreq], power_cd[1:NFreq], marker='x', linewidth=2)
-                plt.xlabel("Frequency (Hz)"); plt.ylabel("PSD")
-                plt.title(f"(CD), AOA: {AOA[iaoa]} (Re={Re[iRe]:.5g})")
-                savefig_and_close(fig, os.path.join(figs_dir, f"CD_psd_AOA{aoa_str}_Re{re_str}.png"))
+                plt.xlabel("Frequency (Hz)"); plt.ylabel("PSD (CD)")
+                plt.title(f"{airfoilname} (CD), AOA: {AOA[iaoa]} (Re={Re[iRe]:.5g})")
+                savefig_and_close(fig, os.path.join(figs_dir, f"CD_psd_AOA{aoa_str}{airfoilname}_Re{re_str}.pdf"))
 
 
         # --- Store (cap by available length) ---
@@ -409,43 +445,43 @@ if genplots:
 
         # ST vs AOA, multiple ist
         fig = plt.figure()
-        for ist in range(1, min(20, NFreq)):
-            plt.plot(AOA_sort, CF_ST_sort[iRe, :, ist], marker='x', linewidth=2, label=f"ist={ist}")
+        for ist in range(1, NFreq_sort):
+            plt.plot(AOA_sort, CF_ST_sort[iRe, :, ist], marker='x', linewidth=0, label=f"ist={ist}")
         plt.xlabel("AOA (deg)"); plt.ylabel("ST (CF)")
         plt.ylim(0.0, 0.5)
-        plt.title(f"ST Re={Re_sort[iRe]:.5g}")
+        plt.title(f"{airfoilname} ST Re={Re_sort[iRe]:.5g}")
         plt.legend()
-        savefig_and_close(fig, os.path.join(figs_dir, f"STCF_summary_Re{re_str}.png"))
+        savefig_and_close(fig, os.path.join(figs_dir, f"{airfoilname}STCF_summary_Re{re_str}.pdf"))
 
         # Amp vs AOA, multiple ist
         fig = plt.figure()
-        for ist in range(1, min(20, NFreq)):
-            plt.plot(AOA_sort, CF_Amp_sort[iRe, :, ist], marker='x', linewidth=2, label=f"ist={ist}")
+        for ist in range(1, NFreq_sort):
+            plt.plot(AOA_sort, CF_Amp_sort[iRe, :, ist], marker='x', linewidth=0, label=f"ist={ist}")
         plt.xlabel("AOA (deg)"); plt.ylabel("Amp (CF)")
-        plt.title(f"Amp Re={Re_sort[iRe]:.5g}")
+        plt.title(f"{airfoilname} Amp Re={Re_sort[iRe]:.5g}")
         plt.legend()
-        savefig_and_close(fig, os.path.join(figs_dir, f"AmpCF_summary_Re{re_str}.png"))
+        savefig_and_close(fig, os.path.join(figs_dir, f"{airfoilname}AmpCF_summary_Re{re_str}.pdf"))
 
         fig = plt.figure()
         plt.plot(AOA_sort, CF_Amp_sort[iRe, :, 0], marker='x', linewidth=2)
         plt.xlabel("AOA (deg)"); plt.ylabel("Mean (CF)")
-        plt.title(f"Mean, Re={Re_sort[iRe]:.5g}")
+        plt.title(f"{airfoilname} Mean, Re={Re_sort[iRe]:.5g}")
         # plt.legend()
-        savefig_and_close(fig, os.path.join(figs_dir, f"MeanCF_summary_Re{re_str}.png"))
+        savefig_and_close(fig, os.path.join(figs_dir, f"{airfoilname}MeanCF_summary_Re{re_str}.pdf"))
 
         fig = plt.figure()
         plt.plot(AOA_sort, CL_Amp_sort[iRe, :, 0], marker='x', linewidth=2)
         plt.xlabel("AOA (deg)"); plt.ylabel("Mean (CL)")
         plt.title(f"Mean, Re={Re_sort[iRe]:.5g}")
         # plt.legend()
-        savefig_and_close(fig, os.path.join(figs_dir, f"MeanCL_summary_Re{re_str}.png"))
+        savefig_and_close(fig, os.path.join(figs_dir, f"{airfoilname}MeanCL_summary_Re{re_str}.pdf"))
 
         fig = plt.figure()
         plt.plot(AOA_sort, CD_Amp_sort[iRe, :, 0], marker='x', linewidth=2)
         plt.xlabel("AOA (deg)"); plt.ylabel("Mean (CD)")
-        plt.title(f"Mean, Re={Re_sort[iRe]:.5g}")
+        plt.title(f"{airfoilname} Mean, Re={Re_sort[iRe]:.5g}")
         # plt.legend()
-        savefig_and_close(fig, os.path.join(figs_dir, f"MeanCD_summary_Re{re_str}.png"))
+        savefig_and_close(fig, os.path.join(figs_dir, f"{airfoilname}MeanCD_summary_Re{re_str}.pdf"))
 
 
 # ------------------------ write HDF5 ------------------------
