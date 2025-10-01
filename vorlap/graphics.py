@@ -13,7 +13,7 @@ from typing import List
 
 def calc_structure_vectors_andplot(components: List[Component], viv_params: VIV_Params, show_plot: bool = True, return_fig: bool = False):
     """
-    Calculates structure vectors and creates a plot.
+    Calculate structure vectors and create a 3D visualization plot.
 
     Args:
         components: List of structural components.
@@ -22,7 +22,7 @@ def calc_structure_vectors_andplot(components: List[Component], viv_params: VIV_
         return_fig: Whether to return the figure object (default: False).
 
     Returns:
-        fig: Plotly figure object if return_fig=True, otherwise None.
+        Plotly figure object if return_fig=True, otherwise None.
     """
     from .fileio import load_airfoil_coords
 

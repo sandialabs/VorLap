@@ -13,7 +13,7 @@ from .structs import AirfoilFFT, Component
 
 def load_components_from_csv(dir_path: str) -> List[Component]:
     """
-    Loads all component geometry and metadata from CSV files in the given directory.
+    Load all component geometry and metadata from CSV files in the given directory.
 
     Args:
         dir_path: Path to a directory containing CSV files. Each file must follow a two-header format.
@@ -21,15 +21,16 @@ def load_components_from_csv(dir_path: str) -> List[Component]:
     Returns:
         List of parsed Component objects containing all geometry and configuration data.
 
-    Expected CSV Format:
-        1. First data row contains: `id`, `translation_x`, `translation_y`, `translation_z`, `rotation_x`, `rotation_y`, `rotation_z`
-        2. Second header row: column names for vectors — must include `x`, `y`, `z`, `chord`, `twist`, `thickness`, and optional `airfoil_id`
-        3. Remaining rows: vector data for each blade segment or shape point
+    Note:
+        Expected CSV Format:
+            1. First data row contains: `id`, `translation_x`, `translation_y`, `translation_z`, `rotation_x`, `rotation_y`, `rotation_z`
+            2. Second header row: column names for vectors — must include `x`, `y`, `z`, `chord`, `twist`, `thickness`, and optional `airfoil_id`
+            3. Remaining rows: vector data for each blade segment or shape point
 
-    Notes:
-        - If `airfoil_id` is missing, `"default"` will be used for all segments in that component
-        - All transformations are centered at the origin and adjusted by top-level translation/rotation
-        - All components are assumed to have the span oriented in the z-direction
+        Additional Notes:
+            - If `airfoil_id` is missing, `"default"` will be used for all segments in that component
+            - All transformations are centered at the origin and adjusted by top-level translation/rotation
+            - All components are assumed to have the span oriented in the z-direction
     """
     import glob
     
@@ -112,7 +113,7 @@ def load_components_from_csv(dir_path: str) -> List[Component]:
 
 def load_airfoil_fft(path: str) -> AirfoilFFT:
     """
-    Loads a processed airfoil unsteady FFT dataset from an HDF5 file.
+    Load a processed airfoil unsteady FFT dataset from an HDF5 file.
 
     Args:
         path: Path to the HDF5 file containing the airfoil FFT data.
@@ -120,21 +121,22 @@ def load_airfoil_fft(path: str) -> AirfoilFFT:
     Returns:
         AirfoilFFT object containing the loaded data.
 
-    Expected HDF5 File Format:
-        The file must contain the following datasets:
-        - `Airfoilname` :: String — Name of the airfoil (e.g., "NACA0012")
-        - `Re` :: Vector{Float64} — Reynolds number values (assumed constant across all entries)
-        - `Thickness` :: Vector{Float64} — Thickness ratio(s) used
-        - `AOA` :: Vector{Float64} — Angle of attack values in degrees
-        - `CL_ST`, `CD_ST`, `CM_ST`, `CF_ST` :: 3D Arrays [Re x AOA x freq] — Strouhal numbers for each force/moment
-        - `CL_Amp`, `CD_Amp`, `CM_Amp`, `CF_Amp` :: 3D Arrays [Re x AOA x freq] — FFT amplitudes for lift, drag, moment, and combined force
-        - `CL_Pha`, `CD_Pha`, `CM_Pha`, `CF_Pha` :: 3D Arrays [Re x AOA x freq] — FFT phases in radians for each quantity
+    Note:
+        Expected HDF5 File Format:
+            The file must contain the following datasets:
+                - `Airfoilname` :: String — Name of the airfoil (e.g., "NACA0012")
+                - `Re` :: Vector{Float64} — Reynolds number values (assumed constant across all entries)
+                - `Thickness` :: Vector{Float64} — Thickness ratio(s) used
+                - `AOA` :: Vector{Float64} — Angle of attack values in degrees
+                - `CL_ST`, `CD_ST`, `CM_ST`, `CF_ST` :: 3D Arrays [Re x AOA x freq] — Strouhal numbers for each force/moment
+                - `CL_Amp`, `CD_Amp`, `CM_Amp`, `CF_Amp` :: 3D Arrays [Re x AOA x freq] — FFT amplitudes for lift, drag, moment, and combined force
+                - `CL_Pha`, `CD_Pha`, `CM_Pha`, `CF_Pha` :: 3D Arrays [Re x AOA x freq] — FFT phases in radians for each quantity
 
-    Assumptions:
-        - All arrays must share dimensions [Re, AOA, NFreq], where the frequency dimension is sorted by the amplitude
-        - Phase data is in radians.
-        - Struhaul data represents unsteady aerodynamics due to vortex shedding.
-        - No ragged or missing data is allowed.
+        Assumptions:
+            - All arrays must share dimensions [Re, AOA, NFreq], where the frequency dimension is sorted by the amplitude
+            - Phase data is in radians.
+            - Strouhal data represents unsteady aerodynamics due to vortex shedding.
+            - No ragged or missing data is allowed.
     """
     with h5py.File(path, 'r') as h5:
         name = h5['Airfoilname'][()] if 'Airfoilname' in h5 else os.path.basename(path)
@@ -216,16 +218,17 @@ def load_airfoil_fft(path: str) -> AirfoilFFT:
 
 def load_airfoil_coords(afpath: str = "") -> np.ndarray:
     """
-    Loads an airfoil shape from a 2-column text file (x, z), normalized to unit chord length.
+    Load an airfoil shape from a 2-column text file (x, z), normalized to unit chord length.
+    
     If no file is specified, or if loading fails, returns a built-in 200-point Clark Y airfoil shape.
 
     Args:
         afpath: Optional path to a text file with two columns: x and z coordinates.
 
     Returns:
-        xy: Nx2 matrix of normalized (x, y) coordinates representing the airfoil surface.
+        Nx2 matrix of normalized (x, y) coordinates representing the airfoil surface.
 
-    Notes:
+    Note:
         - If loading from file, x-coordinates are normalized to span [0, 1].
         - The default fallback airfoil is a symmetric approximation of the Clark Y shape.
         - This airfoil is primarily used for visualization, not aerodynamic calculations.
@@ -376,15 +379,12 @@ def load_airfoil_coords(afpath: str = "") -> np.ndarray:
 
 def write_force_time_series(filename: str, output_time: np.ndarray, global_force_vector_nodes: np.ndarray) -> None:
     """
-    Writes force time series data to a CSV file.
+    Write force time series data to a CSV file.
 
     Args:
         filename: Path to the output CSV file.
         output_time: Vector of time points.
         global_force_vector_nodes: Array of force vectors for each node at each time point.
-
-    Returns:
-        None
     """
     ntime, _, nnodes = global_force_vector_nodes.shape
     

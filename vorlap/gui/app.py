@@ -22,6 +22,8 @@ from vorlap.gui.widgets import ScrollText
 
 
 class VorLapApp(tk.Tk):
+    """Main VorLap GUI application class."""
+    
     def __init__(self):
         super().__init__()
         self.title("VORtex overLAP Tool")

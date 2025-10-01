@@ -18,6 +18,20 @@ def compute_thrust_torque_spectrum_optimized(components: List[Component],
     Optimized version of compute_thrust_torque_spectrum using cached interpolators and vectorized operations.
     
     Same interface and outputs as the original function, but with significant performance improvements.
+    
+    Args:
+        components: List of structural components including geometry, orientation, and segment-wise parameters.
+        affts: Dictionary mapping airfoil IDs to their FFT-derived lift/drag/moment spectra.
+        viv_params: Encapsulates all analysis parameters, including inflow, rotation axis, fluid properties, and plotting settings.
+        natfreqs: Natural frequencies to compare against.
+
+    Returns:
+        Tuple containing:
+            - percdiff_matrix: Matrix of percent differences between shedding frequencies and natural frequencies.
+            - percdiff_info: Matrix of strings with information about the worst percent differences.
+            - total_global_force_vector: Total global force vector for each inflow speed and azimuth.
+            - total_global_moment_vector: Total global moment vector for each inflow speed and azimuth.
+            - global_force_vector_nodes: Global force vector for each node over time.
     """
     from .interpolation import interpolate_fft_spectrum_optimized
     
@@ -335,18 +349,18 @@ def reconstruct_signal(freqs: np.ndarray,
     Reconstruct a time-domain signal from frequency, peak amplitude, and phase (radians).
 
     Assumptions / conventions:
-    - DC term(s): entries where freqs == 0 carry the mean value in `amps`; all such entries are summed.
-    - For f > 0, `amps` are **peak** amplitudes (not RMS) and phases follow a cosine convention: cos(ωt + φ).
-    - Negative frequencies, if present, are ignored (assumed redundant w.r.t. positive freqs + phases).
+        - DC term(s): entries where freqs == 0 carry the mean value in `amps`; all such entries are summed.
+        - For f > 0, `amps` are **peak** amplitudes (not RMS) and phases follow a cosine convention: cos(ωt + φ).
+        - Negative frequencies, if present, are ignored (assumed redundant w.r.t. positive freqs + phases).
 
     Args:
-        freqs  : array of frequencies [Hz]
-        amps   : array of peak amplitudes corresponding to each frequency
-        phases : array of phase offsets [rad] corresponding to each frequency
-        tvec   : time vector [s] (must have at least 2 samples)
+        freqs: Array of frequencies [Hz].
+        amps: Array of peak amplitudes corresponding to each frequency.
+        phases: Array of phase offsets [rad] corresponding to each frequency.
+        tvec: Time vector [s] (must have at least 2 samples).
 
     Returns:
-        signal : reconstructed time-domain signal (float64), shape = (len(tvec),)
+        Reconstructed time-domain signal (float64), shape = (len(tvec),).
     """
     freqs  = np.asarray(freqs, dtype=np.float64)
     amps   = np.asarray(amps, dtype=np.float64)
@@ -396,7 +410,7 @@ def reconstruct_signal(freqs: np.ndarray,
 #@profile
 def rotate_vector(vec: np.ndarray, axis: np.ndarray, angle_deg: float) -> np.ndarray:
     """
-    Rotates a 3D vector `vec` around a given `axis` by `angle_deg` degrees using Rodrigues' rotation formula.
+    Rotate a 3D vector around a given axis using Rodrigues' rotation formula.
 
     Args:
         vec: Vector to rotate (length-3, any direction).
@@ -414,29 +428,24 @@ def rotate_vector(vec: np.ndarray, axis: np.ndarray, angle_deg: float) -> np.nda
 
 def rotationMatrix(euler: np.ndarray) -> np.ndarray:
     """
-    Computes a 3×3 rotation matrix from Euler angles using the ZYX convention (yaw–pitch–roll), where:
-    - Z: yaw (heading)
-    - Y: pitch (elevation)
-    - X: roll (bank)
+    Compute a 3×3 rotation matrix from Euler angles using the ZYX convention (yaw–pitch–roll).
 
     The angles are provided in **degrees** and applied in **Z–Y–X** order (extrinsic frame), meaning:
-    1. Rotate about global Z axis (yaw)
-    2. Then about the global Y axis (pitch)
-    3. Then about the global X axis (roll)
+        1. Rotate about global Z axis (yaw)
+        2. Then about the global Y axis (pitch)
+        3. Then about the global X axis (roll)
 
     Args:
         euler: Euler angles `[roll, pitch, yaw]` in **degrees**.
 
     Returns:
-        R_global: A 3×3 rotation matrix for transforming a local vector into the global frame.
+        A 3×3 rotation matrix for transforming a local vector into the global frame.
 
     Example:
-        ```python
-        euler = np.array([30.0, 15.0, 60.0])  # roll, pitch, yaw in degrees
-        R = rotationMatrix(euler)
-        v_local = np.array([1.0, 0.0, 0.0])
-        v_global = R @ v_local
-        ```
+        >>> euler = np.array([30.0, 15.0, 60.0])  # roll, pitch, yaw in degrees
+        >>> R = rotationMatrix(euler)
+        >>> v_local = np.array([1.0, 0.0, 0.0])
+        >>> v_global = R @ v_local
     """
     cz, sz = math.cos(math.radians(euler[2])), math.sin(math.radians(euler[2]))
     cy, sy = math.cos(math.radians(euler[1])), math.sin(math.radians(euler[1]))
@@ -468,8 +477,19 @@ def rotationMatrix(euler: np.ndarray) -> np.ndarray:
 # Import at runtime to avoid circular imports
 def interpolate_fft_spectrum(afft, Re_val, AOA_val, field, n_freq_depth=None):
     """
-    This is a wrapper function to avoid circular imports.
-    The actual implementation is in fileio.py.
+    Wrapper function to avoid circular imports.
+    
+    The actual implementation is in interpolation.py.
+    
+    Args:
+        afft: AirfoilFFT struct containing FFT results.
+        Re_val: Desired Reynolds number.
+        AOA_val: Desired angle of attack (degrees).
+        field: String ('CL', 'CD', 'CM', or 'CF') indicating which force coefficient to interpolate.
+        n_freq_depth: Optional number of frequencies to return.
+        
+    Returns:
+        Tuple of (freqs, amp_out, phase_out) arrays.
     """
     from .interpolation import interpolate_fft_spectrum as _interpolate_fft_spectrum
     return _interpolate_fft_spectrum(afft, Re_val, AOA_val, field, n_freq_depth)

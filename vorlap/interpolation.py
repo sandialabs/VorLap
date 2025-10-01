@@ -13,9 +13,20 @@ def _find_cells_and_weights(Re_grid: np.ndarray,
                             Re_q: np.ndarray,
                             AOA_q: np.ndarray) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
     """
+    Find cells and weights for bilinear interpolation.
+    
     For each query (Re_q, AOA_q), clamp to flat-extrapolate and return:
-      i,j: lower cell indices
-      t,u: local linear coordinates in [0,1] within that cell
+        i,j: lower cell indices
+        t,u: local linear coordinates in [0,1] within that cell
+        
+    Args:
+        Re_grid: Reynolds number grid values.
+        AOA_grid: Angle of attack grid values.
+        Re_q: Query Reynolds number values.
+        AOA_q: Query angle of attack values.
+        
+    Returns:
+        Tuple of (i, j, t, u) arrays for interpolation.
     """
     Re = Re_grid
     AoA = AOA_grid
@@ -49,8 +60,18 @@ def _bilinear_apply_tensor(F: np.ndarray,
                            u: np.ndarray,
                            n_freq_depth: Optional[int] = None) -> np.ndarray:
     """
-    F: (NR, NA, K)  -> returns (nq, K_sel)
-    Applies bilinear interpolation at nq query points, for all K at once.
+    Apply bilinear interpolation to a tensor at query points.
+    
+    Args:
+        F: Input tensor of shape (NR, NA, K).
+        i: Lower cell indices in Reynolds direction.
+        j: Lower cell indices in AOA direction.
+        t: Local coordinates in Reynolds direction [0,1].
+        u: Local coordinates in AOA direction [0,1].
+        n_freq_depth: Optional depth limit for frequency dimension.
+        
+    Returns:
+        Interpolated values of shape (nq, K_sel).
     """
     NR, NA, K = F.shape
     if n_freq_depth is None or n_freq_depth > K:
@@ -84,8 +105,17 @@ def interpolate_fft_spectrum_optimized(afft: AirfoilFFT,
                                        fields: List[str],
                                        n_freq_depth: Optional[int] = None) -> Dict[str, Tuple[np.ndarray, np.ndarray, np.ndarray]]:
     """
-    Vectorized, fast bilinear + flat extrapolation for multiple fields at once.
-    Matches your return structure: { 'CL': (ST, Amp, Pha), ... } with arrays length n_freq_depth.
+    Vectorized, fast bilinear interpolation with flat extrapolation for multiple fields at once.
+    
+    Args:
+        afft: AirfoilFFT struct containing FFT results.
+        Re_val: Desired Reynolds number.
+        AOA_val: Desired angle of attack (degrees).
+        fields: List of field strings ('CL', 'CD', 'CM', 'CF') to interpolate.
+        n_freq_depth: Optional number of frequencies to return.
+        
+    Returns:
+        Dictionary mapping field names to (ST, Amp, Pha) tuples with arrays of length n_freq_depth.
     """
     # inputs -> 1D arrays to allow easy batching later (for now 1 query)
     Re_q  = np.atleast_1d(Re_val).astype(float)
@@ -131,9 +161,10 @@ def interpolate_fft_spectrum_batch(afft: AirfoilFFT, Re_vals: np.ndarray, AOA_va
         n_freq_depth: Optional number of frequencies to return.
 
     Returns:
-        ST_out: Array of shape [n_points, n_freq]
-        amp_out: Array of shape [n_points, n_freq]
-        phase_out: Array of shape [n_points, n_freq]
+        Tuple containing:
+            - ST_out: Array of shape [n_points, n_freq]
+            - amp_out: Array of shape [n_points, n_freq]
+            - phase_out: Array of shape [n_points, n_freq]
     """
     # Ensure interpolators are cached
     afft._cache_interpolators()
@@ -171,8 +202,7 @@ def interpolate_fft_spectrum_batch(afft: AirfoilFFT, Re_vals: np.ndarray, AOA_va
 
 def interpolate_fft_spectrum(afft: AirfoilFFT, Re_val: float, AOA_val: float, field: str, n_freq_depth: Optional[int] = None) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
     """
-    Interpolates the FFT amplitude and phase spectra for a given Reynolds number `Re_val`
-    and angle of attack `AOA_val` using bilinear interpolation over the stored Re × AOA grid.
+    Interpolate the FFT amplitude and phase spectra using bilinear interpolation over the stored Re × AOA grid.
 
     Args:
         afft: AirfoilFFT struct containing FFT results.
@@ -182,11 +212,12 @@ def interpolate_fft_spectrum(afft: AirfoilFFT, Re_val: float, AOA_val: float, fi
         n_freq_depth: Optional number of frequencies to return. If None, returns all frequencies.
 
     Returns:
-        freqs: Vector of frequency values.
-        amp_out: Vector of interpolated amplitudes at each frequency.
-        phase_out: Vector of interpolated phases at each frequency.
+        Tuple containing:
+            - freqs: Vector of frequency values.
+            - amp_out: Vector of interpolated amplitudes at each frequency.
+            - phase_out: Vector of interpolated phases at each frequency.
 
-    Notes:
+    Note:
         - The interpolation is performed independently at each frequency index in the spectrum.
         - Assumes consistent frequency axis across the full 3D data structure.
         - Returns values suitable for reconstructing time-domain or frequency-domain force estimates.
@@ -301,18 +332,20 @@ def interpolate_fft_spectrum(afft: AirfoilFFT, Re_val: float, AOA_val: float, fi
 
 def resample_airfoil(xy: np.ndarray, npoints: int = 200) -> np.ndarray:
     """
-    Resamples the given airfoil shape by:
-    1. Identifying leading (min x) and trailing (max x) edges.
-    2. Splitting into upper and lower surfaces.
-    3. Interpolating both surfaces using `npoints` uniformly spaced x-values.
-    4. Recombining to produce a smooth resampled airfoil shape.
+    Resample the given airfoil shape using uniform x-spacing.
+    
+    Process:
+        1. Identify leading (min x) and trailing (max x) edges.
+        2. Split into upper and lower surfaces.
+        3. Interpolate both surfaces using `npoints` uniformly spaced x-values.
+        4. Recombine to produce a smooth resampled airfoil shape.
 
     Args:
         xy: Nx2 matrix of (x, y) airfoil coordinates, not assumed to start at TE or LE.
         npoints: Number of points used in interpolation (default: 200).
 
     Returns:
-        xy_resampled: Resampled and recombined airfoil shape.
+        Resampled and recombined airfoil shape.
     """
     x = xy[:, 0]
     y = xy[:, 1]
