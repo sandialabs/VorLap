@@ -4,7 +4,6 @@
 
 [![CI/CD](https://github.com/sandialabs/VorLap/actions/workflows/cicd.yml/badge.svg)](https://github.com/sandialabs/VorLap/actions/workflows/cicd.yml)
 [![codecov](https://codecov.io/gh/sandialabs/VorLap/branch/main/graph/badge.svg)](https://codecov.io/gh/sandialabs/VorLap)
-[![Documentation](https://github.com/sandialabs/VorLap/actions/workflows/cicd.yml/badge.svg)](https://sandialabs.github.io/VorLap/)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![License](https://img.shields.io/badge/license-BSD--3--Clause-blue.svg)](LICENSE)
 
