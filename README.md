@@ -15,6 +15,9 @@ git clone https://github.com/sandialabs/VorLap.git
 pip install VorLap
 ```
 
+## Documentation
+Please visit our [documentation website](https://sandialabs.github.io/VorLap/) for additional information on the API. 
+
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
