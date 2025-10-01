@@ -14,6 +14,16 @@ import csv
 class PathEntry(ttk.Frame):
     """Entry + Browse button (file or directory)."""
     def __init__(self, master, kind="file", title="Select...", must_exist=False, **kwargs):
+        """
+        Initialize PathEntry widget.
+        
+        Args:
+            master: Parent widget.
+            kind: Type of path selection ("file", "dir", or "savefile").
+            title: Dialog title.
+            must_exist: Whether the path must exist.
+            **kwargs: Additional keyword arguments.
+        """
         super().__init__(master, **kwargs)
         self.kind = kind          # "file" | "dir" | "savefile"
         self.title = title
@@ -26,6 +36,7 @@ class PathEntry(ttk.Frame):
         self.columnconfigure(0, weight=1)
 
     def browse(self):
+        """Open file/directory browser dialog."""
         if self.kind == "file":
             path = filedialog.askopenfilename(title=self.title)
         elif self.kind == "savefile":
@@ -39,15 +50,26 @@ class PathEntry(ttk.Frame):
             self.var.set(path)
 
     def get(self) -> str:
+        """Get the current path value."""
         return self.var.get()
 
     def set(self, value: str):
+        """Set the path value."""
         self.var.set(value or "")
 
 
 class ScrollText(ttk.Frame):
     """A Text widget with a vertical scrollbar."""
+    
     def __init__(self, master, height=10, **kwargs):
+        """
+        Initialize ScrollText widget.
+        
+        Args:
+            master: Parent widget.
+            height: Height of the text widget.
+            **kwargs: Additional keyword arguments.
+        """
         super().__init__(master, **kwargs)
         self.text = tk.Text(self, wrap="word", height=height,
                            font=('Segoe UI', 10),
@@ -68,18 +90,30 @@ class ScrollText(ttk.Frame):
         self.columnconfigure(0, weight=1)
 
     def write(self, s: str):
+        """Write text to the widget."""
         self.text.insert("end", s)
         self.text.see("end")
 
     def clear(self):
+        """Clear all text from the widget."""
         self.text.delete("1.0", "end")
 
 
 class EditableTreeview(ttk.Frame):
-    """
-    Spreadsheet-like table with CSV load/save and inline cell editing (double-click).
-    """
+    """Spreadsheet-like table with CSV load/save and inline cell editing (double-click)."""
+    
     def __init__(self, master, columns, show_headings=True, height=8, non_editable_columns=None, **kwargs):
+        """
+        Initialize EditableTreeview widget.
+        
+        Args:
+            master: Parent widget.
+            columns: List of column names.
+            show_headings: Whether to show column headings.
+            height: Height of the treeview.
+            non_editable_columns: List of columns that cannot be edited.
+            **kwargs: Additional keyword arguments.
+        """
         super().__init__(master, **kwargs)
         self.columns = columns
         self.non_editable_columns = non_editable_columns or []
@@ -101,20 +135,24 @@ class EditableTreeview(ttk.Frame):
 
     # ---- data helpers ----
     def clear(self):
+        """Clear all rows from the treeview."""
         for i in self.tree.get_children():
             self.tree.delete(i)
 
     def append_row(self, values):
+        """Append a row to the treeview."""
         # pad/truncate to number of columns
         vals = list(values) + [""] * (len(self.columns) - len(values))
         vals = vals[:len(self.columns)]
         self.tree.insert("", "end", values=vals)
 
     def get_all(self):
+        """Get all rows from the treeview."""
         return [self.tree.item(i, "values") for i in self.tree.get_children()]
 
     # ---- CSV I/O ----
     def load_csv(self, path):
+        """Load data from a CSV file."""
         self.clear()
         with open(path, newline="") as f:
             reader = csv.reader(f)
@@ -129,6 +167,7 @@ class EditableTreeview(ttk.Frame):
                 self.append_row(float_row)
 
     def save_csv(self, path):
+        """Save data to a CSV file."""
         with open(path, "w", newline="") as f:
             writer = csv.writer(f)
             for row in self.get_all():

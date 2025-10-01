@@ -1,0 +1,23 @@
+# Development dependencies for VorLap
+pytest>=7.0.0
+pytest-cov>=4.0.0
+matplotlib>=3.5.0
+coverage[toml]>=6.0.0
+flake8>=5.0.0
+black>=22.0.0
+isort>=5.10.0
+
+# Documentation dependencies
+sphinx>=5.0.0
+sphinx-rtd-theme>=1.0.0
+sphinx-autobuild>=2021.3.14
+
+# Executable building dependencies
+pyinstaller>=5.0.0
+
+# Core dependencies (should match setup.py)
+numpy>=1.21.0
+scipy>=1.7.0
+pandas>=1.5.0
+h5py>=3.0.0
+plotly>=5.15.0

@@ -10,43 +10,41 @@ from scipy import interpolate
 
 class AirfoilFFT:
     """
-    Holds multidimensional FFT data for unsteady aerodynamic forces and moments
-    as a function of Reynolds number and angle of attack.
+    Hold multidimensional FFT data for unsteady aerodynamic forces and moments as a function of Reynolds number and angle of attack.
 
     Attributes:
-        name (str): Airfoil identifier name
-        Re (np.ndarray): Reynolds number axis (1D)
-        AOA (np.ndarray): Angle of attack axis in degrees (1D)
-        Thickness (float): Relative airfoil thickness
+        name (str): Airfoil identifier name.
+        Re (np.ndarray): Reynolds number axis (1D).
+        AOA (np.ndarray): Angle of attack axis in degrees (1D).
+        Thickness (float): Relative airfoil thickness.
         
-        CL_ST (np.ndarray): Strouhal numbers for lift coefficient [Re × AOA × freq]
-        CD_ST (np.ndarray): Strouhal numbers for drag coefficient
-        CM_ST (np.ndarray): Strouhal numbers for moment coefficient
-        CF_ST (np.ndarray): Strouhal numbers for total force coefficient magnitude
+        CL_ST (np.ndarray): Strouhal numbers for lift coefficient [Re × AOA × freq].
+        CD_ST (np.ndarray): Strouhal numbers for drag coefficient.
+        CM_ST (np.ndarray): Strouhal numbers for moment coefficient.
+        CF_ST (np.ndarray): Strouhal numbers for total force coefficient magnitude.
         
-        CL_Amp (np.ndarray): FFT amplitudes of CL [Re × AOA × freq]
-        CD_Amp (np.ndarray): FFT amplitudes of CD
-        CM_Amp (np.ndarray): FFT amplitudes of CM
-        CF_Amp (np.ndarray): FFT amplitudes of CF
+        CL_Amp (np.ndarray): FFT amplitudes of CL [Re × AOA × freq].
+        CD_Amp (np.ndarray): FFT amplitudes of CD.
+        CM_Amp (np.ndarray): FFT amplitudes of CM.
+        CF_Amp (np.ndarray): FFT amplitudes of CF.
         
-        CL_Pha (np.ndarray): FFT phases of CL (radians)
-        CD_Pha (np.ndarray): FFT phases of CD
-        CM_Pha (np.ndarray): FFT phases of CM
-        CF_Pha (np.ndarray): FFT phases of CF
+        CL_Pha (np.ndarray): FFT phases of CL (radians).
+        CD_Pha (np.ndarray): FFT phases of CD.
+        CM_Pha (np.ndarray): FFT phases of CM.
+        CF_Pha (np.ndarray): FFT phases of CF.
         
-        # Cached interpolators for performance optimization
-        _interpolators_cached (bool): Whether interpolators are pre-computed
-        _cl_st_interps (List): Pre-computed ST interpolators for CL
-        _cl_amp_interps (List): Pre-computed amplitude interpolators for CL
-        _cl_pha_interps (List): Pre-computed phase interpolators for CL
-        _cd_st_interps (List): Pre-computed ST interpolators for CD
-        _cd_amp_interps (List): Pre-computed amplitude interpolators for CD
-        _cd_pha_interps (List): Pre-computed phase interpolators for CD
-        _cf_st_interps (List): Pre-computed ST interpolators for CF
-        _cf_amp_interps (List): Pre-computed amplitude interpolators for CF
-        _cf_pha_interps (List): Pre-computed phase interpolators for CF
+        _interpolators_cached (bool): Whether interpolators are pre-computed.
+        _cl_st_interps (List): Pre-computed ST interpolators for CL.
+        _cl_amp_interps (List): Pre-computed amplitude interpolators for CL.
+        _cl_pha_interps (List): Pre-computed phase interpolators for CL.
+        _cd_st_interps (List): Pre-computed ST interpolators for CD.
+        _cd_amp_interps (List): Pre-computed amplitude interpolators for CD.
+        _cd_pha_interps (List): Pre-computed phase interpolators for CD.
+        _cf_st_interps (List): Pre-computed ST interpolators for CF.
+        _cf_amp_interps (List): Pre-computed amplitude interpolators for CF.
+        _cf_pha_interps (List): Pre-computed phase interpolators for CF.
         
-    Notes:
+    Note:
         - The frequency axis is implicit in the third dimension and must be consistent across all arrays.
         - All arrays must share shape `[length(Re), length(AOA), length(freq)]`.
         - Phases are in radians, and FFT data assumes periodic unsteady oscillations (e.g., vortex shedding).
@@ -69,7 +67,27 @@ class AirfoilFFT:
                  CD_Pha: np.ndarray,
                  CM_Pha: np.ndarray,
                  CF_Pha: np.ndarray):
-        """Initialize AirfoilFFT with the provided data."""
+        """
+        Initialize AirfoilFFT with the provided data.
+        
+        Args:
+            name: Airfoil identifier name.
+            Re: Reynolds number axis (1D).
+            AOA: Angle of attack axis in degrees (1D).
+            Thickness: Relative airfoil thickness.
+            CL_ST: Strouhal numbers for lift coefficient [Re × AOA × freq].
+            CD_ST: Strouhal numbers for drag coefficient.
+            CM_ST: Strouhal numbers for moment coefficient.
+            CF_ST: Strouhal numbers for total force coefficient magnitude.
+            CL_Amp: FFT amplitudes of CL [Re × AOA × freq].
+            CD_Amp: FFT amplitudes of CD.
+            CM_Amp: FFT amplitudes of CM.
+            CF_Amp: FFT amplitudes of CF.
+            CL_Pha: FFT phases of CL (radians).
+            CD_Pha: FFT phases of CD.
+            CM_Pha: FFT phases of CM.
+            CF_Pha: FFT phases of CF.
+        """
         self.name = name
         self.Re = Re
         self.AOA = AOA
@@ -151,23 +169,24 @@ class AirfoilFFT:
 
 class Component:
     """
-    Represents a single physical component in the full rotating structure. Each component includes
-    a global transformation and local shape definition, segmented for per-section force calculations.
+    Represent a single physical component in the full rotating structure.
+    
+    Each component includes a global transformation and local shape definition, segmented for per-section force calculations.
 
     Attributes:
-        id (str): Identifier name for the component
-        translation (np.ndarray): Translation vector applied to the entire component
-        rotation (np.ndarray): Euler angle rotation vector [deg] around X, Y, Z axes
-        pitch (np.ndarray): Pitch angle for the segment [deg], vectorized to avoid mutability
-        shape_xyz (np.ndarray): Nx3 matrix of local segment positions (untransformed)
-        shape_xyz_global (np.ndarray): Nx3 matrix of global segment positions (transformed)
-        chord (np.ndarray): Chord length per segment
-        twist (np.ndarray): Twist angle per segment [deg]
-        thickness (np.ndarray): Relative thickness per segment (scales airfoil height), fraction of chord
-        offset (np.ndarray): Offset values per segment
-        airfoil_ids (List[str]): Airfoil data identifier for each segment (defaults to "default" if missing)
-        chord_vector (np.ndarray): Chord vector for each segment
-        normal_vector (np.ndarray): Normal vector for each segment
+        id (str): Identifier name for the component.
+        translation (np.ndarray): Translation vector applied to the entire component.
+        rotation (np.ndarray): Euler angle rotation vector [deg] around X, Y, Z axes.
+        pitch (np.ndarray): Pitch angle for the segment [deg], vectorized to avoid mutability.
+        shape_xyz (np.ndarray): Nx3 matrix of local segment positions (untransformed).
+        shape_xyz_global (np.ndarray): Nx3 matrix of global segment positions (transformed).
+        chord (np.ndarray): Chord length per segment.
+        twist (np.ndarray): Twist angle per segment [deg].
+        thickness (np.ndarray): Relative thickness per segment (scales airfoil height), fraction of chord.
+        offset (np.ndarray): Offset values per segment.
+        airfoil_ids (List[str]): Airfoil data identifier for each segment (defaults to "default" if missing).
+        chord_vector (np.ndarray): Chord vector for each segment.
+        normal_vector (np.ndarray): Normal vector for each segment.
     """
     
     def __init__(self,
@@ -184,7 +203,24 @@ class Component:
                  airfoil_ids: List[str],
                  chord_vector: np.ndarray,
                  normal_vector: np.ndarray):
-        """Initialize Component with the provided data."""
+        """
+        Initialize Component with the provided data.
+        
+        Args:
+            id: Identifier name for the component.
+            translation: Translation vector applied to the entire component.
+            rotation: Euler angle rotation vector [deg] around X, Y, Z axes.
+            pitch: Pitch angle for the segment [deg], vectorized to avoid mutability.
+            shape_xyz: Nx3 matrix of local segment positions (untransformed).
+            shape_xyz_global: Nx3 matrix of global segment positions (transformed).
+            chord: Chord length per segment.
+            twist: Twist angle per segment [deg].
+            thickness: Relative thickness per segment (scales airfoil height), fraction of chord.
+            offset: Offset values per segment.
+            airfoil_ids: Airfoil data identifier for each segment (defaults to "default" if missing).
+            chord_vector: Chord vector for each segment.
+            normal_vector: Normal vector for each segment.
+        """
         self.id = id
         self.translation = translation
         self.rotation = rotation
@@ -202,25 +238,25 @@ class Component:
 
 class VIV_Params:
     """
-    Encapsulates all top-level user-defined configuration inputs required for vortex-induced vibration analysis.
+    Encapsulate all top-level user-defined configuration inputs required for vortex-induced vibration analysis.
 
     Attributes:
-        fluid_density (float): Air density [kg/m³]
-        fluid_dynamicviscosity (float): Dynamic viscosity of air [Pa·s]
-        rotation_axis (np.ndarray): Axis of rotation as a 3-element vector
-        rotation_axis_offset (np.ndarray): Origin of the rotation axis (used in torque calculations and visualization)
-        inflow_vec (np.ndarray): Direction of inflow velocity (typically [1, 0, 0] for +X)
-        plot_cycle (List[str]): List of hex colors used to differentiate components in visualization
-        azimuths (np.ndarray): Azimuthal angles [deg] swept by the rotor or structure
-        inflow_speeds (np.ndarray): Freestream inflow speeds [m/s]
-        output_time (np.ndarray): Output time points [s]
-        freq_min (float): Minimum frequency [Hz] to consider in overlap comparison
-        freq_max (float): Maximum frequency [Hz] to consider in overlap comparison
-        airfoil_folder (str): Path to the airfoil folder
-        n_harmonic (int): Number of harmonics to check against
-        amplitude_coeff_cutoff (float): Lower threshold on what amplitudes are of interest
-        n_freq_depth (int): How deep to go in the Strouhaul number spectrum
-        output_azimuth_vinf (Tuple[float, float]): Used to limit the case where the relatively expensive output signal reconstruction is done
+        fluid_density (float): Air density [kg/m³].
+        fluid_dynamicviscosity (float): Dynamic viscosity of air [Pa·s].
+        rotation_axis (np.ndarray): Axis of rotation as a 3-element vector.
+        rotation_axis_offset (np.ndarray): Origin of the rotation axis (used in torque calculations and visualization).
+        inflow_vec (np.ndarray): Direction of inflow velocity (typically [1, 0, 0] for +X).
+        plot_cycle (List[str]): List of hex colors used to differentiate components in visualization.
+        azimuths (np.ndarray): Azimuthal angles [deg] swept by the rotor or structure.
+        inflow_speeds (np.ndarray): Freestream inflow speeds [m/s].
+        output_time (np.ndarray): Output time points [s].
+        freq_min (float): Minimum frequency [Hz] to consider in overlap comparison.
+        freq_max (float): Maximum frequency [Hz] to consider in overlap comparison.
+        airfoil_folder (str): Path to the airfoil folder.
+        n_harmonic (int): Number of harmonics to check against.
+        amplitude_coeff_cutoff (float): Lower threshold on what amplitudes are of interest.
+        n_freq_depth (int): How deep to go in the Strouhal number spectrum.
+        output_azimuth_vinf (Tuple[float, float]): Used to limit the case where the relatively expensive output signal reconstruction is done.
     """
     
     def __init__(self,
@@ -240,7 +276,27 @@ class VIV_Params:
                  amplitude_coeff_cutoff: float = 0.01,
                  n_freq_depth: int = 3,
                  output_azimuth_vinf: Tuple[float, float] = (5.0, 2.0)):
-        """Initialize VIV_Params with the provided data."""
+        """
+        Initialize VIV_Params with the provided data.
+        
+        Args:
+            fluid_density: Air density [kg/m³].
+            fluid_dynamicviscosity: Dynamic viscosity of air [Pa·s].
+            rotation_axis: Axis of rotation as a 3-element vector.
+            rotation_axis_offset: Origin of the rotation axis (used in torque calculations and visualization).
+            inflow_vec: Direction of inflow velocity (typically [1, 0, 0] for +X).
+            plot_cycle: List of hex colors used to differentiate components in visualization.
+            azimuths: Azimuthal angles [deg] swept by the rotor or structure.
+            inflow_speeds: Freestream inflow speeds [m/s].
+            output_time: Output time points [s].
+            freq_min: Minimum frequency [Hz] to consider in overlap comparison.
+            freq_max: Maximum frequency [Hz] to consider in overlap comparison.
+            airfoil_folder: Path to the airfoil folder.
+            n_harmonic: Number of harmonics to check against.
+            amplitude_coeff_cutoff: Lower threshold on what amplitudes are of interest.
+            n_freq_depth: How deep to go in the Strouhal number spectrum.
+            output_azimuth_vinf: Used to limit the case where the relatively expensive output signal reconstruction is done.
+        """
         self.fluid_density = fluid_density
         self.fluid_dynamicviscosity = fluid_dynamicviscosity
         self.rotation_axis = rotation_axis

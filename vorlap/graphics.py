@@ -13,7 +13,7 @@ from typing import List
 
 def calc_structure_vectors_andplot(components: List[Component], viv_params: VIV_Params, show_plot: bool = True, return_fig: bool = False):
     """
-    Calculates structure vectors and creates a plot.
+    Calculate structure vectors and create a 3D visualization plot.
 
     Args:
         components: List of structural components.
@@ -22,7 +22,7 @@ def calc_structure_vectors_andplot(components: List[Component], viv_params: VIV_
         return_fig: Whether to return the figure object (default: False).
 
     Returns:
-        fig: Plotly figure object if return_fig=True, otherwise None.
+        Plotly figure object if return_fig=True, otherwise None.
     """
     from .fileio import load_airfoil_coords
 
@@ -144,7 +144,7 @@ def calc_structure_vectors_andplot(components: List[Component], viv_params: VIV_
             normalline_local[ipt, :, :] = normalline_scaled_twisted_skewed_translated
 
         # Now that the local point cloud is generated, let's rotate and move it into position
-        # Use Fortran-style (column-major) order to match Julia's reshape behavior
+        # Use Fortran-style (column-major) order
         af_cloud_local = af_coords_local.reshape(-1, af_coords_local.shape[2], order='F')
         chordline_cloud_local = chordline_local.reshape(-1, chordline_local.shape[2], order='F')
         normalline_cloud_local = normalline_local.reshape(-1, normalline_local.shape[2], order='F')
@@ -220,7 +220,15 @@ def calc_structure_vectors_andplot(components: List[Component], viv_params: VIV_
 
     # Display the figure if requested
     if show_plot:
-        fig.show(renderer="browser")
+        try:
+            fig.show(renderer="browser")
+        except Exception:
+            # Fallback for headless environments (like CI/CD)
+            try:
+                fig.show(renderer="png")
+            except Exception:
+                # If no renderers work, just skip showing
+                pass
 
     # Return the figure if requested
     if return_fig:

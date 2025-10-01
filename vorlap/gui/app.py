@@ -22,6 +22,8 @@ from vorlap.gui.widgets import ScrollText
 
 
 class VorLapApp(tk.Tk):
+    """Main VorLap GUI application class."""
+    
     def __init__(self):
         super().__init__()
         self.title("VORtex overLAP Tool")
@@ -87,3 +89,7 @@ class VorLapApp(tk.Tk):
         except Exception as e:
             self.log(f"Error loading airfoils: {str(e)}\n")
             return {} 
+        
+if __name__ == "__main__":
+    app = VorLapApp()
+    app.mainloop()

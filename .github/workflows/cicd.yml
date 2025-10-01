@@ -1,0 +1,146 @@
+name: CI/CD
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    continue-on-error: true
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        python-version: ["3.10", "3.11", "3.12"]
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+    
+    - name: Install system dependencies (Ubuntu)
+      if: matrix.os == 'ubuntu-latest'
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y libhdf5-dev pkg-config
+    
+    - name: Install system dependencies (macOS)
+      if: matrix.os == 'macos-latest'
+      run: |
+        brew install hdf5 pkg-config
+    
+    - name: Install system dependencies (Windows)
+      if: matrix.os == 'windows-latest'
+      run: |
+        # HDF5 and other dependencies are usually handled by pip on Windows
+        echo "Windows dependencies handled by pip"
+    
+    - name: Install Python dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pytest pytest-cov matplotlib
+        pip install -e .
+    
+    - name: Run unit tests
+      run: |
+        python -m pytest test/ -v --tb=short
+
+  test-coverage:
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python 3.10
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.10"
+    
+    - name: Install system dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y libhdf5-dev pkg-config
+    
+    - name: Install Python dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pytest pytest-cov matplotlib coverage[toml]
+        pip install -e .
+    
+    - name: Run tests with coverage
+      run: |
+        python -m pytest test/ --cov=vorlap --cov-report=xml --cov-report=term-missing
+    
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v3
+      with:
+        file: ./coverage.xml
+        flags: unittests
+        name: codecov-umbrella
+        fail_ci_if_error: false
+
+  docs:
+    runs-on: ubuntu-latest
+    # Only deploy docs on pushes to main branch, not on PRs
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    
+    # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    
+    # Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
+    concurrency:
+      group: "pages"
+      cancel-in-progress: false
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python 3.10
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.10"
+    
+    - name: Install system dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y libhdf5-dev pkg-config
+    
+    - name: Install documentation dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install sphinx sphinx-rtd-theme
+        pip install -e .
+    
+    - name: Build documentation
+      run: |
+        cd docs/
+        make html
+    
+    - name: Check for broken links
+      run: |
+        cd docs/
+        make linkcheck
+      continue-on-error: true
+    
+    - name: Setup Pages
+      uses: actions/configure-pages@v3
+    
+    - name: Upload to GitHub Pages
+      uses: actions/upload-pages-artifact@v2
+      with:
+        path: docs/_build/html/
+    
+    - name: Deploy to GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@v2
+ 
