@@ -2,6 +2,15 @@
 """
 Build executable for VorLap using PyInstaller.
 This script creates a standalone executable that can be distributed without Python installation.
+
+NOTE: This is currently in-development and may not work for all platforms.
+Due to extra requirements to make executables for MacOS, MacOS is not supported yet.
+
+MacOS Support Requirements:
+1. Separate builds for Intel (x86_64) and Apple Silicon (arm64)
+2. Use --onedir mode instead of --onefile
+3. Code signing with Apple Developer certificates (for distribution)
+4. Notarization for Gatekeeper compatibility
 """
 
 import os
