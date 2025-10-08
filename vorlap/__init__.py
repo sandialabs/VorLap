@@ -12,7 +12,7 @@ import os
 repo_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 from .graphics import calc_structure_vectors_andplot
-from .interpolation import interpolate_fft_spectrum, interpolate_fft_spectrum_batch, interpolate_fft_spectrum_optimized, resample_airfoil
+from .interpolation import interpolate_fft_spectrum, interpolate_fft_spectrum_batch, interpolate_fft_spectrum_optimized, resample_airfoil, lookup_fft_spectrum_nearest
 from .structs import (
     Component,
     AirfoilFFT,

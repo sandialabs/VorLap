@@ -8,6 +8,7 @@ This tab handles visualization, plotting, and data export functionality.
 import tkinter as tk
 from tkinter import ttk, filedialog, messagebox
 from pathlib import Path
+import matplotlib.colors as mcolors
 import csv
 
 # Add the vorlap package to the path
@@ -112,14 +113,34 @@ class PlotsOutputsTab(ttk.Frame):
             force_data = results['total_global_force_vector']
             idx = {'fx': 0, 'fy': 1, 'fz': 2}[plot_type]
             data = force_data[:, :, idx]
-            im = self.ax.imshow(data, extent=extent, aspect='auto', origin='lower', cmap='coolwarm')
+            # Force grey at 0, blue for negatives, red for positives
+            norm = mcolors.TwoSlopeNorm(vmin=data.min(), vcenter=0.0, vmax=data.max())
+
+            im = self.ax.imshow(
+                data,
+                extent=extent,
+                aspect='auto',
+                origin='lower',
+                cmap='coolwarm',
+                norm=norm
+            )
             self.ax.set_title(f'Force {plot_type.upper()}')
             label = 'Force (N)'
         elif plot_type.startswith("m"):
             moment_data = results['total_global_moment_vector']
             idx = {'mx': 0, 'my': 1, 'mz': 2}[plot_type]
             data = moment_data[:, :, idx]
-            im = self.ax.imshow(data, extent=extent, aspect='auto', origin='lower', cmap='coolwarm')
+            # Force grey at 0, blue for negatives, red for positives
+            norm = mcolors.TwoSlopeNorm(vmin=data.min(), vcenter=0.0, vmax=data.max())
+
+            im = self.ax.imshow(
+                data,
+                extent=extent,
+                aspect='auto',
+                origin='lower',
+                cmap='coolwarm',
+                norm=norm
+            )
             self.ax.set_title(f'Moment {plot_type.upper()}')
             label = 'Moment (N-m)'
         

@@ -8,6 +8,87 @@ import numpy as np
 from typing import Dict, List, Tuple, Optional
 
 
+def _find_nearest_indices(Re_grid: np.ndarray,
+                          AOA_grid: np.ndarray,
+                          Re_q: np.ndarray,
+                          AOA_q: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
+    """
+    For each query (Re_q, AOA_q), return indices of the *closest* Re and AOA.
+    Ties go to the lower (left) index.
+
+    Re_grid, AOA_grid must be 1D, sorted ascending.
+    Re_q, AOA_q can be scalars or 1D arrays (nq,).
+    """
+    Re_q  = np.atleast_1d(Re_q).astype(float)
+    AOA_q = np.atleast_1d(AOA_q).astype(float)
+
+    # For Re
+    i_right = np.searchsorted(Re_grid, Re_q, side='left')
+    i_left  = np.clip(i_right - 1, 0, len(Re_grid) - 1)
+    i_right = np.clip(i_right,     0, len(Re_grid) - 1)
+    choose_left = np.abs(Re_q - Re_grid[i_left]) <= np.abs(Re_q - Re_grid[i_right])
+    i_nn = np.where(choose_left, i_left, i_right)
+
+    # For AOA
+    j_right = np.searchsorted(AOA_grid, AOA_q, side='left')
+    j_left  = np.clip(j_right - 1, 0, len(AOA_grid) - 1)
+    j_right = np.clip(j_right,     0, len(AOA_grid) - 1)
+    choose_left = np.abs(AOA_q - AOA_grid[j_left]) <= np.abs(AOA_q - AOA_grid[j_right])
+    j_nn = np.where(choose_left, j_left, j_right)
+
+    return i_nn, j_nn
+
+
+def _lookup_apply_tensor(F: np.ndarray,
+                         i_nn: np.ndarray,
+                         j_nn: np.ndarray,
+                         n_freq_depth: Optional[int] = None) -> np.ndarray:
+    """
+    F: (NR, NA, K) -> returns (nq, K_sel)
+    Gathers spectrum rows at nearest (Re, AOA) for each query.
+    """
+    NR, NA, K = F.shape
+    if n_freq_depth is None or n_freq_depth > K:
+        n_freq_depth = K
+    F = F[:, :, :n_freq_depth]
+    # Advanced indexing over (nq,) for i and j -> (nq, K_sel)
+    return F[i_nn, j_nn, :]
+
+def lookup_fft_spectrum_nearest(afft,
+                                Re_val: float,
+                                AOA_val: float,
+                                fields: List[str],
+                                n_freq_depth: Optional[int] = None) -> Dict[str, Tuple[np.ndarray, np.ndarray, np.ndarray]]:
+    """
+    Nearest-neighbor lookup (no interpolation).
+    Matches your return structure: { 'CL': (ST, Amp, Pha), ... }.
+    """
+    Re_q  = np.atleast_1d(Re_val).astype(float)
+    AOA_q = np.atleast_1d(AOA_val).astype(float)
+
+    # find nearest grid indices (no clamping needed beyond edges)
+    i_nn, j_nn = _find_nearest_indices(afft.Re, afft.AOA, Re_q, AOA_q)
+
+    out: Dict[str, Tuple[np.ndarray, np.ndarray, np.ndarray]] = {}
+    for field in fields:
+        if field == 'CL':
+            STsrc, Asrc, Psrc = afft.CL_ST, afft.CL_Amp, afft.CL_Pha
+        elif field == 'CD':
+            STsrc, Asrc, Psrc = afft.CD_ST, afft.CD_Amp, afft.CD_Pha
+        elif field == 'CF':
+            STsrc, Asrc, Psrc = afft.CF_ST, afft.CF_Amp, afft.CF_Pha
+        elif field == 'CM':
+            STsrc, Asrc, Psrc = afft.CM_ST, afft.CM_Amp, afft.CM_Pha
+        else:
+            raise ValueError(f"Invalid field symbol: {field}")
+
+        ST  = _lookup_apply_tensor(STsrc, i_nn, j_nn, n_freq_depth)[0]  # nq==1 -> [0]
+        Amp = _lookup_apply_tensor(Asrc,  i_nn, j_nn, n_freq_depth)[0]
+        Pha = _lookup_apply_tensor(Psrc,  i_nn, j_nn, n_freq_depth)[0]
+
+        out[field] = (ST, Amp, Pha)
+    return out
+
 def _find_cells_and_weights(Re_grid: np.ndarray,
                             AOA_grid: np.ndarray,
                             Re_q: np.ndarray,

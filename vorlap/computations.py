@@ -19,7 +19,7 @@ def compute_thrust_torque_spectrum_optimized(components: List[Component],
     
     Same interface and outputs as the original function, but with significant performance improvements.
     """
-    from .interpolation import interpolate_fft_spectrum_optimized
+    from .interpolation import interpolate_fft_spectrum_optimized, lookup_fft_spectrum_nearest
     
     # Pre-cache interpolators for all airfoils
     for afft in affts.values():
@@ -86,6 +86,7 @@ def compute_thrust_torque_spectrum_optimized(components: List[Component],
                     
                     # Optimized interpolation: get all three fields at once
                     results = interpolate_fft_spectrum_optimized(afft, Re, aoa_deg, ['CL', 'CD', 'CF'], n_freq_depth=n_freq_depth)
+                    # results = lookup_fft_spectrum_nearest(afft, Re, aoa_deg, ['CL', 'CD', 'CF'], n_freq_depth=n_freq_depth)
                     ST_cl, amps_cl, phases_cl = results['CL']
                     ST_cd, amps_cd, phases_cd = results['CD']
                     ST_cf, amps_cf, phases_cf = results['CF']
@@ -114,7 +115,7 @@ def compute_thrust_torque_spectrum_optimized(components: List[Component],
                     frequencies_cf = ST_cf * (V_eff / STlength)
                     
                     # Record the worst case overlap, and where it happened
-                    for lstrouhaul in range(min(n_freq_depth, len(frequencies_cf))):
+                    for lstrouhaul in range(1,min(n_freq_depth, len(frequencies_cf))): #remember that the first is always the mean, 0-idx in python
                         if amps_cf[lstrouhaul] > amplitude_coeff_cutoff:
                             for jnatfreq in range(natfreqs.shape[0]):
                                 for kharmonic in range(1, n_harmonic + 1):
@@ -122,7 +123,7 @@ def compute_thrust_torque_spectrum_optimized(components: List[Component],
                                     
                                     if percdiff_matrix[i_inflow, j_azi] > abs(percdiff):
                                         percdiff_matrix[i_inflow, j_azi] = abs(percdiff)
-                                        percdiff_info[i_inflow, j_azi] = f"{percdiff} percdiff Occurs for NatFreq: {natfreqs[jnatfreq]} at Harmonic: {kharmonic} with Shedding frequency: {frequencies_cf[lstrouhaul]} (Strouhaul depth {lstrouhaul}) AmplitudeCoeff: {amps_cf[lstrouhaul]} in Comp: {comp.id} at pt#: {ipt+1}"
+                                        percdiff_info[i_inflow, j_azi] = f"{percdiff} percdiff Occurs for NatFreq: {natfreqs[jnatfreq]} at Harmonic: {kharmonic} with Shedding frequency: {frequencies_cf[lstrouhaul]} (Strouhaul {ST_cf[lstrouhaul]} depth {lstrouhaul}) AmplitudeCoeff: {amps_cf[lstrouhaul]} in Comp: {comp.id} at pt#: {ipt+1} aoa(deg): {aoa_deg}, Re: {Re}"
                     
                     # Output data for just the requested point
                     if viv_params.output_azimuth_vinf[0] == azimuths[j_azi] and viv_params.output_azimuth_vinf[1] == inflow_speeds[i_inflow]:

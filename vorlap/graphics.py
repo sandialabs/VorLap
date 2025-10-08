@@ -30,7 +30,7 @@ def calc_structure_vectors_andplot(components: List[Component], viv_params: VIV_
     fig = go.Figure()
 
     # Draw rotation axis
-    axis_len = max([np.max(comp.shape_xyz) for comp in components]) * 1.2
+    axis_len = max([(np.max(comp.shape_xyz) + np.max(comp.translation)) for comp in components])
     origin = viv_params.rotation_axis_offset
     arrow = viv_params.rotation_axis * axis_len + origin
 
@@ -216,7 +216,25 @@ def calc_structure_vectors_andplot(components: List[Component], viv_params: VIV_
         margin=dict(l=0, r=0, b=0, t=0)
     )
 
+    # # Remove background and grid
+    # fig.update_layout(
+    #     scene=dict(
+    #         xaxis=dict(showbackground=False, showgrid=False, zeroline=False, showticklabels=False),
+    #         yaxis=dict(showbackground=False, showgrid=False, zeroline=False, showticklabels=False),
+    #         zaxis=dict(showbackground=False, showgrid=False, zeroline=False, showticklabels=False),
+    #     ),
+    #     paper_bgcolor='rgba(0,0,0,0)',
+    #     plot_bgcolor='rgba(0,0,0,0)',
+    # )
+
+
     fig.update_layout(scene_camera=dict(eye=dict(x=1.5, y=-2., z=1.5)))
+
+    # Save as transparent image (requires kaleido)
+    save_path = "structure_plot_transparent.png"  # or .pdf, .svg
+    fig.write_image(save_path, scale=4, width=1600, height=1200)
+    print(f"Saved transparent 3D plot to {save_path}")
+
 
     # Display the figure if requested
     if show_plot:

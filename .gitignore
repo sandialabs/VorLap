@@ -5,6 +5,8 @@
 *.DS_Store
 *.pdf
 *.csv
+*.png
+*.dat
 *\figs
 
 # Byte-compiled / optimized / DLL files
