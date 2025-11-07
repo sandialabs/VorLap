@@ -17,10 +17,10 @@ mpl.rcParams["axes.prop_cycle"] = mpl.cycler(color=plot_cycle)
 localpath = os.path.dirname(os.path.abspath(__file__))
 
 # dat_folder points to AIRFOIL directory that contains RE* subfolders
-airfoilname = "NACA0018" #"flat_plate" "NACA0018" "NACA0021" "cylinder"
-dat_folder = os.path.join(localpath, "../data/airfoils", "NALURuns", airfoilname)   # CHANGED (root for RE* dirs)
-# airfoilname = "ffa_w3_211"
-# dat_folder = os.path.join(localpath, "../data/airfoils/2024_Ganesh_VIV_Paper_Data", "ffa_data_files_ftt_160", airfoilname)   # CHANGED (root for RE* dirs)
+# airfoilname = "NACA0021" #"flat_plate" "NACA0018" "NACA0021" "cylinder"
+# dat_folder = os.path.join(localpath, "../data/airfoils", "NALURuns", airfoilname)   # CHANGED (root for RE* dirs)
+airfoilname = "ffa_w3_211"
+dat_folder = os.path.join(localpath, "../data/airfoils/2024_Ganesh_VIV_Paper_Data", "ffa_data_files_ftt_160", airfoilname)   # CHANGED (root for RE* dirs)
 # airfoilname = "cylinder_100"#"flat_plate_000"
 # dat_folder = os.path.join(localpath, "../data/airfoils/2024_Ganesh_VIV_Paper_Data", airfoilname)   # CHANGED (root for RE* dirs)
 
@@ -36,11 +36,11 @@ minFreq = 0.0
 maxFreq = 1000.0
 NFreq_sort = 30
 genplotsdetail = True
-genplotssummary = True
-sampledT_startcutoff = 10.3
-St_tune = 0.07
-lowfreqskip = 30 #Number of sampled points to skip before considering data, in the frequency domain
-symmetric_append = True # if the data only contains positive AOA.  VorLap needs both positive and negative, so reverse and prepend along the aoa axis
+genplotssummary = False
+sampledT_startcutoff = 0.01
+St_tune = 0.00
+lowfreqskip = 10 #Number of sampled points to skip before considering data, in the frequency domain
+symmetric_append = False # if the data only contains positive AOA.  VorLap needs both positive and negative, so reverse and prepend along the aoa axis
 
 # make/ensure figs directory
 figs_dir = os.path.join(localpath, "figs")
@@ -312,7 +312,7 @@ for iRe, re_dir in enumerate(re_dirs):
 
             fig = plt.figure()
             plt.plot(timefull[idx_start:], CF[idx_start:], label="Original", linewidth=2)
-            # plt.plot(timefull[idx_start:], signal[idx_start:], label="Reconstructed", linewidth=2)
+            plt.plot(timefull[idx_start:], signal[idx_start:], label="Reconstructed", linewidth=2)
             plt.xlabel("Time (s)")
             plt.ylabel("CF")
             plt.title(f"{airfoilname} (CF), AOA: {AOA[iaoa]} (Re={Re[iRe]:.5g})")
