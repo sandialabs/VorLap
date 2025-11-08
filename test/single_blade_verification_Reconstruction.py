@@ -24,12 +24,12 @@ viv_params = vorlap.VIV_Params(
     rotation_axis=np.array([0.0, 0.0, 1.0]),
     rotation_axis_offset=np.array([0.0, 0.0, 0.0]),
     inflow_vec=np.array([1.0, 0.0, 0.0]),
-    azimuths=np.array([0.0,-144.0,80.0]),#np.arange(0, 360, 120),  # collect(0:5:255.0)
-    inflow_speeds=np.array([75.00001,75.00002,75.00003]),#np.arange(2.0, 50.0, 4.0),  # collect(2.0:0.5:50.0)
-    n_harmonic=2,
+    azimuths=np.arange(0, 360, 24),  # collect(0:5:255.0)
+    inflow_speeds=np.arange(0.0, 80.0, 5.0),  # collect(2.0:0.5:50.0)
+    n_harmonic=1,
     output_time=np.arange(0.0, 2.0, 0.01),  # collect(0.0:0.001:0.01)
-    output_azimuth_vinf=(-144.0, 75.00002),
-    amplitude_coeff_cutoff=0.000000002,
+    output_azimuth_vinf=(216.0, 75.0),
+    amplitude_coeff_cutoff=0.2,
     n_freq_depth=20,
     airfoil_folder=f"{path}/../data/airfoils/"
 )
