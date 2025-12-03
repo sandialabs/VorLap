@@ -25,7 +25,7 @@ viv_params = vorlap.VIV_Params(
     rotation_axis=np.array([0.0, 0.0, 1.0]),
     rotation_axis_offset=np.array([0.0, 0.0, 0.0]),
     inflow_vec=np.array([1.0, 0.0, 0.0]),
-    azimuths=np.arange(0, 65, 5),  # collect(0:5:255.0)
+    azimuths=np.arange(0, 125, 5),  # collect(0:5:255.0)
     inflow_speeds=np.arange(1.0, 16.0, 1.0),  # collect(2.0:0.5:50.0)
     n_harmonic=1,
     output_time=np.arange(0.0, 10.011, 0.001),  # collect(0.0:0.001:0.01)
@@ -88,7 +88,7 @@ tick_positions = np.log10(tick_vals)  # positions in the log scale
 figs_dir = f"{path}/../pyfigs_optimized"
 os.makedirs(figs_dir, exist_ok=True)
 
-plot_ = plt.figure(figsize=(9,3))
+plot_ = plt.figure(figsize=(4.5,3))
 plt.subplots_adjust(left=0.18, bottom=0.17, top=0.9, right=0.9)
 plt.imshow(percdiff_matrix, 
            extent=[viv_params.azimuths[0], viv_params.azimuths[-1], 
@@ -181,7 +181,7 @@ plt.subplots_adjust(left=0.18, bottom=0.17, top=0.9, right=0.9)
 # plt.close()
 
 
-plot_ = plt.figure(figsize=(9,3))
+plot_ = plt.figure(figsize=(4.5,3))#plt.figure(figsize=(9,3))
 plt.subplots_adjust(left=0.18, bottom=0.17, top=0.9, right=0.9)
 data = total_global_moment_vector[:, :, 2]
 norm = mcolors.TwoSlopeNorm(vmin=np.nanmin(data), vcenter=0.0, vmax=np.nanmax(data))
@@ -214,7 +214,7 @@ plt.plot(df["time"], df["node2y"], label="Node 2 Y", linewidth=2)
 
 # --- Labels and legend ---
 plt.xlabel("Time (s)")
-plt.ylabel("Force (N)")
+plt.ylabel("Force per Span (N/m)")
 # plt.title("Node 2 X and Y vs Time")
 plt.legend()
 # plt.grid(True)

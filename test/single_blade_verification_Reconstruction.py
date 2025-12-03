@@ -82,7 +82,7 @@ tick_positions = np.log10(tick_vals)  # positions in the log scale
 figs_dir = f"{path}/../pyfigs_single_Reconstruction"
 os.makedirs(figs_dir, exist_ok=True)
 
-plot_ = plt.figure(figsize=(10, 8))
+plot_ = plt.figure(figsize=(4.5,3))
 plt.imshow(percdiff_matrix, 
            extent=[viv_params.azimuths[0], viv_params.azimuths[-1], 
                   viv_params.inflow_speeds[0], viv_params.inflow_speeds[-1]],
@@ -94,7 +94,7 @@ plt.title('Worst Percent Difference')
 plt.savefig(f"{figs_dir}/worst_percent_diff_single_blade_Reconstruction.pdf", bbox_inches='tight')
 plt.close()
 
-plot_ = plt.figure(figsize=(10, 8))
+plot_ = plt.figure(figsize=(4.5,3))
 plt.imshow(total_global_force_vector[:, :, 0], 
            extent=[viv_params.azimuths[0], viv_params.azimuths[-1], 
                   viv_params.inflow_speeds[0], viv_params.inflow_speeds[-1]],
@@ -106,7 +106,7 @@ plt.title('Fx')
 plt.savefig(f"{figs_dir}/Fx_single_blade_Reconstruction.pdf", bbox_inches='tight')
 plt.close()
 
-plot_ = plt.figure(figsize=(10, 8))
+plot_ = plt.figure(figsize=(4.5,3))
 plt.imshow(total_global_force_vector[:, :, 1], 
            extent=[viv_params.azimuths[0], viv_params.azimuths[-1], 
                   viv_params.inflow_speeds[0], viv_params.inflow_speeds[-1]],
@@ -118,7 +118,7 @@ plt.title('Fy')
 plt.savefig(f"{figs_dir}/Fy_single_blade_Reconstruction.pdf", bbox_inches='tight')
 plt.close()
 
-plot_ = plt.figure(figsize=(10, 8))
+plot_ = plt.figure(figsize=(4.5,3))
 plt.imshow(total_global_force_vector[:, :, 2], 
            extent=[viv_params.azimuths[0], viv_params.azimuths[-1], 
                   viv_params.inflow_speeds[0], viv_params.inflow_speeds[-1]],
@@ -130,7 +130,7 @@ plt.title('Fz')
 plt.savefig(f"{figs_dir}/Fz_single_blade_Reconstruction.pdf", bbox_inches='tight')
 plt.close()
 
-plot_ = plt.figure(figsize=(10, 8))
+plot_ = plt.figure(figsize=(4.5,3))
 plt.imshow(total_global_moment_vector[:, :, 0], 
            extent=[viv_params.azimuths[0], viv_params.azimuths[-1], 
                   viv_params.inflow_speeds[0], viv_params.inflow_speeds[-1]],
@@ -142,7 +142,7 @@ plt.title('Mx')
 plt.savefig(f"{figs_dir}/Mx_single_blade_Reconstruction.pdf", bbox_inches='tight')
 plt.close()
 
-plot_ = plt.figure(figsize=(10, 8))
+plot_ = plt.figure(figsize=(4.5,3))
 plt.imshow(total_global_moment_vector[:, :, 1], 
            extent=[viv_params.azimuths[0], viv_params.azimuths[-1], 
                   viv_params.inflow_speeds[0], viv_params.inflow_speeds[-1]],
@@ -154,7 +154,7 @@ plt.title('My')
 plt.savefig(f"{figs_dir}/My_single_blade_Reconstruction.pdf", bbox_inches='tight')
 plt.close()
 
-plot_ = plt.figure(figsize=(10, 8))
+plot_ = plt.figure(figsize=(4.5,3))
 plt.imshow(total_global_moment_vector[:, :, 2], 
            extent=[viv_params.azimuths[0], viv_params.azimuths[-1], 
                   viv_params.inflow_speeds[0], viv_params.inflow_speeds[-1]],
