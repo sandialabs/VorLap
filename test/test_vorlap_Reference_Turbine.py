@@ -94,11 +94,11 @@ plt.imshow(percdiff_matrix,
            extent=[viv_params.azimuths[0], viv_params.azimuths[-1], 
                   viv_params.inflow_speeds[0], viv_params.inflow_speeds[-1]],
            aspect='auto', origin='lower', cmap='viridis_r', vmin=0, vmax=50)
-plt.colorbar(label='Freq % Diff')
+plt.colorbar(label='Percent Difference in Frequencies')
 plt.xlabel('Azimuth (deg)')
-plt.ylabel('Inflow (m/s)')
+plt.ylabel(r'Inflow (m s$^{-1}$)')
 # plt.ylim([0.0,15.0])
-plt.title('Worst Percent Difference ')
+# plt.title('Worst Percent Difference ')
 plt.savefig(f"{figs_dir}/worst_percent_diff_optimized.pdf", bbox_inches='tight',transparent=True)
 plt.close()
 
