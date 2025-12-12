@@ -63,7 +63,7 @@ def calc_structure_vectors_andplot(components: List[Component], viv_params: VIV_
     ))
 
     # Draw inflow vector
-    inflow_origin = np.array([-axis_len/1.5 * 0.75, 0.0, axis_len/2 * 1.25])
+    inflow_origin = np.array([-axis_len/1.2 * 0.75, 0.0, axis_len/2 * 1.25])
     inflow_arrow = viv_params.inflow_vec * axis_len * 0.25 + inflow_origin
     inflow_vec = inflow_arrow - inflow_origin
     all_points.extend([inflow_origin, inflow_arrow])
