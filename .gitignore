@@ -1,13 +1,15 @@
 /build
 /qt*
-/figs
+# /figs
 *.stash
 *.DS_Store
-*.pdf
+# *.pdf
 *.csv
-*.png
+# *.png
 *.dat
-*\figs
+*\pyfigs*
+*\airfoils*
+*\scripts\figs*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
