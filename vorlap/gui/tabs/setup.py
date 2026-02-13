@@ -12,9 +12,6 @@ import numpy as np
 import time
 import threading
 
-# Add the vorlap package to the path
-import sys
-sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
 import vorlap
 
 from ..widgets import PathEntry, EditableTreeview

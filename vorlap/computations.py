@@ -5,277 +5,247 @@ Utility functions for the VorLap package.
 import numpy as np
 import math
 from typing import List, Dict, Tuple, Optional, Union, Any
+import warnings
 
 from .structs import AirfoilFFT, Component, VIV_Params
 
 
-#@profile
-def compute_thrust_torque_spectrum_optimized(components: List[Component], 
-                                           affts: Dict[str, AirfoilFFT],
-                                           viv_params: VIV_Params,
-                                           natfreqs: np.ndarray) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+_EPS = 1.0e-12
+
+
+def _normalize(vector: np.ndarray, name: str) -> np.ndarray:
+    """Return a unit vector and raise on zero magnitude input."""
+    vec = np.asarray(vector, dtype=float)
+    norm = float(np.linalg.norm(vec))
+    if norm <= _EPS:
+        raise ValueError(f"{name} must have non-zero magnitude.")
+    return vec / norm
+
+
+def _resolve_airfoil(affts: Dict[str, AirfoilFFT], airfoil_id: str) -> AirfoilFFT:
+    """Resolve an airfoil id with fallback to `default`."""
+    if airfoil_id in affts:
+        return affts[airfoil_id]
+    if "default" in affts:
+        return affts["default"]
+    raise KeyError(f"Airfoil '{airfoil_id}' was not found and no 'default' airfoil is available.")
+
+
+def _compute_local_segment_length(shape_xyz: np.ndarray, ipt: int) -> float:
     """
-    Optimized version of compute_thrust_torque_spectrum using cached interpolators and vectorized operations.
-    
-    Same interface and outputs as the original function, but with significant performance improvements.
+    Compute a nodal span length using neighboring points.
+
+    For interior points this is the average of adjacent segment lengths, giving
+    a partition of unity over the span. For end points this is half of the
+    adjacent segment. For a single-node component, 1.0 is used to keep the node
+    active in force calculations.
     """
-    from .interpolation import interpolate_fft_spectrum_optimized, lookup_fft_spectrum_nearest
-    
-    # Pre-cache interpolators for all airfoils
-    for afft in affts.values():
-        afft._cache_interpolators()
-    
-    inflow_speeds = viv_params.inflow_speeds
-    azimuths = viv_params.azimuths
-    rotation_axis = viv_params.rotation_axis
-    fluid_density = viv_params.fluid_density
-    fluid_dynamicviscosity = viv_params.fluid_dynamicviscosity
-    n_harmonic = viv_params.n_harmonic
-    amplitude_coeff_cutoff = viv_params.amplitude_coeff_cutoff
-    n_freq_depth = viv_params.n_freq_depth
+    n_pts = shape_xyz.shape[0]
+    if n_pts <= 1:
+        return 1.0
+    if ipt == 0:
+        return 0.5 * float(np.linalg.norm(shape_xyz[1, :] - shape_xyz[0, :]))
+    if ipt == n_pts - 1:
+        return 0.5 * float(np.linalg.norm(shape_xyz[-1, :] - shape_xyz[-2, :]))
+
+    left = float(np.linalg.norm(shape_xyz[ipt, :] - shape_xyz[ipt - 1, :]))
+    right = float(np.linalg.norm(shape_xyz[ipt + 1, :] - shape_xyz[ipt, :]))
+    return 0.5 * (left + right)
+
+
+def _compute_thrust_torque_spectrum_impl(
+    components: List[Component],
+    affts: Dict[str, AirfoilFFT],
+    viv_params: VIV_Params,
+    natfreqs: np.ndarray,
+    spectrum_lookup,
+) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+    """Shared implementation for standard and optimized spectrum solve paths."""
+    if not components:
+        raise ValueError("At least one component is required.")
+    if not affts:
+        raise ValueError("At least one airfoil FFT dataset is required.")
+
+    inflow_speeds = np.asarray(viv_params.inflow_speeds, dtype=float)
+    azimuths = np.asarray(viv_params.azimuths, dtype=float)
+    inflow_unit = _normalize(viv_params.inflow_vec, "inflow_vec")
+    rotation_axis = _normalize(viv_params.rotation_axis, "rotation_axis")
+    axis_offset = np.asarray(viv_params.rotation_axis_offset, dtype=float)
+    fluid_density = float(viv_params.fluid_density)
+    fluid_dynamicviscosity = float(viv_params.fluid_dynamicviscosity)
+    n_harmonic = int(viv_params.n_harmonic)
+    amplitude_coeff_cutoff = float(viv_params.amplitude_coeff_cutoff)
+    n_freq_depth = int(viv_params.n_freq_depth)
+
+    natfreqs = np.asarray(natfreqs, dtype=float).reshape(-1)
+    natfreqs = natfreqs[np.isfinite(natfreqs) & (natfreqs > 0.0)]
 
     n_inflow = len(inflow_speeds)
     n_az = len(azimuths)
 
     total_global_force_vector = np.zeros((n_inflow, n_az, 3))
     total_global_moment_vector = np.zeros((n_inflow, n_az, 3))
-    percdiff_matrix = np.ones((n_inflow, n_az)) * 1000
-    percdiff_info = np.empty((n_inflow, n_az), dtype=object)
+    percdiff_matrix = np.ones((n_inflow, n_az)) * 1000.0
+    percdiff_info = np.full((n_inflow, n_az), None, dtype=object)
 
-    total_nodes = sum([comp.shape_xyz.shape[0] for comp in components])
+    total_nodes = sum(comp.shape_xyz.shape[0] for comp in components)
     global_force_vector_nodes = np.zeros((len(viv_params.output_time), 3, total_nodes))
 
-    for i_inflow in range(n_inflow):
-        Vinf = np.array(viv_params.inflow_vec) / np.linalg.norm(viv_params.inflow_vec) * inflow_speeds[i_inflow]
-        
-        for j_azi in range(n_az):
-            # Negative since rotating the inflow in the negative direction is the same as rotating the structure in the positive
-            Vin_rotated = rotate_vector(Vinf, rotation_axis, -azimuths[j_azi])
-            
+    output_azimuth = float(viv_params.output_azimuth_vinf[0])
+    output_inflow = float(viv_params.output_azimuth_vinf[1])
+
+    for i_inflow, inflow_speed in enumerate(inflow_speeds):
+        Vinf = inflow_unit * inflow_speed
+
+        for j_azi, azimuth in enumerate(azimuths):
+            # Rotating inflow by -azimuth is equivalent to rotating the structure by +azimuth.
+            Vin_rotated = rotate_vector(Vinf, rotation_axis, -azimuth)
+
             inode = 0
             for comp in components:
-                N_pts = comp.shape_xyz.shape[0]
-                
-                for ipt in range(N_pts):
+                n_pts = comp.shape_xyz.shape[0]
+
+                for ipt in range(n_pts):
                     inode += 1
-                    
-                    global_pos = comp.shape_xyz_global[ipt]
-                    chord = comp.chord[ipt]
-                    
-                    afid = comp.airfoil_ids[ipt]
-                    afft = affts.get(afid, affts["default"])  # get the id, or use the default
-                    
-                    chord_vector = comp.chord_vector[ipt, :]
-                    normal_vector = comp.normal_vector[ipt, :]
-                    
-                    V_chord = np.dot(Vin_rotated, chord_vector / np.linalg.norm(chord_vector))
-                    V_normal = np.dot(Vin_rotated, normal_vector / np.linalg.norm(normal_vector))
-                    
-                    aoa_rad = math.atan2(V_normal, V_chord)  # Using atan2 for correct quadrant
+
+                    global_pos = np.asarray(comp.shape_xyz_global[ipt], dtype=float)
+                    chord = float(comp.chord[ipt])
+
+                    afft = _resolve_airfoil(affts, comp.airfoil_ids[ipt])
+
+                    chord_vector = np.asarray(comp.chord_vector[ipt, :], dtype=float)
+                    normal_vector = np.asarray(comp.normal_vector[ipt, :], dtype=float)
+                    chord_unit = _normalize(chord_vector, f"chord_vector[{comp.id}:{ipt}]")
+                    normal_unit = _normalize(normal_vector, f"normal_vector[{comp.id}:{ipt}]")
+
+                    V_chord = float(np.dot(Vin_rotated, chord_unit))
+                    V_normal = float(np.dot(Vin_rotated, normal_unit))
+
+                    aoa_rad = math.atan2(V_normal, V_chord)
                     aoa_deg = math.degrees(aoa_rad)
-                    V_eff = math.sqrt(V_normal**2 + V_chord**2)  # Fundamental assumption that spanwise flow doesn't impact lift and drag
+                    V_eff = math.sqrt(V_normal**2 + V_chord**2)
                     Re = fluid_density * V_eff * chord / fluid_dynamicviscosity
-
-                    if ipt == 0:
-                        local_length = 0.0 #TODO: is there a better way to do this without going full on nodes and elements? Maybe just tell people this is how it is calculated
-                        # print("AOA: ",aoa_deg, "Azi: ",azimuths[j_azi], "Vinf: ",Vinf, "Veff: ",V_eff)
-                    else:
-                        local_length = np.linalg.norm(comp.shape_xyz[ipt, :] - comp.shape_xyz[ipt-1, :])
-
+                    local_length = _compute_local_segment_length(comp.shape_xyz, ipt)
                     q = 0.5 * fluid_density * V_eff**2 * chord * local_length
-                    
-                    # Optimized interpolation: get all three fields at once
-                    results = interpolate_fft_spectrum_optimized(afft, Re, aoa_deg, ['CL', 'CD', 'CF'], n_freq_depth=n_freq_depth)
-                    # results = lookup_fft_spectrum_nearest(afft, Re, aoa_deg, ['CL', 'CD', 'CF'], n_freq_depth=n_freq_depth)
-                    ST_cl, amps_cl, phases_cl = results['CL']
-                    ST_cd, amps_cd, phases_cd = results['CD']
-                    ST_cf, amps_cf, phases_cf = results['CF']
-                    
-                    Lifts = amps_cl[0] * q
-                    Drags = amps_cd[0] * q
 
-                    # print("CL: ",amps_cl[0], "q: ", q, "Lifts: ", Lifts)
-                    # print("CD: ",amps_cd[0], "q: ", q, "Drags: ", Drags)
+                    spectra = spectrum_lookup(afft, Re, aoa_deg, n_freq_depth)
+                    ST_cl, amps_cl, phases_cl = spectra["CL"]
+                    ST_cd, amps_cd, phases_cd = spectra["CD"]
+                    ST_cf, amps_cf, _phases_cf = spectra["CF"]
 
-                    # Calculate the global force vector
-                    chord_vector_rotated = rotate_vector(chord_vector, rotation_axis, azimuths[j_azi]*0) # no need to double rotate, keep at 0.
-                    local_yaw = math.degrees(math.atan2(chord_vector_rotated[1], chord_vector_rotated[0]))
-                    normal_vector_rotated = rotate_vector(normal_vector, rotation_axis, azimuths[j_azi])
+                    lifts = amps_cl[0] * q
+                    drags = amps_cd[0] * q
+
+                    # We use structure-fixed yaw and azimuth-adjusted roll to retain
+                    # the same frame convention used by existing VorLap verification scripts.
+                    local_yaw = math.degrees(math.atan2(chord_vector[1], chord_vector[0]))
+                    normal_vector_rotated = rotate_vector(normal_vector, rotation_axis, azimuth)
                     local_roll = math.degrees(math.atan2(normal_vector_rotated[2], normal_vector_rotated[1]))
-                    local_force_vector = np.array([Drags, Lifts, 0.0])
-                    force_vector_rolled = rotate_vector(local_force_vector, np.array([1.0, 0, 0]), local_roll)
-                    global_force_vector = rotate_vector(force_vector_rolled, np.array([0, 0, 1.0]), local_yaw)
-                    
+
+                    local_force_vector = np.array([drags, lifts, 0.0], dtype=float)
+                    force_vector_rolled = rotate_vector(local_force_vector, np.array([1.0, 0.0, 0.0]), local_roll)
+                    global_force_vector = rotate_vector(force_vector_rolled, np.array([0.0, 0.0, 1.0]), local_yaw)
+
                     total_global_force_vector[i_inflow, j_azi, :] += global_force_vector
-                    total_global_moment_vector[i_inflow, j_azi, :] += global_force_vector * global_pos
 
-                    # print("total_global_force_vector: ", total_global_force_vector[i_inflow, j_azi, :])
-                    
-                    STlength = chord * abs(math.sin(math.radians(aoa_deg)))
-                    frequencies_cf = ST_cf * (V_eff / STlength)
-                    
-                    # Record the worst case overlap, and where it happened
-                    for lstrouhaul in range(1,min(n_freq_depth, len(frequencies_cf))): #remember that the first is always the mean, 0-idx in python
-                        if amps_cf[lstrouhaul] > amplitude_coeff_cutoff:
-                            for jnatfreq in range(natfreqs.shape[0]):
-                                for kharmonic in range(1, n_harmonic + 1):
-                                    percdiff = (frequencies_cf[lstrouhaul] - natfreqs[jnatfreq] * kharmonic) / (natfreqs[jnatfreq] * kharmonic) * 100
-                                    
-                                    if percdiff_matrix[i_inflow, j_azi] > abs(percdiff):
-                                        percdiff_matrix[i_inflow, j_azi] = abs(percdiff)
-                                        percdiff_info[i_inflow, j_azi] = f"{percdiff} percdiff Occurs for NatFreq: {natfreqs[jnatfreq]} at Harmonic: {kharmonic} with Shedding frequency: {frequencies_cf[lstrouhaul]} (Strouhaul {ST_cf[lstrouhaul]} depth {lstrouhaul}) AmplitudeCoeff: {amps_cf[lstrouhaul]} in Comp: {comp.id} at pt#: {ipt+1} aoa(deg): {aoa_deg}, Re: {Re}"
-                    
-                    # Output data for just the requested point
-                    if viv_params.output_azimuth_vinf[0] == azimuths[j_azi] and viv_params.output_azimuth_vinf[1] == inflow_speeds[i_inflow]:
-                        # Recreate the time signal for the sampled ST information
-                        cl_signal = reconstruct_signal(ST_cl * (V_eff / STlength), amps_cl, phases_cl, viv_params.output_time)
-                        cd_signal = reconstruct_signal(ST_cd * (V_eff / STlength), amps_cd, phases_cd, viv_params.output_time)
-                        
-                        # Create force vectors for each time point
-                        local_force_vectors = []
-                        for cd, cl in zip(cd_signal, cl_signal):
-                            local_force_vectors.append(np.array([cd * q, cl * q, 0.0]))
-                        
-                        # Rotate force vectors
-                        force_vector_rolled_list = [rotate_vector(local_force, np.array([1.0, 0, 0]), local_roll) for local_force in local_force_vectors]
-                        global_force_vector_list = [rotate_vector(force_rolled, np.array([0, 0, 1.0]), local_yaw) for force_rolled in force_vector_rolled_list]
-                        
-                        # Store in the output array
-                        global_force_vector_nodes[:, :, inode-1] = np.array(global_force_vector_list)
+                    # Physical moment is r × F about the rotation-axis offset.
+                    moment_arm = global_pos - axis_offset
+                    total_global_moment_vector[i_inflow, j_azi, :] += np.cross(moment_arm, global_force_vector)
 
-    return percdiff_matrix, percdiff_info, total_global_force_vector, total_global_moment_vector, global_force_vector_nodes
+                    st_length = max(chord * abs(math.sin(math.radians(aoa_deg))), _EPS)
+                    frequencies_cf = ST_cf * (V_eff / st_length)
+
+                    # Record worst-case overlap while skipping the DC component.
+                    for lstrouhal in range(1, min(n_freq_depth, len(frequencies_cf))):
+                        if amps_cf[lstrouhal] <= amplitude_coeff_cutoff:
+                            continue
+                        shedding_freq = float(frequencies_cf[lstrouhal])
+                        if not np.isfinite(shedding_freq):
+                            continue
+
+                        for jnatfreq, natfreq in enumerate(natfreqs):
+                            for kharmonic in range(1, n_harmonic + 1):
+                                target_freq = natfreq * kharmonic
+                                percdiff = (shedding_freq - target_freq) / target_freq * 100.0
+                                abs_percdiff = abs(percdiff)
+                                if percdiff_matrix[i_inflow, j_azi] > abs_percdiff:
+                                    percdiff_matrix[i_inflow, j_azi] = abs_percdiff
+                                    percdiff_info[i_inflow, j_azi] = (
+                                        f"{percdiff} percdiff Occurs for NatFreq: {natfreqs[jnatfreq]} at Harmonic: "
+                                        f"{kharmonic} with Shedding frequency: {shedding_freq} "
+                                        f"(Strouhaul {ST_cf[lstrouhal]} depth {lstrouhal}) "
+                                        f"AmplitudeCoeff: {amps_cf[lstrouhal]} in Comp: {comp.id} at pt#: {ipt+1} "
+                                        f"aoa(deg): {aoa_deg}, Re: {Re}"
+                                    )
+
+                    if (
+                        np.isclose(output_azimuth, azimuth)
+                        and np.isclose(output_inflow, inflow_speed)
+                    ):
+                        cl_signal = reconstruct_signal(
+                            ST_cl * (V_eff / st_length), amps_cl, phases_cl, viv_params.output_time
+                        )
+                        cd_signal = reconstruct_signal(
+                            ST_cd * (V_eff / st_length), amps_cd, phases_cd, viv_params.output_time
+                        )
+
+                        local_force_vectors = np.column_stack([cd_signal * q, cl_signal * q, np.zeros_like(cl_signal)])
+                        force_vector_rolled_list = np.array(
+                            [rotate_vector(local_force, np.array([1.0, 0.0, 0.0]), local_roll) for local_force in local_force_vectors]
+                        )
+                        global_force_vector_list = np.array(
+                            [rotate_vector(force_rolled, np.array([0.0, 0.0, 1.0]), local_yaw) for force_rolled in force_vector_rolled_list]
+                        )
+                        global_force_vector_nodes[:, :, inode - 1] = global_force_vector_list
+
+    return (
+        percdiff_matrix,
+        percdiff_info,
+        total_global_force_vector,
+        total_global_moment_vector,
+        global_force_vector_nodes,
+    )
 
 
-#@profile
-def compute_thrust_torque_spectrum(components: List[Component], 
-                                  affts: Dict[str, AirfoilFFT],
-                                  viv_params: VIV_Params,
-                                  natfreqs: np.ndarray) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+def compute_thrust_torque_spectrum_optimized(
+    components: List[Component],
+    affts: Dict[str, AirfoilFFT],
+    viv_params: VIV_Params,
+    natfreqs: np.ndarray,
+) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
     """
-    Computes the mean thrust and torque, as well as their frequency-domain spectra, over a range of inflow speeds and azimuthal orientations.
+    Compute force, moment, overlap metrics, and node-level reconstructed loads.
 
-    Args:
-        components: List of structural components including geometry, orientation, and segment-wise parameters.
-        affts: Dictionary mapping airfoil IDs to their FFT-derived lift/drag/moment spectra.
-        viv_params: Encapsulates all analysis parameters, including inflow, rotation axis, fluid properties, and plotting settings.
-        natfreqs: Natural frequencies to compare against.
-
-    Returns:
-        percdiff_matrix: Matrix of percent differences between shedding frequencies and natural frequencies.
-        percdiff_info: Matrix of strings with information about the worst percent differences.
-        total_global_force_vector: Total global force vector for each inflow speed and azimuth.
-        total_global_moment_vector: Total global moment vector for each inflow speed and azimuth.
-        global_force_vector_nodes: Global force vector for each node over time.
-
-    Notes:
-        - Airfoil FFT data is interpolated by Reynolds number and angle of attack.
-        - The segment's local AOA determines how CL and CD spectra are rotated into global inflow and torque components.
+    This variant uses the optimized vectorized interpolation backend.
     """
-    inflow_speeds = viv_params.inflow_speeds
-    azimuths = viv_params.azimuths
-    rotation_axis = viv_params.rotation_axis
-    fluid_density = viv_params.fluid_density
-    fluid_dynamicviscosity = viv_params.fluid_dynamicviscosity
-    n_harmonic = viv_params.n_harmonic
-    amplitude_coeff_cutoff = viv_params.amplitude_coeff_cutoff
-    n_freq_depth = viv_params.n_freq_depth
+    from .interpolation import interpolate_fft_spectrum_optimized
 
-    n_inflow = len(inflow_speeds)
-    n_az = len(azimuths)
+    def lookup(afft: AirfoilFFT, Re: float, aoa_deg: float, n_freq_depth: int):
+        return interpolate_fft_spectrum_optimized(afft, Re, aoa_deg, ["CL", "CD", "CF"], n_freq_depth=n_freq_depth)
 
-    total_global_force_vector = np.zeros((n_inflow, n_az, 3))
-    total_global_moment_vector = np.zeros((n_inflow, n_az, 3))
-    percdiff_matrix = np.ones((n_inflow, n_az)) * 1000
-    percdiff_info = np.empty((n_inflow, n_az), dtype=object)
+    return _compute_thrust_torque_spectrum_impl(components, affts, viv_params, natfreqs, lookup)
 
-    total_nodes = sum([comp.shape_xyz.shape[0] for comp in components])
-    global_force_vector_nodes = np.zeros((len(viv_params.output_time), 3, total_nodes))
 
-    for i_inflow in range(n_inflow):
-        Vinf = np.array(viv_params.inflow_vec) / np.linalg.norm(viv_params.inflow_vec) * inflow_speeds[i_inflow]
-        
-        for j_azi in range(n_az):
-            # Negative since rotating the inflow in the negative direction is the same as rotating the structure in the positive
-            Vin_rotated = rotate_vector(Vinf, rotation_axis, -azimuths[j_azi])
-            
-            inode = 0
-            for comp in components:
-                N_pts = comp.shape_xyz.shape[0]
-                
-                for ipt in range(N_pts):
-                    inode += 1
-                    
-                    global_pos = comp.shape_xyz_global[ipt]
-                    chord = comp.chord[ipt]
-                    
-                    afid = comp.airfoil_ids[ipt]
-                    afft = affts.get(afid, affts["default"])  # get the id, or use the default
-                    
-                    chord_vector = comp.chord_vector[ipt, :]
-                    normal_vector = comp.normal_vector[ipt, :]
-                    
-                    V_chord = np.dot(Vin_rotated, chord_vector / np.linalg.norm(chord_vector))
-                    V_normal = np.dot(Vin_rotated, normal_vector / np.linalg.norm(normal_vector))
-                    
-                    aoa_rad = math.atan2(V_normal, V_chord)  # Using atan2 for correct quadrant
-                    aoa_deg = math.degrees(aoa_rad)
-                    V_eff = math.sqrt(V_normal**2 + V_chord**2)  # Fundamental assumption that spanwise flow doesn't impact lift and drag
-                    Re = fluid_density * V_eff * chord / fluid_dynamicviscosity
-                    q = 0.5 * fluid_density * V_eff**2 * chord
-                    
-                    # Interpolate FFT spectrum
-                    ST_cl, amps_cl, phases_cl = interpolate_fft_spectrum(afft, Re, aoa_deg, 'CL', n_freq_depth=n_freq_depth)
-                    ST_cd, amps_cd, phases_cd = interpolate_fft_spectrum(afft, Re, aoa_deg, 'CD', n_freq_depth=n_freq_depth)
-                    ST_cf, amps_cf, phases_cf = interpolate_fft_spectrum(afft, Re, aoa_deg, 'CF', n_freq_depth=n_freq_depth)
-                    
-                    Lifts = amps_cl[0] * q
-                    Drags = amps_cd[0] * q
-                    
-                    # Calculate the global force vector
-                    chord_vector_rotated = rotate_vector(chord_vector, rotation_axis, azimuths[j_azi])
-                    local_yaw = math.degrees(math.atan2(chord_vector_rotated[1], chord_vector_rotated[0]))
-                    normal_vector_rotated = rotate_vector(normal_vector, rotation_axis, azimuths[j_azi])
-                    local_roll = math.degrees(math.atan2(normal_vector_rotated[2], normal_vector_rotated[1]))
-                    local_force_vector = np.array([Drags, Lifts, 0.0])
-                    force_vector_rolled = rotate_vector(local_force_vector, np.array([1.0, 0, 0]), local_roll)
-                    global_force_vector = rotate_vector(force_vector_rolled, np.array([0, 0, 1.0]), local_yaw)
-                    
-                    total_global_force_vector[i_inflow, j_azi, :] += global_force_vector
-                    total_global_moment_vector[i_inflow, j_azi, :] += global_force_vector * global_pos
-                    
-                    STlength = chord * abs(math.sin(math.radians(aoa_deg)))
-                    frequencies_cf = ST_cf * (V_eff / STlength)
-                    
-                    # Record the worst case overlap, and where it happened
-                    for lstrouhaul in range(min(n_freq_depth, len(frequencies_cf))):
-                        if amps_cf[lstrouhaul] > amplitude_coeff_cutoff:
-                            for jnatfreq in range(natfreqs.shape[0]):
-                                for kharmonic in range(1, n_harmonic + 1):
-                                    percdiff = (frequencies_cf[lstrouhaul] - natfreqs[jnatfreq] * kharmonic) / (natfreqs[jnatfreq] * kharmonic) * 100
-                                    
-                                    if percdiff_matrix[i_inflow, j_azi] > abs(percdiff):
-                                        percdiff_matrix[i_inflow, j_azi] = abs(percdiff)
-                                        percdiff_info[i_inflow, j_azi] = f"{percdiff} percdiff Occurs for NatFreq: {natfreqs[jnatfreq]} at Harmonic: {kharmonic} with Shedding frequency: {frequencies_cf[lstrouhaul]} (Strouhaul depth {lstrouhaul}) AmplitudeCoeff: {amps_cf[lstrouhaul]} in Comp: {comp.id} at pt#: {ipt+1}"
-                    
-                    # Output data for just the requested point
-                    if viv_params.output_azimuth_vinf[0] == azimuths[j_azi] and viv_params.output_azimuth_vinf[1] == inflow_speeds[i_inflow]:
-                        # Recreate the time signal for the sampled ST information
-                        cl_signal = reconstruct_signal(ST_cl * (V_eff / STlength), amps_cl, phases_cl, viv_params.output_time)
-                        cd_signal = reconstruct_signal(ST_cd * (V_eff / STlength), amps_cd, phases_cd, viv_params.output_time)
-                        
-                        # Create force vectors for each time point
-                        local_force_vectors = []
-                        for cd, cl in zip(cd_signal, cl_signal):
-                            local_force_vectors.append(np.array([cd * q, cl * q, 0.0]))
-                        
-                        # Rotate force vectors
-                        force_vector_rolled_list = [rotate_vector(local_force, np.array([1.0, 0, 0]), local_roll) for local_force in local_force_vectors]
-                        global_force_vector_list = [rotate_vector(force_rolled, np.array([0, 0, 1.0]), local_yaw) for force_rolled in force_vector_rolled_list]
-                        
-                        # Store in the output array
-                        global_force_vector_nodes[:, :, inode-1] = np.array(global_force_vector_list)
+def compute_thrust_torque_spectrum(
+    components: List[Component],
+    affts: Dict[str, AirfoilFFT],
+    viv_params: VIV_Params,
+    natfreqs: np.ndarray,
+) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+    """
+    Compute force, moment, overlap metrics, and node-level reconstructed loads.
 
-    return percdiff_matrix, percdiff_info, total_global_force_vector, total_global_moment_vector, global_force_vector_nodes
+    This variant uses the baseline per-field interpolation backend.
+    """
+    from .interpolation import interpolate_fft_spectrum
+
+    def lookup(afft: AirfoilFFT, Re: float, aoa_deg: float, n_freq_depth: int):
+        st_cl, amp_cl, pha_cl = interpolate_fft_spectrum(afft, Re, aoa_deg, "CL", n_freq_depth=n_freq_depth)
+        st_cd, amp_cd, pha_cd = interpolate_fft_spectrum(afft, Re, aoa_deg, "CD", n_freq_depth=n_freq_depth)
+        st_cf, amp_cf, pha_cf = interpolate_fft_spectrum(afft, Re, aoa_deg, "CF", n_freq_depth=n_freq_depth)
+        return {"CL": (st_cl, amp_cl, pha_cl), "CD": (st_cd, amp_cd, pha_cd), "CF": (st_cf, amp_cf, pha_cf)}
+
+    return _compute_thrust_torque_spectrum_impl(components, affts, viv_params, natfreqs, lookup)
 
 
 # """
@@ -360,6 +330,8 @@ def reconstruct_signal(freqs: np.ndarray,
         raise ValueError("tvec must have at least 2 samples")
 
     dt = tvec[1] - tvec[0]
+    if dt <= 0.0:
+        raise ValueError("tvec must be strictly increasing with positive spacing")
     fs = 1.0 / dt
     fnyq = 0.5 * fs
 
@@ -367,7 +339,14 @@ def reconstruct_signal(freqs: np.ndarray,
     eps = np.finfo(np.float64).eps
     fmax = float(np.max(freqs)) if freqs.size else 0.0
     if fmax > (fnyq + eps * max(1.0, fnyq)):
-        print(f"Warning: Max frequency {fmax:.6g} Hz exceeds Nyquist {fnyq:.6g} Hz implied by tvec; reconstruction may alias.")
+        warnings.warn(
+            (
+                f"Max frequency {fmax:.6g} Hz exceeds Nyquist {fnyq:.6g} Hz implied by tvec; "
+                "reconstruction may alias."
+            ),
+            RuntimeWarning,
+            stacklevel=2,
+        )
 
     signal = np.zeros(tvec.shape[0], dtype=np.float64)
 
@@ -408,8 +387,12 @@ def rotate_vector(vec: np.ndarray, axis: np.ndarray, angle_deg: float) -> np.nda
         Rotated 3D vector (length-3).
     """
     θ = math.radians(angle_deg)
-    k = axis / np.sqrt(axis[0]**2 + axis[1]**2 + axis[2]**2)  # Normalize axis
-    v = vec
+    axis = np.asarray(axis, dtype=float)
+    axis_norm = float(np.linalg.norm(axis))
+    if axis_norm <= _EPS:
+        raise ValueError("Rotation axis must have non-zero magnitude.")
+    k = axis / axis_norm
+    v = np.asarray(vec, dtype=float)
     return v * math.cos(θ) + np.cross(k, v) * math.sin(θ) + k * np.dot(k, v) * (1 - math.cos(θ))
 
 

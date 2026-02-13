@@ -8,10 +8,18 @@ import plotly.graph_objects as go
 
 
 import math
-from typing import List
+import warnings
+from typing import List, Optional
 
 
-def calc_structure_vectors_andplot(components: List[Component], viv_params: VIV_Params, show_plot: bool = True, return_fig: bool = False, components_black: bool = False):
+def calc_structure_vectors_andplot(
+    components: List[Component],
+    viv_params: VIV_Params,
+    show_plot: bool = True,
+    return_fig: bool = False,
+    components_black: bool = False,
+    save_path: Optional[str] = None,
+):
     """
     Calculates structure vectors and creates a plot.
 
@@ -20,14 +28,17 @@ def calc_structure_vectors_andplot(components: List[Component], viv_params: VIV_
         viv_params: Configuration parameters.
         show_plot: Whether to display the plot (default: True).
         return_fig: Whether to return the figure object (default: False).
-
-    Args:
         components_black: When True, draw component geometry in black instead of the default blue (default: False).
+        save_path: Optional file path for static image export via Kaleido. If None, no
+            static image is written.
 
     Returns:
         fig: Plotly figure object if return_fig=True, otherwise None.
     """
     from .fileio import load_airfoil_coords
+
+    if not components:
+        raise ValueError("At least one component is required to build the structure plot.")
 
     # Create a new 3D figure
     fig = go.Figure()
@@ -147,7 +158,9 @@ def calc_structure_vectors_andplot(components: List[Component], viv_params: VIV_
             normalline_scaled_twisted = (R_twist @ np.array([[0, 0], [0, 2*chord]]).T).T
 
             # Calculate the local skew/sweep angle
-            if ipt == 0:
+            if comp.shape_xyz.shape[0] == 1:
+                d_xyz = np.array([1.0, 0.0, 0.0])
+            elif ipt == 0:
                 d_xyz = comp.shape_xyz[ipt+1, :] - comp.shape_xyz[ipt, :]
             elif ipt == comp.shape_xyz.shape[0] - 1:
                 d_xyz = comp.shape_xyz[ipt, :] - comp.shape_xyz[ipt-1, :]
@@ -321,10 +334,15 @@ def calc_structure_vectors_andplot(components: List[Component], viv_params: VIV_
 
     fig.update_layout(scene_camera=dict(eye=dict(x=1.1/2, y=-2.0/2, z=1.45/2)))
 
-    # Save as transparent image (requires kaleido)
-    save_path = "structure_plot_transparent.png"  # or .pdf, .svg
-    fig.write_image(save_path, scale=4, width=1600, height=1200)
-    print(f"Saved transparent 3D plot to {save_path}")
+    if save_path:
+        try:
+            fig.write_image(save_path, scale=4, width=1600, height=1200)
+        except Exception as exc:
+            warnings.warn(
+                f"Failed to save structure image to {save_path}: {exc}",
+                RuntimeWarning,
+                stacklevel=2,
+            )
 
 
     # Display the figure if requested

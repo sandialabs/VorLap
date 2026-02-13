@@ -8,10 +8,6 @@ This tab provides analysis tools and visualization options.
 import tkinter as tk
 from tkinter import ttk, messagebox
 
-# Add the vorlap package to the path
-import sys
-import os
-sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
 import vorlap
 
 

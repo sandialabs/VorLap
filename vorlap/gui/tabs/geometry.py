@@ -10,9 +10,6 @@ from tkinter import ttk, messagebox
 import os
 import tempfile
 
-# Add the vorlap package to the path
-import sys
-sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
 import vorlap
 
 from ..widgets import ScrollText

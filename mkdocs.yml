@@ -1,0 +1,29 @@
+site_name: VorLap Documentation
+site_description: Vortex overLAP force-spectrum and VIV overlap analysis toolkit.
+theme:
+  name: readthedocs
+
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          options:
+            show_source: false
+            show_signature_annotations: true
+            docstring_style: google
+
+markdown_extensions:
+  - admonition
+  - pymdownx.snippets:
+      base_path:
+        - docs
+        - .
+        - ..
+
+nav:
+  - Home: index.md
+  - Quick Start: quickstart.md
+  - Examples: examples.md
+  - Theory Notes: theory.md
+  - API Reference: api.md

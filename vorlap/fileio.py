@@ -32,9 +32,15 @@ def load_components_from_csv(dir_path: str) -> List[Component]:
         - All components are assumed to have the span oriented in the z-direction
     """
     import glob
-    
+
+    if not os.path.isdir(dir_path):
+        raise FileNotFoundError(f"Components directory does not exist: {dir_path}")
+
     files = glob.glob(os.path.join(dir_path, "*.csv"))
     files.sort()  # Sort files for consistent ordering
+    if not files:
+        raise FileNotFoundError(f"No component CSV files were found in {dir_path}")
+
     components = []
     
     for file in files:
@@ -42,8 +48,13 @@ def load_components_from_csv(dir_path: str) -> List[Component]:
         with open(file, 'r') as f:
             lines = f.readlines()
         
+        if len(lines) < 4:
+            raise ValueError(f"Component CSV is too short: {file}")
+
         # Extract top-level metadata (row 2)
         metadata = lines[1].strip().split(',')
+        if len(metadata) < 8:
+            raise ValueError(f"Component metadata row must have at least 8 values in {file}")
         id_str = metadata[0]
         tx = float(metadata[1])
         ty = float(metadata[2])
@@ -64,6 +75,10 @@ def load_components_from_csv(dir_path: str) -> List[Component]:
         
         # Convert to DataFrame
         df = pd.DataFrame(data, columns=colnames)
+        required_cols = {"x", "y", "z", "chord", "twist", "thickness", "offset"}
+        missing = required_cols.difference(df.columns)
+        if missing:
+            raise ValueError(f"Missing required columns in {file}: {sorted(missing)}")
         
         # Extract vectors
         xyz = np.column_stack([
@@ -77,9 +92,12 @@ def load_components_from_csv(dir_path: str) -> List[Component]:
         thickness = df['thickness'].astype(float).values
         offset = df['offset'].astype(float).values
         
+        if xyz.size == 0:
+            raise ValueError(f"Component {id_str} in {file} has no geometry rows")
+
         # Handle optional airfoil_id column
         if 'airfoil_id' in df.columns:
-            airfoil_ids = df['airfoil_id'].values.tolist()
+            airfoil_ids = df['airfoil_id'].astype(str).values.tolist()
         else:
             airfoil_ids = ['default'] * len(df)
         
@@ -141,9 +159,9 @@ def load_airfoil_fft(path: str) -> AirfoilFFT:
         if isinstance(name, bytes):
             name = name.decode('utf-8')
             
-        Re = h5['Re'][()]
-        Thickness = h5['Thickness'][()]
-        AOA = h5['AOA'][()]
+        Re = np.asarray(h5['Re'][()], dtype=float).reshape(-1)
+        Thickness = np.asarray(h5['Thickness'][()])
+        AOA = np.asarray(h5['AOA'][()], dtype=float).reshape(-1)
         
         CL_ST = h5['CL_ST'][()]
         CD_ST = h5['CD_ST'][()]
@@ -160,57 +178,79 @@ def load_airfoil_fft(path: str) -> AirfoilFFT:
         CM_Pha = h5['CM_Pha'][()]
         CF_Pha = h5['CF_Pha'][()]
         
-        # Check and fix dimension mismatch
-        expected_shape = (len(Re), len(AOA), CL_ST.shape[-1])
-        
-        def fix_dimensions(arr, name):
-            """Fix dimension mismatch in FFT arrays"""
-            if arr.shape != expected_shape:
-                # Common issue: arrays stored as [freq, AOA, Re] instead of [Re, AOA, freq]
-                if arr.shape == (arr.shape[0], len(AOA), len(Re)):
-                    warnings.warn(f"Transposing {name} from shape {arr.shape} to {expected_shape}")
-                    return np.transpose(arr, (2, 1, 0))  # [freq, AOA, Re] -> [Re, AOA, freq]
-                else:
-                    warnings.warn(f"Unexpected shape for {name}: {arr.shape}, expected {expected_shape}")
-                    # Try to reshape if possible
-                    if arr.size == np.prod(expected_shape):
-                        return arr.reshape(expected_shape)
-                    else:
-                        raise ValueError(f"Cannot fix dimension mismatch for {name}: {arr.shape} vs {expected_shape}")
-            return arr
-        
-        CL_ST = fix_dimensions(CL_ST, "CL_ST")
-        CD_ST = fix_dimensions(CD_ST, "CD_ST")
-        CM_ST = fix_dimensions(CM_ST, "CM_ST")
-        CF_ST = fix_dimensions(CF_ST, "CF_ST")
-        
-        CL_Amp = fix_dimensions(CL_Amp, "CL_Amp")
-        CD_Amp = fix_dimensions(CD_Amp, "CD_Amp")
-        CM_Amp = fix_dimensions(CM_Amp, "CM_Amp")
-        CF_Amp = fix_dimensions(CF_Amp, "CF_Amp")
-        
-        CL_Pha = fix_dimensions(CL_Pha, "CL_Pha")
-        CD_Pha = fix_dimensions(CD_Pha, "CD_Pha")
-        CM_Pha = fix_dimensions(CM_Pha, "CM_Pha")
-        CF_Pha = fix_dimensions(CF_Pha, "CF_Pha")
+        expected_prefix = (len(Re), len(AOA))
+
+        def orient_dimensions(arr: np.ndarray, arr_name: str) -> np.ndarray:
+            """Orient tensor dimensions to [Re, AOA, freq]."""
+            arr = np.asarray(arr)
+            if arr.ndim != 3:
+                raise ValueError(f"{arr_name} must be 3D, got shape {arr.shape}")
+            if arr.shape[:2] == expected_prefix:
+                return arr
+
+            for perm in (
+                (0, 2, 1),
+                (1, 0, 2),
+                (1, 2, 0),
+                (2, 0, 1),
+                (2, 1, 0),
+            ):
+                candidate = np.transpose(arr, perm)
+                if candidate.shape[:2] == expected_prefix:
+                    warnings.warn(
+                        f"Transposing {arr_name} from shape {arr.shape} to {candidate.shape}",
+                        RuntimeWarning,
+                        stacklevel=2,
+                    )
+                    return candidate
+
+            raise ValueError(
+                f"Could not orient {arr_name} to [Re, AOA, freq]. "
+                f"Got shape {arr.shape}, expected prefix {expected_prefix}."
+            )
+
+        arrays = {
+            "CL_ST": orient_dimensions(CL_ST, "CL_ST"),
+            "CD_ST": orient_dimensions(CD_ST, "CD_ST"),
+            "CM_ST": orient_dimensions(CM_ST, "CM_ST"),
+            "CF_ST": orient_dimensions(CF_ST, "CF_ST"),
+            "CL_Amp": orient_dimensions(CL_Amp, "CL_Amp"),
+            "CD_Amp": orient_dimensions(CD_Amp, "CD_Amp"),
+            "CM_Amp": orient_dimensions(CM_Amp, "CM_Amp"),
+            "CF_Amp": orient_dimensions(CF_Amp, "CF_Amp"),
+            "CL_Pha": orient_dimensions(CL_Pha, "CL_Pha"),
+            "CD_Pha": orient_dimensions(CD_Pha, "CD_Pha"),
+            "CM_Pha": orient_dimensions(CM_Pha, "CM_Pha"),
+            "CF_Pha": orient_dimensions(CF_Pha, "CF_Pha"),
+        }
+
+        common_depth = min(arr.shape[2] for arr in arrays.values())
+        for arr_name, arr in list(arrays.items()):
+            if arr.shape[2] != common_depth:
+                warnings.warn(
+                    f"Trimming {arr_name} frequency depth from {arr.shape[2]} to {common_depth} for consistency.",
+                    RuntimeWarning,
+                    stacklevel=2,
+                )
+            arrays[arr_name] = arr[:, :, :common_depth]
         
         return AirfoilFFT(
             name=name,
             Re=Re,
             AOA=AOA,
             Thickness=Thickness[0] if isinstance(Thickness, np.ndarray) and len(Thickness) > 0 else Thickness,
-            CL_ST=CL_ST,
-            CD_ST=CD_ST,
-            CM_ST=CM_ST,
-            CF_ST=CF_ST,
-            CL_Amp=CL_Amp,
-            CD_Amp=CD_Amp,
-            CM_Amp=CM_Amp,
-            CF_Amp=CF_Amp,
-            CL_Pha=CL_Pha,
-            CD_Pha=CD_Pha,
-            CM_Pha=CM_Pha,
-            CF_Pha=CF_Pha
+            CL_ST=arrays["CL_ST"],
+            CD_ST=arrays["CD_ST"],
+            CM_ST=arrays["CM_ST"],
+            CF_ST=arrays["CF_ST"],
+            CL_Amp=arrays["CL_Amp"],
+            CD_Amp=arrays["CD_Amp"],
+            CM_Amp=arrays["CM_Amp"],
+            CF_Amp=arrays["CF_Amp"],
+            CL_Pha=arrays["CL_Pha"],
+            CD_Pha=arrays["CD_Pha"],
+            CM_Pha=arrays["CM_Pha"],
+            CF_Pha=arrays["CF_Pha"]
         )
 
 
@@ -233,9 +273,15 @@ def load_airfoil_coords(afpath: str = "") -> np.ndarray:
     if afpath and os.path.isfile(afpath):
         try:
             xy = np.loadtxt(afpath, delimiter=',')
+            if xy.ndim != 2 or xy.shape[1] != 2:
+                raise ValueError(f"Expected Nx2 coordinates, got {xy.shape}")
             xy[:, 0] -= np.min(xy[:, 0])
-            xy[:, 0] /= np.max(xy[:, 0])
-            xy[:, 1] /= (np.max(xy[:, 1]) - np.min(xy[:, 1]))
+            x_max = np.max(xy[:, 0])
+            y_span = np.max(xy[:, 1]) - np.min(xy[:, 1])
+            if x_max <= 0.0 or y_span <= 0.0:
+                raise ValueError("Airfoil coordinates have zero span in x or y.")
+            xy[:, 0] /= x_max
+            xy[:, 1] /= y_span
             return xy
         except Exception as e:
             warnings.warn(f"Could not load airfoil file: {e}. Falling back to default Clark Y profile for plotting.")
@@ -386,7 +432,14 @@ def write_force_time_series(filename: str, output_time: np.ndarray, global_force
     Returns:
         None
     """
+    output_time = np.asarray(output_time, dtype=float)
+    global_force_vector_nodes = np.asarray(global_force_vector_nodes, dtype=float)
+    if global_force_vector_nodes.ndim != 3 or global_force_vector_nodes.shape[1] != 3:
+        raise ValueError("global_force_vector_nodes must have shape [ntime, 3, nnodes].")
+
     ntime, _, nnodes = global_force_vector_nodes.shape
+    if output_time.shape[0] != ntime:
+        raise ValueError("output_time length must match global_force_vector_nodes time dimension.")
     
     with open(filename, "w") as f:
         # Write header

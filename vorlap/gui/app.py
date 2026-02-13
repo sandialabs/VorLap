@@ -7,13 +7,8 @@ This module contains the main application class that orchestrates all GUI compon
 
 import tkinter as tk
 from tkinter import ttk
-import os
-import sys
 import glob
-import numpy as np
 
-# Add the vorlap package to the path
-sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
 import vorlap
 
 from vorlap.gui.tabs import SimulationSetupTab, PlotsOutputsTab #, AnalysisTab, GeometryTab

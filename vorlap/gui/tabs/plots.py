@@ -9,12 +9,7 @@ import tkinter as tk
 from tkinter import ttk, filedialog, messagebox
 from pathlib import Path
 import matplotlib.colors as mcolors
-import csv
 
-# Add the vorlap package to the path
-import sys
-import os
-sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
 import vorlap
 
 from ..widgets import PathEntry
@@ -179,5 +174,4 @@ class PlotsOutputsTab(ttk.Frame):
         path = plots_dir / f"{plot_type}_plot.png"
         self.fig.savefig(path, dpi=150, bbox_inches='tight')
         self.app.log(f"Plot saved to: {path}\n")
-
 

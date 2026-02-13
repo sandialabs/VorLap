@@ -21,6 +21,8 @@ def _find_nearest_indices(Re_grid: np.ndarray,
     """
     Re_q  = np.atleast_1d(Re_q).astype(float)
     AOA_q = np.atleast_1d(AOA_q).astype(float)
+    if Re_grid.size == 0 or AOA_grid.size == 0:
+        raise ValueError("Re and AOA grids must be non-empty.")
 
     # For Re
     i_right = np.searchsorted(Re_grid, Re_q, side='left')
@@ -105,21 +107,27 @@ def _find_cells_and_weights(Re_grid: np.ndarray,
     Re_q = np.clip(Re_q, Re[0], Re[-1])
     AOA_q = np.clip(AOA_q, AoA[0], AoA[-1])
 
-    # locate lower cell indices
-    i = np.searchsorted(Re, Re_q, side='right') - 1
-    j = np.searchsorted(AoA, AOA_q, side='right') - 1
-    i = np.clip(i, 0, len(Re) - 2)
-    j = np.clip(j, 0, len(AoA) - 2)
+    if len(Re) == 1:
+        i = np.zeros_like(Re_q, dtype=int)
+        t = np.zeros_like(Re_q, dtype=float)
+    else:
+        i = np.searchsorted(Re, Re_q, side='right') - 1
+        i = np.clip(i, 0, len(Re) - 2)
+        Re0 = Re[i]
+        Re1 = Re[i + 1]
+        with np.errstate(divide='ignore', invalid='ignore'):
+            t = np.divide(Re_q - Re0, Re1 - Re0, out=np.zeros_like(Re_q), where=(Re1 != Re0))
 
-    Re0 = Re[i]
-    Re1 = Re[i + 1]
-    AoA0 = AoA[j]
-    AoA1 = AoA[j + 1]
-
-    # local barycentric coords
-    with np.errstate(divide='ignore', invalid='ignore'):
-        t = np.divide(Re_q - Re0, Re1 - Re0, out=np.zeros_like(Re_q), where=(Re1 != Re0))
-        u = np.divide(AOA_q - AoA0, AoA1 - AoA0, out=np.zeros_like(AOA_q), where=(AoA1 != AoA0))
+    if len(AoA) == 1:
+        j = np.zeros_like(AOA_q, dtype=int)
+        u = np.zeros_like(AOA_q, dtype=float)
+    else:
+        j = np.searchsorted(AoA, AOA_q, side='right') - 1
+        j = np.clip(j, 0, len(AoA) - 2)
+        AoA0 = AoA[j]
+        AoA1 = AoA[j + 1]
+        with np.errstate(divide='ignore', invalid='ignore'):
+            u = np.divide(AOA_q - AoA0, AoA1 - AoA0, out=np.zeros_like(AOA_q), where=(AoA1 != AoA0))
 
     return i, j, t, u
 
@@ -140,6 +148,18 @@ def _bilinear_apply_tensor(F: np.ndarray,
     # slice frequencies up to depth
     F = F[:, :, :n_freq_depth]
 
+    nq = i.shape[0]
+    if NR == 1 and NA == 1:
+        return np.repeat(F[0, 0, :][None, :], nq, axis=0)
+    if NR == 1:
+        f0 = F[0, j, :]
+        f1 = F[0, j + 1, :]
+        return (1.0 - u)[:, None] * f0 + u[:, None] * f1
+    if NA == 1:
+        f0 = F[i, 0, :]
+        f1 = F[i + 1, 0, :]
+        return (1.0 - t)[:, None] * f0 + t[:, None] * f1
+
     # gather 4 corners (nq, K_sel) via advanced indexing
     f00 = F[i,     j,     :]  # lower-left
     f10 = F[i + 1, j,     :]  # right
@@ -152,11 +172,12 @@ def _bilinear_apply_tensor(F: np.ndarray,
     w11 = t * u
 
     # expand weights to (nq, 1) to broadcast along K
-    out = (w00[:, None] * f00 +
-           w10[:, None] * f10 +
-           w01[:, None] * f01 +
-           w11[:, None] * f11)
-    return out
+    return (
+        w00[:, None] * f00
+        + w10[:, None] * f10
+        + w01[:, None] * f01
+        + w11[:, None] * f11
+    )
 
 # interpolation.py (continued)
 def interpolate_fft_spectrum_optimized(afft: AirfoilFFT,
@@ -216,6 +237,26 @@ def interpolate_fft_spectrum_batch(afft: AirfoilFFT, Re_vals: np.ndarray, AOA_va
         amp_out: Array of shape [n_points, n_freq]
         phase_out: Array of shape [n_points, n_freq]
     """
+    Re_vals = np.asarray(Re_vals, dtype=float)
+    AOA_vals = np.asarray(AOA_vals, dtype=float)
+    if Re_vals.shape != AOA_vals.shape:
+        raise ValueError("Re_vals and AOA_vals must have the same shape")
+
+    if field == 'CM':
+        n_points = len(Re_vals)
+        if n_freq_depth is None:
+            n_freq_depth = afft.CM_ST.shape[2]
+        else:
+            n_freq_depth = min(n_freq_depth, afft.CM_ST.shape[2])
+        ST_out = np.zeros((n_points, n_freq_depth))
+        amp_out = np.zeros((n_points, n_freq_depth))
+        phase_out = np.zeros((n_points, n_freq_depth))
+        for idx, (re_val, aoa_val) in enumerate(zip(Re_vals, AOA_vals)):
+            ST_out[idx, :], amp_out[idx, :], phase_out[idx, :] = interpolate_fft_spectrum(
+                afft, re_val, aoa_val, field, n_freq_depth=n_freq_depth
+            )
+        return ST_out, amp_out, phase_out
+
     # Ensure interpolators are cached
     afft._cache_interpolators()
 
@@ -225,7 +266,10 @@ def interpolate_fft_spectrum_batch(afft: AirfoilFFT, Re_vals: np.ndarray, AOA_va
         n_freq_depth = min(n_freq_depth, afft.CL_ST.shape[2])
 
     n_points = len(Re_vals)
-    points = np.column_stack([Re_vals, AOA_vals])
+    points = np.column_stack([
+        np.clip(Re_vals, afft.Re[0], afft.Re[-1]),
+        np.clip(AOA_vals, afft.AOA[0], afft.AOA[-1]),
+    ])
 
     ST_out = np.zeros((n_points, n_freq_depth))
     amp_out = np.zeros((n_points, n_freq_depth))
@@ -272,55 +316,14 @@ def interpolate_fft_spectrum(afft: AirfoilFFT, Re_val: float, AOA_val: float, fi
         - Assumes consistent frequency axis across the full 3D data structure.
         - Returns values suitable for reconstructing time-domain or frequency-domain force estimates.
     """
-    if field == 'CL':
-        STs, amps, phases = afft.CL_ST, afft.CL_Amp, afft.CL_Pha
-    elif field == 'CD':
-        STs, amps, phases = afft.CD_ST, afft.CD_Amp, afft.CD_Pha
-    elif field == 'CM':
-        STs, amps, phases = afft.CM_ST, afft.CM_Amp, afft.CM_Pha
-    elif field == 'CF':
-        STs, amps, phases = afft.CF_ST, afft.CF_Amp, afft.CF_Pha
-    else:
-        raise ValueError(f"Invalid field symbol: {field}")
-
-    if n_freq_depth is None:
-        n_freq_depth = STs.shape[2]  # Use all frequencies
-
-    n_freq_depth = min(n_freq_depth, STs.shape[2])  # Ensure we don't exceed available frequencies
-
-    ST_out = np.zeros(n_freq_depth)
-    amp_out = np.zeros(n_freq_depth)
-    phase_out = np.zeros(n_freq_depth)
-
-    for k in range(n_freq_depth):
-        # Create interpolation functions for this frequency
-        st_interp = interpolate.RegularGridInterpolator(
-            (afft.Re, afft.AOA),
-            STs[:, :, k],
-            bounds_error=False,
-            fill_value=None
-        )
-
-        amp_interp = interpolate.RegularGridInterpolator(
-            (afft.Re, afft.AOA),
-            amps[:, :, k],
-            bounds_error=False,
-            fill_value=None
-        )
-
-        pha_interp = interpolate.RegularGridInterpolator(
-            (afft.Re, afft.AOA),
-            phases[:, :, k],
-            bounds_error=False,
-            fill_value=None
-        )
-
-        # Interpolate at the requested point
-        ST_out[k] = st_interp(np.array([Re_val, AOA_val]))
-        amp_out[k] = amp_interp(np.array([Re_val, AOA_val]))
-        phase_out[k] = pha_interp(np.array([Re_val, AOA_val]))
-
-    return ST_out, amp_out, phase_out
+    result = interpolate_fft_spectrum_optimized(
+        afft,
+        Re_val,
+        AOA_val,
+        [field],
+        n_freq_depth=n_freq_depth,
+    )
+    return result[field]
 
 
 # def interpolate_fft_spectrum_optimized(afft: AirfoilFFT, Re_val: float, AOA_val: float,
