@@ -15,10 +15,15 @@ from .structs import (
 )
 
 from .fileio import (
+    convert_qblade_to_vorlap_inputs,
     load_components_from_csv,
     load_airfoil_fft,
     load_airfoil_coords,
+    load_qblade_blade_definition,
+    load_qblade_simulation_definition,
+    load_qblade_turbine_definition,
     load_inflow_time_series,
+    write_qblade_loading_file,
     write_force_time_series
 )
 
@@ -45,12 +50,16 @@ __all__ = [
     "compute_time_varying_force_history_optimized",
     "compute_thrust_torque_spectrum",
     "compute_thrust_torque_spectrum_optimized",
+    "convert_qblade_to_vorlap_inputs",
     "interpolate_fft_spectrum",
     "interpolate_fft_spectrum_batch",
     "interpolate_fft_spectrum_optimized",
     "load_airfoil_coords",
     "load_airfoil_fft",
     "load_components_from_csv",
+    "load_qblade_blade_definition",
+    "load_qblade_simulation_definition",
+    "load_qblade_turbine_definition",
     "load_inflow_time_series",
     "lookup_fft_spectrum_nearest",
     "reconstruct_nonstationary_signal",
@@ -58,5 +67,6 @@ __all__ = [
     "resample_airfoil",
     "rotate_vector",
     "rotationMatrix",
+    "write_qblade_loading_file",
     "write_force_time_series",
 ]

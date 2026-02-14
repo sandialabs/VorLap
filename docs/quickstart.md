@@ -48,3 +48,11 @@ time,inflow_speed,inflow_direction_deg
 ```
 
 You can also provide direction vectors with `inflow_dir_x`, `inflow_dir_y`, and optional `inflow_dir_z`.
+
+## 7. Generate a QBlade Loading File (Fast Path)
+
+```bash
+python examples/qblade_fastpath_loading.py --sim /path/to/case.sim --inflow data/inflow_profile.csv --output qblade_external_loading.txt
+```
+
+The exported file is compatible with QBlade `LOADINGFILE` parsing (`time Fx Fy Fz Mx My Mz` per target block).

@@ -6,9 +6,446 @@ import os
 import numpy as np
 import pandas as pd
 import h5py
-from typing import List
+from typing import List, Dict, Tuple, Optional
+import re
 import warnings
-from .structs import AirfoilFFT, Component, InflowTimeSeries
+from .structs import AirfoilFFT, Component, InflowTimeSeries, VIV_Params
+
+
+_QBLADE_KEYVALUE_RE = re.compile(r"^(?P<value>.*?)\s+(?P<keyword>[A-Z][A-Z0-9_]+)\s*(?:-.*)?$")
+
+
+def _to_float(value: str, default: float = 0.0) -> float:
+    """Best-effort string-to-float conversion with a fallback default."""
+    try:
+        return float(str(value).strip())
+    except Exception:
+        return float(default)
+
+
+def _to_int(value: str, default: int = 0) -> int:
+    """Best-effort string-to-int conversion with a fallback default."""
+    try:
+        return int(round(float(str(value).strip())))
+    except Exception:
+        return int(default)
+
+
+def _resolve_qblade_path(base_file: str, candidate: str) -> str:
+    """Resolve a QBlade relative file path against its parent file location."""
+    candidate = str(candidate).strip()
+    if not candidate:
+        return ""
+    if os.path.isabs(candidate):
+        return candidate
+    return os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(base_file)), candidate))
+
+
+def _parse_qblade_keywords(path: str) -> Dict[str, List[str]]:
+    """
+    Parse QBlade keyword/value lines into a dictionary of keyword -> list of values.
+
+    QBlade definition files generally store one value followed by an uppercase keyword
+    and then a comment field.
+    """
+    if not os.path.isfile(path):
+        raise FileNotFoundError(f"QBlade file does not exist: {path}")
+
+    parsed: Dict[str, List[str]] = {}
+    with open(path, "r", encoding="utf-8", errors="ignore") as f:
+        for raw in f:
+            line = raw.strip()
+            if not line or line.startswith("-"):
+                continue
+            m = _QBLADE_KEYVALUE_RE.match(line)
+            if not m:
+                continue
+            keyword = m.group("keyword").strip()
+            value = m.group("value").strip()
+            parsed.setdefault(keyword, []).append(value)
+    return parsed
+
+
+def _first_keyword_value(parsed: Dict[str, List[str]], keyword: str, default: str = "") -> str:
+    values = parsed.get(keyword, [])
+    return values[0] if values else default
+
+
+def _infer_airfoil_id_from_polar(polar_path: str, default_airfoil_id: str = "default") -> str:
+    """
+    Infer a VorLap airfoil identifier from a QBlade polar file path.
+
+    Examples:
+        `Polars/NACA_0018_RFoil_MultiRePolar.plr` -> `NACA0018`
+        `Polars/flat_plate_MultiRePolar.plr` -> `default`
+    """
+    base = os.path.basename(str(polar_path))
+    if not base:
+        return default_airfoil_id
+
+    m = re.search(r"(NACA[_-]?\d{4})", base, flags=re.IGNORECASE)
+    if m:
+        return m.group(1).replace("_", "").replace("-", "").upper()
+    return default_airfoil_id
+
+
+def _infer_thickness_from_airfoil_id(airfoil_id: str, default_thickness: float = 0.12) -> float:
+    """Infer a thickness ratio from an identifier such as `NACA0018`."""
+    m = re.search(r"(\d{4})$", str(airfoil_id))
+    if m:
+        return max(0.01, min(1.0, float(m.group(1)[2:]) / 100.0))
+    return float(default_thickness)
+
+
+def load_qblade_simulation_definition(sim_path: str) -> Dict[str, object]:
+    """
+    Load key fields from a QBlade `.sim` file.
+
+    Returns a dictionary with parsed and path-resolved entries used by VorLap.
+    """
+    parsed = _parse_qblade_keywords(sim_path)
+
+    turbfile_raw = _first_keyword_value(parsed, "TURBFILE", "")
+    turbfile_path = _resolve_qblade_path(sim_path, turbfile_raw) if turbfile_raw else ""
+
+    density = _to_float(_first_keyword_value(parsed, "DENSITYAIR", "1.225"), 1.225)
+    nu = _to_float(_first_keyword_value(parsed, "VISCOSITYAIR", "1.81e-5"), 1.81e-5)
+    mu = density * nu
+
+    hor_angle_deg = _to_float(_first_keyword_value(parsed, "HORANGLE", "0.0"), 0.0)
+    vert_angle_deg = _to_float(_first_keyword_value(parsed, "VERTANGLE", "0.0"), 0.0)
+    mean_inflow = _to_float(_first_keyword_value(parsed, "MEANINF", "0.0"), 0.0)
+
+    timestep = _to_float(_first_keyword_value(parsed, "TIMESTEP", "0.01"), 0.01)
+    numtimesteps = max(1, _to_int(_first_keyword_value(parsed, "NUMTIMESTEPS", "1"), 1))
+    initial_azimuth = _to_float(_first_keyword_value(parsed, "INITIAL_AZIMUTH", "0.0"), 0.0)
+
+    globpos_x = _to_float(_first_keyword_value(parsed, "GLOBPOS_X", "0.0"), 0.0)
+    globpos_y = _to_float(_first_keyword_value(parsed, "GLOBPOS_Y", "0.0"), 0.0)
+    globpos_z = _to_float(_first_keyword_value(parsed, "GLOBPOS_Z", "0.0"), 0.0)
+
+    return {
+        "sim_path": os.path.abspath(sim_path),
+        "turbfile": turbfile_raw,
+        "turbfile_path": turbfile_path,
+        "fluid_density": density,
+        "fluid_kinematic_viscosity": nu,
+        "fluid_dynamic_viscosity": mu,
+        "hor_angle_deg": hor_angle_deg,
+        "vert_angle_deg": vert_angle_deg,
+        "mean_inflow": mean_inflow,
+        "timestep": timestep,
+        "numtimesteps": numtimesteps,
+        "initial_azimuth_deg": initial_azimuth,
+        "global_position": np.array([globpos_x, globpos_y, globpos_z], dtype=float),
+    }
+
+
+def load_qblade_turbine_definition(trb_path: str) -> Dict[str, object]:
+    """Load key fields from a QBlade `.trb` turbine definition file."""
+    parsed = _parse_qblade_keywords(trb_path)
+
+    bladefile_raw = _first_keyword_value(parsed, "BLADEFILE", "")
+    bladefile_path = _resolve_qblade_path(trb_path, bladefile_raw) if bladefile_raw else ""
+    structuralfile_raw = _first_keyword_value(parsed, "STRUCTURALFILE", "")
+    structuralfile_path = _resolve_qblade_path(trb_path, structuralfile_raw) if structuralfile_raw else ""
+
+    return {
+        "trb_path": os.path.abspath(trb_path),
+        "bladefile": bladefile_raw,
+        "bladefile_path": bladefile_path,
+        "num_blades": max(1, _to_int(_first_keyword_value(parsed, "NUMBLADES", "1"), 1)),
+        "structuralfile": structuralfile_raw,
+        "structuralfile_path": structuralfile_path,
+        "tower_height": _to_float(_first_keyword_value(parsed, "TOWERHEIGHT", "0.0"), 0.0),
+        "tower_top_radius": _to_float(_first_keyword_value(parsed, "TOWERTOPRAD", "0.0"), 0.0),
+        "tower_bottom_radius": _to_float(_first_keyword_value(parsed, "TOWERBOTRAD", "0.0"), 0.0),
+    }
+
+
+def load_qblade_blade_definition(bld_path: str) -> Dict[str, object]:
+    """
+    Load blade and strut geometry tables from a QBlade `.bld` definition file.
+
+    Returns:
+        Dictionary with fields:
+            - `num_blades`
+            - `blade_rows` (list of dicts)
+            - `strut_rows` (list of dicts)
+    """
+    if not os.path.isfile(bld_path):
+        raise FileNotFoundError(f"QBlade blade file does not exist: {bld_path}")
+
+    with open(bld_path, "r", encoding="utf-8", errors="ignore") as f:
+        lines = f.readlines()
+
+    parsed = _parse_qblade_keywords(bld_path)
+
+    blade_header_idx = -1
+    for i, raw in enumerate(lines):
+        if "HEIGHT_[m]" in raw and "CHORD_[m]" in raw:
+            blade_header_idx = i
+            break
+    if blade_header_idx < 0:
+        raise ValueError(f"Could not locate blade data table in QBlade blade file: {bld_path}")
+
+    blade_columns = re.split(r"\s+", lines[blade_header_idx].strip())
+    blade_rows: List[Dict[str, str]] = []
+    for i in range(blade_header_idx + 1, len(lines)):
+        line = lines[i].strip()
+        if not line:
+            if blade_rows:
+                break
+            continue
+        if line.startswith("-") or line.startswith("STRUT_") or "Strut Data" in line:
+            break
+        tokens = re.split(r"\s+", line)
+        if len(tokens) < len(blade_columns):
+            break
+        row = {blade_columns[j]: tokens[j] for j in range(len(blade_columns))}
+        blade_rows.append(row)
+
+    strut_rows: List[Dict[str, str]] = []
+    i = 0
+    while i < len(lines):
+        marker = lines[i].strip()
+        if re.fullmatch(r"STRUT_\d+", marker):
+            row: Dict[str, str] = {}
+            row["STRUT_MARKER"] = marker
+            i += 1
+            while i < len(lines):
+                end_marker = lines[i].strip()
+                if end_marker.startswith("END_STRUT_"):
+                    break
+                m = _QBLADE_KEYVALUE_RE.match(lines[i].strip())
+                if m:
+                    row[m.group("keyword").strip()] = m.group("value").strip()
+                i += 1
+            strut_rows.append(row)
+        i += 1
+
+    return {
+        "bld_path": os.path.abspath(bld_path),
+        "num_blades": max(1, _to_int(_first_keyword_value(parsed, "NUMBLADES", "1"), 1)),
+        "blade_rows": blade_rows,
+        "strut_rows": strut_rows,
+    }
+
+
+def convert_qblade_to_vorlap_inputs(
+    sim_path: str,
+    default_airfoil_id: str = "default",
+    include_struts: bool = True,
+) -> Tuple[List[Component], VIV_Params, List[str]]:
+    """
+    Convert a QBlade `.sim` setup into equivalent VorLap components and baseline parameters.
+
+    This supports the "existing LOADINGFILE path" workflow where VorLap reconstructs
+    non-mean nodal loads and exports them for QBlade external-loading ingestion.
+
+    Returns:
+        components: VorLap components equivalent to QBlade blade/strut geometry.
+        viv_params: Baseline parameters inferred from QBlade simulation/turbine files.
+        qblade_node_ids: Per-node QBlade location IDs aligned with VorLap node ordering.
+    """
+    sim = load_qblade_simulation_definition(sim_path)
+    if not sim["turbfile_path"]:
+        raise ValueError("QBlade .sim file does not specify TURBFILE.")
+
+    trb = load_qblade_turbine_definition(str(sim["turbfile_path"]))
+    if not trb["bladefile_path"]:
+        raise ValueError("QBlade .trb file does not specify BLADEFILE.")
+
+    bld = load_qblade_blade_definition(str(trb["bladefile_path"]))
+
+    blade_rows = bld["blade_rows"]
+    if not blade_rows:
+        raise ValueError("QBlade blade table is empty.")
+
+    heights = np.array([_to_float(r.get("HEIGHT_[m]", "0.0"), 0.0) for r in blade_rows], dtype=float)
+    chords = np.array([_to_float(r.get("CHORD_[m]", "0.0"), 0.0) for r in blade_rows], dtype=float)
+    radii = np.array([_to_float(r.get("RADIUS_[m]", "0.0"), 0.0) for r in blade_rows], dtype=float)
+    twists = np.array([_to_float(r.get("TWIST_[deg]", "0.0"), 0.0) for r in blade_rows], dtype=float)
+    offsets = np.array([_to_float(r.get("P_AXIS_[-]", "0.25"), 0.25) for r in blade_rows], dtype=float)
+    circangles = np.array([_to_float(r.get("CIRCANGLE_[deg]", "0.0"), 0.0) for r in blade_rows], dtype=float)
+    polar_files = [str(r.get("POLAR_FILE", "")).strip() for r in blade_rows]
+
+    hmin = float(np.min(heights))
+    hspan = float(np.max(heights) - hmin)
+    if hspan <= 0.0:
+        blade_norm_pos = np.zeros_like(heights)
+    else:
+        blade_norm_pos = (heights - hmin) / hspan
+
+    num_blades = int(trb["num_blades"]) if trb["num_blades"] else int(bld["num_blades"])
+    num_blades = max(1, num_blades)
+
+    components: List[Component] = []
+    qblade_node_ids: List[str] = []
+
+    base_airfoil_id = _infer_airfoil_id_from_polar(polar_files[0] if polar_files else "", default_airfoil_id)
+    base_thickness = _infer_thickness_from_airfoil_id(base_airfoil_id, default_thickness=0.12)
+
+    for iblade in range(num_blades):
+        azimuth_deg = (360.0 / num_blades) * iblade + float(np.mean(circangles))
+        comp_airfoil_ids = [
+            _infer_airfoil_id_from_polar(pf, default_airfoil_id) if pf else base_airfoil_id
+            for pf in polar_files
+        ]
+        comp_thickness = np.array(
+            [_infer_thickness_from_airfoil_id(afid, default_thickness=base_thickness) for afid in comp_airfoil_ids],
+            dtype=float,
+        )
+
+        shape_xyz = np.column_stack([np.zeros_like(heights), radii, heights])
+        n_nodes = shape_xyz.shape[0]
+        component = Component(
+            id=f"BLD_{iblade + 1}",
+            translation=np.zeros(3, dtype=float),
+            rotation=np.array([0.0, 0.0, azimuth_deg], dtype=float),
+            pitch=np.array([0.0], dtype=float),
+            shape_xyz=shape_xyz,
+            shape_xyz_global=np.zeros((n_nodes, 3), dtype=float),
+            chord=chords.copy(),
+            twist=twists.copy(),
+            thickness=comp_thickness,
+            offset=offsets.copy(),
+            airfoil_ids=comp_airfoil_ids,
+            chord_vector=np.zeros((n_nodes, 3), dtype=float),
+            normal_vector=np.zeros((n_nodes, 3), dtype=float),
+        )
+        components.append(component)
+        for p in blade_norm_pos:
+            qblade_node_ids.append(f"BLD_{iblade + 1}_{float(p):.6f}")
+
+    if include_struts and bld["strut_rows"]:
+        order = np.argsort(heights)
+        h_sorted = heights[order]
+        r_sorted = radii[order]
+
+        for istruct, srow in enumerate(bld["strut_rows"]):
+            chord_hub = _to_float(srow.get("CHORDHUB_STR", "0.0"), 0.0)
+            chord_bld = _to_float(srow.get("CHORDBLD_STR", "0.0"), 0.0)
+            hgt_hub = _to_float(srow.get("HGTHUB_STR", "0.0"), 0.0)
+            hgt_bld = _to_float(srow.get("HGTBLD_STR", "0.0"), 0.0)
+            dst_hub = _to_float(srow.get("DSTHUB_STR", "0.0"), 0.0)
+            angle_str = _to_float(srow.get("ANGLE_STR", "0.0"), 0.0)
+            paxis_hub = _to_float(srow.get("PAXISHUB_STR", "0.25"), 0.25)
+            paxis_bld = _to_float(srow.get("PAXISBLD_STR", "0.25"), 0.25)
+            polar_str = str(srow.get("POLAR_STR", "")).strip()
+
+            radius_bld = float(np.interp(hgt_bld, h_sorted, r_sorted))
+            strut_airfoil_id = _infer_airfoil_id_from_polar(polar_str, default_airfoil_id)
+            strut_thickness = _infer_thickness_from_airfoil_id(strut_airfoil_id, default_thickness=0.10)
+
+            for iblade in range(num_blades):
+                azimuth_deg = (360.0 / num_blades) * iblade
+                shape_xyz = np.array(
+                    [
+                        [0.0, dst_hub, hgt_hub],
+                        [0.0, radius_bld, hgt_bld],
+                    ],
+                    dtype=float,
+                )
+                component = Component(
+                    id=f"STR_{istruct + 1}_{iblade + 1}",
+                    translation=np.zeros(3, dtype=float),
+                    rotation=np.array([0.0, 0.0, azimuth_deg], dtype=float),
+                    pitch=np.array([0.0], dtype=float),
+                    shape_xyz=shape_xyz,
+                    shape_xyz_global=np.zeros((2, 3), dtype=float),
+                    chord=np.array([chord_hub, chord_bld], dtype=float),
+                    twist=np.array([angle_str, angle_str], dtype=float),
+                    thickness=np.array([strut_thickness, strut_thickness], dtype=float),
+                    offset=np.array([paxis_hub, paxis_bld], dtype=float),
+                    airfoil_ids=[strut_airfoil_id, strut_airfoil_id],
+                    chord_vector=np.zeros((2, 3), dtype=float),
+                    normal_vector=np.zeros((2, 3), dtype=float),
+                )
+                components.append(component)
+                qblade_node_ids.append(f"STR_{istruct + 1}_{iblade + 1}_0.000000")
+                qblade_node_ids.append(f"STR_{istruct + 1}_{iblade + 1}_1.000000")
+
+    hor_rad = np.deg2rad(float(sim["hor_angle_deg"]))
+    vert_rad = np.deg2rad(float(sim["vert_angle_deg"]))
+    inflow_vec = np.array(
+        [
+            np.cos(vert_rad) * np.cos(hor_rad),
+            np.cos(vert_rad) * np.sin(hor_rad),
+            np.sin(vert_rad),
+        ],
+        dtype=float,
+    )
+    if np.linalg.norm(inflow_vec) <= 1.0e-12:
+        inflow_vec = np.array([1.0, 0.0, 0.0], dtype=float)
+
+    timestep = float(sim["timestep"])
+    numsteps = int(sim["numtimesteps"])
+    output_time = np.arange(0.0, (numsteps + 1) * timestep, timestep, dtype=float)
+
+    viv_params = VIV_Params(
+        fluid_density=float(sim["fluid_density"]),
+        fluid_dynamicviscosity=float(sim["fluid_dynamic_viscosity"]),
+        rotation_axis=np.array([0.0, 0.0, 1.0], dtype=float),
+        rotation_axis_offset=np.asarray(sim["global_position"], dtype=float),
+        inflow_vec=inflow_vec,
+        azimuths=np.arange(0.0, 360.0, 5.0, dtype=float),
+        inflow_speeds=np.array([max(0.0, float(sim["mean_inflow"]))], dtype=float),
+        output_time=output_time,
+        n_harmonic=2,
+        amplitude_coeff_cutoff=0.002,
+        n_freq_depth=10,
+        output_azimuth_vinf=(float(sim["initial_azimuth_deg"]), max(0.0, float(sim["mean_inflow"]))),
+    )
+
+    return components, viv_params, qblade_node_ids
+
+
+def write_qblade_loading_file(
+    filename: str,
+    time: np.ndarray,
+    global_force_vector_nodes: np.ndarray,
+    node_ids: List[str],
+    local: bool = False,
+    node_torque_vector_nodes: Optional[np.ndarray] = None,
+) -> None:
+    """
+    Write a QBlade external loading file compatible with `LOADINGFILE`.
+
+    File format per node block:
+        NODE_ID [LOCAL]
+        t Fx Fy Fz Mx My Mz
+        ...
+
+    QBlade linearly interpolates between time rows during simulation.
+    """
+    time = np.asarray(time, dtype=float).reshape(-1)
+    force = np.asarray(global_force_vector_nodes, dtype=float)
+    if force.ndim != 3 or force.shape[1] != 3:
+        raise ValueError("global_force_vector_nodes must have shape [ntime, 3, nnodes].")
+    if force.shape[0] != time.shape[0]:
+        raise ValueError("time length must match global_force_vector_nodes time dimension.")
+    if len(node_ids) != force.shape[2]:
+        raise ValueError("node_ids length must match global_force_vector_nodes node dimension.")
+
+    if node_torque_vector_nodes is None:
+        torque = np.zeros_like(force)
+    else:
+        torque = np.asarray(node_torque_vector_nodes, dtype=float)
+        if torque.shape != force.shape:
+            raise ValueError("node_torque_vector_nodes must match shape [ntime, 3, nnodes].")
+
+    suffix = " LOCAL" if local else ""
+    with open(filename, "w", encoding="utf-8") as f:
+        f.write("// VorLap-generated QBlade external loading file\n")
+        f.write("// Format per block: ID [LOCAL], then rows of time Fx Fy Fz Mx My Mz\n\n")
+        for inode, node_id in enumerate(node_ids):
+            f.write(f"{node_id}{suffix}\n")
+            for it, t in enumerate(time):
+                fx, fy, fz = force[it, 0, inode], force[it, 1, inode], force[it, 2, inode]
+                mx, my, mz = torque[it, 0, inode], torque[it, 1, inode], torque[it, 2, inode]
+                f.write(f"{t:.9g} {fx:.9g} {fy:.9g} {fz:.9g} {mx:.9g} {my:.9g} {mz:.9g}\n")
+            f.write("\n")
 
 
 def load_components_from_csv(dir_path: str) -> List[Component]:
@@ -233,12 +670,18 @@ def load_airfoil_fft(path: str) -> AirfoilFFT:
                     stacklevel=2,
                 )
             arrays[arr_name] = arr[:, :, :common_depth]
+
+        if np.isscalar(Thickness) or np.ndim(Thickness) == 0:
+            thickness_value = float(np.asarray(Thickness, dtype=float))
+        else:
+            thickness_arr = np.asarray(Thickness, dtype=float).reshape(-1)
+            thickness_value = float(thickness_arr[0]) if thickness_arr.size else 0.0
         
         return AirfoilFFT(
             name=name,
             Re=Re,
             AOA=AOA,
-            Thickness=Thickness[0] if isinstance(Thickness, np.ndarray) and len(Thickness) > 0 else Thickness,
+            Thickness=thickness_value,
             CL_ST=arrays["CL_ST"],
             CD_ST=arrays["CD_ST"],
             CM_ST=arrays["CM_ST"],

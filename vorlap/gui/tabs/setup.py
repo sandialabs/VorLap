@@ -85,6 +85,30 @@ class SimulationSetupTab(ttk.Frame):
         linflow.columnconfigure(0, weight=1)
         row += 1
 
+        # QBlade fast-path import (optional)
+        lqblade = ttk.LabelFrame(self, text="QBlade Fast-Path (Optional)")
+        lqblade.grid(row=row, column=0, columnspan=6, sticky="ew", pady=(10, 6))
+        ttk.Label(lqblade, text="QBlade Simulation (.sim):").grid(row=0, column=0, sticky="w")
+        self.qblade_sim_path = PathEntry(
+            lqblade,
+            kind="file",
+            title="Select QBlade simulation (.sim)",
+            must_exist=True,
+        )
+        self.qblade_sim_path.grid(row=1, column=0, sticky="ew", pady=2)
+        ttk.Button(lqblade, text="Import QBlade Model", command=self.load_qblade_inputs).grid(row=1, column=1, padx=6)
+
+        ttk.Label(lqblade, text="QBlade Loading Output (optional):").grid(row=2, column=0, sticky="w", pady=(6, 0))
+        self.qblade_loading_path = PathEntry(
+            lqblade,
+            kind="savefile",
+            title="Select QBlade loading output file",
+            must_exist=False,
+        )
+        self.qblade_loading_path.grid(row=3, column=0, sticky="ew", pady=2)
+        lqblade.columnconfigure(0, weight=1)
+        row += 1
+
         # Simulation Parameters
         lpars = ttk.LabelFrame(self, text="Simulation Parameters")
         lpars.grid(row=row, column=0, columnspan=6, sticky="ew", pady=(10, 6))
@@ -148,6 +172,17 @@ class SimulationSetupTab(ttk.Frame):
         default_inflow_profile_path = os.path.join(vorlap.repo_dir, "data", "inflow_profile.csv")
         self.inflow_profile_path.set(default_inflow_profile_path)
 
+        # Optional default QBlade test path when present
+        default_qblade_sim_path = os.path.join(
+            os.path.dirname(vorlap.repo_dir),
+            "_archive",
+            "UNHCrossflowQBlade",
+            "UNH_QBlade_Definition",
+            "UNH_0.25_TSR2p5.sim",
+        )
+        if os.path.isfile(default_qblade_sim_path):
+            self.qblade_sim_path.set(default_qblade_sim_path)
+
         # Initialize with default parameters
         self._populate_default_params()
 
@@ -157,8 +192,9 @@ class SimulationSetupTab(ttk.Frame):
         # Set parameter and component sections to have fixed weight (non-collapsible)
         self.rowconfigure(2, weight=0, minsize=200)  # Frequency section with minimum size
         self.rowconfigure(3, weight=0, minsize=80)   # Inflow profile section
-        self.rowconfigure(4, weight=0, minsize=200)  # Parameter section with minimum size
-        self.rowconfigure(5, weight=0, minsize=250)  # Component section with minimum size
+        self.rowconfigure(4, weight=0, minsize=120)  # QBlade section
+        self.rowconfigure(5, weight=0, minsize=200)  # Parameter section with minimum size
+        self.rowconfigure(6, weight=0, minsize=250)  # Component section with minimum size
 
     def _get_param_descriptions(self):
         """Get parameter descriptions mapping."""
@@ -305,6 +341,25 @@ class SimulationSetupTab(ttk.Frame):
                 
                 # Get parameters
                 viv_params = self.get_viv_params()
+                qblade_node_ids = None
+
+                qblade_sim_path = self.qblade_sim_path.get().strip()
+                if qblade_sim_path:
+                    self.app.log(f"Converting QBlade model from: {qblade_sim_path}\n")
+                    components_from_qblade, qblade_viv_params, qblade_node_ids = vorlap.convert_qblade_to_vorlap_inputs(
+                        qblade_sim_path
+                    )
+                    self.app.components = components_from_qblade
+                    # Keep user sweep settings, but align key fluid/flow frame fields with QBlade.
+                    viv_params.fluid_density = qblade_viv_params.fluid_density
+                    viv_params.fluid_dynamicviscosity = qblade_viv_params.fluid_dynamicviscosity
+                    viv_params.rotation_axis = qblade_viv_params.rotation_axis
+                    viv_params.rotation_axis_offset = qblade_viv_params.rotation_axis_offset
+                    viv_params.inflow_vec = qblade_viv_params.inflow_vec
+                    self._populate_geometry_table(self.app.components)
+                    self.app.log(
+                        f"Imported {len(self.app.components)} components and {len(qblade_node_ids)} QBlade load targets\n"
+                    )
 
                 inflow_profile_path = self.inflow_profile_path.get().strip()
                 if not inflow_profile_path:
@@ -379,6 +434,8 @@ class SimulationSetupTab(ttk.Frame):
                     'inflow_time': inflow_time,
                     'time_varying_total_global_force_vector': tv_total_global_force_vector,
                     'time_varying_total_global_moment_vector': tv_total_global_moment_vector,
+                    'qblade_node_ids': qblade_node_ids,
+                    'qblade_sim_path': qblade_sim_path,
                     'viv_params': viv_params,
                 }
                 
@@ -395,6 +452,24 @@ class SimulationSetupTab(ttk.Frame):
                         tv_global_force_vector_nodes,
                     )
                     self.app.log(f"Force time series saved to: {force_file}\n")
+
+                    if qblade_node_ids:
+                        qblade_loading_target = self.qblade_loading_path.get().strip()
+                        if qblade_loading_target:
+                            qblade_loading_file = Path(qblade_loading_target)
+                            if not qblade_loading_file.is_absolute():
+                                qblade_loading_file = save_dir / qblade_loading_file
+                        else:
+                            qblade_loading_file = save_dir / "qblade_external_loading.txt"
+                        qblade_loading_file.parent.mkdir(parents=True, exist_ok=True)
+                        vorlap.write_qblade_loading_file(
+                            str(qblade_loading_file),
+                            inflow_time,
+                            tv_global_force_vector_nodes,
+                            qblade_node_ids,
+                            local=False,
+                        )
+                        self.app.log(f"QBlade loading file saved to: {qblade_loading_file}\n")
                 
                 # Update plots
                 self.app.tab_plots.update_plots()
@@ -492,6 +567,58 @@ class SimulationSetupTab(ttk.Frame):
         except Exception as e:
             messagebox.showerror("Import failed", str(e))
 
+    def _populate_geometry_table(self, components):
+        """Populate the component geometry table from loaded components."""
+        self.geom_table.clear()
+        for comp in components:
+            avg_chord = np.mean(comp.chord) if len(comp.chord) > 0 else 0
+            avg_twist = np.mean(comp.twist) if len(comp.twist) > 0 else 0
+            avg_thickness = np.mean(comp.thickness) if len(comp.thickness) > 0 else 0
+            pitch_val = comp.pitch[0] if len(comp.pitch) > 0 else 0
+            num_segments = len(comp.shape_xyz)
+
+            row = [
+                str(comp.id),
+                f"{comp.translation[0]:.3f}",
+                f"{comp.translation[1]:.3f}",
+                f"{comp.translation[2]:.3f}",
+                f"{comp.rotation[0]:.2f}",
+                f"{comp.rotation[1]:.2f}",
+                f"{comp.rotation[2]:.2f}",
+                f"{pitch_val:.2f}",
+                str(num_segments),
+                f"{avg_chord:.3f}",
+                f"{avg_twist:.2f}",
+                f"{avg_thickness:.3f}"
+            ]
+            self.geom_table.append_row(row)
+
+    def load_qblade_inputs(self):
+        """Load VorLap-equivalent components from a QBlade .sim file."""
+        qblade_sim = self.qblade_sim_path.get().strip()
+        if not qblade_sim:
+            messagebox.showwarning("No file", "Choose a QBlade .sim file.")
+            return
+
+        try:
+            components, qblade_viv_params, qblade_node_ids = vorlap.convert_qblade_to_vorlap_inputs(qblade_sim)
+            self.app.components = components
+            self._populate_geometry_table(components)
+            self.app.log(
+                f"Imported QBlade model: {qblade_sim}\n"
+                f"  Components: {len(components)}\n"
+                f"  QBlade load targets: {len(qblade_node_ids)}\n"
+                f"  Fluid density: {qblade_viv_params.fluid_density:.6g}\n"
+                f"  Dynamic viscosity: {qblade_viv_params.fluid_dynamicviscosity:.6g}\n"
+            )
+
+            if not self.qblade_loading_path.get().strip():
+                default_loading = os.path.join(self.sim_save.get() or os.path.dirname(qblade_sim), "qblade_external_loading.txt")
+                self.qblade_loading_path.set(default_loading)
+        except Exception as e:
+            messagebox.showerror("Load failed", str(e))
+            self.app.log(f"Error loading QBlade model: {str(e)}\n")
+
     def load_components(self):
         """Load components from the selected directory."""
         components_dir = self.components_path.get()
@@ -506,34 +633,7 @@ class SimulationSetupTab(ttk.Frame):
             
             # Update geometry table with component-level information
             if components:
-                self.geom_table.clear()
-                for comp in components:
-                    # Calculate average values for segments
-                    avg_chord = np.mean(comp.chord) if len(comp.chord) > 0 else 0
-                    avg_twist = np.mean(comp.twist) if len(comp.twist) > 0 else 0
-                    avg_thickness = np.mean(comp.thickness) if len(comp.thickness) > 0 else 0
-                    
-                    # Get pitch value (usually a single value per component)
-                    pitch_val = comp.pitch[0] if len(comp.pitch) > 0 else 0
-                    
-                    # Number of segments
-                    num_segments = len(comp.shape_xyz)
-                    
-                    row = [
-                        str(comp.id),
-                        f"{comp.translation[0]:.3f}",
-                        f"{comp.translation[1]:.3f}",
-                        f"{comp.translation[2]:.3f}",
-                        f"{comp.rotation[0]:.2f}",
-                        f"{comp.rotation[1]:.2f}",
-                        f"{comp.rotation[2]:.2f}",
-                        f"{pitch_val:.2f}",
-                        str(num_segments),
-                        f"{avg_chord:.3f}",
-                        f"{avg_twist:.2f}",
-                        f"{avg_thickness:.3f}"
-                    ]
-                    self.geom_table.append_row(row)
+                self._populate_geometry_table(components)
                     
         except Exception as e:
             messagebox.showerror("Load failed", str(e))

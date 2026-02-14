@@ -14,6 +14,7 @@ VorLap (Vortex overLAP) predicts aerodynamic force spectra, force reconstruction
 - Compute force/moment maps over inflow and azimuth sweeps.
 - Reconstruct node-level time series from spectral coefficients.
 - Reconstruct node-level time histories for time-varying inflow speed and direction using a profile CSV.
+- Convert QBlade `.sim/.trb/.bld` definitions into VorLap components and export QBlade-compatible `LOADINGFILE` data.
 - Compare shedding frequencies against parked natural frequencies.
 - Use a Tkinter GUI for setup, execution, and plotting.
 
@@ -48,6 +49,12 @@ Run a scripted time-varying inflow example:
 
 ```bash
 python examples/time_varying_inflow_case.py
+```
+
+Run the QBlade fast-path loading export:
+
+```bash
+python examples/qblade_fastpath_loading.py --sim /path/to/case.sim --inflow data/inflow_profile.csv --output qblade_external_loading.txt
 ```
 
 Inflow profile CSV format:

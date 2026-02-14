@@ -19,3 +19,9 @@ These examples are source files in `examples/` and are included directly here to
 ```python
 --8<-- "examples/time_varying_inflow_case.py"
 ```
+
+## QBlade Fast-Path Loading Export
+
+```python
+--8<-- "examples/qblade_fastpath_loading.py"
+```

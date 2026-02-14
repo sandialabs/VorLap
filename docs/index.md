@@ -12,6 +12,7 @@ VorLap estimates aerodynamic loading and resonance risk for rotating structures 
 - Global moment maps (computed as physical cross products, `r × F`).
 - Node-level reconstructed time series for a selected operating point.
 - Node-level reconstructed time series for time-varying inflow profiles (`time`, `inflow_speed`, `inflow_direction_deg`).
+- QBlade fast-path conversion and export of external loading files (`LOADINGFILE`) for one-way structural forcing.
 - Worst-case frequency mismatch metrics and detailed trace strings.
 
 ## Verification and Testing
