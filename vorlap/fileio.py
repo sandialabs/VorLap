@@ -8,7 +8,7 @@ import pandas as pd
 import h5py
 from typing import List
 import warnings
-from .structs import AirfoilFFT, Component
+from .structs import AirfoilFFT, Component, InflowTimeSeries
 
 
 def load_components_from_csv(dir_path: str) -> List[Component]:
@@ -418,6 +418,88 @@ def load_airfoil_coords(afpath: str = "") -> np.ndarray:
     xy[:, 1] /= (np.max(xy[:, 1]) - np.min(xy[:, 1]))
     
     return xy
+
+
+def load_inflow_time_series(path: str) -> InflowTimeSeries:
+    """
+    Load a time-varying inflow profile from CSV.
+
+    Required columns:
+        - `time`
+        - `inflow_speed`
+
+    Direction column options:
+        1) `inflow_direction_deg` (degrees CCW from +X in the global XY plane), or
+        2) `inflow_dir_x`, `inflow_dir_y`, and optional `inflow_dir_z`.
+
+    Args:
+        path: CSV file path.
+
+    Returns:
+        InflowTimeSeries with validated and normalized direction vectors.
+    """
+    if not os.path.isfile(path):
+        raise FileNotFoundError(f"Inflow profile CSV does not exist: {path}")
+
+    df = pd.read_csv(path)
+    if df.empty:
+        raise ValueError(f"Inflow profile CSV is empty: {path}")
+
+    column_map = {str(col).strip().lower(): col for col in df.columns}
+
+    def _find_column(*candidates: str):
+        for name in candidates:
+            key = name.strip().lower()
+            if key in column_map:
+                return column_map[key]
+        return None
+
+    time_col = _find_column("time")
+    speed_col = _find_column("inflow_speed", "speed", "vinf")
+    if time_col is None or speed_col is None:
+        raise ValueError(
+            "Inflow profile CSV must include `time` and `inflow_speed` columns "
+            "(aliases: `speed`, `vinf`)."
+        )
+
+    time = pd.to_numeric(df[time_col], errors="coerce").to_numpy(dtype=float)
+    inflow_speeds = pd.to_numeric(df[speed_col], errors="coerce").to_numpy(dtype=float)
+
+    dir_deg_col = _find_column("inflow_direction_deg", "direction_deg", "inflow_direction")
+    dir_x_col = _find_column("inflow_dir_x", "direction_x", "dir_x")
+    dir_y_col = _find_column("inflow_dir_y", "direction_y", "dir_y")
+    dir_z_col = _find_column("inflow_dir_z", "direction_z", "dir_z")
+
+    if dir_deg_col is not None:
+        direction_deg = pd.to_numeric(df[dir_deg_col], errors="coerce").to_numpy(dtype=float)
+        direction_rad = np.deg2rad(direction_deg)
+        inflow_directions = np.column_stack(
+            [
+                np.cos(direction_rad),
+                np.sin(direction_rad),
+                np.zeros_like(direction_rad),
+            ]
+        )
+    elif dir_x_col is not None and dir_y_col is not None:
+        dir_x = pd.to_numeric(df[dir_x_col], errors="coerce").to_numpy(dtype=float)
+        dir_y = pd.to_numeric(df[dir_y_col], errors="coerce").to_numpy(dtype=float)
+        if dir_z_col is None:
+            dir_z = np.zeros_like(dir_x)
+        else:
+            dir_z = pd.to_numeric(df[dir_z_col], errors="coerce").to_numpy(dtype=float)
+        inflow_directions = np.column_stack([dir_x, dir_y, dir_z])
+    else:
+        raise ValueError(
+            "Inflow profile CSV must include either `inflow_direction_deg` "
+            "or direction vectors (`inflow_dir_x`, `inflow_dir_y`, optional `inflow_dir_z`)."
+        )
+
+    order = np.argsort(time)
+    time = time[order]
+    inflow_speeds = inflow_speeds[order]
+    inflow_directions = inflow_directions[order, :]
+
+    return InflowTimeSeries(time=time, inflow_speeds=inflow_speeds, inflow_directions=inflow_directions)
 
 
 def write_force_time_series(filename: str, output_time: np.ndarray, global_force_vector_nodes: np.ndarray) -> None:

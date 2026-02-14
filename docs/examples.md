@@ -13,3 +13,9 @@ These examples are source files in `examples/` and are included directly here to
 ```python
 --8<-- "examples/single_blade_verification.py"
 ```
+
+## Time-Varying Inflow Case
+
+```python
+--8<-- "examples/time_varying_inflow_case.py"
+```

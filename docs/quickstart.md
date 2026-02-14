@@ -32,3 +32,19 @@ python scripts/launch_gui.py
 ```bash
 python examples/basic_synthetic_case.py
 ```
+
+## 6. Run Time-Varying Inflow Reconstruction
+
+```bash
+python examples/time_varying_inflow_case.py
+```
+
+The inflow CSV must contain at least:
+
+```text
+time,inflow_speed,inflow_direction_deg
+0.0,6.0,0.0
+0.5,7.0,5.0
+```
+
+You can also provide direction vectors with `inflow_dir_x`, `inflow_dir_y`, and optional `inflow_dir_z`.

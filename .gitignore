@@ -5,6 +5,7 @@
 *.DS_Store
 # *.pdf
 *.csv
+!data/inflow_profile.csv
 *.png
 *.pdf
 *.dat

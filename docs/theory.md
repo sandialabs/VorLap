@@ -33,6 +33,12 @@ At a high level, the methodology is:
 - Reconstruct local lift/drag time signals from interpolated frequency, amplitude, and phase.
 - Rotate and assemble these nodal loads into global force time histories for downstream structural models.
 
+6. Time-varying inflow reconstruction:
+- For nonstationary inflow files (`time`, `inflow_speed`, direction), VorLap evaluates local Re/AOA at each time sample.
+- It interpolates Strouhal/amplitude/phase at each sample and converts Strouhal to instantaneous shedding frequency.
+- Harmonics are synthesized with phase continuity (`dphi/dt = 2*pi*f(t)`), using FFT phase as the initial condition.
+- Optional cycle-based smoothing can be applied to frequency/amplitude trajectories to avoid non-physical jumps under rapid inflow changes.
+
 This is the bridge the paper emphasizes: from high-dimensional unsteady spectral datasets to practical, design-stage VIV screening and load synthesis on arbitrary beam-type multi-body structures.
 
 ## Core Load Model

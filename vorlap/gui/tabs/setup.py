@@ -69,6 +69,22 @@ class SimulationSetupTab(ttk.Frame):
         lfreq.columnconfigure(0, weight=1)
         row += 1
 
+        # Time-varying inflow file (required for force time-history output)
+        linflow = ttk.LabelFrame(self, text="Time-Varying Inflow Profile")
+        linflow.grid(row=row, column=0, columnspan=6, sticky="ew", pady=(10, 6))
+        ttk.Label(linflow, text="Profile CSV (required): time, inflow_speed, inflow_direction_deg").grid(
+            row=0, column=0, sticky="w"
+        )
+        self.inflow_profile_path = PathEntry(
+            linflow,
+            kind="file",
+            title="Select inflow profile CSV",
+            must_exist=True,
+        )
+        self.inflow_profile_path.grid(row=1, column=0, sticky="ew", pady=2)
+        linflow.columnconfigure(0, weight=1)
+        row += 1
+
         # Simulation Parameters
         lpars = ttk.LabelFrame(self, text="Simulation Parameters")
         lpars.grid(row=row, column=0, columnspan=6, sticky="ew", pady=(10, 6))
@@ -128,6 +144,10 @@ class SimulationSetupTab(ttk.Frame):
         default_freq_path = os.path.join(vorlap.repo_dir, "data", "natural_frequencies.csv")
         self.freq_path.set(default_freq_path)
 
+        # Default inflow profile path
+        default_inflow_profile_path = os.path.join(vorlap.repo_dir, "data", "inflow_profile.csv")
+        self.inflow_profile_path.set(default_inflow_profile_path)
+
         # Initialize with default parameters
         self._populate_default_params()
 
@@ -136,8 +156,9 @@ class SimulationSetupTab(ttk.Frame):
             self.columnconfigure(c, weight=(1 if c in (1, 3) else 0))
         # Set parameter and component sections to have fixed weight (non-collapsible)
         self.rowconfigure(2, weight=0, minsize=200)  # Frequency section with minimum size
-        self.rowconfigure(3, weight=0, minsize=200)  # Parameter section with minimum size  
-        self.rowconfigure(4, weight=0, minsize=250)  # Component section with minimum size
+        self.rowconfigure(3, weight=0, minsize=80)   # Inflow profile section
+        self.rowconfigure(4, weight=0, minsize=200)  # Parameter section with minimum size
+        self.rowconfigure(5, weight=0, minsize=250)  # Component section with minimum size
 
     def _get_param_descriptions(self):
         """Get parameter descriptions mapping."""
@@ -284,6 +305,17 @@ class SimulationSetupTab(ttk.Frame):
                 
                 # Get parameters
                 viv_params = self.get_viv_params()
+
+                inflow_profile_path = self.inflow_profile_path.get().strip()
+                if not inflow_profile_path:
+                    raise ValueError(
+                        "Inflow profile CSV is required for force output. "
+                        "Provide a file with: time, inflow_speed, inflow_direction_deg."
+                    )
+                inflow_profile = vorlap.load_inflow_time_series(inflow_profile_path)
+                self.app.log(
+                    f"Loaded inflow profile with {inflow_profile.time.size} samples: {inflow_profile_path}\n"
+                )
                 
                 # Get natural frequencies
                 natfreqs = self.get_natural_frequencies()
@@ -317,6 +349,21 @@ class SimulationSetupTab(ttk.Frame):
                 percdiff_matrix, percdiff_info, total_global_force_vector, total_global_moment_vector, global_force_vector_nodes = vorlap.compute_thrust_torque_spectrum_optimized(
                     components, affts, viv_params, natfreqs
                 ) 
+
+                self.app.log("Running time-varying force history reconstruction...\n")
+                (
+                    inflow_time,
+                    tv_total_global_force_vector,
+                    tv_total_global_moment_vector,
+                    tv_global_force_vector_nodes,
+                ) = vorlap.compute_time_varying_force_history_optimized(
+                    components=components,
+                    affts=affts,
+                    viv_params=viv_params,
+                    inflow_profile=inflow_profile,
+                    azimuth_deg=viv_params.output_azimuth_vinf[0],
+                    smoothing_cycles=0.25,
+                )
                 end_time = time.time()
                 execution_time = end_time - start_time
                 self.app.log(f"Computation completed in {execution_time:.4f} seconds\n")
@@ -327,8 +374,12 @@ class SimulationSetupTab(ttk.Frame):
                     'percdiff_info': percdiff_info,
                     'total_global_force_vector': total_global_force_vector,
                     'total_global_moment_vector': total_global_moment_vector,
-                    'global_force_vector_nodes': global_force_vector_nodes,
-                    'viv_params': viv_params
+                    'global_force_vector_nodes_selected_case': global_force_vector_nodes,
+                    'global_force_vector_nodes': tv_global_force_vector_nodes,
+                    'inflow_time': inflow_time,
+                    'time_varying_total_global_force_vector': tv_total_global_force_vector,
+                    'time_varying_total_global_moment_vector': tv_total_global_moment_vector,
+                    'viv_params': viv_params,
                 }
                 
                 # Save force time series if save path is provided
@@ -338,7 +389,11 @@ class SimulationSetupTab(ttk.Frame):
                     save_dir.mkdir(parents=True, exist_ok=True)
                     
                     force_file = save_dir / "forces_output.csv"
-                    vorlap.write_force_time_series(str(force_file), viv_params.output_time, global_force_vector_nodes)
+                    vorlap.write_force_time_series(
+                        str(force_file),
+                        inflow_time,
+                        tv_global_force_vector_nodes,
+                    )
                     self.app.log(f"Force time series saved to: {force_file}\n")
                 
                 # Update plots

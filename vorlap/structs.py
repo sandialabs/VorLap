@@ -280,3 +280,40 @@ class VIV_Params:
         self.amplitude_coeff_cutoff = amplitude_coeff_cutoff
         self.n_freq_depth = n_freq_depth
         self.output_azimuth_vinf = output_azimuth_vinf
+
+
+class InflowTimeSeries:
+    """
+    Time-varying inflow profile used for nonstationary force reconstruction.
+
+    Attributes:
+        time (np.ndarray): Time stamps [s], strictly increasing.
+        inflow_speeds (np.ndarray): Inflow speed magnitude [m/s] per time sample.
+        inflow_directions (np.ndarray): Unit inflow direction vectors [ntime x 3].
+    """
+
+    def __init__(self, time: np.ndarray, inflow_speeds: np.ndarray, inflow_directions: np.ndarray):
+        self.time = np.asarray(time, dtype=float).reshape(-1)
+        self.inflow_speeds = np.asarray(inflow_speeds, dtype=float).reshape(-1)
+        self.inflow_directions = np.asarray(inflow_directions, dtype=float)
+
+        if self.time.size < 2:
+            raise ValueError("Inflow profile must contain at least two time samples.")
+        if self.inflow_speeds.shape[0] != self.time.shape[0]:
+            raise ValueError("inflow_speeds length must match time length.")
+        if self.inflow_directions.shape != (self.time.shape[0], 3):
+            raise ValueError("inflow_directions must have shape [ntime, 3].")
+        if np.any(~np.isfinite(self.time)) or np.any(~np.isfinite(self.inflow_speeds)) or np.any(~np.isfinite(self.inflow_directions)):
+            raise ValueError("Inflow profile contains non-finite values.")
+
+        dt = np.diff(self.time)
+        if np.any(dt <= 0.0):
+            raise ValueError("Inflow profile time values must be strictly increasing.")
+
+        if np.any(self.inflow_speeds < 0.0):
+            raise ValueError("Inflow speeds must be non-negative.")
+
+        norms = np.linalg.norm(self.inflow_directions, axis=1)
+        if np.any(norms <= 1.0e-12):
+            raise ValueError("Inflow direction vectors must have non-zero magnitude.")
+        self.inflow_directions = self.inflow_directions / norms[:, None]

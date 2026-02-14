@@ -2,11 +2,15 @@ import numpy as np
 import pytest
 
 from vorlap.computations import (
+    compute_time_varying_force_history,
+    compute_time_varying_force_history_optimized,
     compute_thrust_torque_spectrum,
     compute_thrust_torque_spectrum_optimized,
+    reconstruct_nonstationary_signal,
     reconstruct_signal,
     rotate_vector,
 )
+from vorlap.structs import InflowTimeSeries
 
 from conftest import make_component, make_constant_airfoil_fft, make_viv_params
 
@@ -41,6 +45,17 @@ def test_reconstruct_signal_requires_monotonic_time():
             np.array([0.0]),
             np.array([1.0, 0.5]),
         )
+
+
+def test_reconstruct_nonstationary_signal_reduces_to_stationary_case():
+    t = np.linspace(0.0, 1.0, 21)
+    freqs = np.column_stack([np.zeros_like(t), np.full_like(t, 2.0)])
+    amps = np.column_stack([np.full_like(t, 1.5), np.full_like(t, 0.25)])
+    phases = np.column_stack([np.zeros_like(t), np.full_like(t, 0.2)])
+
+    signal = reconstruct_nonstationary_signal(freqs, amps, phases, t, smoothing_cycles=0.0)
+    expected = 1.5 + 0.25 * np.cos(2.0 * np.pi * 2.0 * t + 0.2)
+    np.testing.assert_allclose(signal, expected, atol=1e-12)
 
 
 def test_compute_spectrum_uses_cross_product_moment_and_segment_weights():
@@ -89,3 +104,73 @@ def test_compute_spectrum_missing_default_airfoil_raises():
 
     with pytest.raises(KeyError, match="no 'default'"):
         compute_thrust_torque_spectrum_optimized([component], affts, viv_params, np.array([1.0]))
+
+
+def test_time_varying_force_history_matches_single_case_reconstruction():
+    component = make_component(n_nodes=2, span=2.0, airfoil_id="default")
+    afft = make_constant_airfoil_fft(n_freq=2)
+    afft.CL_Amp[:, :, 1] = 0.2
+    afft.CD_Amp[:, :, 1] = 0.1
+    afft.CL_Pha[:, :, 1] = 0.3
+    afft.CD_Pha[:, :, 1] = -0.4
+    affts = {"default": afft}
+
+    viv_params = make_viv_params()
+    viv_params.output_time = np.linspace(0.0, 1.0, 101)
+    viv_params.output_azimuth_vinf = (0.0, 2.0)
+    natfreqs = np.array([1.0])
+
+    _, _, _, _, node_forces_static = compute_thrust_torque_spectrum_optimized(
+        [component], affts, viv_params, natfreqs
+    )
+
+    inflow_dir = viv_params.inflow_vec / np.linalg.norm(viv_params.inflow_vec)
+    inflow_profile = InflowTimeSeries(
+        time=viv_params.output_time,
+        inflow_speeds=np.full(viv_params.output_time.shape[0], 2.0),
+        inflow_directions=np.tile(inflow_dir, (viv_params.output_time.shape[0], 1)),
+    )
+
+    _, _, _, node_forces_time_varying = compute_time_varying_force_history_optimized(
+        [component],
+        affts,
+        viv_params,
+        inflow_profile,
+        azimuth_deg=0.0,
+        smoothing_cycles=0.0,
+    )
+
+    np.testing.assert_allclose(node_forces_time_varying, node_forces_static, atol=1e-12)
+
+
+def test_time_varying_standard_and_optimized_paths_match():
+    component = make_component(n_nodes=3, span=3.0, airfoil_id="default")
+    afft = make_constant_airfoil_fft(n_freq=2)
+    afft.CL_Amp[:, :, 1] = 0.15
+    afft.CD_Amp[:, :, 1] = 0.05
+    affts = {"default": afft}
+    viv_params = make_viv_params()
+
+    inflow_profile = InflowTimeSeries(
+        time=np.array([0.0, 0.2, 0.4, 0.8, 1.0]),
+        inflow_speeds=np.array([2.0, 4.0, 3.0, 5.0, 2.5]),
+        inflow_directions=np.array(
+            [
+                [1.0, 0.0, 0.0],
+                [0.7, 0.7, 0.0],
+                [0.0, 1.0, 0.0],
+                [-0.7, 0.7, 0.0],
+                [-1.0, 0.0, 0.0],
+            ]
+        ),
+    )
+
+    out_std = compute_time_varying_force_history(
+        [component], affts, viv_params, inflow_profile, azimuth_deg=0.0, smoothing_cycles=0.0
+    )
+    out_opt = compute_time_varying_force_history_optimized(
+        [component], affts, viv_params, inflow_profile, azimuth_deg=0.0, smoothing_cycles=0.0
+    )
+
+    for arr_std, arr_opt in zip(out_std, out_opt):
+        np.testing.assert_allclose(arr_std, arr_opt, atol=1e-12)

@@ -8,6 +8,7 @@ This module contains the main application class that orchestrates all GUI compon
 import tkinter as tk
 from tkinter import ttk
 import glob
+import os
 
 import vorlap
 
