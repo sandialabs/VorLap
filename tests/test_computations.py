@@ -106,6 +106,16 @@ def test_compute_spectrum_missing_default_airfoil_raises():
         compute_thrust_torque_spectrum_optimized([component], affts, viv_params, np.array([1.0]))
 
 
+def test_compute_spectrum_missing_airfoil_warns_and_falls_back_to_default():
+    component = make_component(n_nodes=2, span=2.0, airfoil_id="cylinder")
+    default_afft = make_constant_airfoil_fft(name="NACA0018")
+    affts = {"default": default_afft}
+    viv_params = make_viv_params()
+
+    with pytest.warns(RuntimeWarning, match="using default airfoil 'NACA0018'"):
+        compute_thrust_torque_spectrum_optimized([component], affts, viv_params, np.array([1.0]))
+
+
 def test_time_varying_force_history_matches_single_case_reconstruction():
     component = make_component(n_nodes=2, span=2.0, airfoil_id="default")
     afft = make_constant_airfoil_fft(n_freq=2)

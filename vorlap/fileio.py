@@ -3,6 +3,7 @@ File input/output operations for the VorLap package.
 """
 
 import os
+import csv
 import numpy as np
 import pandas as pd
 import h5py
@@ -236,6 +237,8 @@ def convert_qblade_to_vorlap_inputs(
     sim_path: str,
     default_airfoil_id: str = "default",
     include_struts: bool = True,
+    include_tower: bool = True,
+    tower_airfoil_id: str = "cylinder",
 ) -> Tuple[List[Component], VIV_Params, List[str]]:
     """
     Convert a QBlade `.sim` setup into equivalent VorLap components and baseline parameters.
@@ -247,6 +250,10 @@ def convert_qblade_to_vorlap_inputs(
         components: VorLap components equivalent to QBlade blade/strut geometry.
         viv_params: Baseline parameters inferred from QBlade simulation/turbine files.
         qblade_node_ids: Per-node QBlade location IDs aligned with VorLap node ordering.
+
+    Args:
+        include_struts: Include strut components when available in the blade definition.
+        include_tower: Include a tower component inferred from `.trb` tower fields.
     """
     sim = load_qblade_simulation_definition(sim_path)
     if not sim["turbfile_path"]:
@@ -366,6 +373,38 @@ def convert_qblade_to_vorlap_inputs(
                 qblade_node_ids.append(f"STR_{istruct + 1}_{iblade + 1}_0.000000")
                 qblade_node_ids.append(f"STR_{istruct + 1}_{iblade + 1}_1.000000")
 
+    if include_tower:
+        tower_height = float(trb.get("tower_height", 0.0) or 0.0)
+        tower_top_radius = float(trb.get("tower_top_radius", 0.0) or 0.0)
+        tower_bottom_radius = float(trb.get("tower_bottom_radius", 0.0) or 0.0)
+        if tower_height > 0.0 and (tower_top_radius > 0.0 or tower_bottom_radius > 0.0):
+            n_tower = max(6, len(heights))
+            # Align tower top with the blade hub reference height in the imported geometry.
+            hub_z_ref = float(np.mean(heights)) if heights.size else 0.0
+            t = np.linspace(0.0, 1.0, n_tower, dtype=float)
+            z = hub_z_ref - tower_height + tower_height * t
+            radii_tower = tower_bottom_radius + (tower_top_radius - tower_bottom_radius) * t
+            chord_tower = np.maximum(2.0 * radii_tower, 1.0e-3)
+
+            tower_component = Component(
+                id="TWR_1",
+                translation=np.zeros(3, dtype=float),
+                rotation=np.zeros(3, dtype=float),
+                pitch=np.array([0.0], dtype=float),
+                shape_xyz=np.column_stack([np.zeros_like(z), np.zeros_like(z), z]),
+                shape_xyz_global=np.zeros((n_tower, 3), dtype=float),
+                chord=chord_tower,
+                twist=np.zeros(n_tower, dtype=float),
+                thickness=np.ones(n_tower, dtype=float),
+                offset=np.full(n_tower, 0.5, dtype=float),
+                airfoil_ids=[tower_airfoil_id] * n_tower,
+                chord_vector=np.zeros((n_tower, 3), dtype=float),
+                normal_vector=np.zeros((n_tower, 3), dtype=float),
+            )
+            components.append(tower_component)
+            for p in t:
+                qblade_node_ids.append(f"TWR_1_{float(p):.6f}")
+
     hor_rad = np.deg2rad(float(sim["hor_angle_deg"]))
     vert_rad = np.deg2rad(float(sim["vert_angle_deg"]))
     inflow_vec = np.array(
@@ -399,6 +438,92 @@ def convert_qblade_to_vorlap_inputs(
     )
 
     return components, viv_params, qblade_node_ids
+
+
+def write_components_to_csv(dir_path: str, components: List[Component]) -> List[str]:
+    """
+    Write VorLap components to per-component CSV files compatible with `load_components_from_csv`.
+
+    Args:
+        dir_path: Output directory for component CSV files.
+        components: Components to write.
+
+    Returns:
+        List of absolute file paths written.
+    """
+    if not components:
+        raise ValueError("No components were provided for export.")
+
+    os.makedirs(dir_path, exist_ok=True)
+    written_files: List[str] = []
+
+    for icomp, comp in enumerate(components):
+        comp_id = str(comp.id) if getattr(comp, "id", None) else f"component_{icomp+1}"
+        safe_id = re.sub(r"[^A-Za-z0-9_.-]+", "_", comp_id).strip("_") or f"component_{icomp+1}"
+        out_path = os.path.abspath(os.path.join(dir_path, f"{safe_id}.csv"))
+
+        xyz = np.asarray(comp.shape_xyz, dtype=float)
+        if xyz.ndim != 2 or xyz.shape[1] != 3:
+            raise ValueError(f"Component '{comp_id}' has invalid shape_xyz with shape {xyz.shape}.")
+
+        npts = xyz.shape[0]
+        chord = np.asarray(comp.chord, dtype=float).reshape(-1)
+        twist = np.asarray(comp.twist, dtype=float).reshape(-1)
+        thickness = np.asarray(comp.thickness, dtype=float).reshape(-1)
+        offset = np.asarray(comp.offset, dtype=float).reshape(-1)
+        if not (len(chord) == len(twist) == len(thickness) == len(offset) == npts):
+            raise ValueError(
+                f"Component '{comp_id}' has inconsistent vector lengths: "
+                f"xyz={npts}, chord={len(chord)}, twist={len(twist)}, thickness={len(thickness)}, offset={len(offset)}."
+            )
+
+        airfoil_ids = list(comp.airfoil_ids) if getattr(comp, "airfoil_ids", None) is not None else []
+        if len(airfoil_ids) < npts:
+            fill_id = airfoil_ids[-1] if airfoil_ids else "default"
+            airfoil_ids = airfoil_ids + [fill_id] * (npts - len(airfoil_ids))
+        else:
+            airfoil_ids = airfoil_ids[:npts]
+
+        translation = np.asarray(comp.translation, dtype=float).reshape(-1)
+        rotation = np.asarray(comp.rotation, dtype=float).reshape(-1)
+        pitch = np.asarray(comp.pitch, dtype=float).reshape(-1)
+        pitch_value = float(pitch[0]) if pitch.size else 0.0
+        if translation.size != 3 or rotation.size != 3:
+            raise ValueError(f"Component '{comp_id}' has invalid translation/rotation dimensions.")
+
+        with open(out_path, "w", newline="", encoding="utf-8") as f:
+            writer = csv.writer(f)
+            writer.writerow(["id", "translation_x", "translation_y", "translation_z", "rotation_x", "rotation_y", "rotation_z", "pitch"])
+            writer.writerow(
+                [
+                    comp_id,
+                    f"{translation[0]:.9g}",
+                    f"{translation[1]:.9g}",
+                    f"{translation[2]:.9g}",
+                    f"{rotation[0]:.9g}",
+                    f"{rotation[1]:.9g}",
+                    f"{rotation[2]:.9g}",
+                    f"{pitch_value:.9g}",
+                ]
+            )
+            writer.writerow(["x", "y", "z", "chord", "twist", "thickness", "offset", "airfoil_id"])
+            for i in range(npts):
+                writer.writerow(
+                    [
+                        f"{xyz[i, 0]:.9g}",
+                        f"{xyz[i, 1]:.9g}",
+                        f"{xyz[i, 2]:.9g}",
+                        f"{chord[i]:.9g}",
+                        f"{twist[i]:.9g}",
+                        f"{thickness[i]:.9g}",
+                        f"{offset[i]:.9g}",
+                        str(airfoil_ids[i]),
+                    ]
+                )
+
+        written_files.append(out_path)
+
+    return written_files
 
 
 def write_qblade_loading_file(

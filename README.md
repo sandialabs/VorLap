@@ -3,6 +3,7 @@
 [![Tests](https://github.com/sandialabs/VorLap/actions/workflows/tests.yml/badge.svg)](https://github.com/sandialabs/VorLap/actions/workflows/tests.yml)
 [![Docs](https://github.com/sandialabs/VorLap/actions/workflows/docs.yml/badge.svg)](https://github.com/sandialabs/VorLap/actions/workflows/docs.yml)
 [![GUI Builds](https://github.com/sandialabs/VorLap/actions/workflows/build_gui.yml/badge.svg)](https://github.com/sandialabs/VorLap/actions/workflows/build_gui.yml)
+[![Dev Builds (main)](https://img.shields.io/badge/dev_builds-main-blue)](https://github.com/sandialabs/VorLap/actions/workflows/build_gui.yml?query=branch%3Amain)
 [![Download](https://img.shields.io/github/v/release/sandialabs/VorLap?label=download)](https://github.com/sandialabs/VorLap/releases/latest)
 
 VorLap (Vortex overLAP) predicts aerodynamic force spectra, force reconstruction, and frequency overlap risk for rotating structures using FFT-based airfoil databases.
@@ -69,7 +70,15 @@ mkdocs build --strict
 Launch GUI:
 
 ```bash
-python scripts/launch_gui.py
+python3 scripts/launch_gui.py
+```
+
+If zsh reports `unknown file attribute: b`, your `python` shell alias/function is interfering with glob parsing. Use:
+
+```bash
+python3 scripts/launch_gui.py
+# or explicitly:
+.venv/bin/python scripts/launch_gui.py
 ```
 
 Run a scripted time-varying inflow example:

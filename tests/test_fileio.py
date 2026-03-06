@@ -14,6 +14,7 @@ from vorlap.fileio import (
     load_qblade_blade_definition,
     load_qblade_simulation_definition,
     load_qblade_turbine_definition,
+    write_components_to_csv,
     write_force_time_series,
     write_qblade_loading_file,
 )
@@ -49,6 +50,28 @@ def test_load_components_from_csv_parses_component(tmp_path: Path):
     np.testing.assert_allclose(comp.translation, np.array([1.0, 2.0, 3.0]))
     np.testing.assert_allclose(comp.rotation, np.array([4.0, 5.0, 6.0]))
     assert comp.airfoil_ids == ["default"]
+
+
+def test_write_components_to_csv_roundtrip(tmp_path: Path):
+    comp_dir = tmp_path / "components_in"
+    comp_dir.mkdir()
+    _write_component_csv(comp_dir / "blade.csv")
+    components = load_components_from_csv(str(comp_dir))
+
+    out_dir = tmp_path / "components_out"
+    written = write_components_to_csv(str(out_dir), components)
+
+    assert len(written) == 1
+    assert Path(written[0]).exists()
+
+    reloaded = load_components_from_csv(str(out_dir))
+    assert len(reloaded) == 1
+    np.testing.assert_allclose(reloaded[0].shape_xyz, components[0].shape_xyz)
+    np.testing.assert_allclose(reloaded[0].chord, components[0].chord)
+    np.testing.assert_allclose(reloaded[0].twist, components[0].twist)
+    np.testing.assert_allclose(reloaded[0].thickness, components[0].thickness)
+    np.testing.assert_allclose(reloaded[0].offset, components[0].offset)
+    assert reloaded[0].airfoil_ids == components[0].airfoil_ids
 
 
 def test_load_components_from_csv_missing_required_column_raises(tmp_path: Path):
@@ -269,6 +292,18 @@ def test_convert_qblade_to_vorlap_inputs(tmp_path: Path):
     assert viv_params.fluid_density == pytest.approx(1.30)
     assert viv_params.fluid_dynamicviscosity == pytest.approx(1.3e-5)
     np.testing.assert_allclose(viv_params.rotation_axis_offset, np.array([1.0, 2.0, 3.0]))
+
+
+def test_convert_qblade_to_vorlap_inputs_tower_defaults_to_cylinder(tmp_path: Path):
+    sim, trb, _bld = _write_qblade_minimal_files(tmp_path)
+    with trb.open("a") as f:
+        f.write("12.0 TOWERHEIGHT - tower height\n")
+        f.write("0.50 TOWERTOPRAD - tower top radius\n")
+        f.write("0.70 TOWERBOTRAD - tower bottom radius\n")
+
+    components, _viv_params, _node_ids = convert_qblade_to_vorlap_inputs(str(sim), include_tower=True)
+    tower = next(comp for comp in components if comp.id == "TWR_1")
+    assert set(tower.airfoil_ids) == {"cylinder"}
 
 
 def test_write_qblade_loading_file(tmp_path: Path):

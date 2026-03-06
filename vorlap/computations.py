@@ -22,11 +22,29 @@ def _normalize(vector: np.ndarray, name: str) -> np.ndarray:
     return vec / norm
 
 
-def _resolve_airfoil(affts: Dict[str, AirfoilFFT], airfoil_id: str) -> AirfoilFFT:
+def _resolve_airfoil(
+    affts: Dict[str, AirfoilFFT],
+    airfoil_id: str,
+    warned_missing_airfoils: Optional[set] = None,
+) -> AirfoilFFT:
     """Resolve an airfoil id with fallback to `default`."""
     if airfoil_id in affts:
         return affts[airfoil_id]
     if "default" in affts:
+        warn_once = warned_missing_airfoils is not None
+        should_warn = True
+        if warn_once:
+            if airfoil_id in warned_missing_airfoils:
+                should_warn = False
+            else:
+                warned_missing_airfoils.add(airfoil_id)
+        if should_warn:
+            default_name = getattr(affts["default"], "name", "default")
+            warnings.warn(
+                f"Airfoil '{airfoil_id}' not found; using default airfoil '{default_name}'.",
+                RuntimeWarning,
+                stacklevel=2,
+            )
         return affts["default"]
     raise KeyError(f"Airfoil '{airfoil_id}' was not found and no 'default' airfoil is available.")
 
@@ -93,6 +111,7 @@ def _compute_thrust_torque_spectrum_impl(
 
     output_azimuth = float(viv_params.output_azimuth_vinf[0])
     output_inflow = float(viv_params.output_azimuth_vinf[1])
+    warned_missing_airfoils: set = set()
 
     for i_inflow, inflow_speed in enumerate(inflow_speeds):
         Vinf = inflow_unit * inflow_speed
@@ -111,7 +130,11 @@ def _compute_thrust_torque_spectrum_impl(
                     global_pos = np.asarray(comp.shape_xyz_global[ipt], dtype=float)
                     chord = float(comp.chord[ipt])
 
-                    afft = _resolve_airfoil(affts, comp.airfoil_ids[ipt])
+                    afft = _resolve_airfoil(
+                        affts,
+                        comp.airfoil_ids[ipt],
+                        warned_missing_airfoils=warned_missing_airfoils,
+                    )
 
                     chord_vector = np.asarray(comp.chord_vector[ipt, :], dtype=float)
                     normal_vector = np.asarray(comp.normal_vector[ipt, :], dtype=float)
@@ -425,13 +448,18 @@ def _compute_time_varying_force_history_impl(
     )
 
     inode = 0
+    warned_missing_airfoils: set = set()
     for comp in components:
         n_pts = comp.shape_xyz.shape[0]
 
         for ipt in range(n_pts):
             global_pos = np.asarray(comp.shape_xyz_global[ipt], dtype=float)
             chord = float(comp.chord[ipt])
-            afft = _resolve_airfoil(affts, comp.airfoil_ids[ipt])
+            afft = _resolve_airfoil(
+                affts,
+                comp.airfoil_ids[ipt],
+                warned_missing_airfoils=warned_missing_airfoils,
+            )
 
             chord_vector = np.asarray(comp.chord_vector[ipt, :], dtype=float)
             normal_vector = np.asarray(comp.normal_vector[ipt, :], dtype=float)
@@ -656,13 +684,13 @@ def reconstruct_signal(freqs: np.ndarray,
     - Negative frequencies, if present, are ignored (assumed redundant w.r.t. positive freqs + phases).
 
     Args:
-        freqs  : array of frequencies [Hz]
-        amps   : array of peak amplitudes corresponding to each frequency
-        phases : array of phase offsets [rad] corresponding to each frequency
-        tvec   : time vector [s] (must have at least 2 samples)
+        freqs (np.ndarray): Array of frequencies [Hz].
+        amps (np.ndarray): Array of peak amplitudes corresponding to each frequency.
+        phases (np.ndarray): Array of phase offsets [rad] corresponding to each frequency.
+        tvec (np.ndarray): Time vector [s] (must have at least 2 samples).
 
     Returns:
-        signal : reconstructed time-domain signal (float64), shape = (len(tvec),)
+        np.ndarray: Reconstructed time-domain signal (float64), shape `(len(tvec),)`.
     """
     freqs  = np.asarray(freqs, dtype=np.float64)
     amps   = np.asarray(amps, dtype=np.float64)
