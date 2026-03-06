@@ -11,17 +11,134 @@ from pathlib import Path
 import csv
 
 
+def _get_theme_colors(widget):
+    root = widget.winfo_toplevel()
+    return getattr(
+        root,
+        "_vorlap_theme_colors",
+        {
+            "entry_bg": "#ffffff",
+            "fg": "#2d3748",
+            "select_bg": "#4299e1",
+            "select_fg": "#ffffff",
+            "border": "#94a3b8",
+            "text_bg": "#ffffff",
+        },
+    )
+
+
+class ScrollableFrame(ttk.Frame):
+    """A vertically scrollable frame with mouse-wheel support."""
+
+    def __init__(self, master, **kwargs):
+        super().__init__(master, **kwargs)
+        self.canvas = tk.Canvas(self, highlightthickness=0, borderwidth=0)
+        self.vsb = ttk.Scrollbar(self, orient="vertical", command=self.canvas.yview)
+        self.canvas.configure(yscrollcommand=self.vsb.set)
+
+        self.content = ttk.Frame(self.canvas)
+        self._window_id = self.canvas.create_window((0, 0), window=self.content, anchor="nw")
+
+        self.canvas.grid(row=0, column=0, sticky="nsew")
+        self.vsb.grid(row=0, column=1, sticky="ns")
+
+        self.rowconfigure(0, weight=1)
+        self.columnconfigure(0, weight=1)
+
+        self.content.bind("<Configure>", self._on_content_configure)
+        self.canvas.bind("<Configure>", self._on_canvas_configure)
+        self.canvas.bind("<Expose>", self._on_expose, add="+")
+        self.bind("<Map>", self._on_map, add="+")
+
+        self.bind_all("<MouseWheel>", self._on_mousewheel, add="+")
+        self.bind_all("<Button-4>", self._on_mousewheel_linux_up, add="+")
+        self.bind_all("<Button-5>", self._on_mousewheel_linux_down, add="+")
+        self.winfo_toplevel().bind("<<VorLapThemeChanged>>", self._on_theme_changed, add="+")
+        self._on_theme_changed()
+
+    def _on_theme_changed(self, _event=None):
+        colors = _get_theme_colors(self)
+        self.canvas.configure(bg=colors.get("bg", colors.get("text_bg", "#ffffff")))
+
+    def _on_content_configure(self, _event=None):
+        self.canvas.configure(scrollregion=self.canvas.bbox("all"))
+
+    def _on_canvas_configure(self, event):
+        self.canvas.itemconfigure(self._window_id, width=event.width)
+        self.canvas.configure(scrollregion=self.canvas.bbox("all"))
+
+    def _on_expose(self, _event=None):
+        self.after_idle(self.refresh)
+
+    def _on_map(self, _event=None):
+        self.after_idle(self.refresh)
+
+    def refresh(self):
+        try:
+            self.update_idletasks()
+            width = max(1, self.canvas.winfo_width())
+            self.canvas.itemconfigure(self._window_id, width=width)
+            self.canvas.configure(scrollregion=self.canvas.bbox("all"))
+            self.canvas.update_idletasks()
+        except Exception:
+            pass
+
+    def _is_inside(self, widget):
+        w = widget
+        while w is not None:
+            if w == self:
+                return True
+            w = w.master
+        return False
+
+    def _scroll(self, units):
+        self.canvas.yview_scroll(units, "units")
+
+    def _on_mousewheel(self, event):
+        widget = self.winfo_containing(event.x_root, event.y_root)
+        if widget is None or not self._is_inside(widget):
+            return
+        delta = event.delta
+        if delta == 0:
+            return
+        self._scroll(-1 if delta > 0 else 1)
+
+    def _on_mousewheel_linux_up(self, event):
+        widget = self.winfo_containing(event.x_root, event.y_root)
+        if widget is None or not self._is_inside(widget):
+            return
+        self._scroll(-1)
+
+    def _on_mousewheel_linux_down(self, event):
+        widget = self.winfo_containing(event.x_root, event.y_root)
+        if widget is None or not self._is_inside(widget):
+            return
+        self._scroll(1)
+
+
 class PathEntry(ttk.Frame):
     """Entry + Browse button (file or directory)."""
-    def __init__(self, master, kind="file", title="Select...", must_exist=False, **kwargs):
+    def __init__(
+        self,
+        master,
+        kind="file",
+        title="Select...",
+        must_exist=False,
+        on_select=None,
+        textvariable=None,
+        button_text="Browse",
+        **kwargs,
+    ):
         super().__init__(master, **kwargs)
         self.kind = kind          # "file" | "dir" | "savefile"
         self.title = title
         self.must_exist = must_exist
-        self.var = tk.StringVar()
+        self.on_select = on_select
+        self.button_text = str(button_text) if button_text else "Browse"
+        self.var = textvariable if textvariable is not None else tk.StringVar()
         self.entry = ttk.Entry(self, textvariable=self.var)
         self.entry.grid(row=0, column=0, sticky="ew", padx=(0, 4))
-        self.btn = ttk.Button(self, text="Browse", command=self.browse)
+        self.btn = ttk.Button(self, text=self.button_text, command=self.browse)
         self.btn.grid(row=0, column=1)
         self.columnconfigure(0, weight=1)
 
@@ -37,6 +154,8 @@ class PathEntry(ttk.Frame):
                 messagebox.showerror("Path not found", f"{path}\n\ndoes not exist.")
                 return
             self.var.set(path)
+            if callable(self.on_select):
+                self.on_select(path)
 
     def get(self) -> str:
         return self.var.get()
@@ -49,13 +168,14 @@ class ScrollText(ttk.Frame):
     """A Text widget with a vertical scrollbar."""
     def __init__(self, master, height=10, **kwargs):
         super().__init__(master, **kwargs)
+        colors = _get_theme_colors(self)
         self.text = tk.Text(self, wrap="word", height=height,
                            font=('Segoe UI', 10),
-                           bg='#ffffff',
-                           fg='#2d3748',
-                           selectbackground='#4299e1',
-                           selectforeground='#ffffff',
-                           insertbackground='#2d3748',
+                           bg=colors["text_bg"],
+                           fg=colors["fg"],
+                           selectbackground=colors["select_bg"],
+                           selectforeground=colors["select_fg"],
+                           insertbackground=colors["fg"],
                            borderwidth=1,
                            relief='solid',
                            padx=8,
@@ -66,6 +186,17 @@ class ScrollText(ttk.Frame):
         sb.grid(row=0, column=1, sticky="ns")
         self.rowconfigure(0, weight=1)
         self.columnconfigure(0, weight=1)
+        self.winfo_toplevel().bind("<<VorLapThemeChanged>>", self._on_theme_changed, add="+")
+
+    def _on_theme_changed(self, _event=None):
+        colors = _get_theme_colors(self)
+        self.text.configure(
+            bg=colors["text_bg"],
+            fg=colors["fg"],
+            selectbackground=colors["select_bg"],
+            selectforeground=colors["select_fg"],
+            insertbackground=colors["fg"],
+        )
 
     def write(self, s: str):
         self.text.insert("end", s)
@@ -154,13 +285,14 @@ class EditableTreeview(ttk.Frame):
         x, y, w, h = bbox
         value = self.tree.set(row_id, self.columns[col])
 
+        colors = _get_theme_colors(self)
         self._editor = tk.Entry(self.tree,
                                font=('Segoe UI', 10),
-                               bg='#ffffff',
-                               fg='#2d3748',
-                               selectbackground='#4299e1',
-                               selectforeground='#ffffff',
-                               insertbackground='#2d3748',
+                               bg=colors["entry_bg"],
+                               fg=colors["fg"],
+                               selectbackground=colors["select_bg"],
+                               selectforeground=colors["select_fg"],
+                               insertbackground=colors["fg"],
                                borderwidth=1,
                                relief='solid')
         self._editor.insert(0, value)

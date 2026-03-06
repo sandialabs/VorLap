@@ -23,6 +23,7 @@ from .fileio import (
     load_qblade_simulation_definition,
     load_qblade_turbine_definition,
     load_inflow_time_series,
+    write_components_to_csv,
     write_qblade_loading_file,
     write_force_time_series
 )
@@ -67,6 +68,7 @@ __all__ = [
     "resample_airfoil",
     "rotate_vector",
     "rotationMatrix",
+    "write_components_to_csv",
     "write_qblade_loading_file",
     "write_force_time_series",
 ]

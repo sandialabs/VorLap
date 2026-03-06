@@ -69,7 +69,15 @@ mkdocs build --strict
 Launch GUI:
 
 ```bash
-python scripts/launch_gui.py
+python3 scripts/launch_gui.py
+```
+
+If zsh reports `unknown file attribute: b`, your `python` shell alias/function is interfering with glob parsing. Use:
+
+```bash
+python3 scripts/launch_gui.py
+# or explicitly:
+.venv/bin/python scripts/launch_gui.py
 ```
 
 Run a scripted time-varying inflow example:
