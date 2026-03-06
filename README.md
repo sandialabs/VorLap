@@ -27,6 +27,33 @@ python -m pip install --upgrade pip
 python -m pip install -e ".[dev,docs,gui]"
 ```
 
+Verify Tkinter support (required for GUI):
+
+```bash
+python -c "import tkinter as tk; r=tk.Tk(); r.withdraw(); r.destroy(); print('tk_ok')"
+```
+
+If this fails or aborts on macOS (for example with `_tkinter` errors or Tk runtime aborts), avoid `/usr/bin/python3` for the GUI path and use one of these:
+
+1. Dedicated Conda environment (recommended)
+
+```bash
+conda deactivate  # repeat until (base) is gone, if needed
+conda create -n vorlap-gui python=3.11 -y
+conda activate vorlap-gui
+python -m pip install -e ".[dev,docs,gui]"
+```
+
+2. python.org framework Python + venv
+
+```bash
+deactivate  # if currently active
+rm -rf .venv
+/Library/Frameworks/Python.framework/Versions/3.12/bin/python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install -e ".[dev,docs,gui]"
+```
+
 Run tests:
 
 ```bash

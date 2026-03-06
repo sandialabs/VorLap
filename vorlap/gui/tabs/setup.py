@@ -175,10 +175,8 @@ class SimulationSetupTab(ttk.Frame):
         # Optional default QBlade test path when present
         default_qblade_sim_path = os.path.join(
             os.path.dirname(vorlap.repo_dir),
-            "_archive",
-            "UNHCrossflowQBlade",
-            "UNH_QBlade_Definition",
-            "UNH_0.25_TSR2p5.sim",
+            "examples",
+            "QBladeExample.sim",
         )
         if os.path.isfile(default_qblade_sim_path):
             self.qblade_sim_path.set(default_qblade_sim_path)
