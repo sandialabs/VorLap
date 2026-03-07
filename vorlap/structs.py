@@ -33,8 +33,7 @@ class AirfoilFFT:
         CD_Pha (np.ndarray): FFT phases of CD
         CM_Pha (np.ndarray): FFT phases of CM
         CF_Pha (np.ndarray): FFT phases of CF
-        
-        # Cached interpolators for performance optimization
+
         _interpolators_cached (bool): Whether interpolators are pre-computed
         _cl_st_interps (List): Pre-computed ST interpolators for CL
         _cl_amp_interps (List): Pre-computed amplitude interpolators for CL

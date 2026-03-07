@@ -684,13 +684,13 @@ def reconstruct_signal(freqs: np.ndarray,
     - Negative frequencies, if present, are ignored (assumed redundant w.r.t. positive freqs + phases).
 
     Args:
-        freqs  : array of frequencies [Hz]
-        amps   : array of peak amplitudes corresponding to each frequency
-        phases : array of phase offsets [rad] corresponding to each frequency
-        tvec   : time vector [s] (must have at least 2 samples)
+        freqs (np.ndarray): Array of frequencies [Hz].
+        amps (np.ndarray): Array of peak amplitudes corresponding to each frequency.
+        phases (np.ndarray): Array of phase offsets [rad] corresponding to each frequency.
+        tvec (np.ndarray): Time vector [s] (must have at least 2 samples).
 
     Returns:
-        signal : reconstructed time-domain signal (float64), shape = (len(tvec),)
+        np.ndarray: Reconstructed time-domain signal (float64), shape `(len(tvec),)`.
     """
     freqs  = np.asarray(freqs, dtype=np.float64)
     amps   = np.asarray(amps, dtype=np.float64)

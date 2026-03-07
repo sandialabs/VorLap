@@ -3,4 +3,12 @@ set -euo pipefail
 
 python -m pip install --upgrade pip
 python -m pip install -e ".[gui]"
-pyinstaller --noconfirm --clean --onefile --name vorlap_gui scripts/launch_gui.py
+python -m PyInstaller \
+  --noconfirm \
+  --clean \
+  --onefile \
+  --name vorlap_gui \
+  --paths . \
+  --collect-submodules vorlap \
+  --collect-data vorlap \
+  scripts/launch_gui.py

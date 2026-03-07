@@ -1,5 +1,9 @@
 # VorLap
 
+<p align="center">
+  <img src="VorLapLogo.png" alt="VorLap Logo" width="420" />
+</p>
+
 VorLap estimates aerodynamic loading and resonance risk for rotating structures by combining:
 
 - Geometry-driven local flow orientation.

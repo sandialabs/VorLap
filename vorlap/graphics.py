@@ -19,7 +19,7 @@ def calc_structure_vectors_andplot(
     return_fig: bool = False,
     components_black: bool = False,
     save_path: Optional[str] = None,
-):
+) -> Optional[go.Figure]:
     """
     Calculates structure vectors and creates a plot.
 
@@ -33,7 +33,7 @@ def calc_structure_vectors_andplot(
             static image is written.
 
     Returns:
-        fig: Plotly figure object if return_fig=True, otherwise None.
+        Optional[go.Figure]: Plotly figure object if return_fig=True, otherwise None.
     """
     from .fileio import load_airfoil_coords
 

@@ -41,6 +41,13 @@ _check_tkinter()
 
 
 def _check_tk_window() -> None:
+    # In frozen builds (e.g., PyInstaller), sys.executable points to the app
+    # binary, not a Python interpreter. Spawning a subprocess with
+    # `sys.executable -c ...` can recurse/hang; skip this preflight there.
+    if getattr(sys, "frozen", False):
+        print("VorLap GUI: frozen build detected; skipping Tk subprocess preflight check.")
+        return
+
     # Run Tk window creation in a child process so hard aborts become
     # actionable launch-time diagnostics instead of opaque crashes.
     code = (

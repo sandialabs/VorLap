@@ -1,11 +1,19 @@
 # VorLap
 
+<p align="center">
+  <img src="docs/VorLapLogo.png" alt="VorLap Logo" width="420" />
+</p>
+
 [![Tests](https://github.com/sandialabs/VorLap/actions/workflows/tests.yml/badge.svg)](https://github.com/sandialabs/VorLap/actions/workflows/tests.yml)
 [![Docs](https://github.com/sandialabs/VorLap/actions/workflows/docs.yml/badge.svg)](https://github.com/sandialabs/VorLap/actions/workflows/docs.yml)
+[![Hosted Docs](https://img.shields.io/badge/docs-github_pages-blue)](https://sandialabs.github.io/VorLap/)
 [![GUI Builds](https://github.com/sandialabs/VorLap/actions/workflows/build_gui.yml/badge.svg)](https://github.com/sandialabs/VorLap/actions/workflows/build_gui.yml)
+[![Dev Builds (main)](https://img.shields.io/badge/dev_builds-main-blue)](https://github.com/sandialabs/VorLap/actions/workflows/build_gui.yml?query=branch%3Amain)
 [![Download](https://img.shields.io/github/v/release/sandialabs/VorLap?label=download)](https://github.com/sandialabs/VorLap/releases/latest)
 
 VorLap (Vortex overLAP) predicts aerodynamic force spectra, force reconstruction, and frequency overlap risk for rotating structures using FFT-based airfoil databases.
+
+Hosted documentation: <https://sandialabs.github.io/VorLap/>
 
 ## Features
 
