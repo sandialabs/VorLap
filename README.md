@@ -100,6 +100,35 @@ Run the QBlade fast-path loading export:
 python examples/qblade_fastpath_loading.py --sim /path/to/case.sim --inflow data/inflow_profile.csv --output qblade_external_loading.txt
 ```
 
+Build the live QBlade external-library bridge:
+
+```bash
+scripts/build_qblade_external_linux.sh
+```
+
+On Windows (PowerShell):
+
+```powershell
+scripts/build_qblade_external_windows.ps1
+```
+
+The shared library name is `libvorlap_qblade_bridge` (`.so` on Linux, `.dll` on Windows). Copy it into QBlade's `ControllerFiles` directory so QBlade can load it.
+
+Prepare the `wMinSagSnubbers` QBlade case for VorLap:
+
+```bash
+python scripts/prepare_qblade_external_case.py \
+  --sim ../QBlade_model_exp_9.16.25/baseline_wMinSagSnubbers-Wwnd.sim \
+  --airfoils data/airfoils \
+  --node-source structural
+```
+
+That script updates the turbine definition with `LIBFILE_1`, `LIBFUNCTION_1`, `LIBARRAYSIZE_1`, and `LIBPARAMETERFILE_1`, appends `EXTERNAL_1_IN` / `EXTERNAL_1_OUT` tables to the structural model, and writes `Control/vorlap_qblade_external.json`.
+
+The runtime config defaults to structural `BLD_*`/`STR_*` nodes so the swap mapping aligns with output locations already declared in the structural file. Use `--node-source converted` if you want all converted VorLap nodes instead.
+
+The embedded bridge imports `vorlap.qblade_runtime` from your Python environment, so install VorLap and dependencies in the same Python used during bridge build.
+
 Inflow profile CSV format:
 
 ```text
