@@ -1,6 +1,7 @@
 """Prepare a QBlade case for live VorLap external-library coupling."""
 
 import argparse
+import os
 import re
 import sys
 from pathlib import Path
@@ -128,7 +129,14 @@ def extract_structural_node_ids(structural_text: str, include_tower_nodes: bool 
 def main() -> None:
     args = parse_args()
     sim_path = Path(args.sim).resolve()
-    airfoil_dir = Path(args.airfoils).resolve()
+    airfoil_dir_arg = Path(args.airfoils)
+    airfoil_dir = (
+        airfoil_dir_arg.resolve()
+        if airfoil_dir_arg.is_absolute()
+        else (Path.cwd() / airfoil_dir_arg).resolve()
+    )
+    if not airfoil_dir.is_dir():
+        raise FileNotFoundError(f"Airfoil directory does not exist: {airfoil_dir}")
 
     sim_info = vorlap.load_qblade_simulation_definition(str(sim_path))
     turbfile_path = Path(sim_info["turbfile_path"]).resolve()
@@ -154,9 +162,25 @@ def main() -> None:
     table_spec = build_external_library_table_spec(node_ids)
 
     parameter_file_path = _resolve_parameter_file_path(turbfile_path, args.parameter_file)
+    try:
+        sim_path_for_config = Path(
+            os.path.relpath(str(sim_path), start=str(parameter_file_path.parent))
+        ).as_posix()
+    except ValueError:
+        # Relative conversion can fail on Windows when drives differ.
+        sim_path_for_config = str(sim_path)
+
+    try:
+        airfoil_dir_for_config = Path(
+            os.path.relpath(str(airfoil_dir), start=str(parameter_file_path.parent))
+        ).as_posix()
+    except ValueError:
+        # Relative conversion can fail on Windows when drives differ.
+        airfoil_dir_for_config = str(airfoil_dir)
+
     config = build_qblade_external_config(
-        sim_path=str(sim_path),
-        airfoil_dir=str(airfoil_dir),
+        sim_path=sim_path_for_config,
+        airfoil_dir=airfoil_dir_for_config,
         node_ids=node_ids,
         library_stem=args.library_stem,
         function_name=args.function_name,
@@ -191,6 +215,8 @@ def main() -> None:
     print(f"Patched turbine definition: {turbfile_path}")
     print(f"Patched structural definition: {structural_path}")
     print(f"Wrote runtime config: {parameter_file_path}")
+    print(f"Config sim_path: {sim_path_for_config}")
+    print(f"Config airfoil_dir: {airfoil_dir_for_config}")
     print(f"External swap size: {table_spec.swap_size}")
     print(f"Node count: {len(node_ids)}")
     print(f"Node source: {args.node_source}")

@@ -125,6 +125,24 @@ def test_build_qblade_external_config_and_write(tmp_path):
     assert written == str(out_path.resolve())
 
 
+def test_build_qblade_external_config_preserves_relative_airfoil_dir():
+    config = build_qblade_external_config(
+        sim_path="/tmp/case.sim",
+        airfoil_dir="../VorLapAirfoils",
+        node_ids=["BLD_1_0.000000"],
+    )
+    assert config["airfoil_dir"] == "../VorLapAirfoils"
+
+
+def test_build_qblade_external_config_preserves_relative_sim_path():
+    config = build_qblade_external_config(
+        sim_path="../../baseline_wMinSagSnubbers-Wwnd.sim",
+        airfoil_dir="/tmp/airfoils",
+        node_ids=["BLD_1_0.000000"],
+    )
+    assert config["sim_path"] == "../../baseline_wMinSagSnubbers-Wwnd.sim"
+
+
 def test_build_qblade_external_config_infers_required_geometry_flags():
     config = build_qblade_external_config(
         sim_path="/tmp/case.sim",

@@ -125,6 +125,8 @@ python scripts/prepare_qblade_external_case.py \
 
 That script updates the turbine definition with `LIBFILE_1`, `LIBFUNCTION_1`, `LIBARRAYSIZE_1`, and `LIBPARAMETERFILE_1`, appends `EXTERNAL_1_IN` / `EXTERNAL_1_OUT` tables to the structural model, and writes `Control/vorlap_qblade_external.json`.
 
+The generated `airfoil_dir` in `vorlap_qblade_external.json` is written relative to the parameter file location when possible, so model-local layouts such as `wMinSagSnubbers/VorLapAirfoils` work across machines without hard-coded absolute paths.
+
 The runtime config defaults to structural `BLD_*`/`STR_*` nodes so the swap mapping aligns with output locations already declared in the structural file. Use `--node-source converted` if you want all converted VorLap nodes instead.
 
 The embedded bridge imports `vorlap.qblade_runtime` from your Python environment, so install VorLap and dependencies in the same Python used during bridge build.

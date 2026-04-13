@@ -235,8 +235,12 @@ def build_qblade_external_config(
     table_spec = build_external_library_table_spec(node_ids)
     include_struts, include_tower = _infer_geometry_inclusions(node_ids, include_struts, include_tower)
     config: Dict[str, Any] = {
-        "sim_path": os.path.abspath(sim_path),
-        "airfoil_dir": os.path.abspath(airfoil_dir),
+        # Keep sim_path as provided so case-prep can store a model-relative path.
+        # Runtime resolution is handled by from_qblade_config() via _resolve_path().
+        "sim_path": str(sim_path),
+        # Keep airfoil_dir as provided so case-prep can store a model-relative path.
+        # Runtime resolution is handled by from_qblade_config() via _resolve_path().
+        "airfoil_dir": str(airfoil_dir),
         "library_stem": str(library_stem),
         "function_name": str(function_name),
         "default_airfoil_id": str(default_airfoil_id),
