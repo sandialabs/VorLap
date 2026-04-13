@@ -151,6 +151,8 @@ That script updates the turbine definition with `LIBFILE_1`, `LIBFUNCTION_1`, `L
 
 The generated `airfoil_dir` in `vorlap_qblade_external.json` is written relative to the parameter file location when possible, so model-local layouts such as `wMinSagSnubbers/VorLapAirfoils` work across machines without hard-coded absolute paths.
 
+The generated config also stores the original parameter-file directory as a fallback base. This allows the runtime to survive QBlade workflows that copy the JSON into a temporary run directory before calling the bridge.
+
 The runtime config defaults to structural `BLD_*`/`STR_*` nodes so the swap mapping aligns with output locations already declared in the structural file. Use `--node-source converted` if you want all converted VorLap nodes instead.
 
 The embedded bridge imports `vorlap.qblade_runtime` from your Python environment, so install VorLap and dependencies in the same Python used during bridge build.

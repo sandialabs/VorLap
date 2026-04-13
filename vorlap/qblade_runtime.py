@@ -36,14 +36,26 @@ class ExternalLibraryTableSpec:
     node_ids: Tuple[str, ...]
 
 
-def _resolve_path(base_file: str, candidate: str) -> str:
-    """Resolve a path relative to the parameter file directory."""
+def _resolve_path(base_file: str, candidate: str, extra_bases: Optional[Sequence[str]] = None) -> str:
+    """Resolve a path relative to the parameter file directory or fallback bases."""
     candidate = str(candidate).strip()
     if not candidate:
         return ""
     if os.path.isabs(candidate):
         return candidate
-    return os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(base_file)), candidate))
+
+    candidate_bases = [os.path.dirname(os.path.abspath(base_file))]
+    for base in extra_bases or ():
+        if not base:
+            continue
+        candidate_bases.append(os.path.abspath(str(base)))
+
+    for base in candidate_bases:
+        resolved = os.path.normpath(os.path.join(base, candidate))
+        if os.path.exists(resolved):
+            return resolved
+
+    return os.path.normpath(os.path.join(candidate_bases[0], candidate))
 
 
 def _format_keyword_line(value: str, keyword: str, comment: str) -> str:
@@ -231,6 +243,7 @@ def build_qblade_external_config(
     tower_airfoil_id: str = "cylinder",
     n_freq_depth: Optional[int] = None,
     force_scale: float = 1.0,
+    source_parameter_dir: Optional[str] = None,
 ) -> Dict[str, Any]:
     """Build the JSON config consumed by the Python runtime and C++ bridge."""
     table_spec = build_external_library_table_spec(node_ids)
@@ -277,6 +290,8 @@ def build_qblade_external_config(
         config["sample_step"] = float(sample_step)
     if n_freq_depth is not None:
         config["n_freq_depth"] = int(n_freq_depth)
+    if source_parameter_dir is not None:
+        config["source_parameter_dir"] = os.path.abspath(str(source_parameter_dir))
     return config
 
 
@@ -579,8 +594,11 @@ class VorLapQBladeRuntime:
         param_path = os.path.abspath(param_file)
         cfg = _load_config_json(param_path)
 
-        sim_path = _resolve_path(param_path, cfg["sim_path"])
-        airfoil_dir = _resolve_path(param_path, cfg["airfoil_dir"])
+        source_parameter_dir = cfg.get("source_parameter_dir")
+        extra_bases = [] if source_parameter_dir in (None, "") else [str(source_parameter_dir)]
+
+        sim_path = _resolve_path(param_path, cfg["sim_path"], extra_bases=extra_bases)
+        airfoil_dir = _resolve_path(param_path, cfg["airfoil_dir"], extra_bases=extra_bases)
 
         default_airfoil_id = str(cfg.get("default_airfoil_id", "default"))
         tower_airfoil_id = str(cfg.get("tower_airfoil_id", "cylinder"))

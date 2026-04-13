@@ -2,6 +2,7 @@ import numpy as np
 
 from conftest import make_component, make_constant_airfoil_fft, make_viv_params
 from vorlap import QBladeController
+from vorlap import qblade_runtime
 from vorlap.qblade_runtime import (
     VorLapQBladeRuntime,
     build_external_library_table_spec,
@@ -152,6 +153,60 @@ def test_build_qblade_external_config_accepts_force_scale():
         force_scale=100.0,
     )
     assert config["force_scale"] == 100.0
+
+
+def test_build_qblade_external_config_accepts_source_parameter_dir():
+    config = build_qblade_external_config(
+        sim_path="../../baseline_wMinSagSnubbers-Wwnd.sim",
+        airfoil_dir="../VorLapAirfoils",
+        node_ids=["BLD_1_0.000000"],
+        source_parameter_dir="/tmp/original/Control",
+    )
+    assert config["source_parameter_dir"] == "/tmp/original/Control"
+
+
+def test_runtime_resolves_relative_paths_from_original_parameter_dir_when_copied_to_temp(tmp_path, monkeypatch):
+    original_control = tmp_path / "qblade_xflow" / "wMinSagSnubbers" / "Control"
+    original_control.mkdir(parents=True)
+    temp_control = tmp_path / "QBladeCE" / "TEMP" / "run1"
+    temp_control.mkdir(parents=True)
+
+    sim_path = tmp_path / "qblade_xflow" / "baseline.sim"
+    sim_path.write_text("sim", encoding="utf-8")
+    airfoil_dir = tmp_path / "qblade_xflow" / "wMinSagSnubbers" / "VorLapAirfoils"
+    airfoil_dir.mkdir(parents=True)
+    (airfoil_dir / "default.h5").write_text("placeholder", encoding="utf-8")
+
+    config = build_qblade_external_config(
+        sim_path="../../baseline.sim",
+        airfoil_dir="../VorLapAirfoils",
+        node_ids=["BLD_1_0.000000"],
+        source_parameter_dir=str(original_control),
+    )
+    cfg_path = temp_control / "vorlap_qblade_external.json"
+    write_qblade_external_config(str(cfg_path), config)
+
+    calls = {}
+
+    def fake_convert(sim_arg, **kwargs):
+        calls["sim_path"] = sim_arg
+        component = make_component(n_nodes=1, airfoil_id="default")
+        component.id = "BLD_1"
+        viv_params = make_viv_params()
+        return [component], viv_params, ["BLD_1_0.000000"]
+
+    def fake_load_airfoils(airfoil_arg):
+        calls["airfoil_dir"] = airfoil_arg
+        return {"default": make_constant_airfoil_fft()}
+
+    monkeypatch.setattr(qblade_runtime, "convert_qblade_to_vorlap_inputs", fake_convert)
+    monkeypatch.setattr(qblade_runtime, "load_airfoil_fft_directory", fake_load_airfoils)
+
+    runtime = VorLapQBladeRuntime.from_qblade_config(str(cfg_path))
+
+    assert runtime is not None
+    assert calls["sim_path"] == str(sim_path)
+    assert calls["airfoil_dir"] == str(airfoil_dir)
 
 
 def test_build_qblade_external_config_infers_required_geometry_flags():

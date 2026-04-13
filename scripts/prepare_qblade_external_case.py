@@ -200,6 +200,7 @@ def main() -> None:
         tower_airfoil_id=args.tower_airfoil_id,
         n_freq_depth=args.n_freq_depth,
         force_scale=args.force_scale,
+        source_parameter_dir=str(parameter_file_path.parent),
     )
     write_qblade_external_config(str(parameter_file_path), config)
 
