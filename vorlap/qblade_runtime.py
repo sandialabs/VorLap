@@ -230,6 +230,7 @@ def build_qblade_external_config(
     include_tower: bool = True,
     tower_airfoil_id: str = "cylinder",
     n_freq_depth: Optional[int] = None,
+    force_scale: float = 1.0,
 ) -> Dict[str, Any]:
     """Build the JSON config consumed by the Python runtime and C++ bridge."""
     table_spec = build_external_library_table_spec(node_ids)
@@ -247,6 +248,7 @@ def build_qblade_external_config(
         "include_struts": bool(include_struts),
         "include_tower": bool(include_tower),
         "tower_airfoil_id": str(tower_airfoil_id),
+        "force_scale": float(force_scale),
         "node_ids": list(table_spec.node_ids),
         "swap_size": int(table_spec.swap_size),
         "swap_layout": [
@@ -584,6 +586,7 @@ class VorLapQBladeRuntime:
         tower_airfoil_id = str(cfg.get("tower_airfoil_id", "cylinder"))
         n_freq_depth = cfg.get("n_freq_depth", None)
         n_freq_depth = None if n_freq_depth is None else int(n_freq_depth)
+        force_scale = float(cfg.get("force_scale", 1.0))
 
         requested_node_ids_raw = cfg.get("node_ids")
         if requested_node_ids_raw is None:
@@ -632,6 +635,7 @@ class VorLapQBladeRuntime:
             viv_params=viv_params,
             n_freq_depth=n_freq_depth,
             node_ids=controller_node_ids,
+            force_scale=force_scale,
         )
         swap_to_controller_idx, controller_to_swap_idx = _build_node_permutations(
             swap_node_ids, controller.node_ids
@@ -662,6 +666,7 @@ class VorLapQBladeRuntime:
         include_tower: bool = True,
         tower_airfoil_id: str = "cylinder",
         n_freq_depth: Optional[int] = None,
+        force_scale: float = 1.0,
     ) -> "VorLapQBladeRuntime":
         """Construct a runtime from a QBlade simulation definition and an airfoil FFT directory."""
         components, viv_params, node_ids = convert_qblade_to_vorlap_inputs(
@@ -679,6 +684,7 @@ class VorLapQBladeRuntime:
             viv_params=viv_params,
             n_freq_depth=n_freq_depth,
             node_ids=node_ids,
+            force_scale=force_scale,
         )
         table_spec = build_external_library_table_spec(node_ids)
         return cls(

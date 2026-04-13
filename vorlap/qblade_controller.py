@@ -346,6 +346,7 @@ class VorLapQBladeController:
         *,
         n_freq_depth: Optional[int] = None,
         node_ids: Optional[Sequence[str]] = None,
+        force_scale: float = 1.0,
     ) -> None:
         if not components:
             raise ValueError("At least one component is required.")
@@ -361,6 +362,9 @@ class VorLapQBladeController:
         self.n_freq_depth = int(self.viv_params.n_freq_depth if n_freq_depth is None else n_freq_depth)
         if self.n_freq_depth < 1:
             raise ValueError("n_freq_depth must be >= 1.")
+        self.force_scale = float(force_scale)
+        if not math.isfinite(self.force_scale) or self.force_scale < 0.0:
+            raise ValueError("force_scale must be a finite, non-negative scalar.")
 
         self.fluid_density = float(self.viv_params.fluid_density)
         self.fluid_dynamicviscosity = float(self.viv_params.fluid_dynamicviscosity)
@@ -381,6 +385,7 @@ class VorLapQBladeController:
         *,
         n_freq_depth: Optional[int] = None,
         node_ids: Optional[Sequence[str]] = None,
+        force_scale: float = 1.0,
     ) -> "VorLapQBladeController":
         """Construct a controller from already-converted VorLap components."""
         return cls(
@@ -389,6 +394,7 @@ class VorLapQBladeController:
             viv_params=viv_params,
             n_freq_depth=n_freq_depth,
             node_ids=node_ids,
+            force_scale=force_scale,
         )
 
     @classmethod
@@ -402,6 +408,7 @@ class VorLapQBladeController:
         include_tower: bool = True,
         tower_airfoil_id: str = "cylinder",
         n_freq_depth: Optional[int] = None,
+        force_scale: float = 1.0,
     ) -> "VorLapQBladeController":
         """Build a controller directly from a QBlade `.sim` file."""
         from .fileio import convert_qblade_to_vorlap_inputs
@@ -419,6 +426,7 @@ class VorLapQBladeController:
             viv_params=viv_params,
             n_freq_depth=n_freq_depth,
             node_ids=node_ids,
+            force_scale=force_scale,
         )
 
     def _prepare_static_state(self) -> None:
@@ -673,6 +681,9 @@ class VorLapQBladeController:
             self._force_buffer[idx, 0] = drag * cos_yaw - lift * cos_roll * sin_yaw
             self._force_buffer[idx, 1] = drag * sin_yaw + lift * cos_roll * cos_yaw
             self._force_buffer[idx, 2] = lift * sin_roll
+
+        if self.force_scale != 1.0:
+            self._force_buffer *= self.force_scale
 
         self._cached_signature = (t, az, vel_snapshot)
         return self._cached_forces

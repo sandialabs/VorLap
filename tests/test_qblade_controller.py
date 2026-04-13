@@ -6,7 +6,7 @@ from conftest import make_component, make_constant_airfoil_fft, make_viv_params
 from vorlap import QBladeController, SwapArrayAdapter, SwapBlockSpec
 
 
-def _build_controller(node_ids=None):
+def _build_controller(node_ids=None, force_scale=1.0):
     component = make_component(n_nodes=2, span=2.0, airfoil_id="default")
     afft = make_constant_airfoil_fft(n_freq=2)
     viv_params = make_viv_params()
@@ -19,6 +19,7 @@ def _build_controller(node_ids=None):
         viv_params=viv_params,
         node_ids=node_ids,
         n_freq_depth=2,
+        force_scale=force_scale,
     )
 
 
@@ -41,6 +42,17 @@ def test_step_returns_per_node_forces():
     assert forces.shape == (2, 3)
     assert np.isfinite(forces).all()
     assert not forces.flags.writeable
+
+
+def test_force_scale_scales_output_forces():
+    base = _build_controller(force_scale=1.0)
+    scaled = _build_controller(force_scale=100.0)
+    velocities = np.array([[2.0, 0.0, 0.0], [2.0, 0.0, 0.0]], dtype=float)
+
+    base_forces = base.step({"velocity": velocities, "time": 0.0, "azimuth_deg": 0.0})
+    scaled_forces = scaled.step({"velocity": velocities, "time": 0.0, "azimuth_deg": 0.0})
+
+    np.testing.assert_allclose(scaled_forces, 100.0 * base_forces, rtol=1e-12, atol=1e-12)
 
 
 def test_exact_input_cache_skips_recompute(monkeypatch):
@@ -73,6 +85,11 @@ def test_exact_input_cache_skips_recompute(monkeypatch):
 def test_constructor_validates_node_ids_length():
     with pytest.raises(ValueError, match="node_ids length must match"):
         _build_controller(node_ids=["BLD_1_0.000000"])
+
+
+def test_constructor_validates_force_scale():
+    with pytest.raises(ValueError, match="force_scale must be a finite, non-negative scalar"):
+        _build_controller(force_scale=-1.0)
 
 
 def test_step_validates_bad_velocity_input():

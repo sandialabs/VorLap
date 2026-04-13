@@ -114,13 +114,37 @@ scripts/build_qblade_external_windows.ps1
 
 The shared library name is `libvorlap_qblade_bridge` (`.so` on Linux, `.dll` on Windows). Copy it into QBlade's `ControllerFiles` directory so QBlade can load it.
 
+Linux bridge build + install example:
+
+```bash
+# Build using .venv python if present
+scripts/build_qblade_external_linux.sh
+
+# Or build and copy directly into a QBlade install
+scripts/build_qblade_external_linux.sh \
+  build/qblade_external_linux \
+  /path/to/QBlade/ControllerFiles
+```
+
+Windows bridge build + install example (PowerShell):
+
+```powershell
+scripts/build_qblade_external_windows.ps1
+
+scripts/build_qblade_external_windows.ps1 `
+  -BuildDir build/qblade_external_windows `
+  -InstallDir C:\path\to\QBlade\ControllerFiles
+```
+
 Prepare the `wMinSagSnubbers` QBlade case for VorLap:
 
 ```bash
 python scripts/prepare_qblade_external_case.py \
   --sim ../QBlade_model_exp_9.16.25/baseline_wMinSagSnubbers-Wwnd.sim \
   --airfoils data/airfoils \
-  --node-source structural
+  --node-source structural \
+  --n-freq-depth 20 \
+  --force-scale 100
 ```
 
 That script updates the turbine definition with `LIBFILE_1`, `LIBFUNCTION_1`, `LIBARRAYSIZE_1`, and `LIBPARAMETERFILE_1`, appends `EXTERNAL_1_IN` / `EXTERNAL_1_OUT` tables to the structural model, and writes `Control/vorlap_qblade_external.json`.
@@ -130,6 +154,15 @@ The generated `airfoil_dir` in `vorlap_qblade_external.json` is written relative
 The runtime config defaults to structural `BLD_*`/`STR_*` nodes so the swap mapping aligns with output locations already declared in the structural file. Use `--node-source converted` if you want all converted VorLap nodes instead.
 
 The embedded bridge imports `vorlap.qblade_runtime` from your Python environment, so install VorLap and dependencies in the same Python used during bridge build.
+
+QBlade-side mapping flow (general):
+
+- `.sim`: selects turbine (`TURBFILE`) and operating conditions (`RPMPRESCRIBED`, `MEANINF`, etc.).
+- `.trb`: enables external library calls via `LIBFILE_1`, `LIBFUNCTION_1`, `LIBARRAYSIZE_1`, and `LIBPARAMETERFILE_1`.
+- `.str`: defines `EXTERNAL_1_IN` swap inputs (time, azimuth, node velocities) and `EXTERNAL_1_OUT` actions (`ADDFORCE`) that map returned forces to component IDs and normalized positions.
+- `Control/vorlap_qblade_external.json`: high-level VorLap runtime config.
+- `n_freq_depth`: number of spectral tones used per node (capped by available airfoil FFT depth).
+- `force_scale`: global multiplier applied to all VorLap external forces before they are returned to QBlade.
 
 Inflow profile CSV format:
 

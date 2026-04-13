@@ -118,6 +118,7 @@ def test_build_qblade_external_config_and_write(tmp_path):
         sample_step=0.1,
     )
     assert config["swap_size"] == 9
+    assert config["force_scale"] == 1.0
 
     out_path = tmp_path / "vorlap_qblade_external.json"
     written = write_qblade_external_config(str(out_path), config)
@@ -141,6 +142,16 @@ def test_build_qblade_external_config_preserves_relative_sim_path():
         node_ids=["BLD_1_0.000000"],
     )
     assert config["sim_path"] == "../../baseline_wMinSagSnubbers-Wwnd.sim"
+
+
+def test_build_qblade_external_config_accepts_force_scale():
+    config = build_qblade_external_config(
+        sim_path="/tmp/case.sim",
+        airfoil_dir="/tmp/airfoils",
+        node_ids=["BLD_1_0.000000"],
+        force_scale=100.0,
+    )
+    assert config["force_scale"] == 100.0
 
 
 def test_build_qblade_external_config_infers_required_geometry_flags():

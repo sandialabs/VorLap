@@ -97,6 +97,12 @@ def parse_args() -> argparse.Namespace:
         default=None,
         help="Override the frequency depth used by the VorLap controller.",
     )
+    parser.add_argument(
+        "--force-scale",
+        type=float,
+        default=1.0,
+        help="Global multiplier applied to VorLap external forces before returning to QBlade.",
+    )
     return parser.parse_args()
 
 
@@ -193,6 +199,7 @@ def main() -> None:
         include_tower=args.include_tower,
         tower_airfoil_id=args.tower_airfoil_id,
         n_freq_depth=args.n_freq_depth,
+        force_scale=args.force_scale,
     )
     write_qblade_external_config(str(parameter_file_path), config)
 
