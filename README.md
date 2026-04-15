@@ -177,6 +177,7 @@ QBlade-side mapping flow (general):
 - `n_freq_depth`: number of spectral tones used per node (capped by available airfoil FFT depth).
 - `force_scale`: global multiplier applied to all VorLap external forces before they are returned to QBlade.
 - `debug`: enables verbose `update_message()` diagnostics, including resolved paths at init and the maximum applied force magnitude/node during updates.
+- `log_file`: optional runtime log path. When `--debug` is used and no path is provided, case prep writes an absolute default path named `vorlap_qblade_debug.log` next to the generated JSON.
 
 Inflow profile CSV format:
 

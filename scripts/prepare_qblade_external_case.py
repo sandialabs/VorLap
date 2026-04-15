@@ -109,6 +109,14 @@ def parse_args() -> argparse.Namespace:
         default=False,
         help="Enable verbose runtime diagnostic messages for QBlade update_message().",
     )
+    parser.add_argument(
+        "--log-file",
+        default=None,
+        help=(
+            "Optional log file path for runtime diagnostics. "
+            "Defaults to vorlap_qblade_debug.log next to the generated JSON when --debug is enabled."
+        ),
+    )
     return parser.parse_args()
 
 
@@ -174,6 +182,15 @@ def main() -> None:
     table_spec = build_external_library_table_spec(node_ids)
 
     parameter_file_path = _resolve_parameter_file_path(turbfile_path, args.parameter_file)
+    log_file_path: Optional[Path]
+    if args.log_file:
+        candidate = Path(args.log_file)
+        log_file_path = candidate if candidate.is_absolute() else (turbfile_path.parent / candidate).resolve()
+    elif args.debug:
+        log_file_path = (parameter_file_path.parent / "vorlap_qblade_debug.log").resolve()
+    else:
+        log_file_path = None
+
     try:
         sim_path_for_config = Path(
             os.path.relpath(str(sim_path), start=str(parameter_file_path.parent))
@@ -208,6 +225,7 @@ def main() -> None:
         force_scale=args.force_scale,
         source_parameter_dir=str(parameter_file_path.parent),
         debug=args.debug,
+        log_file=None if log_file_path is None else str(log_file_path),
     )
     write_qblade_external_config(str(parameter_file_path), config)
 

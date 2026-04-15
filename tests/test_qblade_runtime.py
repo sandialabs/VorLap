@@ -165,6 +165,16 @@ def test_build_qblade_external_config_accepts_debug():
     assert config["debug"] is True
 
 
+def test_build_qblade_external_config_accepts_log_file():
+    config = build_qblade_external_config(
+        sim_path="/tmp/case.sim",
+        airfoil_dir="/tmp/airfoils",
+        node_ids=["BLD_1_0.000000"],
+        log_file="/tmp/vorlap_qblade_debug.log",
+    )
+    assert config["log_file"] == "/tmp/vorlap_qblade_debug.log"
+
+
 def test_build_qblade_external_config_accepts_source_parameter_dir():
     config = build_qblade_external_config(
         sim_path="../../baseline_wMinSagSnubbers-Wwnd.sim",
@@ -252,6 +262,44 @@ def test_runtime_debug_message_reports_max_force():
     assert "max|F|=" in runtime.update_message()
     assert "node=BLD_1_0.000000" in runtime.update_message()
     assert "scale=100" in runtime.update_message()
+
+
+def test_runtime_writes_log_file(tmp_path):
+    component = make_component(n_nodes=2, span=2.0, airfoil_id="default")
+    afft = make_constant_airfoil_fft(n_freq=2)
+    viv_params = make_viv_params()
+    controller = QBladeController.from_components(
+        components=[component],
+        airfoils={"default": afft},
+        viv_params=viv_params,
+        node_ids=["BLD_1_0.000000", "BLD_1_1.000000"],
+        n_freq_depth=2,
+        force_scale=100.0,
+    )
+    spec = build_external_library_table_spec(controller.node_ids)
+    log_path = tmp_path / "vorlap_qblade_debug.log"
+    runtime = VorLapQBladeRuntime(
+        controller,
+        spec.swap_layout,
+        debug=True,
+        resolved_sim_path="/tmp/example/baseline.sim",
+        resolved_airfoil_dir="/tmp/example/VorLapAirfoils",
+        log_file=str(log_path),
+    )
+    swap = np.zeros(spec.swap_size, dtype=np.float32)
+    swap[spec.swap_layout["time"].offset] = 0.0
+    swap[spec.swap_layout["timestep"].offset] = 0.25
+    swap[spec.swap_layout["azimuth_deg"].offset] = 0.0
+    swap[spec.swap_layout["velocity"].offset : spec.swap_layout["velocity"].offset + 6] = np.array(
+        [2.0, 0.0, 0.0, 2.0, 0.0, 0.0], dtype=np.float32
+    )
+
+    runtime.update(swap)
+
+    text = log_path.read_text(encoding="utf-8")
+    assert "VorLap init ok;" in text
+    assert "VorLap dbg" in text
+    assert "max|F|=" in text
 
 
 def test_build_qblade_external_config_infers_required_geometry_flags():

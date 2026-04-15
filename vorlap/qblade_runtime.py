@@ -245,6 +245,7 @@ def build_qblade_external_config(
     force_scale: float = 1.0,
     source_parameter_dir: Optional[str] = None,
     debug: bool = False,
+    log_file: Optional[str] = None,
 ) -> Dict[str, Any]:
     """Build the JSON config consumed by the Python runtime and C++ bridge."""
     table_spec = build_external_library_table_spec(node_ids)
@@ -294,6 +295,8 @@ def build_qblade_external_config(
         config["n_freq_depth"] = int(n_freq_depth)
     if source_parameter_dir is not None:
         config["source_parameter_dir"] = os.path.abspath(str(source_parameter_dir))
+    if log_file is not None:
+        config["log_file"] = str(log_file)
     return config
 
 
@@ -568,6 +571,7 @@ class VorLapQBladeRuntime:
         debug: bool = False,
         resolved_sim_path: Optional[str] = None,
         resolved_airfoil_dir: Optional[str] = None,
+        log_file: Optional[str] = None,
     ) -> None:
         if controller is None:
             raise ValueError("controller must not be None.")
@@ -582,6 +586,7 @@ class VorLapQBladeRuntime:
         self.debug = bool(debug)
         self.resolved_sim_path = None if resolved_sim_path is None else str(resolved_sim_path)
         self.resolved_airfoil_dir = None if resolved_airfoil_dir is None else str(resolved_airfoil_dir)
+        self.log_file = None if log_file is None else str(log_file)
         self._layout = _coerce_layout(swap_layout)
         self._adapter: Optional[SwapArrayAdapter] = None
         if (swap_to_controller_idx is None) != (controller_to_swap_idx is None):
@@ -604,6 +609,15 @@ class VorLapQBladeRuntime:
             )
         else:
             self._last_message = "VorLap QBlade runtime initialized."
+        self._append_log_line(self._last_message)
+
+    def _append_log_line(self, message: str) -> None:
+        if not self.log_file:
+            return
+        log_path = os.path.abspath(self.log_file)
+        os.makedirs(os.path.dirname(log_path), exist_ok=True)
+        with open(log_path, "a", encoding="utf-8") as f:
+            f.write(f"{message}\n")
 
     @classmethod
     def from_qblade_config(cls, param_file: str) -> "VorLapQBladeRuntime":
@@ -616,6 +630,8 @@ class VorLapQBladeRuntime:
 
         sim_path = _resolve_path(param_path, cfg["sim_path"], extra_bases=extra_bases)
         airfoil_dir = _resolve_path(param_path, cfg["airfoil_dir"], extra_bases=extra_bases)
+        log_file = cfg.get("log_file")
+        log_file = None if log_file in (None, "") else _resolve_path(param_path, str(log_file), extra_bases=extra_bases)
 
         default_airfoil_id = str(cfg.get("default_airfoil_id", "default"))
         tower_airfoil_id = str(cfg.get("tower_airfoil_id", "cylinder"))
@@ -692,6 +708,7 @@ class VorLapQBladeRuntime:
             debug=debug,
             resolved_sim_path=sim_path,
             resolved_airfoil_dir=airfoil_dir,
+            log_file=log_file,
         )
 
     @classmethod
@@ -733,6 +750,7 @@ class VorLapQBladeRuntime:
             debug=False,
             resolved_sim_path=sim_path,
             resolved_airfoil_dir=airfoil_dir,
+            log_file=None,
         )
 
     @property
@@ -823,6 +841,7 @@ class VorLapQBladeRuntime:
                 f"VorLap update complete: t={time:.6g} s, azimuth={azimuth:.6g} deg, "
                 f"nodes={forces.shape[0]}"
             )
+        self._append_log_line(self._last_message)
         return forces
 
     def update_message(self) -> str:
