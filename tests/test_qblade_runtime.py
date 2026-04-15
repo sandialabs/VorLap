@@ -111,6 +111,32 @@ def test_runtime_updates_forces_in_place_and_reuses_cache(monkeypatch):
     )
 
 
+def test_runtime_uses_ambient_inflow_minus_structural_velocity():
+    component = make_component(n_nodes=2, span=2.0, airfoil_id="default")
+    afft = make_constant_airfoil_fft(n_freq=2)
+    viv_params = make_viv_params()
+    controller = QBladeController.from_components(
+        components=[component],
+        airfoils={"default": afft},
+        viv_params=viv_params,
+        node_ids=["BLD_1_0.000000", "BLD_1_1.000000"],
+        n_freq_depth=2,
+    )
+    spec = build_external_library_table_spec(controller.node_ids)
+    runtime = VorLapQBladeRuntime(controller, spec.swap_layout)
+    swap = np.zeros(spec.swap_size, dtype=np.float32)
+    swap[spec.swap_layout["time"].offset] = 0.0
+    swap[spec.swap_layout["timestep"].offset] = 0.25
+    swap[spec.swap_layout["azimuth_deg"].offset] = 0.0
+    # Structural velocity is zero, so any non-zero force must come from ambient inflow.
+    swap[spec.swap_layout["velocity"].offset : spec.swap_layout["velocity"].offset + 6] = 0.0
+
+    forces = runtime.update(swap)
+
+    assert np.isfinite(forces).all()
+    assert np.max(np.linalg.norm(forces, axis=1)) > 0.0
+
+
 def test_build_qblade_external_config_and_write(tmp_path):
     config = build_qblade_external_config(
         sim_path="/tmp/case.sim",
@@ -262,6 +288,8 @@ def test_runtime_debug_message_reports_max_force():
     assert "max|F|=" in runtime.update_message()
     assert "node=BLD_1_0.000000" in runtime.update_message()
     assert "scale=100" in runtime.update_message()
+    assert "max|Vstruct|=" in runtime.update_message()
+    assert "max|Vrel|=" in runtime.update_message()
 
 
 def test_runtime_writes_log_file(tmp_path):

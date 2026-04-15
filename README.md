@@ -136,6 +136,87 @@ PYTHON_EXE=/path/to/python3 scripts/build_qblade_external_linux.sh \
 
 This is especially important for NumPy-backed embedded imports. A mismatch between the Python/NumPy used to build the bridge and the Python/NumPy seen by QBlade can surface as NumPy C-extension import failures.
 
+External Linux / Conda environment recipe:
+
+Use the same Python for all three pieces:
+
+- installing VorLap
+- building `libvorlap_qblade_bridge.so`
+- launching QBlade
+
+Example successful setup:
+
+```bash
+export PYTHON_EXE=/ascldap/users/kevmoor/anaconda3/bin/python3
+export QBLADE_ROOT=/home/kevmoor/Documents/coderepos/QBladeCE_2.0.9.6_unix/QBladeCE_2.0.9.6
+
+# Verify the Python and NumPy you intend to use
+$PYTHON_EXE -c "import sys, numpy; print(sys.executable); print(sys.version); print(numpy.__version__)"
+
+# Install VorLap into that Python so the embedded interpreter can import it
+$PYTHON_EXE -m pip install -e .
+```
+
+Build and install the bridge using that exact Python:
+
+```bash
+PYTHON_EXE=/ascldap/users/kevmoor/anaconda3/bin/python3 scripts/build_qblade_external_linux.sh \
+  build/qblade_external_linux_ascldap \
+  /home/kevmoor/Documents/coderepos/QBladeCE_2.0.9.6_unix/QBladeCE_2.0.9.6/ControllerFiles
+```
+
+Prepare the external-library JSON for the `qblade_xflow` case using that same Python:
+
+```bash
+$PYTHON_EXE scripts/prepare_qblade_external_case.py \
+  --sim ../qblade_xflow/baseline_wMinSagSnubbers-Wwnd.sim \
+  --airfoils ../qblade_xflow/wMinSagSnubbers/VorLapAirfoils \
+  --node-source structural \
+  --force-scale 1 \
+  --debug
+```
+
+When launching QBlade on systems where SciPy or NumPy depend on a newer Conda `libstdc++` than the system default, launch QBlade with the Conda library path active:
+
+```bash
+export PYTHON_EXE=/ascldap/users/kevmoor/anaconda3/bin/python3
+export QBLADE_ROOT=/home/kevmoor/Documents/coderepos/QBladeCE_2.0.9.6_unix/QBladeCE_2.0.9.6
+export CONDA_LIB=/ascldap/users/kevmoor/anaconda3/lib
+export LD_LIBRARY_PATH="$CONDA_LIB:$LD_LIBRARY_PATH"
+
+"$QBLADE_ROOT/run_qblade.sh"
+```
+
+If `LD_LIBRARY_PATH` is not sufficient and QBlade still loads the system `libstdc++.so.6`, force the Conda one:
+
+```bash
+export LD_PRELOAD=/ascldap/users/kevmoor/anaconda3/lib/libstdc++.so.6
+"$QBLADE_ROOT/run_qblade.sh"
+```
+
+Useful verification commands on the external system:
+
+```bash
+# Confirm the import path used by the embedded Python target
+$PYTHON_EXE -c "import vorlap, vorlap.qblade_runtime as q; print(vorlap.__file__); print(q.__file__)"
+
+# Confirm the rebuilt bridge is in the QBlade ControllerFiles directory
+ls -l "$QBLADE_ROOT/ControllerFiles/libvorlap_qblade_bridge.so"
+
+# Confirm the generated JSON includes the expected debug/runtime fields
+rg -n "debug|log_file|source_parameter_dir|force_scale" \
+  ../qblade_xflow/wMinSagSnubbers/Control/vorlap_qblade_external.json
+
+# Check for bridge and Python-side logs after a QBlade run
+find ../qblade_xflow "$QBLADE_ROOT" \
+  -name 'vorlap_qblade_bridge_cpp.log' -o -name 'vorlap_qblade_debug.log'
+```
+
+Interpretation of the two runtime logs:
+
+- `vorlap_qblade_bridge_cpp.log`: bridge-level logging from the shared library, written before Python runtime creation
+- `vorlap_qblade_debug.log`: Python-side runtime logging from `vorlap.qblade_runtime`, written only after the VorLap runtime initializes successfully
+
 Windows bridge build + install example (PowerShell):
 
 ```powershell
@@ -172,7 +253,7 @@ QBlade-side mapping flow (general):
 
 - `.sim`: selects turbine (`TURBFILE`) and operating conditions (`RPMPRESCRIBED`, `MEANINF`, etc.).
 - `.trb`: enables external library calls via `LIBFILE_1`, `LIBFUNCTION_1`, `LIBARRAYSIZE_1`, and `LIBPARAMETERFILE_1`.
-- `.str`: defines `EXTERNAL_1_IN` swap inputs (time, azimuth, node velocities) and `EXTERNAL_1_OUT` actions (`ADDFORCE`) that map returned forces to component IDs and normalized positions.
+- `.str`: defines `EXTERNAL_1_IN` swap inputs (time, azimuth, structural node velocities) and `EXTERNAL_1_OUT` actions (`ADDFORCE`) that map returned forces to component IDs and normalized positions.
 - `Control/vorlap_qblade_external.json`: high-level VorLap runtime config.
 - `n_freq_depth`: number of spectral tones used per node (capped by available airfoil FFT depth).
 - `force_scale`: global multiplier applied to all VorLap external forces before they are returned to QBlade.
@@ -180,6 +261,8 @@ QBlade-side mapping flow (general):
 - `log_file`: optional runtime log path. When `--debug` is used and no path is provided, case prep writes an absolute default path named `vorlap_qblade_debug.log` next to the generated JSON.
 
 For lower-level bridge diagnostics, the C++ shared library also writes `vorlap_qblade_bridge_cpp.log` next to the parameter file that QBlade passes into `update_init()`. This log is written before Python runtime creation, so it is the first place to check if no Python-side log file appears.
+
+For the live QBlade bridge, VorLap treats the `X_g Vel. ...` / `Y_g Vel. ...` / `Z_g Vel. ...` swap inputs as structural node velocities. The runtime converts these into aerodynamic relative velocity by subtracting structural motion from the ambient wind vector defined in the QBlade `.sim` file (`MEANINF`, `HORANGLE`, `VERTANGLE`).
 
 Inflow profile CSV format:
 

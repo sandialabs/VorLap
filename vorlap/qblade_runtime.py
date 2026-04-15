@@ -598,7 +598,11 @@ class VorLapQBladeRuntime:
             None if controller_to_swap_idx is None else np.asarray(controller_to_swap_idx, dtype=int).reshape(-1)
         )
         self._controller_velocity_buffer: Optional[np.ndarray] = None
+        self._controller_structural_velocity_buffer: Optional[np.ndarray] = None
         self._swap_force_buffer: Optional[np.ndarray] = None
+        inflow_dir = np.asarray(self.controller.viv_params.inflow_vec, dtype=float).reshape(3)
+        inflow_speed = float(np.asarray(self.controller.viv_params.inflow_speeds, dtype=float).reshape(-1)[0])
+        self._ambient_velocity_global = inflow_dir * inflow_speed
         if self.debug:
             sim_name = os.path.basename(self.resolved_sim_path) if self.resolved_sim_path else "?"
             airfoil_name = self.resolved_airfoil_dir if self.resolved_airfoil_dir else "?"
@@ -787,19 +791,24 @@ class VorLapQBladeRuntime:
         adapter = self._adapter_for(swap)
 
         if self._swap_to_controller_idx is None:
-            forces = self.controller.step_from_swap(
-                adapter,
-                velocity_block=self.velocity_block,
-                time_block=self.time_block,
-                azimuth_block=self.azimuth_block,
-                force_block=self.force_block,
+            structural_velocity = np.asarray(adapter.read(self.velocity_block), dtype=float)
+            relative_velocity = self._ambient_velocity_global[None, :] - structural_velocity
+            forces = self.controller.step(
+                {
+                    "velocity": relative_velocity,
+                    "time": adapter.scalar(self.time_block),
+                    "azimuth_deg": adapter.scalar(self.azimuth_block),
+                }
             )
+            adapter.write(self.force_block, forces)
         else:
             velocity_swap = np.asarray(adapter.read(self.velocity_block), dtype=float)
             n_controller = int(self._controller_to_swap_idx.size)
             n_swap = int(self._swap_to_controller_idx.size)
             if self._controller_velocity_buffer is None or self._controller_velocity_buffer.shape != (n_controller, 3):
                 self._controller_velocity_buffer = np.empty((n_controller, 3), dtype=float)
+            if self._controller_structural_velocity_buffer is None or self._controller_structural_velocity_buffer.shape != (n_controller, 3):
+                self._controller_structural_velocity_buffer = np.empty((n_controller, 3), dtype=float)
             if self._swap_force_buffer is None or self._swap_force_buffer.shape != (n_swap, 3):
                 self._swap_force_buffer = np.empty((n_swap, 3), dtype=float)
 
@@ -807,6 +816,11 @@ class VorLapQBladeRuntime:
                 velocity_swap,
                 self._controller_to_swap_idx,
                 axis=0,
+                out=self._controller_structural_velocity_buffer,
+            )
+            np.subtract(
+                self._ambient_velocity_global[None, :],
+                self._controller_structural_velocity_buffer,
                 out=self._controller_velocity_buffer,
             )
             forces = self.controller.step(
@@ -831,10 +845,15 @@ class VorLapQBladeRuntime:
             max_idx = int(np.argmax(force_norm)) if force_norm.size else 0
             max_force = float(force_norm[max_idx]) if force_norm.size else 0.0
             max_node = self.controller.node_ids[max_idx] if force_norm.size else "?"
+            structural_velocity = np.asarray(adapter.read(self.velocity_block), dtype=float)
+            max_structural_speed = float(np.max(np.linalg.norm(structural_velocity, axis=1))) if structural_velocity.size else 0.0
+            max_relative_speed = float(np.max(np.linalg.norm(self._ambient_velocity_global[None, :] - structural_velocity, axis=1))) if structural_velocity.size else 0.0
             self._last_message = (
                 f"VorLap dbg t={time:.6g}s az={azimuth:.6g}deg "
                 f"max|F|={max_force:.6g}N node={max_node} "
-                f"scale={self.controller.force_scale:.6g}"
+                f"scale={self.controller.force_scale:.6g} "
+                f"max|Vstruct|={max_structural_speed:.6g}m/s "
+                f"max|Vrel|={max_relative_speed:.6g}m/s"
             )
         else:
             self._last_message = (
