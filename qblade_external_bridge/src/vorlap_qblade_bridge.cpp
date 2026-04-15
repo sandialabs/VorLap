@@ -18,8 +18,6 @@
 #include <dlfcn.h>
 #endif
 
-#include <filesystem>
-
 namespace {
 
 constexpr int kMessageBufferSize = 1024;
@@ -45,21 +43,33 @@ void append_bridge_log_line(const std::string& message) {
     log << message << '\n';
 }
 
-void init_bridge_log_path(const char* param_file) {
-    namespace fs = std::filesystem;
-    try {
-        fs::path base_dir;
-        if (param_file && std::strlen(param_file) > 0) {
-            fs::path param_path(param_file);
-            base_dir = param_path.has_parent_path() ? param_path.parent_path() : fs::current_path();
-        } else {
-            base_dir = fs::current_path();
-        }
-        fs::create_directories(base_dir);
-        g_bridge_log_path = (base_dir / "vorlap_qblade_bridge_cpp.log").string();
-    } catch (...) {
-        g_bridge_log_path.clear();
+std::string parent_dir_from_path(const char* path) {
+    if (!path || !*path) {
+        return ".";
     }
+    std::string full(path);
+    const std::string::size_type pos = full.find_last_of("/\\");
+    if (pos == std::string::npos) {
+        return ".";
+    }
+    if (pos == 0) {
+        return full.substr(0, 1);
+    }
+    return full.substr(0, pos);
+}
+
+void init_bridge_log_path(const char* param_file) {
+    const std::string base_dir = parent_dir_from_path(param_file);
+    if (base_dir.empty()) {
+        g_bridge_log_path = "vorlap_qblade_bridge_cpp.log";
+        return;
+    }
+    const char sep = (base_dir.back() == '/' || base_dir.back() == '\\') ? '\0' : '/';
+    g_bridge_log_path = base_dir;
+    if (sep != '\0') {
+        g_bridge_log_path.push_back(sep);
+    }
+    g_bridge_log_path += "vorlap_qblade_bridge_cpp.log";
 }
 
 void set_message(const std::string& message) {
