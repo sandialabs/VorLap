@@ -126,6 +126,16 @@ scripts/build_qblade_external_linux.sh \
   /path/to/QBlade/ControllerFiles
 ```
 
+If QBlade embeds a specific Python distribution at runtime, build the bridge with that exact interpreter:
+
+```bash
+PYTHON_EXE=/path/to/python3 scripts/build_qblade_external_linux.sh \
+  build/qblade_external_linux \
+  /path/to/QBlade/ControllerFiles
+```
+
+This is especially important for NumPy-backed embedded imports. A mismatch between the Python/NumPy used to build the bridge and the Python/NumPy seen by QBlade can surface as NumPy C-extension import failures.
+
 Windows bridge build + install example (PowerShell):
 
 ```powershell
@@ -144,7 +154,8 @@ python scripts/prepare_qblade_external_case.py \
   --airfoils data/airfoils \
   --node-source structural \
   --n-freq-depth 20 \
-  --force-scale 100
+  --force-scale 100 \
+  --debug
 ```
 
 That script updates the turbine definition with `LIBFILE_1`, `LIBFUNCTION_1`, `LIBARRAYSIZE_1`, and `LIBPARAMETERFILE_1`, appends `EXTERNAL_1_IN` / `EXTERNAL_1_OUT` tables to the structural model, and writes `Control/vorlap_qblade_external.json`.
@@ -165,6 +176,7 @@ QBlade-side mapping flow (general):
 - `Control/vorlap_qblade_external.json`: high-level VorLap runtime config.
 - `n_freq_depth`: number of spectral tones used per node (capped by available airfoil FFT depth).
 - `force_scale`: global multiplier applied to all VorLap external forces before they are returned to QBlade.
+- `debug`: enables verbose `update_message()` diagnostics, including resolved paths at init and the maximum applied force magnitude/node during updates.
 
 Inflow profile CSV format:
 

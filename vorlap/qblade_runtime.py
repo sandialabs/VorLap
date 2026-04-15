@@ -244,6 +244,7 @@ def build_qblade_external_config(
     n_freq_depth: Optional[int] = None,
     force_scale: float = 1.0,
     source_parameter_dir: Optional[str] = None,
+    debug: bool = False,
 ) -> Dict[str, Any]:
     """Build the JSON config consumed by the Python runtime and C++ bridge."""
     table_spec = build_external_library_table_spec(node_ids)
@@ -262,6 +263,7 @@ def build_qblade_external_config(
         "include_tower": bool(include_tower),
         "tower_airfoil_id": str(tower_airfoil_id),
         "force_scale": float(force_scale),
+        "debug": bool(debug),
         "node_ids": list(table_spec.node_ids),
         "swap_size": int(table_spec.swap_size),
         "swap_layout": [
@@ -563,6 +565,9 @@ class VorLapQBladeRuntime:
         parameter_file: Optional[str] = None,
         swap_to_controller_idx: Optional[Sequence[int]] = None,
         controller_to_swap_idx: Optional[Sequence[int]] = None,
+        debug: bool = False,
+        resolved_sim_path: Optional[str] = None,
+        resolved_airfoil_dir: Optional[str] = None,
     ) -> None:
         if controller is None:
             raise ValueError("controller must not be None.")
@@ -574,6 +579,9 @@ class VorLapQBladeRuntime:
         self.force_block = str(force_block)
         self.sample_step = None if sample_step is None else float(sample_step)
         self.parameter_file = parameter_file
+        self.debug = bool(debug)
+        self.resolved_sim_path = None if resolved_sim_path is None else str(resolved_sim_path)
+        self.resolved_airfoil_dir = None if resolved_airfoil_dir is None else str(resolved_airfoil_dir)
         self._layout = _coerce_layout(swap_layout)
         self._adapter: Optional[SwapArrayAdapter] = None
         if (swap_to_controller_idx is None) != (controller_to_swap_idx is None):
@@ -586,7 +594,16 @@ class VorLapQBladeRuntime:
         )
         self._controller_velocity_buffer: Optional[np.ndarray] = None
         self._swap_force_buffer: Optional[np.ndarray] = None
-        self._last_message = "VorLap QBlade runtime initialized."
+        if self.debug:
+            sim_name = os.path.basename(self.resolved_sim_path) if self.resolved_sim_path else "?"
+            airfoil_name = self.resolved_airfoil_dir if self.resolved_airfoil_dir else "?"
+            self._last_message = (
+                f"VorLap init ok; sim={sim_name}; airfoils={airfoil_name}; "
+                f"nodes={self.controller.node_ids[0] if self.controller.node_ids else '?'}.. "
+                f"count={len(self.controller.node_ids) if self.controller.node_ids else 0}"
+            )
+        else:
+            self._last_message = "VorLap QBlade runtime initialized."
 
     @classmethod
     def from_qblade_config(cls, param_file: str) -> "VorLapQBladeRuntime":
@@ -605,6 +622,7 @@ class VorLapQBladeRuntime:
         n_freq_depth = cfg.get("n_freq_depth", None)
         n_freq_depth = None if n_freq_depth is None else int(n_freq_depth)
         force_scale = float(cfg.get("force_scale", 1.0))
+        debug = bool(cfg.get("debug", False))
 
         requested_node_ids_raw = cfg.get("node_ids")
         if requested_node_ids_raw is None:
@@ -671,6 +689,9 @@ class VorLapQBladeRuntime:
             parameter_file=param_path,
             swap_to_controller_idx=swap_to_controller_idx,
             controller_to_swap_idx=controller_to_swap_idx,
+            debug=debug,
+            resolved_sim_path=sim_path,
+            resolved_airfoil_dir=airfoil_dir,
         )
 
     @classmethod
@@ -709,6 +730,9 @@ class VorLapQBladeRuntime:
             controller=controller,
             swap_layout=table_spec.swap_layout,
             sample_step=None,
+            debug=False,
+            resolved_sim_path=sim_path,
+            resolved_airfoil_dir=airfoil_dir,
         )
 
     @property
@@ -784,10 +808,21 @@ class VorLapQBladeRuntime:
 
         time = adapter.scalar(self.time_block)
         azimuth = adapter.scalar(self.azimuth_block)
-        self._last_message = (
-            f"VorLap update complete: t={time:.6g} s, azimuth={azimuth:.6g} deg, "
-            f"nodes={forces.shape[0]}"
-        )
+        if self.debug:
+            force_norm = np.linalg.norm(forces, axis=1)
+            max_idx = int(np.argmax(force_norm)) if force_norm.size else 0
+            max_force = float(force_norm[max_idx]) if force_norm.size else 0.0
+            max_node = self.controller.node_ids[max_idx] if force_norm.size else "?"
+            self._last_message = (
+                f"VorLap dbg t={time:.6g}s az={azimuth:.6g}deg "
+                f"max|F|={max_force:.6g}N node={max_node} "
+                f"scale={self.controller.force_scale:.6g}"
+            )
+        else:
+            self._last_message = (
+                f"VorLap update complete: t={time:.6g} s, azimuth={azimuth:.6g} deg, "
+                f"nodes={forces.shape[0]}"
+            )
         return forces
 
     def update_message(self) -> str:

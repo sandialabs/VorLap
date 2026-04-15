@@ -103,6 +103,12 @@ def parse_args() -> argparse.Namespace:
         default=1.0,
         help="Global multiplier applied to VorLap external forces before returning to QBlade.",
     )
+    parser.add_argument(
+        "--debug",
+        action=argparse.BooleanOptionalAction,
+        default=False,
+        help="Enable verbose runtime diagnostic messages for QBlade update_message().",
+    )
     return parser.parse_args()
 
 
@@ -201,6 +207,7 @@ def main() -> None:
         n_freq_depth=args.n_freq_depth,
         force_scale=args.force_scale,
         source_parameter_dir=str(parameter_file_path.parent),
+        debug=args.debug,
     )
     write_qblade_external_config(str(parameter_file_path), config)
 

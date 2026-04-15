@@ -19,6 +19,10 @@ target_include_directories(
 )
 target_link_libraries(vorlap_qblade_bridge PRIVATE Python3::Python)
 
+if (UNIX AND NOT APPLE)
+    target_link_libraries(vorlap_qblade_bridge PRIVATE dl)
+endif()
+
 set_target_properties(
     vorlap_qblade_bridge
     PROPERTIES
@@ -30,4 +34,3 @@ set_target_properties(
 if (MSVC)
     target_compile_options(vorlap_qblade_bridge PRIVATE /utf-8)
 endif()
-

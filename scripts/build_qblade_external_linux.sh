@@ -14,6 +14,9 @@ else
   PYTHON_EXE="${PYTHON_EXE}"
 fi
 
+echo "Building QBlade bridge with Python: ${PYTHON_EXE}"
+"${PYTHON_EXE}" -c "import sys, numpy; print(f'Python executable: {sys.executable}'); print(f'Python version: {sys.version.split()[0]}'); print(f'NumPy version: {numpy.__version__}')" 
+
 cmake -S "${ROOT_DIR}/qblade_external_bridge" \
       -B "${BUILD_DIR}" \
       -DCMAKE_BUILD_TYPE=Release \

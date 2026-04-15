@@ -14,6 +14,7 @@
 #ifndef __cdecl
 #define __cdecl
 #endif
+#include <dlfcn.h>
 #endif
 
 namespace {
@@ -73,9 +74,36 @@ bool ensure_numpy_ready() {
     return true;
 }
 
+bool ensure_python_library_global() {
+#if defined(_WIN32) || defined(_WIN64)
+    return true;
+#else
+    Dl_info info;
+    std::memset(&info, 0, sizeof(info));
+    if (dladdr(reinterpret_cast<void*>(Py_Initialize), &info) == 0 || !info.dli_fname) {
+        set_message("VorLap bridge could not locate the loaded libpython for RTLD_GLOBAL promotion.");
+        return false;
+    }
+
+    void* handle = dlopen(info.dli_fname, RTLD_NOW | RTLD_GLOBAL);
+    if (!handle) {
+        const char* err = dlerror();
+        set_message(
+            std::string("VorLap bridge failed to promote libpython to RTLD_GLOBAL: ")
+            + (err ? err : "unknown dlopen error")
+        );
+        return false;
+    }
+    return true;
+#endif
+}
+
 bool ensure_python_initialized() {
     if (g_python_ready) {
         return true;
+    }
+    if (!ensure_python_library_global()) {
+        return false;
     }
     if (!Py_IsInitialized()) {
         Py_Initialize();

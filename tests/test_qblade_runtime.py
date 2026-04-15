@@ -155,6 +155,16 @@ def test_build_qblade_external_config_accepts_force_scale():
     assert config["force_scale"] == 100.0
 
 
+def test_build_qblade_external_config_accepts_debug():
+    config = build_qblade_external_config(
+        sim_path="/tmp/case.sim",
+        airfoil_dir="/tmp/airfoils",
+        node_ids=["BLD_1_0.000000"],
+        debug=True,
+    )
+    assert config["debug"] is True
+
+
 def test_build_qblade_external_config_accepts_source_parameter_dir():
     config = build_qblade_external_config(
         sim_path="../../baseline_wMinSagSnubbers-Wwnd.sim",
@@ -207,6 +217,41 @@ def test_runtime_resolves_relative_paths_from_original_parameter_dir_when_copied
     assert runtime is not None
     assert calls["sim_path"] == str(sim_path)
     assert calls["airfoil_dir"] == str(airfoil_dir)
+
+
+def test_runtime_debug_message_reports_max_force():
+    component = make_component(n_nodes=2, span=2.0, airfoil_id="default")
+    afft = make_constant_airfoil_fft(n_freq=2)
+    viv_params = make_viv_params()
+    controller = QBladeController.from_components(
+        components=[component],
+        airfoils={"default": afft},
+        viv_params=viv_params,
+        node_ids=["BLD_1_0.000000", "BLD_1_1.000000"],
+        n_freq_depth=2,
+        force_scale=100.0,
+    )
+    spec = build_external_library_table_spec(controller.node_ids)
+    runtime = VorLapQBladeRuntime(
+        controller,
+        spec.swap_layout,
+        debug=True,
+        resolved_sim_path="/tmp/example/baseline.sim",
+        resolved_airfoil_dir="/tmp/example/VorLapAirfoils",
+    )
+    swap = np.zeros(spec.swap_size, dtype=np.float32)
+    swap[spec.swap_layout["time"].offset] = 0.0
+    swap[spec.swap_layout["timestep"].offset] = 0.25
+    swap[spec.swap_layout["azimuth_deg"].offset] = 0.0
+    swap[spec.swap_layout["velocity"].offset : spec.swap_layout["velocity"].offset + 6] = np.array(
+        [2.0, 0.0, 0.0, 2.0, 0.0, 0.0], dtype=np.float32
+    )
+
+    runtime.update(swap)
+
+    assert "max|F|=" in runtime.update_message()
+    assert "node=BLD_1_0.000000" in runtime.update_message()
+    assert "scale=100" in runtime.update_message()
 
 
 def test_build_qblade_external_config_infers_required_geometry_flags():
