@@ -4,6 +4,7 @@
 #include <numpy/arrayobject.h>
 
 #include <cstring>
+#include <fstream>
 #include <mutex>
 #include <string>
 
@@ -17,6 +18,8 @@
 #include <dlfcn.h>
 #endif
 
+#include <filesystem>
+
 namespace {
 
 constexpr int kMessageBufferSize = 1024;
@@ -26,14 +29,45 @@ PyObject* g_runtime = nullptr;
 PyObject* g_update_callable = nullptr;
 PyObject* g_message_callable = nullptr;
 std::string g_message = "VorLap bridge has not been initialized.";
+std::string g_bridge_log_path;
 npy_intp g_swap_size = 0;
 bool g_python_ready = false;
+unsigned long long g_update_counter = 0;
+
+void append_bridge_log_line(const std::string& message) {
+    if (g_bridge_log_path.empty()) {
+        return;
+    }
+    std::ofstream log(g_bridge_log_path, std::ios::app);
+    if (!log) {
+        return;
+    }
+    log << message << '\n';
+}
+
+void init_bridge_log_path(const char* param_file) {
+    namespace fs = std::filesystem;
+    try {
+        fs::path base_dir;
+        if (param_file && std::strlen(param_file) > 0) {
+            fs::path param_path(param_file);
+            base_dir = param_path.has_parent_path() ? param_path.parent_path() : fs::current_path();
+        } else {
+            base_dir = fs::current_path();
+        }
+        fs::create_directories(base_dir);
+        g_bridge_log_path = (base_dir / "vorlap_qblade_bridge_cpp.log").string();
+    } catch (...) {
+        g_bridge_log_path.clear();
+    }
+}
 
 void set_message(const std::string& message) {
     g_message = message;
     if (g_message.size() >= static_cast<size_t>(kMessageBufferSize)) {
         g_message.resize(kMessageBufferSize - 1);
     }
+    append_bridge_log_line("MESSAGE: " + g_message);
 }
 
 std::string fetch_python_error() {
@@ -123,6 +157,7 @@ void clear_runtime_locked() {
     g_message_callable = nullptr;
     g_runtime = nullptr;
     g_swap_size = 0;
+    g_update_counter = 0;
 }
 
 bool store_runtime_metadata_locked() {
@@ -251,6 +286,10 @@ void copy_message_to_buffer(char* out_buf) {
 
 QBLADE_EXPORT void __cdecl update_init(const char* paramFile) {
     std::lock_guard<std::mutex> guard(g_mutex);
+    init_bridge_log_path(paramFile);
+    append_bridge_log_line(
+        std::string("update_init entered; paramFile=") + (paramFile ? paramFile : "<null>")
+    );
     if (!ensure_python_initialized()) {
         return;
     }
@@ -268,11 +307,17 @@ QBLADE_EXPORT void __cdecl update_init(const char* paramFile) {
             PyErr_Clear();
         }
     }
+    append_bridge_log_line("update_init exit; message=" + g_message);
     PyGILState_Release(gil);
 }
 
 QBLADE_EXPORT void __cdecl update(float* avrSwap) {
     std::lock_guard<std::mutex> guard(g_mutex);
+    ++g_update_counter;
+    const bool log_this_update = (g_update_counter <= 10) || (g_update_counter % 100 == 0);
+    if (log_this_update) {
+        append_bridge_log_line("update entered; count=" + std::to_string(g_update_counter));
+    }
     if (!g_runtime || !g_update_callable) {
         set_message("VorLap runtime is not initialized. QBlade must call update_init() first.");
         return;
@@ -300,6 +345,9 @@ QBLADE_EXPORT void __cdecl update(float* avrSwap) {
 
     if (!refresh_message_from_runtime_locked()) {
         PyErr_Clear();
+    }
+    if (log_this_update) {
+        append_bridge_log_line("update exit; count=" + std::to_string(g_update_counter) + "; message=" + g_message);
     }
 
     PyGILState_Release(gil);

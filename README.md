@@ -179,6 +179,8 @@ QBlade-side mapping flow (general):
 - `debug`: enables verbose `update_message()` diagnostics, including resolved paths at init and the maximum applied force magnitude/node during updates.
 - `log_file`: optional runtime log path. When `--debug` is used and no path is provided, case prep writes an absolute default path named `vorlap_qblade_debug.log` next to the generated JSON.
 
+For lower-level bridge diagnostics, the C++ shared library also writes `vorlap_qblade_bridge_cpp.log` next to the parameter file that QBlade passes into `update_init()`. This log is written before Python runtime creation, so it is the first place to check if no Python-side log file appears.
+
 Inflow profile CSV format:
 
 ```text
