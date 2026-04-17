@@ -1,0 +1,134 @@
+0             WATERDEPTH  //design depth
+1025            WATERDENSITY // design density, used for flooded member mass calcs
+false            ISFLOATING //if the structure is fixed the joint coordinates are assigned in a coordinate system with O(0,0,0) at the mudline, for floaters O(0,0,0) is at the MSL and marks the floaters's NP
+5             ADVANCEDBUOYANCY //using an advanced discretization technique (N must be a square int number) to calculate buoyancy of partially submerged members, especially usefull if "lying" cylinders are used to generate the draft
+0               WAVEKINEVALTYPE // 0 - local evaluation, 1 - eval at fixed ref pos, 2 - eval at lagged position
+30              WAVEKINTAU // time constant for the lagged waveKin position evaluation
+// potential flow model options, specify RADiation and EXCitation files separately (only RAD if BEMuse), don't forget the file endings, as this identifies the format!
+false            STATICBUOYANCY // static buoyancy, based on the MSL should be used when using Morison member buoyancy combined with potential flow diffraction forces
+
+TP_INTERFACE_POS //the interface position between substructure and tower or RNA
+X[m]            Y[m]            Z[m]
+0.00000         0               15.82420
+
+
+SUBJOINTS //defined either from MSL (if isFLoating) or from seabed using the designDepth variable (if !isFLoating)
+JointID JointX   JointY  JointZ
+1   0.00000        0.00000        0.00000
+2   0.00000        0.00000       17.51025200
+3   7.37580337   0.00000000   1.55011201
+4   0.34290000   0.00000000   9.74090000
+5  -0.34290000   0.00000000   9.74090000
+6   0.00000000  -0.34290000   9.74090000
+7   0.00000000   0.34290000   9.74090000
+8   0.32067500   0.00000000  15.69720000
+9  -0.32100000   0.00000000  15.69720000
+10  0.00000000  -0.32067500  15.69720000
+11  0.00000000   0.32067500  15.69720000
+12  3.36506427   0.00000000   9.05652344
+13 -3.32179380   0.00000000   9.31510581
+14 -0.12799050  -3.29121707   9.32715334
+15 -0.17708911   3.22460730   9.35486611
+16  0.00000000   0.00000000   9.74090000
+17  0.00000000   0.00000000  15.69720000
+18    0.00000     0.000         15.82420
+19    0.00000     0.000          9.64565
+20  7.32817057   0.00000000   0.17119600
+21 -7.55880400   0.00000000   0.30480000
+22 -0.30927261  -7.49860858   0.30480000
+23 -0.42978285   7.36831524   0.30480000
+25 -7.43647023   0.00000000   0.33337500
+26 -0.30423136  -7.37637873   0.33337500
+27 -0.42265941   7.24618905   0.33337500
+28 0.00000        0.00000        0.00000
+29 0.00000        0.00000        0.00000
+
+JNT_2
+JNT_12
+JNT_13
+JNT_14
+JNT_15
+JNT_18
+
+NLSPRINGDAMPERS
+ElemID  Type    Coefficient & Displacement/Velocity Sets (for NL springs, dampers)
+1      spring  0.001    3.25E+2        0.01   3.25E+3
+2      spring  0.0001   5.00E+7       0.010   2.00E+8
+
+SUBCONSTRAINTS
+CstID   JntID   JntCon  TpCon   GrdCon  Spring  DoF_X   DoF_Y   DoF_Z   DoF_rX  DoF_rY  DoF_rZ
+1       1       28       0       0       0       1       1       1       0       0       1
+2       18       0       1       0       0       1       1       1       1       1       1
+3       3        0       0       1       0       1       1       1       0       0       0
+4       4       16       0       0       0       1       1       1       0       0       0
+5       5       16       0       0       0       1       1       1       0       0       0
+6       6       16       0       0       0       1       1       1       0       0       0
+7       7       16       0       0       0       1       1       1       0       0       0
+8       8       17       0       0       0       1       1       1       0       0       0
+9       9       17       0       0       0       1       1       1       0       0       0
+10      10      17       0       0       0       1       1       1       0       0       0
+11      11      17       0       0       0       1       1       1       0       0       0
+12      16      19       0       0       0       1       1       1       1       1       1
+13      17      18       0       0       0       1       1       1       1       1       1
+14      20      0        0       1       1       1       1       1       0       0       0
+15      21      0        0       1       1       1       1       1       0       0       0
+16      22      0        0       1       1       1       1       1       0       0       0
+17      23      0        0       1       1       1       1       1       0       0       0
+18      27      0        0       1       1       1       1       1       0       0       0
+19      25      0        0       1       1       1       1       1       0       0       0
+20      26      0        0       1       1       1       1       1       0       0       0
+21      28      0        0       1       0       1       1       1       0       0       0
+22      29      0        0       1       1       1       1       1       1       1       1
+23       1      29       0       0       0       0       0       0       0       0       1
+
+
+1.00    STIFFTUNER
+1.00    MASSTUNER
+1.00    BUOYANCYTUNER
+ 
+SUBELEMENTS
+ElemID    MASS_[kg/m]     Eix_[N.m^2]     Eiy_[N.m^2]     EA_[N]          GJ_[N.m^2]      GA_[N]          STRPIT_[deg]    KSX_[-]         KSY_[-]         RGX_[-]         RGY_[-]         XCM_[-]         YCM_[-]         XCE_[-]         YCE_[-]         XCS_[-]         YCS_[-]         DIA_[m]     Drag[-]     DAMP[-]
+1         180.04305       1.42E+08        1.42E+08        4.68E+09        1.12E+08        1.85E+09        0               0.85            0.85            0.34321         0.34321         0               0               0               0               0               0               0.508       1.0         0.02 
+
+SUBMEMBERS
+MemID   Jnt1ID  Jnt2ID  ElmID   ElmRot  HyCoID  IsBuoy  MaGrID  FldArea ElmDsc  Name (optional)
+ 1      1       19       1       0       0       0       0       0       10       Bottom tower
+ 2      19      18       1       0       0       0       0       0       10       Upper tower
+
+
+RGBCOLOR
+R       G       B
+255     15     15
+
+
+MOORELEMENTS
+MooID   MASS_[kg/m]     EIy_[N.m^2]     EA_[N]          DAMP_[-]        DIA_[m]
+1       3.72    	    7.5E+01     	3.30E+07    	0.00005     	0.028575
+2       11          	1.5E+02     	1.04E+08	    0.00007         0.0508
+3       0.39        	1.5E+02     	3.66E+06	    0.001        	0.009525
+
+
+MOORMEMBERS
+ID      CONN_1                          CONN_2                  Len.[m]  MoorID  HyCoID  IsBuoy  MaGrID  ElmDsc  Name
+1       JNT_3                           JNT_4                   10.79490112   1       0       0       0       20      LowerN
+2       JNT_25                          JNT_5                   11.78568126   1       0       0       0       20      LowerS
+3       JNT_26                          JNT_6                   11.75333357   1       0       0       0       20      LowerE
+4       JNT_27                          JNT_7                   11.68048033   1       0       0       0       20      LowerW
+5       JNT_8                           JNT_12                  7.30112124    2       0       0       0       15      UpperTopN
+6       JNT_9                           JNT_13                  7.04865831    2       0       0       0       15      UpperTopS
+7       JNT_10                          JNT_14                  7.02585764    2       0       0       0       15      UpperTopE
+8       JNT_11                          JNT_15                  6.97420416    2       0       0       0       15      UpperTopW
+9       JNT_20                          JNT_12                  9.72357511    2       0       0       0       20      UpperBottomN
+10      JNT_21                          JNT_13                  9.95156299    2       0       0       0       20      UpperBottomS
+11      JNT_22                          JNT_14                  9.95122540    2       0       0       0       20      UpperBottomE
+12      JNT_23                          JNT_15                  9.95170071    2       0       0       0       20      UpperBottomW
+13      JNT_4                           JNT_12                  2.80308    3       0       0       0       2       StabilizerN
+14      JNT_5                           JNT_13                  2.71358    3       0       0       0       2       StabilizerS
+15      JNT_6                           JNT_14                  2.68438    3       0       0       0       2       StabilizerE
+16      JNT_7                           JNT_15                  2.61718    3       0       0       0       2       StabilizerW
+
+
+
+
+
+

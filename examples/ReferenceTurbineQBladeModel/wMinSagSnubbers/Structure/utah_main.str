@@ -1,0 +1,361 @@
+---------------------- QBLADE STRUCTURAL MODEL INPUT FILE -----------------
+------------------------------- CHRONO PARAMETERS -------------------------
+0.2000                                   GLBGEOEPS - Global geometry epsilon for node placement
+------------------------------- MASS AND INERTIA --------------------------
+0.0                                      HUBMASS - Hub Mass (kg)
+414.5                                    HUBINER - Hub Inertia (kg*m^2) [includes scaled generator and approximate gearbox values, hub/spindle/brake disc alone is 21.8 kg*m^2]
+------------------------------- DRIVETRAIN MODEL --------------------------
+1                                        GBRATIO - gearbox ratio (N) [31.5, 1 for now to make controller command correct torque]
+1.0000                                   GBOXEFF - gearbox efficiency (0-1)
+1.0000                                   GENEFF - generator efficiency  (0-1)
+false                                    DRTRDOF - model drivetrain dynamics (true / false)
+0.23                                     GENINER - Generator side (HSS) Inertia (kg*m^2)
+6.31E+05                                 DTTORSPR - Drivetrain torsional stiffness (N*m/rad)
+10                                       DTTORDMP - Drivetrain torsional damping (N*m*s/rad)
+
+------------------------------- BRAKE MODEL -------------------------------
+0                                        BRKTORQUE - maximum brake torque
+0                                        BRKDEPLOY - brake deploy time (s) (only used with DTU style controllers)
+0                                        BRKDELAY - brake delay time (s) (only used with DTU style controllers)
+------------------------------- SENSOR ERRORS -----------------------------
+------------------------------- BLADES ------------------------------------
+3     NUMBLD - Number of blades
+utah_blade.str                         BLDFILE_1 - Name of file containing properties for blade 1
+utah_blade.str                         BLDFILE_2 - Name of file containing properties for blade 2
+utah_blade.str                         BLDFILE_3 - Name of file containing properties for blade 3
+------------------------------- STRUTS ------------------------------------
+utah_lower_arm.str                     STRTFILE_1 - Name of file containing properties for strut1 (if blade has struts)
+utah_upper_arm.str                     STRTFILE_2 - Name of file containing properties for strut2 (if blade has struts)
+STRUT_BLADE_CONSTRAINTS
+STR_ID  BLD_ID  DoF_X   DoF_Y   DoF_Z   DoF_rX  DoF_rY  DoF_rZ BLD_coords
+1       1       1       1       1       1       0       1       1
+2       1       1       1       1       1       0       1       1
+1       2       1       1       1       1       0       1       1
+2       2       1       1       1       1       0       1       1
+1       3       1       1       1       1       0       1       1
+2       3       1       1       1       1       0       1       1
+------------------------------- TOWER AND TORQUE TUBE ---------------------
+utah_tower.str                           TWRFILE
+1.6858                                   TWRHEIGHT
+1.7784                                   TRQTBHEIGHT - Height (or length) of the torque tube (the rotating part of the tower) [m]
+utah_torque_tube.str                     TRQTBFILE - Name of file containing properties for the torque tube
+1.2866                                   TRQTBCLEAR - Clearance of the torque tube, must be <= TWRHEIGHT [m]
+1.3                                      HUBPOS - Height of the generator hub that is connecting the torque tube with the fixed tower (VAWT only) [m]
+0.325                                    TRQTBCONN - Absolute height position, starting after torque tube clearance, of a frictionless bearing that connects the torque tube to the fixed tower [m]
+-3.2632                                  RTRCLEAR - Rotor clearance
+utah_substr.str                          SUBFILE
+
+------------------------------- BLDDE CABLES (VAWT only) ------------------
+                                         CABFILE - file containing the definitions of cables
+------------------------------- DATA OUTPUT TYPES -------------------------
+true                                     FOR_OUT - store (local) forces at all chosen locations
+true                                     ROT_OUT - store (local) body rotations at all chosen locations
+true                                     MOM_OUT - store (local) moments at all chosen locations
+true                                     DEF_OUT - store (local) deflections at all chosen locations
+true                                     POS_OUT - store (global) positions at all chosen locations
+true                                     VEL_OUT - store (global) velocities at all chosen locations
+true                                     ACC_OUT - store (global) accelerations at all chosen locations
+true                                     LVE_OUT - store (local) velocities at all chosen locations
+true                                     LAC_OUT - store (local) accelerations at all chosen locations
+
+BLD_1_0.047438
+BLD_1_0.230455
+BLD_1_0.500000
+BLD_1_0.769545
+BLD_1_0.939753
+BLD_2_0.047438
+BLD_2_0.230455
+BLD_2_0.500000
+BLD_2_0.769545
+BLD_2_0.939753
+BLD_3_0.047438
+BLD_3_0.230455
+BLD_3_0.500000
+BLD_3_0.769545
+BLD_3_0.939753
+
+STR_1_1_1.000000
+STR_2_1_1.000000
+STR_1_1_0.162763
+STR_1_1_0.172168
+STR_1_1_0.173878
+STR_2_1_0.163395
+STR_2_1_0.172800
+STR_2_1_0.174510
+STR_1_2_1.000000
+STR_2_2_1.000000
+STR_1_2_0.162763
+STR_1_2_0.172168
+STR_1_2_0.173878
+STR_2_2_0.163395
+STR_2_2_0.172800
+STR_2_2_0.174510
+STR_1_3_1.000000
+STR_2_3_1.000000
+STR_1_3_0.162763
+STR_1_3_0.172168
+STR_1_3_0.173878
+STR_2_3_0.163395
+STR_2_3_0.172800
+STR_2_3_0.174510
+
+MOO_1_0.500000
+MOO_9_0.500000
+MOO_2_0.500000
+MOO_10_0.500000
+MOO_3_0.500000
+MOO_11_0.500000
+MOO_4_0.500000
+MOO_12_0.500000
+
+MOO_13_0.500000
+MOO_14_0.500000
+MOO_15_0.500000
+MOO_16_0.500000
+
+TWR_0.0
+TWR_0.901408 //nacelle load cells
+TWR_1.0
+
+EXTERNAL_1_IN
+SWAP DATA
+0    "Time [s]"
+1    "Timestep [-]"
+2    "LSS Azimuthal Pos. [deg]"
+3    "X_g Vel. BLD_1 pos 0.047 [m/s]"
+4    "Y_g Vel. BLD_1 pos 0.047 [m/s]"
+5    "Z_g Vel. BLD_1 pos 0.047 [m/s]"
+6    "X_g Vel. BLD_1 pos 0.230 [m/s]"
+7    "Y_g Vel. BLD_1 pos 0.230 [m/s]"
+8    "Z_g Vel. BLD_1 pos 0.230 [m/s]"
+9    "X_g Vel. BLD_1 pos 0.500 [m/s]"
+10    "Y_g Vel. BLD_1 pos 0.500 [m/s]"
+11    "Z_g Vel. BLD_1 pos 0.500 [m/s]"
+12    "X_g Vel. BLD_1 pos 0.770 [m/s]"
+13    "Y_g Vel. BLD_1 pos 0.770 [m/s]"
+14    "Z_g Vel. BLD_1 pos 0.770 [m/s]"
+15    "X_g Vel. BLD_1 pos 0.940 [m/s]"
+16    "Y_g Vel. BLD_1 pos 0.940 [m/s]"
+17    "Z_g Vel. BLD_1 pos 0.940 [m/s]"
+18    "X_g Vel. BLD_2 pos 0.047 [m/s]"
+19    "Y_g Vel. BLD_2 pos 0.047 [m/s]"
+20    "Z_g Vel. BLD_2 pos 0.047 [m/s]"
+21    "X_g Vel. BLD_2 pos 0.230 [m/s]"
+22    "Y_g Vel. BLD_2 pos 0.230 [m/s]"
+23    "Z_g Vel. BLD_2 pos 0.230 [m/s]"
+24    "X_g Vel. BLD_2 pos 0.500 [m/s]"
+25    "Y_g Vel. BLD_2 pos 0.500 [m/s]"
+26    "Z_g Vel. BLD_2 pos 0.500 [m/s]"
+27    "X_g Vel. BLD_2 pos 0.770 [m/s]"
+28    "Y_g Vel. BLD_2 pos 0.770 [m/s]"
+29    "Z_g Vel. BLD_2 pos 0.770 [m/s]"
+30    "X_g Vel. BLD_2 pos 0.940 [m/s]"
+31    "Y_g Vel. BLD_2 pos 0.940 [m/s]"
+32    "Z_g Vel. BLD_2 pos 0.940 [m/s]"
+33    "X_g Vel. BLD_3 pos 0.047 [m/s]"
+34    "Y_g Vel. BLD_3 pos 0.047 [m/s]"
+35    "Z_g Vel. BLD_3 pos 0.047 [m/s]"
+36    "X_g Vel. BLD_3 pos 0.230 [m/s]"
+37    "Y_g Vel. BLD_3 pos 0.230 [m/s]"
+38    "Z_g Vel. BLD_3 pos 0.230 [m/s]"
+39    "X_g Vel. BLD_3 pos 0.500 [m/s]"
+40    "Y_g Vel. BLD_3 pos 0.500 [m/s]"
+41    "Z_g Vel. BLD_3 pos 0.500 [m/s]"
+42    "X_g Vel. BLD_3 pos 0.770 [m/s]"
+43    "Y_g Vel. BLD_3 pos 0.770 [m/s]"
+44    "Z_g Vel. BLD_3 pos 0.770 [m/s]"
+45    "X_g Vel. BLD_3 pos 0.940 [m/s]"
+46    "Y_g Vel. BLD_3 pos 0.940 [m/s]"
+47    "Z_g Vel. BLD_3 pos 0.940 [m/s]"
+48    "X_g Vel. STR_1_1 pos 1.000 [m/s]"
+49    "Y_g Vel. STR_1_1 pos 1.000 [m/s]"
+50    "Z_g Vel. STR_1_1 pos 1.000 [m/s]"
+51    "X_g Vel. STR_2_1 pos 1.000 [m/s]"
+52    "Y_g Vel. STR_2_1 pos 1.000 [m/s]"
+53    "Z_g Vel. STR_2_1 pos 1.000 [m/s]"
+54    "X_g Vel. STR_1_1 pos 0.163 [m/s]"
+55    "Y_g Vel. STR_1_1 pos 0.163 [m/s]"
+56    "Z_g Vel. STR_1_1 pos 0.163 [m/s]"
+57    "X_g Vel. STR_1_1 pos 0.172 [m/s]"
+58    "Y_g Vel. STR_1_1 pos 0.172 [m/s]"
+59    "Z_g Vel. STR_1_1 pos 0.172 [m/s]"
+60    "X_g Vel. STR_1_1 pos 0.174 [m/s]"
+61    "Y_g Vel. STR_1_1 pos 0.174 [m/s]"
+62    "Z_g Vel. STR_1_1 pos 0.174 [m/s]"
+63    "X_g Vel. STR_2_1 pos 0.163 [m/s]"
+64    "Y_g Vel. STR_2_1 pos 0.163 [m/s]"
+65    "Z_g Vel. STR_2_1 pos 0.163 [m/s]"
+66    "X_g Vel. STR_2_1 pos 0.173 [m/s]"
+67    "Y_g Vel. STR_2_1 pos 0.173 [m/s]"
+68    "Z_g Vel. STR_2_1 pos 0.173 [m/s]"
+69    "X_g Vel. STR_2_1 pos 0.175 [m/s]"
+70    "Y_g Vel. STR_2_1 pos 0.175 [m/s]"
+71    "Z_g Vel. STR_2_1 pos 0.175 [m/s]"
+72    "X_g Vel. STR_1_2 pos 1.000 [m/s]"
+73    "Y_g Vel. STR_1_2 pos 1.000 [m/s]"
+74    "Z_g Vel. STR_1_2 pos 1.000 [m/s]"
+75    "X_g Vel. STR_2_2 pos 1.000 [m/s]"
+76    "Y_g Vel. STR_2_2 pos 1.000 [m/s]"
+77    "Z_g Vel. STR_2_2 pos 1.000 [m/s]"
+78    "X_g Vel. STR_1_2 pos 0.163 [m/s]"
+79    "Y_g Vel. STR_1_2 pos 0.163 [m/s]"
+80    "Z_g Vel. STR_1_2 pos 0.163 [m/s]"
+81    "X_g Vel. STR_1_2 pos 0.172 [m/s]"
+82    "Y_g Vel. STR_1_2 pos 0.172 [m/s]"
+83    "Z_g Vel. STR_1_2 pos 0.172 [m/s]"
+84    "X_g Vel. STR_1_2 pos 0.174 [m/s]"
+85    "Y_g Vel. STR_1_2 pos 0.174 [m/s]"
+86    "Z_g Vel. STR_1_2 pos 0.174 [m/s]"
+87    "X_g Vel. STR_2_2 pos 0.163 [m/s]"
+88    "Y_g Vel. STR_2_2 pos 0.163 [m/s]"
+89    "Z_g Vel. STR_2_2 pos 0.163 [m/s]"
+90    "X_g Vel. STR_2_2 pos 0.173 [m/s]"
+91    "Y_g Vel. STR_2_2 pos 0.173 [m/s]"
+92    "Z_g Vel. STR_2_2 pos 0.173 [m/s]"
+93    "X_g Vel. STR_2_2 pos 0.175 [m/s]"
+94    "Y_g Vel. STR_2_2 pos 0.175 [m/s]"
+95    "Z_g Vel. STR_2_2 pos 0.175 [m/s]"
+96    "X_g Vel. STR_1_3 pos 1.000 [m/s]"
+97    "Y_g Vel. STR_1_3 pos 1.000 [m/s]"
+98    "Z_g Vel. STR_1_3 pos 1.000 [m/s]"
+99    "X_g Vel. STR_2_3 pos 1.000 [m/s]"
+100    "Y_g Vel. STR_2_3 pos 1.000 [m/s]"
+101    "Z_g Vel. STR_2_3 pos 1.000 [m/s]"
+102    "X_g Vel. STR_1_3 pos 0.163 [m/s]"
+103    "Y_g Vel. STR_1_3 pos 0.163 [m/s]"
+104    "Z_g Vel. STR_1_3 pos 0.163 [m/s]"
+105    "X_g Vel. STR_1_3 pos 0.172 [m/s]"
+106    "Y_g Vel. STR_1_3 pos 0.172 [m/s]"
+107    "Z_g Vel. STR_1_3 pos 0.172 [m/s]"
+108    "X_g Vel. STR_1_3 pos 0.174 [m/s]"
+109    "Y_g Vel. STR_1_3 pos 0.174 [m/s]"
+110    "Z_g Vel. STR_1_3 pos 0.174 [m/s]"
+111    "X_g Vel. STR_2_3 pos 0.163 [m/s]"
+112    "Y_g Vel. STR_2_3 pos 0.163 [m/s]"
+113    "Z_g Vel. STR_2_3 pos 0.163 [m/s]"
+114    "X_g Vel. STR_2_3 pos 0.173 [m/s]"
+115    "Y_g Vel. STR_2_3 pos 0.173 [m/s]"
+116    "Z_g Vel. STR_2_3 pos 0.173 [m/s]"
+117    "X_g Vel. STR_2_3 pos 0.175 [m/s]"
+118    "Y_g Vel. STR_2_3 pos 0.175 [m/s]"
+119    "Z_g Vel. STR_2_3 pos 0.175 [m/s]"
+
+EXTERNAL_1_OUT
+SWAP  ACTION     ID     POS  DIR  LOCAL
+120    ADDFORCE  BLD_1    0.047438 X    false
+121    ADDFORCE  BLD_1    0.047438 Y    false
+122    ADDFORCE  BLD_1    0.047438 Z    false
+123    ADDFORCE  BLD_1    0.230455 X    false
+124    ADDFORCE  BLD_1    0.230455 Y    false
+125    ADDFORCE  BLD_1    0.230455 Z    false
+126    ADDFORCE  BLD_1    0.500000 X    false
+127    ADDFORCE  BLD_1    0.500000 Y    false
+128    ADDFORCE  BLD_1    0.500000 Z    false
+129    ADDFORCE  BLD_1    0.769545 X    false
+130    ADDFORCE  BLD_1    0.769545 Y    false
+131    ADDFORCE  BLD_1    0.769545 Z    false
+132    ADDFORCE  BLD_1    0.939753 X    false
+133    ADDFORCE  BLD_1    0.939753 Y    false
+134    ADDFORCE  BLD_1    0.939753 Z    false
+135    ADDFORCE  BLD_2    0.047438 X    false
+136    ADDFORCE  BLD_2    0.047438 Y    false
+137    ADDFORCE  BLD_2    0.047438 Z    false
+138    ADDFORCE  BLD_2    0.230455 X    false
+139    ADDFORCE  BLD_2    0.230455 Y    false
+140    ADDFORCE  BLD_2    0.230455 Z    false
+141    ADDFORCE  BLD_2    0.500000 X    false
+142    ADDFORCE  BLD_2    0.500000 Y    false
+143    ADDFORCE  BLD_2    0.500000 Z    false
+144    ADDFORCE  BLD_2    0.769545 X    false
+145    ADDFORCE  BLD_2    0.769545 Y    false
+146    ADDFORCE  BLD_2    0.769545 Z    false
+147    ADDFORCE  BLD_2    0.939753 X    false
+148    ADDFORCE  BLD_2    0.939753 Y    false
+149    ADDFORCE  BLD_2    0.939753 Z    false
+150    ADDFORCE  BLD_3    0.047438 X    false
+151    ADDFORCE  BLD_3    0.047438 Y    false
+152    ADDFORCE  BLD_3    0.047438 Z    false
+153    ADDFORCE  BLD_3    0.230455 X    false
+154    ADDFORCE  BLD_3    0.230455 Y    false
+155    ADDFORCE  BLD_3    0.230455 Z    false
+156    ADDFORCE  BLD_3    0.500000 X    false
+157    ADDFORCE  BLD_3    0.500000 Y    false
+158    ADDFORCE  BLD_3    0.500000 Z    false
+159    ADDFORCE  BLD_3    0.769545 X    false
+160    ADDFORCE  BLD_3    0.769545 Y    false
+161    ADDFORCE  BLD_3    0.769545 Z    false
+162    ADDFORCE  BLD_3    0.939753 X    false
+163    ADDFORCE  BLD_3    0.939753 Y    false
+164    ADDFORCE  BLD_3    0.939753 Z    false
+165    ADDFORCE  STR_1_1  1.000000 X    false
+166    ADDFORCE  STR_1_1  1.000000 Y    false
+167    ADDFORCE  STR_1_1  1.000000 Z    false
+168    ADDFORCE  STR_2_1  1.000000 X    false
+169    ADDFORCE  STR_2_1  1.000000 Y    false
+170    ADDFORCE  STR_2_1  1.000000 Z    false
+171    ADDFORCE  STR_1_1  0.162763 X    false
+172    ADDFORCE  STR_1_1  0.162763 Y    false
+173    ADDFORCE  STR_1_1  0.162763 Z    false
+174    ADDFORCE  STR_1_1  0.172168 X    false
+175    ADDFORCE  STR_1_1  0.172168 Y    false
+176    ADDFORCE  STR_1_1  0.172168 Z    false
+177    ADDFORCE  STR_1_1  0.173878 X    false
+178    ADDFORCE  STR_1_1  0.173878 Y    false
+179    ADDFORCE  STR_1_1  0.173878 Z    false
+180    ADDFORCE  STR_2_1  0.163395 X    false
+181    ADDFORCE  STR_2_1  0.163395 Y    false
+182    ADDFORCE  STR_2_1  0.163395 Z    false
+183    ADDFORCE  STR_2_1  0.172800 X    false
+184    ADDFORCE  STR_2_1  0.172800 Y    false
+185    ADDFORCE  STR_2_1  0.172800 Z    false
+186    ADDFORCE  STR_2_1  0.174510 X    false
+187    ADDFORCE  STR_2_1  0.174510 Y    false
+188    ADDFORCE  STR_2_1  0.174510 Z    false
+189    ADDFORCE  STR_1_2  1.000000 X    false
+190    ADDFORCE  STR_1_2  1.000000 Y    false
+191    ADDFORCE  STR_1_2  1.000000 Z    false
+192    ADDFORCE  STR_2_2  1.000000 X    false
+193    ADDFORCE  STR_2_2  1.000000 Y    false
+194    ADDFORCE  STR_2_2  1.000000 Z    false
+195    ADDFORCE  STR_1_2  0.162763 X    false
+196    ADDFORCE  STR_1_2  0.162763 Y    false
+197    ADDFORCE  STR_1_2  0.162763 Z    false
+198    ADDFORCE  STR_1_2  0.172168 X    false
+199    ADDFORCE  STR_1_2  0.172168 Y    false
+200    ADDFORCE  STR_1_2  0.172168 Z    false
+201    ADDFORCE  STR_1_2  0.173878 X    false
+202    ADDFORCE  STR_1_2  0.173878 Y    false
+203    ADDFORCE  STR_1_2  0.173878 Z    false
+204    ADDFORCE  STR_2_2  0.163395 X    false
+205    ADDFORCE  STR_2_2  0.163395 Y    false
+206    ADDFORCE  STR_2_2  0.163395 Z    false
+207    ADDFORCE  STR_2_2  0.172800 X    false
+208    ADDFORCE  STR_2_2  0.172800 Y    false
+209    ADDFORCE  STR_2_2  0.172800 Z    false
+210    ADDFORCE  STR_2_2  0.174510 X    false
+211    ADDFORCE  STR_2_2  0.174510 Y    false
+212    ADDFORCE  STR_2_2  0.174510 Z    false
+213    ADDFORCE  STR_1_3  1.000000 X    false
+214    ADDFORCE  STR_1_3  1.000000 Y    false
+215    ADDFORCE  STR_1_3  1.000000 Z    false
+216    ADDFORCE  STR_2_3  1.000000 X    false
+217    ADDFORCE  STR_2_3  1.000000 Y    false
+218    ADDFORCE  STR_2_3  1.000000 Z    false
+219    ADDFORCE  STR_1_3  0.162763 X    false
+220    ADDFORCE  STR_1_3  0.162763 Y    false
+221    ADDFORCE  STR_1_3  0.162763 Z    false
+222    ADDFORCE  STR_1_3  0.172168 X    false
+223    ADDFORCE  STR_1_3  0.172168 Y    false
+224    ADDFORCE  STR_1_3  0.172168 Z    false
+225    ADDFORCE  STR_1_3  0.173878 X    false
+226    ADDFORCE  STR_1_3  0.173878 Y    false
+227    ADDFORCE  STR_1_3  0.173878 Z    false
+228    ADDFORCE  STR_2_3  0.163395 X    false
+229    ADDFORCE  STR_2_3  0.163395 Y    false
+230    ADDFORCE  STR_2_3  0.163395 Z    false
+231    ADDFORCE  STR_2_3  0.172800 X    false
+232    ADDFORCE  STR_2_3  0.172800 Y    false
+233    ADDFORCE  STR_2_3  0.172800 Z    false
+234    ADDFORCE  STR_2_3  0.174510 X    false
+235    ADDFORCE  STR_2_3  0.174510 Y    false
+236    ADDFORCE  STR_2_3  0.174510 Z    false

@@ -1,0 +1,13 @@
+0.0200                                   RAYLEIGHDMP
+1.0000                                   STIFFTUNER
+1.0000                                   MASSTUNER
+
+10                                       DISC
+
+LENFRACT_[-]         MASSD_[kg/m]         EIx_[N.m^2]           EIy_[N.m^2]         EA_[N]               GJ_[N.m^2]           GA_[N]               STRPIT_[deg]         KSX_[-]              KSY_[-]              RGX_[-]              RGY_[-]              XCM_[-]              YCM_[-]              XCE_[-]              YCE_[-]              XCS_[-]              YCS_[-]              Diameter [m]        
+0.00000              173.37946               3.19E+08              3.19E+08            1.85E+09        2.52E+08        1.78E+09        0               0.85            0.85            0.34916         0.34916         0               0               0               0               0               0               0.762   
+1.00000              173.37946               3.19E+08              3.19E+08            1.85E+09        2.52E+08        1.78E+09        0               0.85            0.85            0.34916         0.34916         0               0               0               0               0               0               0.762   
+
+RGBCOLOR
+R       G       B
+10     10     10
