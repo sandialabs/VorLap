@@ -9,7 +9,7 @@ Setup once, from the VorLap repo root:
 
 Run the local NACA0018 conversion:
 
-.venv/bin/python scripts/process_naluout_to_h5.py  --input-dir scripts/NACA0018 --airfoil-name NACA0018 --thickness 0.18 --re 5e5  --symmetric-append --st-offset 0.0 --low-freq-skip 30
+.venv/bin/python scripts/process_naluout_to_h5.py  --input-dir scripts/NACA0018 --airfoil-name NACA0018 --thickness 0.18 --re 5e5  --symmetric-append --st-offset 0.0 --low-freq-skip 30 --initial-timestep-skip 1000
 
 
 Other typical runs:
@@ -17,7 +17,7 @@ Other typical runs:
   # Flat folder with ``data_files/*.dat``; explicit Re gives Vinf from Re.
   .venv/bin/python scripts/process_naluout_to_h5.py \\
     --input-dir scripts/NACA0018 --airfoil-name NACA0018 --thickness 0.18 \\
-    --re 5e5 --symmetric-append --st-offset 0.07
+    --re 5e5 --symmetric-append --st-offset 0.07 --initial-timestep-skip 1000
 
   # Root folder with Reynolds subdirectories named like RE5_00E5.
   .venv/bin/python scripts/process_naluout_to_h5.py \\
@@ -38,7 +38,7 @@ Input layout:
 
 Main functions:
   ``discover_re_directories`` finds RE folders or a flat input.
-  ``load_force_history`` reads, validates, and resamples rounded Nalu time data.
+  ``load_force_history`` drops startup samples, validates, and resamples time data.
   ``compute_fft`` returns DC-first spectra sorted by Hann-windowed power.
   ``build_airfoil_fft`` writes the HDF5 and provenance metadata.
   ``write_summary_plots`` writes the compact CF Strouhal/amplitude PDFs.
@@ -98,6 +98,7 @@ class ProcessingConfig:
     n_freq: int
     low_freq_skip: int
     min_samples: int
+    initial_timestep_skip: int
     st_offset: float
     summary_count: int
     plot_format: str
@@ -116,7 +117,10 @@ class ReDirectory:
 @dataclass(frozen=True)
 class TimeInfo:
     source_samples: int
+    skipped_initial_steps: int
     samples: int
+    time_start_s: float
+    time_end_s: float
     source_dt_min_s: float
     source_dt_max_s: float
     dt_s: float
@@ -216,7 +220,7 @@ def combined_source_hash(rows: Sequence[dict[str, object]]) -> str:
     return digest.hexdigest()
 
 
-def load_force_history(path: Path, *, min_samples: int) -> tuple[np.ndarray, TimeInfo]:
+def load_force_history(path: Path, *, min_samples: int, initial_timestep_skip: int) -> tuple[np.ndarray, TimeInfo]:
     data = np.loadtxt(path, skiprows=1)
     if data.ndim == 1:
         data = data.reshape(1, -1)
@@ -229,6 +233,17 @@ def load_force_history(path: Path, *, min_samples: int) -> tuple[np.ndarray, Tim
     data = data[order]
     time, unique_idx = np.unique(data[:, 0], return_index=True)
     data = data[unique_idx]
+    source_samples = int(time.size)
+    if initial_timestep_skip < 0:
+        raise ValueError("initial_timestep_skip must be non-negative.")
+    if initial_timestep_skip:
+        if initial_timestep_skip >= time.size - 1:
+            raise ValueError(
+                f"{path} initial timestep skip {initial_timestep_skip} leaves fewer than two samples."
+            )
+        data = data[initial_timestep_skip:]
+        time = time[initial_timestep_skip:]
+
     dt = np.diff(time)
     if dt.size == 0 or not np.all(np.isfinite(dt)) or np.any(dt <= 0.0):
         raise ValueError(f"{path} does not have increasing finite time values.")
@@ -255,8 +270,11 @@ def load_force_history(path: Path, *, min_samples: int) -> tuple[np.ndarray, Tim
         raise ValueError(f"{path} has {data.shape[0]} uniform samples; require {min_samples}.")
 
     info = TimeInfo(
-        source_samples=int(time.size),
+        source_samples=source_samples,
+        skipped_initial_steps=int(initial_timestep_skip),
         samples=int(data.shape[0]),
+        time_start_s=float(data[0, 0]),
+        time_end_s=float(data[-1, 0]),
         source_dt_min_s=float(np.min(dt)),
         source_dt_max_s=float(np.max(dt)),
         dt_s=float(data[1, 0] - data[0, 0]),
@@ -265,9 +283,9 @@ def load_force_history(path: Path, *, min_samples: int) -> tuple[np.ndarray, Tim
     return data, info
 
 
-def load_dat(path: Path, *, min_samples: int) -> np.ndarray:
+def load_dat(path: Path, *, min_samples: int, initial_timestep_skip: int = 0) -> np.ndarray:
     """Compatibility wrapper for callers that only need uniformized data."""
-    data, _ = load_force_history(path, min_samples=min_samples)
+    data, _ = load_force_history(path, min_samples=min_samples, initial_timestep_skip=initial_timestep_skip)
     return data
 
 
@@ -436,7 +454,11 @@ def build_airfoil_fft(config: ProcessingConfig) -> dict[str, object]:
                     continue
                 raise FileNotFoundError(message)
 
-            data, time_info = load_force_history(path, min_samples=config.min_samples)
+            data, time_info = load_force_history(
+                path,
+                min_samples=config.min_samples,
+                initial_timestep_skip=config.initial_timestep_skip,
+            )
             q = 0.5 * config.fluid_density_kg_m3 * vinf**2 * config.chord_m * config.span_m
             cl = (data[:, 2] + data[:, 5]) / q
             cd = (data[:, 1] + data[:, 4]) / q
@@ -466,7 +488,10 @@ def build_airfoil_fft(config: ProcessingConfig) -> dict[str, object]:
                     "re_source": re_dir.source,
                     "aoa_deg": float(aoa[i_aoa]),
                     "source_samples": time_info.source_samples,
+                    "skipped_initial_steps": time_info.skipped_initial_steps,
                     "samples": time_info.samples,
+                    "time_start_s": time_info.time_start_s,
+                    "time_end_s": time_info.time_end_s,
                     "dt_s": time_info.dt_s,
                     "source_dt_min_s": time_info.source_dt_min_s,
                     "source_dt_max_s": time_info.source_dt_max_s,
@@ -494,6 +519,7 @@ def build_airfoil_fft(config: ProcessingConfig) -> dict[str, object]:
         "n_freq": config.n_freq,
         "low_freq_skip": config.low_freq_skip,
         "min_samples": config.min_samples,
+        "initial_timestep_skip": config.initial_timestep_skip,
         "st_offset": config.st_offset,
         "summary_count": config.summary_count,
         "symmetric_append": config.symmetric_append,
@@ -533,6 +559,7 @@ def build_airfoil_fft(config: ProcessingConfig) -> dict[str, object]:
         "aoa_deg": aoa_sorted.tolist(),
         "source_files": len(source_rows),
         "resampled_source_files": sum(1 for row in source_rows if row["resampled_to_uniform_time"]),
+        "skipped_initial_steps": config.initial_timestep_skip,
         "source_data_sha256": source_hash,
     }
 
@@ -627,6 +654,7 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--n-freq", type=int, default=200, help="Frequency entries to store, including DC.")
     parser.add_argument("--low-freq-skip", type=int, default=30, help="Non-DC FFT bins skipped before power ranking.")
     parser.add_argument("--min-samples", type=int, default=1000, help="Minimum raw/uniform samples required per .dat file.")
+    parser.add_argument("--initial-timestep-skip", type=int, default=1000, help="Number of initial sorted/unique time rows dropped before resampling and FFT.")
     parser.add_argument("--st-offset", type=finite_float, default=0.0, help="Offset added to non-DC Strouhal values; use 0.07 to recreate the 2025 paper NACA0018 tuning.")
     parser.add_argument("--summary-count", type=int, default=30, help="Frequency entries shown in CF summary plots.")
     parser.add_argument("--plot-format", choices=("pdf", "png"), default="pdf", help="Summary plot format.")
@@ -645,6 +673,8 @@ def config_from_args(args: argparse.Namespace) -> ProcessingConfig:
         raise ValueError("--low-freq-skip must be non-negative.")
     if args.min_samples < 4:
         raise ValueError("--min-samples must be at least 4.")
+    if args.initial_timestep_skip < 0:
+        raise ValueError("--initial-timestep-skip must be non-negative.")
     return ProcessingConfig(
         input_dir=args.input_dir,
         output=args.output,
@@ -660,6 +690,7 @@ def config_from_args(args: argparse.Namespace) -> ProcessingConfig:
         n_freq=args.n_freq,
         low_freq_skip=args.low_freq_skip,
         min_samples=args.min_samples,
+        initial_timestep_skip=args.initial_timestep_skip,
         st_offset=args.st_offset,
         summary_count=args.summary_count,
         plot_format=args.plot_format,

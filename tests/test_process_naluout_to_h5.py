@@ -94,6 +94,8 @@ def test_converter_cli_writes_hdf5_with_source_provenance(tmp_path):
             "0",
             "--min-samples",
             "32",
+            "--initial-timestep-skip",
+            "0",
             "--no-plots",
         ]
     )
@@ -110,6 +112,7 @@ def test_converter_cli_writes_hdf5_with_source_provenance(tmp_path):
         assert len(h5.attrs["source_data_sha256"]) == 64
         source_rows = json.loads(h5.attrs["source_files_json"])
         assert source_rows[0]["path"] == str(source.resolve())
+        assert source_rows[0]["skipped_initial_steps"] == 0
         assert source_rows[0]["samples"] == 128
 
     airfoil = load_airfoil_fft(output)
@@ -151,6 +154,8 @@ def test_flat_folder_re_and_resampled_time_history(tmp_path):
             "0",
             "--min-samples",
             "32",
+            "--initial-timestep-skip",
+            "0",
             "--no-plots",
         ]
     )
@@ -161,3 +166,27 @@ def test_flat_folder_re_and_resampled_time_history(tmp_path):
     airfoil = load_airfoil_fft(output)
     assert airfoil.Re.tolist() == pytest.approx([5.0e5])
     assert airfoil.AOA.tolist() == pytest.approx([4.0])
+
+
+def test_initial_timestep_skip_drops_startup_rows_before_resampling(tmp_path):
+    converter = load_converter()
+    dt = 0.1
+    time = np.arange(12, dtype=float) * dt
+    data = np.zeros((time.size, 9), dtype=float)
+    data[:, 0] = time
+    data[:, 2] = np.arange(time.size, dtype=float)
+    source = tmp_path / "startup_0.dat"
+    np.savetxt(source, data, header="t fpx fpy x fvx fvy y z mty")
+
+    trimmed, info = converter.load_force_history(
+        source,
+        min_samples=4,
+        initial_timestep_skip=5,
+    )
+
+    assert info.source_samples == 12
+    assert info.skipped_initial_steps == 5
+    assert info.samples == 7
+    assert info.time_start_s == pytest.approx(0.5)
+    assert trimmed[0, 0] == pytest.approx(0.5)
+    assert trimmed[0, 2] == pytest.approx(5.0)
