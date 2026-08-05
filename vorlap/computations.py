@@ -22,6 +22,28 @@ def _normalize(vector: np.ndarray, name: str) -> np.ndarray:
     return vec / norm
 
 
+def _strouhal_reference_length(
+    chord: np.ndarray,
+    aoa_deg: np.ndarray,
+    thickness_ratio: np.ndarray,
+) -> np.ndarray:
+    """Return projected chord with physical thickness as the low-AOA floor."""
+    chord_arr, aoa_arr, thickness_arr = np.broadcast_arrays(
+        np.asarray(chord, dtype=float),
+        np.asarray(aoa_deg, dtype=float),
+        np.asarray(thickness_ratio, dtype=float),
+    )
+    if np.any(~np.isfinite(chord_arr)) or np.any(~np.isfinite(aoa_arr)) or np.any(~np.isfinite(thickness_arr)):
+        raise ValueError("chord, AOA, and thickness values must be finite.")
+    if np.any(chord_arr <= _EPS):
+        raise ValueError("chord values must be positive.")
+    if np.any(thickness_arr < 0.0):
+        raise ValueError("thickness ratios must be non-negative.")
+    projected_ratio = np.abs(np.sin(np.deg2rad(aoa_arr)))
+    reference_ratio = np.maximum(projected_ratio, np.maximum(thickness_arr, _EPS))
+    return chord_arr * reference_ratio
+
+
 def _resolve_airfoil(
     affts: Dict[str, AirfoilFFT],
     airfoil_id: str,
@@ -129,6 +151,7 @@ def _compute_thrust_torque_spectrum_impl(
 
                     global_pos = np.asarray(comp.shape_xyz_global[ipt], dtype=float)
                     chord = float(comp.chord[ipt])
+                    thickness = float(comp.thickness[ipt])
 
                     afft = _resolve_airfoil(
                         affts,
@@ -175,7 +198,7 @@ def _compute_thrust_torque_spectrum_impl(
                     moment_arm = global_pos - axis_offset
                     total_global_moment_vector[i_inflow, j_azi, :] += np.cross(moment_arm, global_force_vector)
 
-                    st_length = max(chord * abs(math.sin(math.radians(aoa_deg))), _EPS)
+                    st_length = float(_strouhal_reference_length(chord, aoa_deg, thickness))
                     frequencies_cf = ST_cf * (V_eff / st_length)
 
                     # Record worst-case overlap while skipping the DC component.
@@ -455,6 +478,7 @@ def _compute_time_varying_force_history_impl(
         for ipt in range(n_pts):
             global_pos = np.asarray(comp.shape_xyz_global[ipt], dtype=float)
             chord = float(comp.chord[ipt])
+            thickness = float(comp.thickness[ipt])
             afft = _resolve_airfoil(
                 affts,
                 comp.airfoil_ids[ipt],
@@ -480,7 +504,7 @@ def _compute_time_varying_force_history_impl(
             ST_cl, amps_cl, phases_cl = spectra["CL"]
             ST_cd, amps_cd, phases_cd = spectra["CD"]
 
-            st_length = np.maximum(chord * np.abs(np.sin(np.deg2rad(aoa_deg))), _EPS)
+            st_length = _strouhal_reference_length(chord, aoa_deg, thickness)
             cl_freqs = ST_cl * (V_eff / st_length)[:, None]
             cd_freqs = ST_cd * (V_eff / st_length)[:, None]
 

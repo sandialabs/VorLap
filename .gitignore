@@ -12,6 +12,8 @@
 *\pyfigs*
 *\airfoils*
 *\scripts\figs*
+scripts/NACA0018/*.h5
+paper/2025-nawea/build/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

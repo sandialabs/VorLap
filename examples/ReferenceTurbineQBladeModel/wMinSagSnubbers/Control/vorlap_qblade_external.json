@@ -1,0 +1,1510 @@
+{
+  "airfoil_dir": "../VorLapAirfoils",
+  "debug": true,
+  "default_airfoil_id": "default",
+  "external_input_rows": [
+    {
+      "index": 0,
+      "variable": "Time [s]"
+    },
+    {
+      "index": 1,
+      "variable": "Timestep [-]"
+    },
+    {
+      "index": 2,
+      "variable": "LSS Azimuthal Pos. [deg]"
+    },
+    {
+      "index": 3,
+      "variable": "X_g Vel. BLD_1 pos 0.047 [m/s]"
+    },
+    {
+      "index": 4,
+      "variable": "Y_g Vel. BLD_1 pos 0.047 [m/s]"
+    },
+    {
+      "index": 5,
+      "variable": "Z_g Vel. BLD_1 pos 0.047 [m/s]"
+    },
+    {
+      "index": 6,
+      "variable": "X_g Vel. BLD_1 pos 0.230 [m/s]"
+    },
+    {
+      "index": 7,
+      "variable": "Y_g Vel. BLD_1 pos 0.230 [m/s]"
+    },
+    {
+      "index": 8,
+      "variable": "Z_g Vel. BLD_1 pos 0.230 [m/s]"
+    },
+    {
+      "index": 9,
+      "variable": "X_g Vel. BLD_1 pos 0.500 [m/s]"
+    },
+    {
+      "index": 10,
+      "variable": "Y_g Vel. BLD_1 pos 0.500 [m/s]"
+    },
+    {
+      "index": 11,
+      "variable": "Z_g Vel. BLD_1 pos 0.500 [m/s]"
+    },
+    {
+      "index": 12,
+      "variable": "X_g Vel. BLD_1 pos 0.770 [m/s]"
+    },
+    {
+      "index": 13,
+      "variable": "Y_g Vel. BLD_1 pos 0.770 [m/s]"
+    },
+    {
+      "index": 14,
+      "variable": "Z_g Vel. BLD_1 pos 0.770 [m/s]"
+    },
+    {
+      "index": 15,
+      "variable": "X_g Vel. BLD_1 pos 0.940 [m/s]"
+    },
+    {
+      "index": 16,
+      "variable": "Y_g Vel. BLD_1 pos 0.940 [m/s]"
+    },
+    {
+      "index": 17,
+      "variable": "Z_g Vel. BLD_1 pos 0.940 [m/s]"
+    },
+    {
+      "index": 18,
+      "variable": "X_g Vel. BLD_2 pos 0.047 [m/s]"
+    },
+    {
+      "index": 19,
+      "variable": "Y_g Vel. BLD_2 pos 0.047 [m/s]"
+    },
+    {
+      "index": 20,
+      "variable": "Z_g Vel. BLD_2 pos 0.047 [m/s]"
+    },
+    {
+      "index": 21,
+      "variable": "X_g Vel. BLD_2 pos 0.230 [m/s]"
+    },
+    {
+      "index": 22,
+      "variable": "Y_g Vel. BLD_2 pos 0.230 [m/s]"
+    },
+    {
+      "index": 23,
+      "variable": "Z_g Vel. BLD_2 pos 0.230 [m/s]"
+    },
+    {
+      "index": 24,
+      "variable": "X_g Vel. BLD_2 pos 0.500 [m/s]"
+    },
+    {
+      "index": 25,
+      "variable": "Y_g Vel. BLD_2 pos 0.500 [m/s]"
+    },
+    {
+      "index": 26,
+      "variable": "Z_g Vel. BLD_2 pos 0.500 [m/s]"
+    },
+    {
+      "index": 27,
+      "variable": "X_g Vel. BLD_2 pos 0.770 [m/s]"
+    },
+    {
+      "index": 28,
+      "variable": "Y_g Vel. BLD_2 pos 0.770 [m/s]"
+    },
+    {
+      "index": 29,
+      "variable": "Z_g Vel. BLD_2 pos 0.770 [m/s]"
+    },
+    {
+      "index": 30,
+      "variable": "X_g Vel. BLD_2 pos 0.940 [m/s]"
+    },
+    {
+      "index": 31,
+      "variable": "Y_g Vel. BLD_2 pos 0.940 [m/s]"
+    },
+    {
+      "index": 32,
+      "variable": "Z_g Vel. BLD_2 pos 0.940 [m/s]"
+    },
+    {
+      "index": 33,
+      "variable": "X_g Vel. BLD_3 pos 0.047 [m/s]"
+    },
+    {
+      "index": 34,
+      "variable": "Y_g Vel. BLD_3 pos 0.047 [m/s]"
+    },
+    {
+      "index": 35,
+      "variable": "Z_g Vel. BLD_3 pos 0.047 [m/s]"
+    },
+    {
+      "index": 36,
+      "variable": "X_g Vel. BLD_3 pos 0.230 [m/s]"
+    },
+    {
+      "index": 37,
+      "variable": "Y_g Vel. BLD_3 pos 0.230 [m/s]"
+    },
+    {
+      "index": 38,
+      "variable": "Z_g Vel. BLD_3 pos 0.230 [m/s]"
+    },
+    {
+      "index": 39,
+      "variable": "X_g Vel. BLD_3 pos 0.500 [m/s]"
+    },
+    {
+      "index": 40,
+      "variable": "Y_g Vel. BLD_3 pos 0.500 [m/s]"
+    },
+    {
+      "index": 41,
+      "variable": "Z_g Vel. BLD_3 pos 0.500 [m/s]"
+    },
+    {
+      "index": 42,
+      "variable": "X_g Vel. BLD_3 pos 0.770 [m/s]"
+    },
+    {
+      "index": 43,
+      "variable": "Y_g Vel. BLD_3 pos 0.770 [m/s]"
+    },
+    {
+      "index": 44,
+      "variable": "Z_g Vel. BLD_3 pos 0.770 [m/s]"
+    },
+    {
+      "index": 45,
+      "variable": "X_g Vel. BLD_3 pos 0.940 [m/s]"
+    },
+    {
+      "index": 46,
+      "variable": "Y_g Vel. BLD_3 pos 0.940 [m/s]"
+    },
+    {
+      "index": 47,
+      "variable": "Z_g Vel. BLD_3 pos 0.940 [m/s]"
+    },
+    {
+      "index": 48,
+      "variable": "X_g Vel. STR_1_1 pos 1.000 [m/s]"
+    },
+    {
+      "index": 49,
+      "variable": "Y_g Vel. STR_1_1 pos 1.000 [m/s]"
+    },
+    {
+      "index": 50,
+      "variable": "Z_g Vel. STR_1_1 pos 1.000 [m/s]"
+    },
+    {
+      "index": 51,
+      "variable": "X_g Vel. STR_2_1 pos 1.000 [m/s]"
+    },
+    {
+      "index": 52,
+      "variable": "Y_g Vel. STR_2_1 pos 1.000 [m/s]"
+    },
+    {
+      "index": 53,
+      "variable": "Z_g Vel. STR_2_1 pos 1.000 [m/s]"
+    },
+    {
+      "index": 54,
+      "variable": "X_g Vel. STR_1_1 pos 0.163 [m/s]"
+    },
+    {
+      "index": 55,
+      "variable": "Y_g Vel. STR_1_1 pos 0.163 [m/s]"
+    },
+    {
+      "index": 56,
+      "variable": "Z_g Vel. STR_1_1 pos 0.163 [m/s]"
+    },
+    {
+      "index": 57,
+      "variable": "X_g Vel. STR_1_1 pos 0.172 [m/s]"
+    },
+    {
+      "index": 58,
+      "variable": "Y_g Vel. STR_1_1 pos 0.172 [m/s]"
+    },
+    {
+      "index": 59,
+      "variable": "Z_g Vel. STR_1_1 pos 0.172 [m/s]"
+    },
+    {
+      "index": 60,
+      "variable": "X_g Vel. STR_1_1 pos 0.174 [m/s]"
+    },
+    {
+      "index": 61,
+      "variable": "Y_g Vel. STR_1_1 pos 0.174 [m/s]"
+    },
+    {
+      "index": 62,
+      "variable": "Z_g Vel. STR_1_1 pos 0.174 [m/s]"
+    },
+    {
+      "index": 63,
+      "variable": "X_g Vel. STR_2_1 pos 0.163 [m/s]"
+    },
+    {
+      "index": 64,
+      "variable": "Y_g Vel. STR_2_1 pos 0.163 [m/s]"
+    },
+    {
+      "index": 65,
+      "variable": "Z_g Vel. STR_2_1 pos 0.163 [m/s]"
+    },
+    {
+      "index": 66,
+      "variable": "X_g Vel. STR_2_1 pos 0.173 [m/s]"
+    },
+    {
+      "index": 67,
+      "variable": "Y_g Vel. STR_2_1 pos 0.173 [m/s]"
+    },
+    {
+      "index": 68,
+      "variable": "Z_g Vel. STR_2_1 pos 0.173 [m/s]"
+    },
+    {
+      "index": 69,
+      "variable": "X_g Vel. STR_2_1 pos 0.175 [m/s]"
+    },
+    {
+      "index": 70,
+      "variable": "Y_g Vel. STR_2_1 pos 0.175 [m/s]"
+    },
+    {
+      "index": 71,
+      "variable": "Z_g Vel. STR_2_1 pos 0.175 [m/s]"
+    },
+    {
+      "index": 72,
+      "variable": "X_g Vel. STR_1_2 pos 1.000 [m/s]"
+    },
+    {
+      "index": 73,
+      "variable": "Y_g Vel. STR_1_2 pos 1.000 [m/s]"
+    },
+    {
+      "index": 74,
+      "variable": "Z_g Vel. STR_1_2 pos 1.000 [m/s]"
+    },
+    {
+      "index": 75,
+      "variable": "X_g Vel. STR_2_2 pos 1.000 [m/s]"
+    },
+    {
+      "index": 76,
+      "variable": "Y_g Vel. STR_2_2 pos 1.000 [m/s]"
+    },
+    {
+      "index": 77,
+      "variable": "Z_g Vel. STR_2_2 pos 1.000 [m/s]"
+    },
+    {
+      "index": 78,
+      "variable": "X_g Vel. STR_1_2 pos 0.163 [m/s]"
+    },
+    {
+      "index": 79,
+      "variable": "Y_g Vel. STR_1_2 pos 0.163 [m/s]"
+    },
+    {
+      "index": 80,
+      "variable": "Z_g Vel. STR_1_2 pos 0.163 [m/s]"
+    },
+    {
+      "index": 81,
+      "variable": "X_g Vel. STR_1_2 pos 0.172 [m/s]"
+    },
+    {
+      "index": 82,
+      "variable": "Y_g Vel. STR_1_2 pos 0.172 [m/s]"
+    },
+    {
+      "index": 83,
+      "variable": "Z_g Vel. STR_1_2 pos 0.172 [m/s]"
+    },
+    {
+      "index": 84,
+      "variable": "X_g Vel. STR_1_2 pos 0.174 [m/s]"
+    },
+    {
+      "index": 85,
+      "variable": "Y_g Vel. STR_1_2 pos 0.174 [m/s]"
+    },
+    {
+      "index": 86,
+      "variable": "Z_g Vel. STR_1_2 pos 0.174 [m/s]"
+    },
+    {
+      "index": 87,
+      "variable": "X_g Vel. STR_2_2 pos 0.163 [m/s]"
+    },
+    {
+      "index": 88,
+      "variable": "Y_g Vel. STR_2_2 pos 0.163 [m/s]"
+    },
+    {
+      "index": 89,
+      "variable": "Z_g Vel. STR_2_2 pos 0.163 [m/s]"
+    },
+    {
+      "index": 90,
+      "variable": "X_g Vel. STR_2_2 pos 0.173 [m/s]"
+    },
+    {
+      "index": 91,
+      "variable": "Y_g Vel. STR_2_2 pos 0.173 [m/s]"
+    },
+    {
+      "index": 92,
+      "variable": "Z_g Vel. STR_2_2 pos 0.173 [m/s]"
+    },
+    {
+      "index": 93,
+      "variable": "X_g Vel. STR_2_2 pos 0.175 [m/s]"
+    },
+    {
+      "index": 94,
+      "variable": "Y_g Vel. STR_2_2 pos 0.175 [m/s]"
+    },
+    {
+      "index": 95,
+      "variable": "Z_g Vel. STR_2_2 pos 0.175 [m/s]"
+    },
+    {
+      "index": 96,
+      "variable": "X_g Vel. STR_1_3 pos 1.000 [m/s]"
+    },
+    {
+      "index": 97,
+      "variable": "Y_g Vel. STR_1_3 pos 1.000 [m/s]"
+    },
+    {
+      "index": 98,
+      "variable": "Z_g Vel. STR_1_3 pos 1.000 [m/s]"
+    },
+    {
+      "index": 99,
+      "variable": "X_g Vel. STR_2_3 pos 1.000 [m/s]"
+    },
+    {
+      "index": 100,
+      "variable": "Y_g Vel. STR_2_3 pos 1.000 [m/s]"
+    },
+    {
+      "index": 101,
+      "variable": "Z_g Vel. STR_2_3 pos 1.000 [m/s]"
+    },
+    {
+      "index": 102,
+      "variable": "X_g Vel. STR_1_3 pos 0.163 [m/s]"
+    },
+    {
+      "index": 103,
+      "variable": "Y_g Vel. STR_1_3 pos 0.163 [m/s]"
+    },
+    {
+      "index": 104,
+      "variable": "Z_g Vel. STR_1_3 pos 0.163 [m/s]"
+    },
+    {
+      "index": 105,
+      "variable": "X_g Vel. STR_1_3 pos 0.172 [m/s]"
+    },
+    {
+      "index": 106,
+      "variable": "Y_g Vel. STR_1_3 pos 0.172 [m/s]"
+    },
+    {
+      "index": 107,
+      "variable": "Z_g Vel. STR_1_3 pos 0.172 [m/s]"
+    },
+    {
+      "index": 108,
+      "variable": "X_g Vel. STR_1_3 pos 0.174 [m/s]"
+    },
+    {
+      "index": 109,
+      "variable": "Y_g Vel. STR_1_3 pos 0.174 [m/s]"
+    },
+    {
+      "index": 110,
+      "variable": "Z_g Vel. STR_1_3 pos 0.174 [m/s]"
+    },
+    {
+      "index": 111,
+      "variable": "X_g Vel. STR_2_3 pos 0.163 [m/s]"
+    },
+    {
+      "index": 112,
+      "variable": "Y_g Vel. STR_2_3 pos 0.163 [m/s]"
+    },
+    {
+      "index": 113,
+      "variable": "Z_g Vel. STR_2_3 pos 0.163 [m/s]"
+    },
+    {
+      "index": 114,
+      "variable": "X_g Vel. STR_2_3 pos 0.173 [m/s]"
+    },
+    {
+      "index": 115,
+      "variable": "Y_g Vel. STR_2_3 pos 0.173 [m/s]"
+    },
+    {
+      "index": 116,
+      "variable": "Z_g Vel. STR_2_3 pos 0.173 [m/s]"
+    },
+    {
+      "index": 117,
+      "variable": "X_g Vel. STR_2_3 pos 0.175 [m/s]"
+    },
+    {
+      "index": 118,
+      "variable": "Y_g Vel. STR_2_3 pos 0.175 [m/s]"
+    },
+    {
+      "index": 119,
+      "variable": "Z_g Vel. STR_2_3 pos 0.175 [m/s]"
+    }
+  ],
+  "external_output_rows": [
+    {
+      "action": "ADDFORCE",
+      "direction": "X",
+      "id": "BLD_1",
+      "index": 120,
+      "local": false,
+      "position": 0.047438
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Y",
+      "id": "BLD_1",
+      "index": 121,
+      "local": false,
+      "position": 0.047438
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Z",
+      "id": "BLD_1",
+      "index": 122,
+      "local": false,
+      "position": 0.047438
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "X",
+      "id": "BLD_1",
+      "index": 123,
+      "local": false,
+      "position": 0.230455
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Y",
+      "id": "BLD_1",
+      "index": 124,
+      "local": false,
+      "position": 0.230455
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Z",
+      "id": "BLD_1",
+      "index": 125,
+      "local": false,
+      "position": 0.230455
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "X",
+      "id": "BLD_1",
+      "index": 126,
+      "local": false,
+      "position": 0.5
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Y",
+      "id": "BLD_1",
+      "index": 127,
+      "local": false,
+      "position": 0.5
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Z",
+      "id": "BLD_1",
+      "index": 128,
+      "local": false,
+      "position": 0.5
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "X",
+      "id": "BLD_1",
+      "index": 129,
+      "local": false,
+      "position": 0.769545
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Y",
+      "id": "BLD_1",
+      "index": 130,
+      "local": false,
+      "position": 0.769545
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Z",
+      "id": "BLD_1",
+      "index": 131,
+      "local": false,
+      "position": 0.769545
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "X",
+      "id": "BLD_1",
+      "index": 132,
+      "local": false,
+      "position": 0.939753
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Y",
+      "id": "BLD_1",
+      "index": 133,
+      "local": false,
+      "position": 0.939753
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Z",
+      "id": "BLD_1",
+      "index": 134,
+      "local": false,
+      "position": 0.939753
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "X",
+      "id": "BLD_2",
+      "index": 135,
+      "local": false,
+      "position": 0.047438
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Y",
+      "id": "BLD_2",
+      "index": 136,
+      "local": false,
+      "position": 0.047438
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Z",
+      "id": "BLD_2",
+      "index": 137,
+      "local": false,
+      "position": 0.047438
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "X",
+      "id": "BLD_2",
+      "index": 138,
+      "local": false,
+      "position": 0.230455
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Y",
+      "id": "BLD_2",
+      "index": 139,
+      "local": false,
+      "position": 0.230455
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Z",
+      "id": "BLD_2",
+      "index": 140,
+      "local": false,
+      "position": 0.230455
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "X",
+      "id": "BLD_2",
+      "index": 141,
+      "local": false,
+      "position": 0.5
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Y",
+      "id": "BLD_2",
+      "index": 142,
+      "local": false,
+      "position": 0.5
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Z",
+      "id": "BLD_2",
+      "index": 143,
+      "local": false,
+      "position": 0.5
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "X",
+      "id": "BLD_2",
+      "index": 144,
+      "local": false,
+      "position": 0.769545
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Y",
+      "id": "BLD_2",
+      "index": 145,
+      "local": false,
+      "position": 0.769545
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Z",
+      "id": "BLD_2",
+      "index": 146,
+      "local": false,
+      "position": 0.769545
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "X",
+      "id": "BLD_2",
+      "index": 147,
+      "local": false,
+      "position": 0.939753
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Y",
+      "id": "BLD_2",
+      "index": 148,
+      "local": false,
+      "position": 0.939753
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Z",
+      "id": "BLD_2",
+      "index": 149,
+      "local": false,
+      "position": 0.939753
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "X",
+      "id": "BLD_3",
+      "index": 150,
+      "local": false,
+      "position": 0.047438
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Y",
+      "id": "BLD_3",
+      "index": 151,
+      "local": false,
+      "position": 0.047438
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Z",
+      "id": "BLD_3",
+      "index": 152,
+      "local": false,
+      "position": 0.047438
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "X",
+      "id": "BLD_3",
+      "index": 153,
+      "local": false,
+      "position": 0.230455
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Y",
+      "id": "BLD_3",
+      "index": 154,
+      "local": false,
+      "position": 0.230455
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Z",
+      "id": "BLD_3",
+      "index": 155,
+      "local": false,
+      "position": 0.230455
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "X",
+      "id": "BLD_3",
+      "index": 156,
+      "local": false,
+      "position": 0.5
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Y",
+      "id": "BLD_3",
+      "index": 157,
+      "local": false,
+      "position": 0.5
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Z",
+      "id": "BLD_3",
+      "index": 158,
+      "local": false,
+      "position": 0.5
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "X",
+      "id": "BLD_3",
+      "index": 159,
+      "local": false,
+      "position": 0.769545
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Y",
+      "id": "BLD_3",
+      "index": 160,
+      "local": false,
+      "position": 0.769545
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Z",
+      "id": "BLD_3",
+      "index": 161,
+      "local": false,
+      "position": 0.769545
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "X",
+      "id": "BLD_3",
+      "index": 162,
+      "local": false,
+      "position": 0.939753
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Y",
+      "id": "BLD_3",
+      "index": 163,
+      "local": false,
+      "position": 0.939753
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Z",
+      "id": "BLD_3",
+      "index": 164,
+      "local": false,
+      "position": 0.939753
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "X",
+      "id": "STR_1_1",
+      "index": 165,
+      "local": false,
+      "position": 1.0
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Y",
+      "id": "STR_1_1",
+      "index": 166,
+      "local": false,
+      "position": 1.0
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Z",
+      "id": "STR_1_1",
+      "index": 167,
+      "local": false,
+      "position": 1.0
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "X",
+      "id": "STR_2_1",
+      "index": 168,
+      "local": false,
+      "position": 1.0
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Y",
+      "id": "STR_2_1",
+      "index": 169,
+      "local": false,
+      "position": 1.0
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Z",
+      "id": "STR_2_1",
+      "index": 170,
+      "local": false,
+      "position": 1.0
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "X",
+      "id": "STR_1_1",
+      "index": 171,
+      "local": false,
+      "position": 0.162763
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Y",
+      "id": "STR_1_1",
+      "index": 172,
+      "local": false,
+      "position": 0.162763
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Z",
+      "id": "STR_1_1",
+      "index": 173,
+      "local": false,
+      "position": 0.162763
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "X",
+      "id": "STR_1_1",
+      "index": 174,
+      "local": false,
+      "position": 0.172168
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Y",
+      "id": "STR_1_1",
+      "index": 175,
+      "local": false,
+      "position": 0.172168
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Z",
+      "id": "STR_1_1",
+      "index": 176,
+      "local": false,
+      "position": 0.172168
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "X",
+      "id": "STR_1_1",
+      "index": 177,
+      "local": false,
+      "position": 0.173878
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Y",
+      "id": "STR_1_1",
+      "index": 178,
+      "local": false,
+      "position": 0.173878
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Z",
+      "id": "STR_1_1",
+      "index": 179,
+      "local": false,
+      "position": 0.173878
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "X",
+      "id": "STR_2_1",
+      "index": 180,
+      "local": false,
+      "position": 0.163395
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Y",
+      "id": "STR_2_1",
+      "index": 181,
+      "local": false,
+      "position": 0.163395
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Z",
+      "id": "STR_2_1",
+      "index": 182,
+      "local": false,
+      "position": 0.163395
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "X",
+      "id": "STR_2_1",
+      "index": 183,
+      "local": false,
+      "position": 0.1728
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Y",
+      "id": "STR_2_1",
+      "index": 184,
+      "local": false,
+      "position": 0.1728
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Z",
+      "id": "STR_2_1",
+      "index": 185,
+      "local": false,
+      "position": 0.1728
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "X",
+      "id": "STR_2_1",
+      "index": 186,
+      "local": false,
+      "position": 0.17451
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Y",
+      "id": "STR_2_1",
+      "index": 187,
+      "local": false,
+      "position": 0.17451
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Z",
+      "id": "STR_2_1",
+      "index": 188,
+      "local": false,
+      "position": 0.17451
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "X",
+      "id": "STR_1_2",
+      "index": 189,
+      "local": false,
+      "position": 1.0
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Y",
+      "id": "STR_1_2",
+      "index": 190,
+      "local": false,
+      "position": 1.0
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Z",
+      "id": "STR_1_2",
+      "index": 191,
+      "local": false,
+      "position": 1.0
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "X",
+      "id": "STR_2_2",
+      "index": 192,
+      "local": false,
+      "position": 1.0
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Y",
+      "id": "STR_2_2",
+      "index": 193,
+      "local": false,
+      "position": 1.0
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Z",
+      "id": "STR_2_2",
+      "index": 194,
+      "local": false,
+      "position": 1.0
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "X",
+      "id": "STR_1_2",
+      "index": 195,
+      "local": false,
+      "position": 0.162763
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Y",
+      "id": "STR_1_2",
+      "index": 196,
+      "local": false,
+      "position": 0.162763
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Z",
+      "id": "STR_1_2",
+      "index": 197,
+      "local": false,
+      "position": 0.162763
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "X",
+      "id": "STR_1_2",
+      "index": 198,
+      "local": false,
+      "position": 0.172168
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Y",
+      "id": "STR_1_2",
+      "index": 199,
+      "local": false,
+      "position": 0.172168
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Z",
+      "id": "STR_1_2",
+      "index": 200,
+      "local": false,
+      "position": 0.172168
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "X",
+      "id": "STR_1_2",
+      "index": 201,
+      "local": false,
+      "position": 0.173878
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Y",
+      "id": "STR_1_2",
+      "index": 202,
+      "local": false,
+      "position": 0.173878
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Z",
+      "id": "STR_1_2",
+      "index": 203,
+      "local": false,
+      "position": 0.173878
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "X",
+      "id": "STR_2_2",
+      "index": 204,
+      "local": false,
+      "position": 0.163395
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Y",
+      "id": "STR_2_2",
+      "index": 205,
+      "local": false,
+      "position": 0.163395
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Z",
+      "id": "STR_2_2",
+      "index": 206,
+      "local": false,
+      "position": 0.163395
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "X",
+      "id": "STR_2_2",
+      "index": 207,
+      "local": false,
+      "position": 0.1728
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Y",
+      "id": "STR_2_2",
+      "index": 208,
+      "local": false,
+      "position": 0.1728
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Z",
+      "id": "STR_2_2",
+      "index": 209,
+      "local": false,
+      "position": 0.1728
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "X",
+      "id": "STR_2_2",
+      "index": 210,
+      "local": false,
+      "position": 0.17451
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Y",
+      "id": "STR_2_2",
+      "index": 211,
+      "local": false,
+      "position": 0.17451
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Z",
+      "id": "STR_2_2",
+      "index": 212,
+      "local": false,
+      "position": 0.17451
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "X",
+      "id": "STR_1_3",
+      "index": 213,
+      "local": false,
+      "position": 1.0
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Y",
+      "id": "STR_1_3",
+      "index": 214,
+      "local": false,
+      "position": 1.0
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Z",
+      "id": "STR_1_3",
+      "index": 215,
+      "local": false,
+      "position": 1.0
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "X",
+      "id": "STR_2_3",
+      "index": 216,
+      "local": false,
+      "position": 1.0
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Y",
+      "id": "STR_2_3",
+      "index": 217,
+      "local": false,
+      "position": 1.0
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Z",
+      "id": "STR_2_3",
+      "index": 218,
+      "local": false,
+      "position": 1.0
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "X",
+      "id": "STR_1_3",
+      "index": 219,
+      "local": false,
+      "position": 0.162763
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Y",
+      "id": "STR_1_3",
+      "index": 220,
+      "local": false,
+      "position": 0.162763
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Z",
+      "id": "STR_1_3",
+      "index": 221,
+      "local": false,
+      "position": 0.162763
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "X",
+      "id": "STR_1_3",
+      "index": 222,
+      "local": false,
+      "position": 0.172168
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Y",
+      "id": "STR_1_3",
+      "index": 223,
+      "local": false,
+      "position": 0.172168
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Z",
+      "id": "STR_1_3",
+      "index": 224,
+      "local": false,
+      "position": 0.172168
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "X",
+      "id": "STR_1_3",
+      "index": 225,
+      "local": false,
+      "position": 0.173878
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Y",
+      "id": "STR_1_3",
+      "index": 226,
+      "local": false,
+      "position": 0.173878
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Z",
+      "id": "STR_1_3",
+      "index": 227,
+      "local": false,
+      "position": 0.173878
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "X",
+      "id": "STR_2_3",
+      "index": 228,
+      "local": false,
+      "position": 0.163395
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Y",
+      "id": "STR_2_3",
+      "index": 229,
+      "local": false,
+      "position": 0.163395
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Z",
+      "id": "STR_2_3",
+      "index": 230,
+      "local": false,
+      "position": 0.163395
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "X",
+      "id": "STR_2_3",
+      "index": 231,
+      "local": false,
+      "position": 0.1728
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Y",
+      "id": "STR_2_3",
+      "index": 232,
+      "local": false,
+      "position": 0.1728
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Z",
+      "id": "STR_2_3",
+      "index": 233,
+      "local": false,
+      "position": 0.1728
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "X",
+      "id": "STR_2_3",
+      "index": 234,
+      "local": false,
+      "position": 0.17451
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Y",
+      "id": "STR_2_3",
+      "index": 235,
+      "local": false,
+      "position": 0.17451
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Z",
+      "id": "STR_2_3",
+      "index": 236,
+      "local": false,
+      "position": 0.17451
+    }
+  ],
+  "force_scale": 10000.0,
+  "function_name": "update",
+  "include_struts": true,
+  "include_tower": false,
+  "library_stem": "libvorlap_qblade_bridge",
+  "log_file": "/Users/kevmoor/Documents/coderepos/QBlade_model_exp_9.16.25/wMinSagSnubbers/Control/vorlap_qblade_debug.log",
+  "node_ids": [
+    "BLD_1_0.047438",
+    "BLD_1_0.230455",
+    "BLD_1_0.500000",
+    "BLD_1_0.769545",
+    "BLD_1_0.939753",
+    "BLD_2_0.047438",
+    "BLD_2_0.230455",
+    "BLD_2_0.500000",
+    "BLD_2_0.769545",
+    "BLD_2_0.939753",
+    "BLD_3_0.047438",
+    "BLD_3_0.230455",
+    "BLD_3_0.500000",
+    "BLD_3_0.769545",
+    "BLD_3_0.939753",
+    "STR_1_1_1.000000",
+    "STR_2_1_1.000000",
+    "STR_1_1_0.162763",
+    "STR_1_1_0.172168",
+    "STR_1_1_0.173878",
+    "STR_2_1_0.163395",
+    "STR_2_1_0.172800",
+    "STR_2_1_0.174510",
+    "STR_1_2_1.000000",
+    "STR_2_2_1.000000",
+    "STR_1_2_0.162763",
+    "STR_1_2_0.172168",
+    "STR_1_2_0.173878",
+    "STR_2_2_0.163395",
+    "STR_2_2_0.172800",
+    "STR_2_2_0.174510",
+    "STR_1_3_1.000000",
+    "STR_2_3_1.000000",
+    "STR_1_3_0.162763",
+    "STR_1_3_0.172168",
+    "STR_1_3_0.173878",
+    "STR_2_3_0.163395",
+    "STR_2_3_0.172800",
+    "STR_2_3_0.174510"
+  ],
+  "parameter_file": "Control/vorlap_qblade_external.json",
+  "sim_path": "../../baseline_wMinSagSnubbers-Wwnd.sim",
+  "source_parameter_dir": "/Users/kevmoor/Documents/coderepos/QBlade_model_exp_9.16.25/wMinSagSnubbers/Control",
+  "swap_layout": [
+    {
+      "name": "time",
+      "offset": 0,
+      "shape": []
+    },
+    {
+      "name": "timestep",
+      "offset": 1,
+      "shape": []
+    },
+    {
+      "name": "azimuth_deg",
+      "offset": 2,
+      "shape": []
+    },
+    {
+      "name": "velocity",
+      "offset": 3,
+      "shape": [
+        39,
+        3
+      ]
+    },
+    {
+      "name": "force",
+      "offset": 120,
+      "shape": [
+        39,
+        3
+      ]
+    }
+  ],
+  "swap_size": 237,
+  "tower_airfoil_id": "cylinder"
+}

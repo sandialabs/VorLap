@@ -1,0 +1,74 @@
+----------------------------------------QBlade Blade Definition File------------------------------------------------
+Generated with : QBlade EE v2.0.9_beta windows
+Archive Format: 310039
+Time : 11:48:22
+Date : 16.09.2025
+
+----------------------------------------Object Name-----------------------------------------------------------------
+Large_drop_CL_upper_CD_upper_min_drag_0.48.bld     OBJECTNAME         - the name of the blade object
+
+----------------------------------------Parameters------------------------------------------------------------------
+VAWT                                               ROTORTYPE          - the rotor type
+false                                              INVERTEDFOILS      - invert the airfoils? (only VAWT) [bool]
+3                                                  NUMBLADES          - number of blades
+
+----------------------------------------Blade Data------------------------------------------------------------------
+HEIGHT_[m]          CHORD_[m]           RADIUS_[m]          TOFFSET_[m]         TWIST_[deg]         CIRCANGLE_[deg]     P_AXIS_[-]          POLAR_FILE          
+0.00000             0.01000             5.27000             0.00000             2.27                0.00                0.25000             Polars/NACA_0018_MultiRePolar.plr
+0.22646             0.21740             5.27000             0.00000             2.27                0.00                0.25000             Polars/NACA_0018_MultiRePolar.plr
+0.50000             0.50000             5.27000             0.00000             2.27                0.00                0.25000             Polars/NACA_0018_MultiRePolar.plr
+0.90300             0.50000             5.27000             0.00000             2.27                0.00                0.25000             Polars/NACA_0018_MultiRePolar.plr
+1.42000             0.50000             5.27000             0.00000             2.27                0.00                0.25000             Polars/NACA_0018_MultiRePolar.plr
+1.88570             0.50000             5.27000             0.00000             2.27                0.00                0.25000             Polars/NACA_0018_MultiRePolar.plr
+2.20800             0.50000             5.27000             0.00000             2.27                0.00                0.25000             Polars/NACA_0018_MultiRePolar.plr
+2.32300             0.50000             5.27000             0.00000             2.27                0.00                0.25000             Polars/NACA_0018_MultiRePolar.plr
+2.37300             0.50000             5.27000             0.00000             2.27                0.00                0.25000             Polars/NACA_0018_drag_MultiRePolar.plr
+2.47300             0.50000             5.27000             0.00000             2.27                0.00                0.25000             Polars/NACA_0018_drag_MultiRePolar.plr
+2.52300             0.50000             5.27000             0.00000             2.27                0.00                0.25000             Polars/NACA_0018_MultiRePolar.plr
+2.79500             0.50000             5.27000             0.00000             2.27                0.00                0.25000             Polars/NACA_0018_MultiRePolar.plr
+3.55720             0.50000             5.27000             0.00000             2.27                0.00                0.25000             Polars/NACA_0018_MultiRePolar.plr
+4.65870             0.50000             5.27000             0.00000             2.27                0.00                0.25000             Polars/NACA_0018_MultiRePolar.plr
+5.88110             0.50000             5.27000             0.00000             2.27                0.00                0.25000             Polars/NACA_0018_MultiRePolar.plr
+6.98260             0.50000             5.27000             0.00000             2.27                0.00                0.25000             Polars/NACA_0018_MultiRePolar.plr
+7.74480             0.50000             5.27000             0.00000             2.27                0.00                0.25000             Polars/NACA_0018_MultiRePolar.plr
+8.01680             0.50000             5.27000             0.00000             2.27                0.00                0.25000             Polars/NACA_0018_MultiRePolar.plr
+8.06680             0.50000             5.27000             0.00000             2.27                0.00                0.25000             Polars/NACA_0018_drag_MultiRePolar.plr
+8.16680             0.50000             5.27000             0.00000             2.27                0.00                0.25000             Polars/NACA_0018_drag_MultiRePolar.plr
+8.21680             0.50000             5.27000             0.00000             2.27                0.00                0.25000             Polars/NACA_0018_MultiRePolar.plr
+8.33180             0.50000             5.27000             0.00000             2.27                0.00                0.25000             Polars/NACA_0018_MultiRePolar.plr
+8.65420             0.50000             5.27000             0.00000             2.27                0.00                0.25000             Polars/NACA_0018_MultiRePolar.plr
+9.11990             0.50000             5.27000             0.00000             2.27                0.00                0.25000             Polars/NACA_0018_MultiRePolar.plr
+9.63690             0.50000             5.27000             0.00000             2.27                0.00                0.25000             Polars/NACA_0018_MultiRePolar.plr
+10.04000            0.50000             5.27000             0.00000             2.27                0.00                0.25000             Polars/NACA_0018_MultiRePolar.plr
+10.31354            0.21740             5.27000             0.00000             2.27                0.00                0.25000             Polars/NACA_0018_MultiRePolar.plr
+10.54000            0.01000             5.27000             0.00000             2.27                0.00                0.25000             Polars/NACA_0018_MultiRePolar.plr
+
+----------------------------------------Strut Data------------------------------------------------------------------
+multiple struts can be added by adding multiple definitions encapsulated with STRUT_X and END_STRUT_X, where X must start at 1
+
+STRUT_1
+    lower_arm                                      NAME_STR           - name of the strut
+    0.500                                          CHORDHUB_STR       - the strut chord [m]
+    0.500                                          CHORDBLD_STR       - the strut chord [m]
+    0.000                                          ANGLE_STR          - the strut angle [deg]
+    2.423                                          HGTBLD_STR         - the height at the blade connection [m]
+    5.088                                          HGTHUB_STR         - the height at the hub connection [m]
+    0.330                                          DSTHUB_STR         - the distance at the hub connection [m]
+    0.250                                          PAXISHUB_STR       - the pitch axis [deg]
+    0.250                                          PAXISBLD_STR       - the pitch axis [deg]
+    Polars/NACA_0018_MultiRePolar.plr              POLAR_STR          - the strut polar file
+END_STRUT_1
+
+STRUT_2
+    upper_arm                                      NAME_STR           - name of the strut
+    0.500                                          CHORDHUB_STR       - the strut chord [m]
+    0.500                                          CHORDBLD_STR       - the strut chord [m]
+    0.000                                          ANGLE_STR          - the strut angle [deg]
+    8.117                                          HGTBLD_STR         - the height at the blade connection [m]
+    5.718                                          HGTHUB_STR         - the height at the hub connection [m]
+    0.330                                          DSTHUB_STR         - the distance at the hub connection [m]
+    0.250                                          PAXISHUB_STR       - the pitch axis [deg]
+    0.250                                          PAXISBLD_STR       - the pitch axis [deg]
+    Polars/NACA_0018_MultiRePolar.plr              POLAR_STR          - the strut polar file
+END_STRUT_2
+

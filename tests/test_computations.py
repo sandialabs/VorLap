@@ -2,6 +2,7 @@ import numpy as np
 import pytest
 
 from vorlap.computations import (
+    _strouhal_reference_length,
     compute_time_varying_force_history,
     compute_time_varying_force_history_optimized,
     compute_thrust_torque_spectrum,
@@ -27,6 +28,19 @@ def test_rotate_vector_zero_axis_raises():
         rotate_vector(np.array([1.0, 0.0, 0.0]), np.zeros(3), 30.0)
 
 
+def test_strouhal_reference_length_uses_thickness_at_low_aoa():
+    chord = np.array([2.0, 2.0, 2.0])
+    aoa = np.array([0.0, 10.0, 30.0])
+    thickness = np.array([0.12, 0.12, 0.12])
+    expected = chord * np.array([0.12, np.sin(np.deg2rad(10.0)), 0.5])
+
+    np.testing.assert_allclose(
+        _strouhal_reference_length(chord, aoa, thickness),
+        expected,
+        atol=1.0e-12,
+    )
+
+
 def test_reconstruct_signal_dc_and_harmonic():
     t = np.linspace(0.0, 1.0, 21)
     freqs = np.array([0.0, 2.0])
@@ -34,6 +48,18 @@ def test_reconstruct_signal_dc_and_harmonic():
     phases = np.array([0.0, 0.0])
     signal = reconstruct_signal(freqs, amps, phases, t)
     expected = 1.5 + 0.25 * np.cos(2.0 * np.pi * 2.0 * t)
+    np.testing.assert_allclose(signal, expected, atol=1e-12)
+
+
+def test_reconstruct_signal_includes_nyquist_once():
+    t = np.arange(16, dtype=float) * 0.1
+    freqs = np.array([0.0, 5.0])
+    amps = np.array([0.3, 0.4])
+    phases = np.array([0.0, 0.0])
+
+    signal = reconstruct_signal(freqs, amps, phases, t)
+    expected = 0.3 + 0.4 * np.cos(2.0 * np.pi * 5.0 * t)
+
     np.testing.assert_allclose(signal, expected, atol=1e-12)
 
 

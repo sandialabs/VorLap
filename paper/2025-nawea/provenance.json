@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "paper": {
+    "identifier": "WES-2025-248",
+    "repository_commit": "1b206f3f36d3a5fbfa28ea241759e3671201cd35",
+    "tex_sha256": "5d445e2e44ee74a5094b55a67e5bcc2c5ec654c60cb5bfbee2833856baaa7551",
+    "pdf_sha256": "c84f579aa8b5f30788c8bfe55cc40b31e8db99e0acbf8d51acb75299898dcdfa"
+  },
+  "code": {
+    "release_base": "191d49b801c563ea088b886814e3369b26ed086b",
+    "closest_publication_era_state": "3912d7daf836acfae8e43440f9323b9b342ea792",
+    "historical_paper_snapshot": "e640561262c2dca155cc0675cc17b6ad1f935f95",
+    "paperupdates_tip_is_not_producing_state": "2a2414b64a73e7e13dfceca92ccc85e57c18132c"
+  },
+  "inputs": {
+    "paper_naca_histories": {
+      "path": "paper/2025-nawea/inputs/naca_re5e5_paper_histories.zip",
+      "sha256": "bd30575e8b1a4f2c9c64c3e991cbe53308ee4a7837c2dc6d04b7c4870266cac2",
+      "scope": "Publication-era NACA0018 84 and 164 degree histories at Re=500000"
+    },
+    "naca_source_archive": {
+      "path": "scripts/NACA18.zip",
+      "sha256": "a46218ceebb238a0377299e865a850d35ba2d94be3fdc0908da66d19ac41bc93",
+      "scope": "23 positive-AOA force histories at Re=500000"
+    },
+    "historical_naca_hdf5": {
+      "path": "data/airfoils/NACA0018.h5",
+      "sha256": "8f6eee280f6f67353018d7aa13551d481a7fc7db52ac8c461a77f306dace054e",
+      "known_repairs_applied_only_to_build_copy": [
+        "Thickness 0.018 to 0.18",
+        "DC Strouhal 0.07 to 0.0"
+      ],
+      "limitation": "Raw histories for the 40000 and 267000 Reynolds planes are not present."
+    }
+  },
+  "figure_status": {
+    "1-9": "regenerated_equivalent",
+    "10-13": "external_archival_exports",
+    "14": "legacy_compatibility_plus_corrected_companion",
+    "15": "regenerated_equivalent",
+    "16": "legacy_global_node_compatibility_plus_corrected_blade3_node2_companion"
+  }
+}
