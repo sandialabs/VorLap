@@ -13,6 +13,7 @@ from vorlap.airfoil_io import load_airfoil_fft
 
 
 SCRIPT = Path(__file__).resolve().parents[1] / "scripts" / "process_naluout_to_h5.py"
+PLOT_SCRIPT = Path(__file__).resolve().parents[1] / "scripts" / "plot_naluout_per_aoa.py"
 
 
 def load_converter():
@@ -20,6 +21,15 @@ def load_converter():
     module = importlib.util.module_from_spec(spec)
     assert spec.loader is not None
     sys.modules["process_naluout_to_h5"] = module
+    spec.loader.exec_module(module)
+    return module
+
+
+def load_plotter():
+    spec = importlib.util.spec_from_file_location("plot_naluout_per_aoa", PLOT_SCRIPT)
+    module = importlib.util.module_from_spec(spec)
+    assert spec.loader is not None
+    sys.modules["plot_naluout_per_aoa"] = module
     spec.loader.exec_module(module)
     return module
 
@@ -44,6 +54,67 @@ def test_compute_fft_uses_thickness_floor_at_zero_aoa():
     assert amps[0] == pytest.approx(np.mean(signal))
     dominant = int(np.argmax(amps[1:]) + 1)
     assert strouhal[dominant] == pytest.approx(5.0 * 2.0 * 0.12 / 10.0, rel=2.0e-2)
+
+
+def test_compute_fft_even_length_retains_nyquist_without_doubling():
+    converter = load_converter()
+    n_samples = 16
+    dt = 0.1
+    time = np.arange(n_samples, dtype=float) * dt
+    nyquist_hz = 0.5 / dt
+    signal = 0.3 + 0.4 * np.cos(2.0 * np.pi * nyquist_hz * time)
+
+    freqs, amps, phases, _, _, _, _ = converter.compute_fft(
+        signal,
+        dt,
+        chord=1.0,
+        aoa_deg=90.0,
+        vinf=1.0,
+        thickness_ratio=0.12,
+        low_freq_skip=0,
+    )
+
+    assert freqs[-1] == pytest.approx(nyquist_hz)
+    assert amps[0] == pytest.approx(0.3)
+    assert amps[-1] == pytest.approx(0.4)
+    assert np.cos(phases[-1]) == pytest.approx(1.0)
+
+
+def test_compute_fft_odd_length_doubles_highest_positive_bin():
+    converter = load_converter()
+    n_samples = 9
+    dt = 1.0 / n_samples
+    time = np.arange(n_samples, dtype=float) * dt
+    highest_positive_hz = 4.0
+    signal = 0.3 + 0.4 * np.cos(2.0 * np.pi * highest_positive_hz * time)
+
+    freqs, amps, _, _, _, _, _ = converter.compute_fft(
+        signal,
+        dt,
+        chord=1.0,
+        aoa_deg=90.0,
+        vinf=1.0,
+        thickness_ratio=0.12,
+        low_freq_skip=0,
+    )
+
+    assert freqs[-1] == pytest.approx(highest_positive_hz)
+    assert amps[-1] == pytest.approx(0.4)
+
+
+def test_plot_psd_odd_length_doubles_highest_positive_bin():
+    plotter = load_plotter()
+    n_samples = 9
+    dt = 1.0 / n_samples
+    time = np.arange(n_samples, dtype=float) * dt
+    signal = np.cos(2.0 * np.pi * 4.0 * time)
+
+    frequencies, psd = plotter.one_sided_psd(signal, dt)
+    spectrum = np.fft.rfft((signal - np.mean(signal)) * np.hanning(n_samples))
+    unscaled = (dt / np.sum(np.hanning(n_samples) ** 2)) * np.abs(spectrum) ** 2
+
+    assert frequencies[-1] == pytest.approx(4.0)
+    assert psd[-1] == pytest.approx(2.0 * unscaled[-1])
 
 
 def test_compute_fft_rejects_zero_reference_length():

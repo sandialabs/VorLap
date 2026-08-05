@@ -65,7 +65,7 @@ from typing import Sequence
 
 import h5py
 import numpy as np
-from numpy.fft import fft
+from numpy.fft import rfft, rfftfreq
 from scipy.signal.windows import hann
 
 
@@ -299,7 +299,12 @@ def compute_fft(
     *,
     low_freq_skip: int = 10,
 ) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
-    """Return one-sided bins plus DC-first, power-ranked Strouhal/amplitude/phase."""
+    """Return one-sided bins plus DC-first, power-ranked Strouhal/amplitude/phase.
+
+    Positive-frequency amplitudes are doubled for their omitted negative-frequency
+    partners.  DC and, for even-length records, the Nyquist bin are unpaired and
+    therefore are not doubled.
+    """
     values = np.asarray(signal, dtype=float)
     if values.ndim != 1 or values.size < 4:
         raise ValueError("signal must be one-dimensional with at least four samples.")
@@ -312,23 +317,26 @@ def compute_fft(
 
     n_samples = values.size
     sample_rate = 1.0 / dt
-    half_n = n_samples // 2
     mean_amp = float(np.mean(values))
     demeaned = values - mean_amp
 
     window = hann(n_samples, sym=False)
     window_power = np.sum(window**2) / n_samples
-    windowed_fft = fft(window * demeaned)[:half_n]
-    freqs = np.arange(half_n, dtype=float) / (n_samples * dt)
+    windowed_fft = rfft(window * demeaned)
+    freqs = rfftfreq(n_samples, d=dt)
     power_density = (np.abs(windowed_fft) ** 2) / (sample_rate * n_samples * window_power)
-    if half_n > 2:
+    if n_samples % 2 == 0:
         power_density[1:-1] *= 2.0
+    else:
+        power_density[1:] *= 2.0
     power = power_density * (sample_rate / n_samples)
 
-    raw_pos = fft(demeaned)[:half_n]
+    raw_pos = rfft(demeaned)
     amps = np.abs(raw_pos) / n_samples
-    if half_n > 2:
+    if n_samples % 2 == 0:
         amps[1:-1] *= 2.0
+    else:
+        amps[1:] *= 2.0
     phases = np.angle(raw_pos)
     amps[0] = mean_amp
     phases[0] = 0.0

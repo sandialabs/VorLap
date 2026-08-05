@@ -37,6 +37,18 @@ def test_reconstruct_signal_dc_and_harmonic():
     np.testing.assert_allclose(signal, expected, atol=1e-12)
 
 
+def test_reconstruct_signal_includes_nyquist_once():
+    t = np.arange(16, dtype=float) * 0.1
+    freqs = np.array([0.0, 5.0])
+    amps = np.array([0.3, 0.4])
+    phases = np.array([0.0, 0.0])
+
+    signal = reconstruct_signal(freqs, amps, phases, t)
+    expected = 0.3 + 0.4 * np.cos(2.0 * np.pi * 5.0 * t)
+
+    np.testing.assert_allclose(signal, expected, atol=1e-12)
+
+
 def test_reconstruct_signal_requires_monotonic_time():
     with pytest.raises(ValueError, match="strictly increasing"):
         reconstruct_signal(
