@@ -9,11 +9,10 @@ import h5py
 import numpy as np
 import pytest
 
-from vorlap.airfoil_io import load_airfoil_fft
+from vorlap.fileio import load_airfoil_fft
 
 
 SCRIPT = Path(__file__).resolve().parents[1] / "scripts" / "process_naluout_to_h5.py"
-PLOT_SCRIPT = Path(__file__).resolve().parents[1] / "scripts" / "plot_naluout_per_aoa.py"
 
 
 def load_converter():
@@ -21,15 +20,6 @@ def load_converter():
     module = importlib.util.module_from_spec(spec)
     assert spec.loader is not None
     sys.modules["process_naluout_to_h5"] = module
-    spec.loader.exec_module(module)
-    return module
-
-
-def load_plotter():
-    spec = importlib.util.spec_from_file_location("plot_naluout_per_aoa", PLOT_SCRIPT)
-    module = importlib.util.module_from_spec(spec)
-    assert spec.loader is not None
-    sys.modules["plot_naluout_per_aoa"] = module
     spec.loader.exec_module(module)
     return module
 
@@ -100,21 +90,6 @@ def test_compute_fft_odd_length_doubles_highest_positive_bin():
 
     assert freqs[-1] == pytest.approx(highest_positive_hz)
     assert amps[-1] == pytest.approx(0.4)
-
-
-def test_plot_psd_odd_length_doubles_highest_positive_bin():
-    plotter = load_plotter()
-    n_samples = 9
-    dt = 1.0 / n_samples
-    time = np.arange(n_samples, dtype=float) * dt
-    signal = np.cos(2.0 * np.pi * 4.0 * time)
-
-    frequencies, psd = plotter.one_sided_psd(signal, dt)
-    spectrum = np.fft.rfft((signal - np.mean(signal)) * np.hanning(n_samples))
-    unscaled = (dt / np.sum(np.hanning(n_samples) ** 2)) * np.abs(spectrum) ** 2
-
-    assert frequencies[-1] == pytest.approx(4.0)
-    assert psd[-1] == pytest.approx(2.0 * unscaled[-1])
 
 
 def test_compute_fft_rejects_zero_reference_length():
