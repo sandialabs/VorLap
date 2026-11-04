@@ -1,0 +1,58 @@
+{
+  "schema": "vorlap-ehrmann2014-thread-scaling-benchmark-v1",
+  "status": "passed",
+  "scope": "operational_allocation_smoke_not_physical_validation",
+  "container": {
+    "image": "vorlap-qblade-headless:amd64",
+    "image_digest": "sha256:99864db6be24387033888d0fe4b8859879f2987b2e4042df08c501e71a71cc61",
+    "platform": "linux/amd64",
+    "repository_mount": "/work/VorLap"
+  },
+  "normalized_run_contract": {
+    "campaign_fingerprint": "11393f7f1102c9aae710d641add2f164bfd4d3f358c277f136f5ee1f1561d5d3",
+    "case_id": "md0p96_u3p00_dt1000us_hybrid",
+    "case_index": 1,
+    "native_case_identity_fingerprint": "0b4df13ce0485a39a54998653e3647b2c97c3a823f9d9e6ad26e4435df66a9f7",
+    "qblade_library_sha256": "7d4d07401dddf65dcf25d7cb7d809a78fbf8ab9ecad629aaaf6d2a4308a0764d",
+    "qblade_version": "QBladeCE_2.0.9.7",
+    "execution_mode": "step-loop",
+    "requested_steps": 500,
+    "sil_vorlap": true,
+    "sil_vorlap_history_mode": "compact",
+    "use_opencl": false,
+    "variable": "threads"
+  },
+  "runs": [
+    {
+      "threads": 1,
+      "elapsed_seconds": 13.737617015838623,
+      "requested_steps": 500,
+      "completed_steps": 500,
+      "failed": false,
+      "stopped": false,
+      "exported_results": true,
+      "run_summary_sha256": "5e2edc978e82553fea642be1d46c5accf7315612ec53d283025e3e54b98c4790",
+      "result_file_sha256": "7e45a5b6eebb84f18145128f5eca9ab0239a47f7e068f31157d44a753d74da39",
+      "numeric_result_row_sha256": "c600742eb13ba18b1d6227d2ee887f7c398f47015ef73b64ffb69a0ee395541b"
+    },
+    {
+      "threads": 4,
+      "elapsed_seconds": 13.323872327804565,
+      "requested_steps": 500,
+      "completed_steps": 500,
+      "failed": false,
+      "stopped": false,
+      "exported_results": true,
+      "run_summary_sha256": "475b7e4e47721e7db705f9d27850281f7a1133996d209df622a56f1079402a5d",
+      "result_file_sha256": "cdaedcc1af8c12f680806ac281289b4168ac034f1584abcc09f2157aeb38e830",
+      "numeric_result_row_sha256": "c600742eb13ba18b1d6227d2ee887f7c398f47015ef73b64ffb69a0ee395541b"
+    }
+  ],
+  "comparison": {
+    "four_thread_elapsed_reduction_percent": 3.011764613593723,
+    "numeric_result_rows_identical": true,
+    "recommended_threads_per_case": 1,
+    "decision": "one_core_per_case",
+    "rationale": "A 3.0118 percent elapsed reduction does not justify reserving four times as many physical cores per independent case."
+  }
+}

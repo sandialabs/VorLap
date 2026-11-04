@@ -1,0 +1,98 @@
+[build-system]
+requires = ["setuptools>=77", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "vorlap"
+version = "1.1.0"
+description = "Generalized Vortex Overlap fluid-structure interaction prediction code"
+readme = "README.md"
+requires-python = ">=3.9"
+license = "MIT"
+license-files = ["LICENSE", "NOTICE"]
+authors = [
+  { name = "Sandia National Laboratories" }
+]
+dependencies = [
+  "numpy",
+  "scipy",
+  "pandas",
+  "h5py",
+  "plotly",
+  "matplotlib",
+  "PyYAML"
+]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Operating System :: OS Independent"
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest",
+  "pytest-cov",
+  "build",
+  "twine"
+]
+docs = [
+  "mkdocs",
+  "mkdocs-material",
+  "mkdocstrings[python]",
+  "pymdown-extensions"
+]
+gui = [
+  "kaleido",
+  "pyinstaller"
+]
+
+[project.urls]
+Homepage = "https://github.com/sandialabs/VorLap"
+Documentation = "https://sandialabs.github.io/VorLap/"
+Repository = "https://github.com/sandialabs/VorLap"
+Issues = "https://github.com/sandialabs/VorLap/issues"
+
+[project.scripts]
+vorlap-gui = "vorlap.gui:main"
+vorlap-qblade-prepare = "scripts.prepare_qblade_external_case:main"
+vorlap-qblade-run = "run_headless.run_qblade_sim:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["vorlap*", "scripts", "run_headless", "qblade_external_bridge"]
+
+[tool.setuptools]
+include-package-data = false
+
+[tool.setuptools.package-data]
+scripts = ["build_qblade_external_linux.sh"]
+qblade_external_bridge = ["CMakeLists.txt", "src/*.cpp"]
+
+[tool.setuptools.data-files]
+"share/vorlap/data" = [
+  "data/inflow_profile.csv",
+  "data/natural_frequencies.csv",
+  "data/natural_frequencies_Reconstruction.csv"
+]
+"share/vorlap/data/airfoils" = [
+  "data/airfoils/*.csv",
+  "data/airfoils/*.h5"
+]
+"share/vorlap/data/airfoils/bidadi2024_ffa_w3_spectral" = [
+  "data/airfoils/bidadi2024_ffa_w3_spectral/*.h5",
+  "data/airfoils/bidadi2024_ffa_w3_spectral/bundle_manifest.json"
+]
+"share/vorlap/data/components/componentsHAWT" = [
+  "data/components/componentsHAWT/*.csv"
+]
+"share/vorlap/data/components/componentsHVAWT" = [
+  "data/components/componentsHVAWT/*.csv"
+]
+"share/vorlap/data/components/componentsSingle" = [
+  "data/components/componentsSingle/*.csv"
+]
+"share/vorlap/data/components/componentsSingle_Reconstruction" = [
+  "data/components/componentsSingle_Reconstruction/*.csv"
+]
+"share/vorlap/data/components/componentsVAWT" = [
+  "data/components/componentsVAWT/*.csv"
+]

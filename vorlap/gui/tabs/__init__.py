@@ -6,13 +6,11 @@ This module provides access to all the tab classes.
 """
 
 from .setup import SimulationSetupTab
-from .geometry import GeometryTab
 from .plots import PlotsOutputsTab
-from .analysis import AnalysisTab
+from .qblade_bridge import QBladeBridgeTab
 
 __all__ = [
     'SimulationSetupTab',
-    'GeometryTab',
     'PlotsOutputsTab',
-    'AnalysisTab'
-] 
+    'QBladeBridgeTab',
+]

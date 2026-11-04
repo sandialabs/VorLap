@@ -1,0 +1,583 @@
+{
+  "case_name": "vlastos2026_sc5p18_cantilever",
+  "scope": "experimental/numerical cantilever structural-transfer and model-form screen; not coupled VIV validation",
+  "reference": {
+    "doi": "10.5194/wes-11-2585-2026",
+    "experiment_doi": "10.1016/j.jweia.2020.104438",
+    "configuration": "Sc=5.18",
+    "height_m": 0.775,
+    "diameter_m": 0.05,
+    "natural_frequency_hz": 15.38,
+    "equivalent_mass_kgpm": 0.4311,
+    "structural_damping_ratio": 0.0028,
+    "scruton_number": 5.18,
+    "figure9_digitization": "examples/vlastos2026_cantilever/reference_data/sc5p18_figure9_digitized.csv",
+    "figure9_digitization_sha256": "674d8bb8f3b932f97bd2a177717e3042a1a0ba0b7c81cc915d51086f2ab550a1",
+    "publisher_figure9_sha256": "e20f72c24c431b064615883965ef0f20d0f69b91bdefddf1c1ec52ef9cf9ee91",
+    "publisher_table1_sha256": "d24a65f63a33783ee6d69cc239915affa0c2cb6a43eb180cd1ee9db2ee7c4a22"
+  },
+  "qblade_mapping": {
+    "representation": "circular tower cantilever represented by an isolated HAWT blade beam",
+    "station_count": 21,
+    "beam_type": "Timoshenko",
+    "uniform_bending_stiffness_nm2": 117.47778130757915,
+    "ei_relation": "uniform Euler-Bernoulli inversion from published fn and equivalent mass per length",
+    "rayleigh_beta_s": 5.794978422071612e-05,
+    "timestep_s": 0.0005,
+    "duration_s": 8.0,
+    "reduced_velocities": [
+      4.3,
+      4.8,
+      5.0,
+      5.2,
+      5.8,
+      6.2,
+      6.63,
+      7.2,
+      8.2
+    ],
+    "case_isolation": "one prepared turbine/control tree per reduced velocity",
+    "inflow_direction": "+Y_g/+Y_b chord; transverse response is X_b and global X"
+  },
+  "probe_source": {
+    "kind": "coherent fixed-wake harmonic lift",
+    "coefficient_channel": "CL mapped to VorLap normal=-X_b",
+    "strouhal": 0.2,
+    "coefficient_amplitude": 0.3,
+    "coefficient_convention_limitation": "published CL0 inserted as peak harmonic coefficient",
+    "wake_response_feedback": false,
+    "dynamic_correlation_length": false,
+    "calibrated_to_reference_response": false
+  },
+  "preparations": [
+    {
+      "reduced_velocity": 4.3,
+      "mean_inflow_mps": 3.3067,
+      "sim_path": "vlastos2026_sc5p18_cantilever_u4p30.sim",
+      "parameter_file": "vlastos2026_sc5p18_cantilever_u4p30/Control/vorlap_qblade_external.json",
+      "swap_size": 129,
+      "node_count": 21
+    },
+    {
+      "reduced_velocity": 4.8,
+      "mean_inflow_mps": 3.6912000000000003,
+      "sim_path": "vlastos2026_sc5p18_cantilever_u4p80.sim",
+      "parameter_file": "vlastos2026_sc5p18_cantilever_u4p80/Control/vorlap_qblade_external.json",
+      "swap_size": 129,
+      "node_count": 21
+    },
+    {
+      "reduced_velocity": 5.0,
+      "mean_inflow_mps": 3.8450000000000006,
+      "sim_path": "vlastos2026_sc5p18_cantilever_u5p00.sim",
+      "parameter_file": "vlastos2026_sc5p18_cantilever_u5p00/Control/vorlap_qblade_external.json",
+      "swap_size": 129,
+      "node_count": 21
+    },
+    {
+      "reduced_velocity": 5.2,
+      "mean_inflow_mps": 3.998800000000001,
+      "sim_path": "vlastos2026_sc5p18_cantilever_u5p20.sim",
+      "parameter_file": "vlastos2026_sc5p18_cantilever_u5p20/Control/vorlap_qblade_external.json",
+      "swap_size": 129,
+      "node_count": 21
+    },
+    {
+      "reduced_velocity": 5.8,
+      "mean_inflow_mps": 4.4602,
+      "sim_path": "vlastos2026_sc5p18_cantilever_u5p80.sim",
+      "parameter_file": "vlastos2026_sc5p18_cantilever_u5p80/Control/vorlap_qblade_external.json",
+      "swap_size": 129,
+      "node_count": 21
+    },
+    {
+      "reduced_velocity": 6.2,
+      "mean_inflow_mps": 4.7678,
+      "sim_path": "vlastos2026_sc5p18_cantilever_u6p20.sim",
+      "parameter_file": "vlastos2026_sc5p18_cantilever_u6p20/Control/vorlap_qblade_external.json",
+      "swap_size": 129,
+      "node_count": 21
+    },
+    {
+      "reduced_velocity": 6.63,
+      "mean_inflow_mps": 5.098470000000001,
+      "sim_path": "vlastos2026_sc5p18_cantilever_u6p63.sim",
+      "parameter_file": "vlastos2026_sc5p18_cantilever_u6p63/Control/vorlap_qblade_external.json",
+      "swap_size": 129,
+      "node_count": 21
+    },
+    {
+      "reduced_velocity": 7.2,
+      "mean_inflow_mps": 5.5368,
+      "sim_path": "vlastos2026_sc5p18_cantilever_u7p20.sim",
+      "parameter_file": "vlastos2026_sc5p18_cantilever_u7p20/Control/vorlap_qblade_external.json",
+      "swap_size": 129,
+      "node_count": 21
+    },
+    {
+      "reduced_velocity": 8.2,
+      "mean_inflow_mps": 6.3058000000000005,
+      "sim_path": "vlastos2026_sc5p18_cantilever_u8p20.sim",
+      "parameter_file": "vlastos2026_sc5p18_cantilever_u8p20/Control/vorlap_qblade_external.json",
+      "swap_size": 129,
+      "node_count": 21
+    }
+  ],
+  "files": [
+    {
+      "path": "cantilever_geometry_and_mode.csv",
+      "sha256": "756fa7cf019e2e00f7014ec00ab4663e1237850a58bee566cb7042539cb4191c",
+      "bytes": 1640
+    },
+    {
+      "path": "vlastos2026_sc5p18_cantilever_u4p30/Aero/Airfoils/CYLINDER.afl",
+      "sha256": "5eaa9253224f6d28c55ea1ca5d6e022f13a62b41999e34982c7b3fe2b9e684b9",
+      "bytes": 1541
+    },
+    {
+      "path": "vlastos2026_sc5p18_cantilever_u4p30/Aero/Polars/CYLINDER.plr",
+      "sha256": "93e49c93f5ee49b08ce7e44f094139f24a2755e3040d26061283bad4e54f790f",
+      "bytes": 413
+    },
+    {
+      "path": "vlastos2026_sc5p18_cantilever_u4p30/Aero/vlastos2026_sc5p18_cantilever.bld",
+      "sha256": "99a22c5763b3e513bd0ee0115eb5635d5fffbefe37b72c7b12bf7480b2555573",
+      "bytes": 1860
+    },
+    {
+      "path": "vlastos2026_sc5p18_cantilever_u4p30/Control/vorlap_qblade_external.json",
+      "sha256": "afc249e5ebd00db239455a2aebe2eb91758514ec16cd4d85611342f9a7870306",
+      "bytes": 17408
+    },
+    {
+      "path": "vlastos2026_sc5p18_cantilever_u4p30/Structure/cantilever_beam.str",
+      "sha256": "79d341e0d003e4d37d9e63c358dc699bc3a0d38722b2cbee224ba3639f835d57",
+      "bytes": 7533
+    },
+    {
+      "path": "vlastos2026_sc5p18_cantilever_u4p30/Structure/cantilever_main.str",
+      "sha256": "1554adfd9a665d0056e657eaf56459dcbf0aa95fb6890135e3892e65381dd204",
+      "bytes": 6434
+    },
+    {
+      "path": "vlastos2026_sc5p18_cantilever_u4p30/Structure/rigid_tower.str",
+      "sha256": "677d64fb5ae57ac2d7dfba0a6e07d7373a8903c33a79bdfa7e68fee5cfdea42a",
+      "bytes": 456
+    },
+    {
+      "path": "vlastos2026_sc5p18_cantilever_u4p30/VorLapAirfoils/CYLINDER.h5",
+      "sha256": "a40a94fc329aa6d95e651c907198b5240479b3ad0e99f11eb3cb60bfa5521a66",
+      "bytes": 12832
+    },
+    {
+      "path": "vlastos2026_sc5p18_cantilever_u4p30/vlastos2026_sc5p18_cantilever.trb",
+      "sha256": "35a15f00feb938f1c8ce105713490391b5ca3dce58a144165d6b4b6026da9300",
+      "bytes": 11338
+    },
+    {
+      "path": "vlastos2026_sc5p18_cantilever_u4p30.sim",
+      "sha256": "63bd75f9bc43e7ae6d51925a96babc44de2e92a15ec091a09c0c5d03f11bb6e3",
+      "bytes": 12262
+    },
+    {
+      "path": "vlastos2026_sc5p18_cantilever_u4p80/Aero/Airfoils/CYLINDER.afl",
+      "sha256": "5eaa9253224f6d28c55ea1ca5d6e022f13a62b41999e34982c7b3fe2b9e684b9",
+      "bytes": 1541
+    },
+    {
+      "path": "vlastos2026_sc5p18_cantilever_u4p80/Aero/Polars/CYLINDER.plr",
+      "sha256": "93e49c93f5ee49b08ce7e44f094139f24a2755e3040d26061283bad4e54f790f",
+      "bytes": 413
+    },
+    {
+      "path": "vlastos2026_sc5p18_cantilever_u4p80/Aero/vlastos2026_sc5p18_cantilever.bld",
+      "sha256": "99a22c5763b3e513bd0ee0115eb5635d5fffbefe37b72c7b12bf7480b2555573",
+      "bytes": 1860
+    },
+    {
+      "path": "vlastos2026_sc5p18_cantilever_u4p80/Control/vorlap_qblade_external.json",
+      "sha256": "26e290aa3222fbcfaa959af5f939631e0261f8e73005389fbae7f016997444e1",
+      "bytes": 17408
+    },
+    {
+      "path": "vlastos2026_sc5p18_cantilever_u4p80/Structure/cantilever_beam.str",
+      "sha256": "79d341e0d003e4d37d9e63c358dc699bc3a0d38722b2cbee224ba3639f835d57",
+      "bytes": 7533
+    },
+    {
+      "path": "vlastos2026_sc5p18_cantilever_u4p80/Structure/cantilever_main.str",
+      "sha256": "1554adfd9a665d0056e657eaf56459dcbf0aa95fb6890135e3892e65381dd204",
+      "bytes": 6434
+    },
+    {
+      "path": "vlastos2026_sc5p18_cantilever_u4p80/Structure/rigid_tower.str",
+      "sha256": "677d64fb5ae57ac2d7dfba0a6e07d7373a8903c33a79bdfa7e68fee5cfdea42a",
+      "bytes": 456
+    },
+    {
+      "path": "vlastos2026_sc5p18_cantilever_u4p80/VorLapAirfoils/CYLINDER.h5",
+      "sha256": "a40a94fc329aa6d95e651c907198b5240479b3ad0e99f11eb3cb60bfa5521a66",
+      "bytes": 12832
+    },
+    {
+      "path": "vlastos2026_sc5p18_cantilever_u4p80/vlastos2026_sc5p18_cantilever.trb",
+      "sha256": "0b27be387bbf4f9d97de1d0cf6042e9372bd9edbb70dabd4c4e3851439fe799f",
+      "bytes": 11338
+    },
+    {
+      "path": "vlastos2026_sc5p18_cantilever_u4p80.sim",
+      "sha256": "9284ba5336a2173e5ee995042fb9e69a84ce38cf1e82d3da73be8abc3e6c24b7",
+      "bytes": 12262
+    },
+    {
+      "path": "vlastos2026_sc5p18_cantilever_u5p00/Aero/Airfoils/CYLINDER.afl",
+      "sha256": "5eaa9253224f6d28c55ea1ca5d6e022f13a62b41999e34982c7b3fe2b9e684b9",
+      "bytes": 1541
+    },
+    {
+      "path": "vlastos2026_sc5p18_cantilever_u5p00/Aero/Polars/CYLINDER.plr",
+      "sha256": "93e49c93f5ee49b08ce7e44f094139f24a2755e3040d26061283bad4e54f790f",
+      "bytes": 413
+    },
+    {
+      "path": "vlastos2026_sc5p18_cantilever_u5p00/Aero/vlastos2026_sc5p18_cantilever.bld",
+      "sha256": "99a22c5763b3e513bd0ee0115eb5635d5fffbefe37b72c7b12bf7480b2555573",
+      "bytes": 1860
+    },
+    {
+      "path": "vlastos2026_sc5p18_cantilever_u5p00/Control/vorlap_qblade_external.json",
+      "sha256": "855c5075e7b9046b02dcc9ee1fe02ff81cb8e62fe44af2d2cea9e2fc3d54f7ab",
+      "bytes": 17408
+    },
+    {
+      "path": "vlastos2026_sc5p18_cantilever_u5p00/Structure/cantilever_beam.str",
+      "sha256": "79d341e0d003e4d37d9e63c358dc699bc3a0d38722b2cbee224ba3639f835d57",
+      "bytes": 7533
+    },
+    {
+      "path": "vlastos2026_sc5p18_cantilever_u5p00/Structure/cantilever_main.str",
+      "sha256": "1554adfd9a665d0056e657eaf56459dcbf0aa95fb6890135e3892e65381dd204",
+      "bytes": 6434
+    },
+    {
+      "path": "vlastos2026_sc5p18_cantilever_u5p00/Structure/rigid_tower.str",
+      "sha256": "677d64fb5ae57ac2d7dfba0a6e07d7373a8903c33a79bdfa7e68fee5cfdea42a",
+      "bytes": 456
+    },
+    {
+      "path": "vlastos2026_sc5p18_cantilever_u5p00/VorLapAirfoils/CYLINDER.h5",
+      "sha256": "a40a94fc329aa6d95e651c907198b5240479b3ad0e99f11eb3cb60bfa5521a66",
+      "bytes": 12832
+    },
+    {
+      "path": "vlastos2026_sc5p18_cantilever_u5p00/vlastos2026_sc5p18_cantilever.trb",
+      "sha256": "6573490839fa276c2f2221d20a71c6f5665d3342980d3dccffcc4f86769f726d",
+      "bytes": 11338
+    },
+    {
+      "path": "vlastos2026_sc5p18_cantilever_u5p00.sim",
+      "sha256": "a02b16fe83b9fb43c5e2ddc7f94bcd606e36f8ea269eaa8e0174f1625e29320f",
+      "bytes": 12262
+    },
+    {
+      "path": "vlastos2026_sc5p18_cantilever_u5p20/Aero/Airfoils/CYLINDER.afl",
+      "sha256": "5eaa9253224f6d28c55ea1ca5d6e022f13a62b41999e34982c7b3fe2b9e684b9",
+      "bytes": 1541
+    },
+    {
+      "path": "vlastos2026_sc5p18_cantilever_u5p20/Aero/Polars/CYLINDER.plr",
+      "sha256": "93e49c93f5ee49b08ce7e44f094139f24a2755e3040d26061283bad4e54f790f",
+      "bytes": 413
+    },
+    {
+      "path": "vlastos2026_sc5p18_cantilever_u5p20/Aero/vlastos2026_sc5p18_cantilever.bld",
+      "sha256": "99a22c5763b3e513bd0ee0115eb5635d5fffbefe37b72c7b12bf7480b2555573",
+      "bytes": 1860
+    },
+    {
+      "path": "vlastos2026_sc5p18_cantilever_u5p20/Control/vorlap_qblade_external.json",
+      "sha256": "11e6197906632b68895738220575873eaba93362b5abd2b55ab73112eabb2f08",
+      "bytes": 17408
+    },
+    {
+      "path": "vlastos2026_sc5p18_cantilever_u5p20/Structure/cantilever_beam.str",
+      "sha256": "79d341e0d003e4d37d9e63c358dc699bc3a0d38722b2cbee224ba3639f835d57",
+      "bytes": 7533
+    },
+    {
+      "path": "vlastos2026_sc5p18_cantilever_u5p20/Structure/cantilever_main.str",
+      "sha256": "1554adfd9a665d0056e657eaf56459dcbf0aa95fb6890135e3892e65381dd204",
+      "bytes": 6434
+    },
+    {
+      "path": "vlastos2026_sc5p18_cantilever_u5p20/Structure/rigid_tower.str",
+      "sha256": "677d64fb5ae57ac2d7dfba0a6e07d7373a8903c33a79bdfa7e68fee5cfdea42a",
+      "bytes": 456
+    },
+    {
+      "path": "vlastos2026_sc5p18_cantilever_u5p20/VorLapAirfoils/CYLINDER.h5",
+      "sha256": "a40a94fc329aa6d95e651c907198b5240479b3ad0e99f11eb3cb60bfa5521a66",
+      "bytes": 12832
+    },
+    {
+      "path": "vlastos2026_sc5p18_cantilever_u5p20/vlastos2026_sc5p18_cantilever.trb",
+      "sha256": "9e0919aedfe8def51f101ce25871f02256ceb9fe59b4b5425c496f0b90509df1",
+      "bytes": 11338
+    },
+    {
+      "path": "vlastos2026_sc5p18_cantilever_u5p20.sim",
+      "sha256": "cff3eeba8c5e58c7d6389915497e81279ee2dff132619c0896673ef1eb509ef0",
+      "bytes": 12262
+    },
+    {
+      "path": "vlastos2026_sc5p18_cantilever_u5p80/Aero/Airfoils/CYLINDER.afl",
+      "sha256": "5eaa9253224f6d28c55ea1ca5d6e022f13a62b41999e34982c7b3fe2b9e684b9",
+      "bytes": 1541
+    },
+    {
+      "path": "vlastos2026_sc5p18_cantilever_u5p80/Aero/Polars/CYLINDER.plr",
+      "sha256": "93e49c93f5ee49b08ce7e44f094139f24a2755e3040d26061283bad4e54f790f",
+      "bytes": 413
+    },
+    {
+      "path": "vlastos2026_sc5p18_cantilever_u5p80/Aero/vlastos2026_sc5p18_cantilever.bld",
+      "sha256": "99a22c5763b3e513bd0ee0115eb5635d5fffbefe37b72c7b12bf7480b2555573",
+      "bytes": 1860
+    },
+    {
+      "path": "vlastos2026_sc5p18_cantilever_u5p80/Control/vorlap_qblade_external.json",
+      "sha256": "68cc3b67102bb2ab9b9044ee241fb8c3e242c902184e3039bd617ab1f57d7203",
+      "bytes": 17408
+    },
+    {
+      "path": "vlastos2026_sc5p18_cantilever_u5p80/Structure/cantilever_beam.str",
+      "sha256": "79d341e0d003e4d37d9e63c358dc699bc3a0d38722b2cbee224ba3639f835d57",
+      "bytes": 7533
+    },
+    {
+      "path": "vlastos2026_sc5p18_cantilever_u5p80/Structure/cantilever_main.str",
+      "sha256": "1554adfd9a665d0056e657eaf56459dcbf0aa95fb6890135e3892e65381dd204",
+      "bytes": 6434
+    },
+    {
+      "path": "vlastos2026_sc5p18_cantilever_u5p80/Structure/rigid_tower.str",
+      "sha256": "677d64fb5ae57ac2d7dfba0a6e07d7373a8903c33a79bdfa7e68fee5cfdea42a",
+      "bytes": 456
+    },
+    {
+      "path": "vlastos2026_sc5p18_cantilever_u5p80/VorLapAirfoils/CYLINDER.h5",
+      "sha256": "a40a94fc329aa6d95e651c907198b5240479b3ad0e99f11eb3cb60bfa5521a66",
+      "bytes": 12832
+    },
+    {
+      "path": "vlastos2026_sc5p18_cantilever_u5p80/vlastos2026_sc5p18_cantilever.trb",
+      "sha256": "ade2a260e5bc89a0e69955fc14a38e2f608b8c6d857f129453713d2269e0acc5",
+      "bytes": 11338
+    },
+    {
+      "path": "vlastos2026_sc5p18_cantilever_u5p80.sim",
+      "sha256": "32ead929a41b38cb45b42587dec0a9edf6c52c19a29200dd149abb8f114a70be",
+      "bytes": 12262
+    },
+    {
+      "path": "vlastos2026_sc5p18_cantilever_u6p20/Aero/Airfoils/CYLINDER.afl",
+      "sha256": "5eaa9253224f6d28c55ea1ca5d6e022f13a62b41999e34982c7b3fe2b9e684b9",
+      "bytes": 1541
+    },
+    {
+      "path": "vlastos2026_sc5p18_cantilever_u6p20/Aero/Polars/CYLINDER.plr",
+      "sha256": "93e49c93f5ee49b08ce7e44f094139f24a2755e3040d26061283bad4e54f790f",
+      "bytes": 413
+    },
+    {
+      "path": "vlastos2026_sc5p18_cantilever_u6p20/Aero/vlastos2026_sc5p18_cantilever.bld",
+      "sha256": "99a22c5763b3e513bd0ee0115eb5635d5fffbefe37b72c7b12bf7480b2555573",
+      "bytes": 1860
+    },
+    {
+      "path": "vlastos2026_sc5p18_cantilever_u6p20/Control/vorlap_qblade_external.json",
+      "sha256": "54587010c1d85e0fee8f8abbf94e165b03102f45e31f82b7f45667f0adefa8a7",
+      "bytes": 17408
+    },
+    {
+      "path": "vlastos2026_sc5p18_cantilever_u6p20/Structure/cantilever_beam.str",
+      "sha256": "79d341e0d003e4d37d9e63c358dc699bc3a0d38722b2cbee224ba3639f835d57",
+      "bytes": 7533
+    },
+    {
+      "path": "vlastos2026_sc5p18_cantilever_u6p20/Structure/cantilever_main.str",
+      "sha256": "1554adfd9a665d0056e657eaf56459dcbf0aa95fb6890135e3892e65381dd204",
+      "bytes": 6434
+    },
+    {
+      "path": "vlastos2026_sc5p18_cantilever_u6p20/Structure/rigid_tower.str",
+      "sha256": "677d64fb5ae57ac2d7dfba0a6e07d7373a8903c33a79bdfa7e68fee5cfdea42a",
+      "bytes": 456
+    },
+    {
+      "path": "vlastos2026_sc5p18_cantilever_u6p20/VorLapAirfoils/CYLINDER.h5",
+      "sha256": "a40a94fc329aa6d95e651c907198b5240479b3ad0e99f11eb3cb60bfa5521a66",
+      "bytes": 12832
+    },
+    {
+      "path": "vlastos2026_sc5p18_cantilever_u6p20/vlastos2026_sc5p18_cantilever.trb",
+      "sha256": "34ae0bcfed02428d552e49ba6071f7781294c2af77261c88862fc62b570e4565",
+      "bytes": 11338
+    },
+    {
+      "path": "vlastos2026_sc5p18_cantilever_u6p20.sim",
+      "sha256": "b0d8accb279aeb3d88055c58cc5d3b2506c3984a606d5b7da8b9cca5ca87f051",
+      "bytes": 12262
+    },
+    {
+      "path": "vlastos2026_sc5p18_cantilever_u6p63/Aero/Airfoils/CYLINDER.afl",
+      "sha256": "5eaa9253224f6d28c55ea1ca5d6e022f13a62b41999e34982c7b3fe2b9e684b9",
+      "bytes": 1541
+    },
+    {
+      "path": "vlastos2026_sc5p18_cantilever_u6p63/Aero/Polars/CYLINDER.plr",
+      "sha256": "93e49c93f5ee49b08ce7e44f094139f24a2755e3040d26061283bad4e54f790f",
+      "bytes": 413
+    },
+    {
+      "path": "vlastos2026_sc5p18_cantilever_u6p63/Aero/vlastos2026_sc5p18_cantilever.bld",
+      "sha256": "99a22c5763b3e513bd0ee0115eb5635d5fffbefe37b72c7b12bf7480b2555573",
+      "bytes": 1860
+    },
+    {
+      "path": "vlastos2026_sc5p18_cantilever_u6p63/Control/vorlap_qblade_external.json",
+      "sha256": "09cf6c04513e4aeaf3db2722f917ed6a4f50b99dadc909bce4e48af40681228c",
+      "bytes": 17408
+    },
+    {
+      "path": "vlastos2026_sc5p18_cantilever_u6p63/Structure/cantilever_beam.str",
+      "sha256": "79d341e0d003e4d37d9e63c358dc699bc3a0d38722b2cbee224ba3639f835d57",
+      "bytes": 7533
+    },
+    {
+      "path": "vlastos2026_sc5p18_cantilever_u6p63/Structure/cantilever_main.str",
+      "sha256": "1554adfd9a665d0056e657eaf56459dcbf0aa95fb6890135e3892e65381dd204",
+      "bytes": 6434
+    },
+    {
+      "path": "vlastos2026_sc5p18_cantilever_u6p63/Structure/rigid_tower.str",
+      "sha256": "677d64fb5ae57ac2d7dfba0a6e07d7373a8903c33a79bdfa7e68fee5cfdea42a",
+      "bytes": 456
+    },
+    {
+      "path": "vlastos2026_sc5p18_cantilever_u6p63/VorLapAirfoils/CYLINDER.h5",
+      "sha256": "a40a94fc329aa6d95e651c907198b5240479b3ad0e99f11eb3cb60bfa5521a66",
+      "bytes": 12832
+    },
+    {
+      "path": "vlastos2026_sc5p18_cantilever_u6p63/vlastos2026_sc5p18_cantilever.trb",
+      "sha256": "c687d5c7a478f53bee4ae2af49fdaed4af50b3b9f6994f64778facba0133bc77",
+      "bytes": 11338
+    },
+    {
+      "path": "vlastos2026_sc5p18_cantilever_u6p63.sim",
+      "sha256": "ef1d87cd32b8240ec063e92fd53f5ceff20112d8c46c563a6529f135bdfba7f0",
+      "bytes": 12262
+    },
+    {
+      "path": "vlastos2026_sc5p18_cantilever_u7p20/Aero/Airfoils/CYLINDER.afl",
+      "sha256": "5eaa9253224f6d28c55ea1ca5d6e022f13a62b41999e34982c7b3fe2b9e684b9",
+      "bytes": 1541
+    },
+    {
+      "path": "vlastos2026_sc5p18_cantilever_u7p20/Aero/Polars/CYLINDER.plr",
+      "sha256": "93e49c93f5ee49b08ce7e44f094139f24a2755e3040d26061283bad4e54f790f",
+      "bytes": 413
+    },
+    {
+      "path": "vlastos2026_sc5p18_cantilever_u7p20/Aero/vlastos2026_sc5p18_cantilever.bld",
+      "sha256": "99a22c5763b3e513bd0ee0115eb5635d5fffbefe37b72c7b12bf7480b2555573",
+      "bytes": 1860
+    },
+    {
+      "path": "vlastos2026_sc5p18_cantilever_u7p20/Control/vorlap_qblade_external.json",
+      "sha256": "f5337b95863a9e10d94ea8d2c04eed5b6c2fd7cab1d93d035878c34aaf2a9a54",
+      "bytes": 17408
+    },
+    {
+      "path": "vlastos2026_sc5p18_cantilever_u7p20/Structure/cantilever_beam.str",
+      "sha256": "79d341e0d003e4d37d9e63c358dc699bc3a0d38722b2cbee224ba3639f835d57",
+      "bytes": 7533
+    },
+    {
+      "path": "vlastos2026_sc5p18_cantilever_u7p20/Structure/cantilever_main.str",
+      "sha256": "1554adfd9a665d0056e657eaf56459dcbf0aa95fb6890135e3892e65381dd204",
+      "bytes": 6434
+    },
+    {
+      "path": "vlastos2026_sc5p18_cantilever_u7p20/Structure/rigid_tower.str",
+      "sha256": "677d64fb5ae57ac2d7dfba0a6e07d7373a8903c33a79bdfa7e68fee5cfdea42a",
+      "bytes": 456
+    },
+    {
+      "path": "vlastos2026_sc5p18_cantilever_u7p20/VorLapAirfoils/CYLINDER.h5",
+      "sha256": "a40a94fc329aa6d95e651c907198b5240479b3ad0e99f11eb3cb60bfa5521a66",
+      "bytes": 12832
+    },
+    {
+      "path": "vlastos2026_sc5p18_cantilever_u7p20/vlastos2026_sc5p18_cantilever.trb",
+      "sha256": "67fec1b12880007cd4055939c7c213439f784e213013ec75d9331d06205c9187",
+      "bytes": 11338
+    },
+    {
+      "path": "vlastos2026_sc5p18_cantilever_u7p20.sim",
+      "sha256": "6af7480920047f1908567e2742bacf7ab398cd84b0f62aac91264bca6028ab08",
+      "bytes": 12262
+    },
+    {
+      "path": "vlastos2026_sc5p18_cantilever_u8p20/Aero/Airfoils/CYLINDER.afl",
+      "sha256": "5eaa9253224f6d28c55ea1ca5d6e022f13a62b41999e34982c7b3fe2b9e684b9",
+      "bytes": 1541
+    },
+    {
+      "path": "vlastos2026_sc5p18_cantilever_u8p20/Aero/Polars/CYLINDER.plr",
+      "sha256": "93e49c93f5ee49b08ce7e44f094139f24a2755e3040d26061283bad4e54f790f",
+      "bytes": 413
+    },
+    {
+      "path": "vlastos2026_sc5p18_cantilever_u8p20/Aero/vlastos2026_sc5p18_cantilever.bld",
+      "sha256": "99a22c5763b3e513bd0ee0115eb5635d5fffbefe37b72c7b12bf7480b2555573",
+      "bytes": 1860
+    },
+    {
+      "path": "vlastos2026_sc5p18_cantilever_u8p20/Control/vorlap_qblade_external.json",
+      "sha256": "c1d5e9b4a5210ee1c3ffd5e5f1128b1e01c1b82b31966c8a31b837164e64a9d3",
+      "bytes": 17408
+    },
+    {
+      "path": "vlastos2026_sc5p18_cantilever_u8p20/Structure/cantilever_beam.str",
+      "sha256": "79d341e0d003e4d37d9e63c358dc699bc3a0d38722b2cbee224ba3639f835d57",
+      "bytes": 7533
+    },
+    {
+      "path": "vlastos2026_sc5p18_cantilever_u8p20/Structure/cantilever_main.str",
+      "sha256": "1554adfd9a665d0056e657eaf56459dcbf0aa95fb6890135e3892e65381dd204",
+      "bytes": 6434
+    },
+    {
+      "path": "vlastos2026_sc5p18_cantilever_u8p20/Structure/rigid_tower.str",
+      "sha256": "677d64fb5ae57ac2d7dfba0a6e07d7373a8903c33a79bdfa7e68fee5cfdea42a",
+      "bytes": 456
+    },
+    {
+      "path": "vlastos2026_sc5p18_cantilever_u8p20/VorLapAirfoils/CYLINDER.h5",
+      "sha256": "a40a94fc329aa6d95e651c907198b5240479b3ad0e99f11eb3cb60bfa5521a66",
+      "bytes": 12832
+    },
+    {
+      "path": "vlastos2026_sc5p18_cantilever_u8p20/vlastos2026_sc5p18_cantilever.trb",
+      "sha256": "5d84cb5aed17dbd1a68f90a6e2059b30ef1ff7f6d0ae5424a31d8dfe38a4f85b",
+      "bytes": 11338
+    },
+    {
+      "path": "vlastos2026_sc5p18_cantilever_u8p20.sim",
+      "sha256": "100ee8d6441aed0da58b7d518858a78494dbe4731f927d0c9049699069fe7f5a",
+      "bytes": 12262
+    }
+  ]
+}

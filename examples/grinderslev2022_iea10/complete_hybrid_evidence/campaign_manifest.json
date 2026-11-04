@@ -1,0 +1,506 @@
+{
+  "airfoil_mapping": [
+    {
+      "foil_sha256": "c0f21a242848a83fdfd91f36ad6bb87775163ea0747a515908e1ae177aee7aa6",
+      "polar_sha256": "87c6221ad6876171316eb3cd95c0baa6275d5c58180d1a13fc6873571cdc785c",
+      "public_airfoil": "AF00",
+      "spectral_proxy": "FFA_W3_500",
+      "station": 0,
+      "thickness_ratio": 0.9998525080168155
+    },
+    {
+      "foil_sha256": "6bddbcdda7491c777545172f1450771c2a0895dad68468c54b7dc36afc70d245",
+      "polar_sha256": "2cd8117d97752f17768b22e99a5be97654e4b51459ed9eeaf4d28bfc411d8f8e",
+      "public_airfoil": "AF01",
+      "spectral_proxy": "FFA_W3_500",
+      "station": 1,
+      "thickness_ratio": 0.9954230832257556
+    },
+    {
+      "foil_sha256": "08d966780b9422428c2fa9a877b2529d8833d1bd980c17cdc8c58805742488c9",
+      "polar_sha256": "7d7e430c3893779e6cbd6ab0808d8c13dc46e193558a3a38e579540d1b0a1fd0",
+      "public_airfoil": "AF02",
+      "spectral_proxy": "FFA_W3_500",
+      "station": 2,
+      "thickness_ratio": 0.95367056169569
+    },
+    {
+      "foil_sha256": "86da543f92590cd97348e05a70c175a0ef9e72e6bdd00d1e27dc5db5d52f92c1",
+      "polar_sha256": "a1ab79ef984945794728cffff5ed6fea9c1828ea4fcfcaa033a51dcad847d5c9",
+      "public_airfoil": "AF03",
+      "spectral_proxy": "FFA_W3_500",
+      "station": 3,
+      "thickness_ratio": 0.8177355870026031
+    },
+    {
+      "foil_sha256": "5cb71699b2b0c13fb2a207e0033387fb7aa93a239348dee2e287d19e132c06c8",
+      "polar_sha256": "370e5d3d953254f0f22109cff0ee2700ba5044a6942ee216faccf5140281d001",
+      "public_airfoil": "AF04",
+      "spectral_proxy": "FFA_W3_500",
+      "station": 4,
+      "thickness_ratio": 0.6106312241220052
+    },
+    {
+      "foil_sha256": "86b14570b273a8f493ddcd4f78ea9300d996f3885b6f090d2ee4a3ff54c73f40",
+      "polar_sha256": "8eea89488b0f3fa8b77f6df5096613c106c7d3736488273437e72e77df694ad9",
+      "public_airfoil": "AF05",
+      "spectral_proxy": "FFA_W3_360",
+      "station": 5,
+      "thickness_ratio": 0.4224481248103258
+    },
+    {
+      "foil_sha256": "e0167df0a37ed14470247bf7add37c8aa4eb43f6fcc5162020c80e4ad70290cc",
+      "polar_sha256": "b8f6437a89298139974ed62e377a3f25903582eeedd65c45b3023e72e917ca9b",
+      "public_airfoil": "AF06",
+      "spectral_proxy": "FFA_W3_360",
+      "station": 6,
+      "thickness_ratio": 0.34519128567019464
+    },
+    {
+      "foil_sha256": "612f849a4106245674104462eb6e3b9f23466399b1e6a3a11df9a2f675288e3a",
+      "polar_sha256": "45190ae3fc3c06bb66e8e693e01f3591f8f44d896b0e3437843da7356df1a28c",
+      "public_airfoil": "AF07",
+      "spectral_proxy": "FFA_W3_330",
+      "station": 7,
+      "thickness_ratio": 0.33092180731155285
+    },
+    {
+      "foil_sha256": "af9c200f0ec948756beab93127aaae6f5e40c8f54e4a756ba76a589ace562b6b",
+      "polar_sha256": "5b58c29e6037b4b1733a4d4d3b7358cb7b5dc16af4bdfc8f8727492ed1dc2058",
+      "public_airfoil": "AF08",
+      "spectral_proxy": "FFA_W3_330",
+      "station": 8,
+      "thickness_ratio": 0.327206803626341
+    },
+    {
+      "foil_sha256": "998bf11ec36ab7daaf3014469c7446199e0ba756bc86a9d941361f70638b5047",
+      "polar_sha256": "6d4c9a77d538b5f37f859a70cca58572b6ff5f2013ecb36a5e7a60d640c916ab",
+      "public_airfoil": "AF09",
+      "spectral_proxy": "FFA_W3_330",
+      "station": 9,
+      "thickness_ratio": 0.3230482781977916
+    },
+    {
+      "foil_sha256": "b2efe46a84ab364c959bd26d5300b100eba4ed00c806a2e330ef6da5d53bc92b",
+      "polar_sha256": "5ce3aac552a3cc517519570b6d08b27875d1fbc24c648f6bf6046dd59f657a43",
+      "public_airfoil": "AF10",
+      "spectral_proxy": "FFA_W3_330",
+      "station": 10,
+      "thickness_ratio": 0.31953592371184103
+    },
+    {
+      "foil_sha256": "c82f234ddd6a0c80bde95447f7dda286da3a47d79b90534ff118404b21d33b1b",
+      "polar_sha256": "d511a97b913088eb06238120b39948b799c9f4d866e467f21175bbb8f3e47c6a",
+      "public_airfoil": "AF11",
+      "spectral_proxy": "FFA_W3_330",
+      "station": 11,
+      "thickness_ratio": 0.31656745919994056
+    },
+    {
+      "foil_sha256": "082f25d9d430dcffe262b545d8a246b4dc27f2cbc98925d6747441192e5a3950",
+      "polar_sha256": "48d80f94c3b88e8fd75d89df2d8a6e94c32ad9f4991a106694135a4705672ede",
+      "public_airfoil": "AF12",
+      "spectral_proxy": "FFA_W3_301",
+      "station": 12,
+      "thickness_ratio": 0.3134391729345991
+    },
+    {
+      "foil_sha256": "7155e7bdb4212cf00a4241f5f9d251bca0146ad24af23575afd8bb7478be30ff",
+      "polar_sha256": "0a8cd3e34e093389668b36b62ec29a1915c986674c22156ef80f75242b0a834e",
+      "public_airfoil": "AF13",
+      "spectral_proxy": "FFA_W3_301",
+      "station": 13,
+      "thickness_ratio": 0.30927625961294725
+    },
+    {
+      "foil_sha256": "26f878f6cb42861f02b3f63925d89a51d0b2a25ec4b78f0acfb94d3936de305f",
+      "polar_sha256": "1a4b8073757bd10f44a63cbd277a0fcbae3394ea152bfa9f011e069f37f8c0d1",
+      "public_airfoil": "AF14",
+      "spectral_proxy": "FFA_W3_301",
+      "station": 14,
+      "thickness_ratio": 0.30339122979185584
+    },
+    {
+      "foil_sha256": "9c7176f4bd3833128ed1d4e30f899e484b1d86ce20298dace1589a6e5f26e88a",
+      "polar_sha256": "38dfa202057a16e77c5d75222865b459a8bb95eb26ff17891a818d549eca03d5",
+      "public_airfoil": "AF15",
+      "spectral_proxy": "FFA_W3_301",
+      "station": 15,
+      "thickness_ratio": 0.2943912514230277
+    },
+    {
+      "foil_sha256": "a5a28e38c10cc8f0af0d45d652dcd87d535740b33088b6a1a65e554f50366d9a",
+      "polar_sha256": "732587772eedacfb4bfb46c0b010fd35769d4c5354603eeee05e445dc82f84a7",
+      "public_airfoil": "AF16",
+      "spectral_proxy": "FFA_W3_270",
+      "station": 16,
+      "thickness_ratio": 0.2808707814773091
+    },
+    {
+      "foil_sha256": "49c12f3e57318e62e0b5b1c8a88afd57de5c6ac896aa4eddcb9539d641cd252b",
+      "polar_sha256": "edc5f8471874014ce62b54dadb6c74ee70d659e06c715c3fe6f1c897476e1b6e",
+      "public_airfoil": "AF17",
+      "spectral_proxy": "FFA_W3_270",
+      "station": 17,
+      "thickness_ratio": 0.2695824274545507
+    },
+    {
+      "foil_sha256": "0b11c58d0664c29c4352411e650228777185ea089594f9198e7b3d69beab66b2",
+      "polar_sha256": "cc2b77134117f790ed578381e56dbe1f92a800f6f4b27d7a4355f8a892271d17",
+      "public_airfoil": "AF18",
+      "spectral_proxy": "FFA_W3_270",
+      "station": 18,
+      "thickness_ratio": 0.257151683037947
+    },
+    {
+      "foil_sha256": "dddeb2c9d918f79103939e65d54192e398f75dc16b4330920ee5a90295a83b8a",
+      "polar_sha256": "5cde48aa40dea4efdb679297c92e1ba76190cc10ebe8c5714a96f21f17961e8e",
+      "public_airfoil": "AF19",
+      "spectral_proxy": "FFA_W3_241",
+      "station": 19,
+      "thickness_ratio": 0.24642616862323868
+    },
+    {
+      "foil_sha256": "18b94a882747b3aa63e80b18727f33fc67d93b774597d55bdb919c0bc11986fe",
+      "polar_sha256": "ecb20691ea5c7ff8f2d2bb78ba2ffb8240ffb3c329a744fb588dcf0745a22a52",
+      "public_airfoil": "AF20",
+      "spectral_proxy": "FFA_W3_241",
+      "station": 20,
+      "thickness_ratio": 0.24033389181564319
+    },
+    {
+      "foil_sha256": "61f16767944e86b74ec1f4a994fcb6ab547acd9fa052f0f72391ae12fe19b0ea",
+      "polar_sha256": "da150bc619669655fb496b8fea636d94452009aa62226f68071b4ddbba8e9833",
+      "public_airfoil": "AF21",
+      "spectral_proxy": "FFA_W3_241",
+      "station": 21,
+      "thickness_ratio": 0.2363316689284844
+    },
+    {
+      "foil_sha256": "dfc9967bd9e023acd2dc61309104a200cb8d8e299ccb60e481915d4cf59e0c9a",
+      "polar_sha256": "fc53eee6cc94da96eb0f113837930eeec2bcdcbb23a41c75f53671d95b1d9bac",
+      "public_airfoil": "AF22",
+      "spectral_proxy": "FFA_W3_241",
+      "station": 22,
+      "thickness_ratio": 0.23222359779569898
+    },
+    {
+      "foil_sha256": "7f03a37994e44cd3fbf9f621e94421e745bf5cdeb748652b9ff44bf610fb062f",
+      "polar_sha256": "d1544de172db8e12f5ff9c0b35e097aac82070774dd97c23c2cfd1bbb2d73f01",
+      "public_airfoil": "AF23",
+      "spectral_proxy": "FFA_W3_241",
+      "station": 23,
+      "thickness_ratio": 0.22775330257423526
+    },
+    {
+      "foil_sha256": "bc95e94f3fa041c337fe14afedb2300937185bba5d72d2e28ee78dba83a37125",
+      "polar_sha256": "b01c124779065c0b82db40da866786fe5376f579f2f729c38b23184dd07fb63f",
+      "public_airfoil": "AF24",
+      "spectral_proxy": "FFA_W3_211",
+      "station": 24,
+      "thickness_ratio": 0.2232643189666468
+    },
+    {
+      "foil_sha256": "7a50bcdd76c50087113ea8ad70b41b756941960970c3814a2fb541a0d19bacf1",
+      "polar_sha256": "c4f67429bc3376f283dc311750ddf2f7d7925a2546f563deaab35a618095f6ca",
+      "public_airfoil": "AF25",
+      "spectral_proxy": "FFA_W3_211",
+      "station": 25,
+      "thickness_ratio": 0.21924741748350962
+    },
+    {
+      "foil_sha256": "1dd43b878e9312441ebda99ae4d7fd88e8692dd49e1ef92e23239c3668b48e77",
+      "polar_sha256": "526ec737303b02c05fc0f4564dcf70ffcc503086f3e0bd68523754f2524f66f9",
+      "public_airfoil": "AF26",
+      "spectral_proxy": "FFA_W3_211",
+      "station": 26,
+      "thickness_ratio": 0.21581643956723684
+    },
+    {
+      "foil_sha256": "5e9f52eb5ebf44744e89ef11163fc6ca8d0a5bf29efe22a61ec60eab1b936a1b",
+      "polar_sha256": "f63a86d39fc01fcce5b1d4bb001a1cf05d81190e0b2337d05de2b8b732f4fe31",
+      "public_airfoil": "AF27",
+      "spectral_proxy": "FFA_W3_211",
+      "station": 27,
+      "thickness_ratio": 0.21318505955773565
+    },
+    {
+      "foil_sha256": "3e802657f766d7b7ad37d3d2f8d5e36b195d33c81da8239fd07f3ce07dfcb903",
+      "polar_sha256": "1f073f3b94eb5681b7d45aa12e208914ba8a18a20c274cf2a1aa259d08fe856b",
+      "public_airfoil": "AF28",
+      "spectral_proxy": "FFA_W3_211",
+      "station": 28,
+      "thickness_ratio": 0.21154906980334193
+    },
+    {
+      "foil_sha256": "5058e0d589c3c63b30e300441d1c8c69c0e2c30ecb4fa6228993417cc3cd588f",
+      "polar_sha256": "fdaae6502c40acf2255dd3175d064528b6274c3d5b4c47ccff02575c86796d9a",
+      "public_airfoil": "AF29",
+      "spectral_proxy": "FFA_W3_211",
+      "station": 29,
+      "thickness_ratio": 0.21097562185132618
+    }
+  ],
+  "cases": [
+    {
+      "case_id": "U10_native",
+      "config": "cases/U10_native/grinderslev2022_p100_i50_iea10_single_blade/Control/vorlap_qblade_external.json",
+      "index": 0,
+      "requested_steps": 2000,
+      "result_dir": "results/U10_native",
+      "role": "native",
+      "sim": "cases/U10_native/grinderslev2022_p100_i50_iea10_single_blade.sim",
+      "speed_mps": 10.0,
+      "target_amplitude_m": 0.780549,
+      "training_case_id": "P80A310_U10"
+    },
+    {
+      "case_id": "U10_complete",
+      "config": "cases/U10_complete/grinderslev2022_p100_i50_iea10_single_blade/Control/vorlap_qblade_external.json",
+      "index": 1,
+      "requested_steps": 2000,
+      "result_dir": "results/U10_complete",
+      "role": "complete",
+      "sim": "cases/U10_complete/grinderslev2022_p100_i50_iea10_single_blade.sim",
+      "speed_mps": 10.0,
+      "target_amplitude_m": 0.780549,
+      "training_case_id": "P80A310_U10"
+    },
+    {
+      "case_id": "U14_native",
+      "config": "cases/U14_native/grinderslev2022_p100_i50_iea10_single_blade/Control/vorlap_qblade_external.json",
+      "index": 2,
+      "requested_steps": 2000,
+      "result_dir": "results/U14_native",
+      "role": "native",
+      "sim": "cases/U14_native/grinderslev2022_p100_i50_iea10_single_blade.sim",
+      "speed_mps": 14.0,
+      "target_amplitude_m": 1.82415,
+      "training_case_id": "P80A310_U14"
+    },
+    {
+      "case_id": "U14_complete",
+      "config": "cases/U14_complete/grinderslev2022_p100_i50_iea10_single_blade/Control/vorlap_qblade_external.json",
+      "index": 3,
+      "requested_steps": 2000,
+      "result_dir": "results/U14_complete",
+      "role": "complete",
+      "sim": "cases/U14_complete/grinderslev2022_p100_i50_iea10_single_blade.sim",
+      "speed_mps": 14.0,
+      "target_amplitude_m": 1.82415,
+      "training_case_id": "P80A310_U14"
+    },
+    {
+      "case_id": "U18_native",
+      "config": "cases/U18_native/grinderslev2022_p100_i50_iea10_single_blade/Control/vorlap_qblade_external.json",
+      "index": 4,
+      "requested_steps": 2000,
+      "result_dir": "results/U18_native",
+      "role": "native",
+      "sim": "cases/U18_native/grinderslev2022_p100_i50_iea10_single_blade.sim",
+      "speed_mps": 18.0,
+      "target_amplitude_m": 1.187186,
+      "training_case_id": "P80A310_U18"
+    },
+    {
+      "case_id": "U18_complete",
+      "config": "cases/U18_complete/grinderslev2022_p100_i50_iea10_single_blade/Control/vorlap_qblade_external.json",
+      "index": 5,
+      "requested_steps": 2000,
+      "result_dir": "results/U18_complete",
+      "role": "complete",
+      "sim": "cases/U18_complete/grinderslev2022_p100_i50_iea10_single_blade.sim",
+      "speed_mps": 18.0,
+      "target_amplitude_m": 1.187186,
+      "training_case_id": "P80A310_U18"
+    },
+    {
+      "case_id": "U22_native",
+      "config": "cases/U22_native/grinderslev2022_p100_i50_iea10_single_blade/Control/vorlap_qblade_external.json",
+      "index": 6,
+      "requested_steps": 2000,
+      "result_dir": "results/U22_native",
+      "role": "native",
+      "sim": "cases/U22_native/grinderslev2022_p100_i50_iea10_single_blade.sim",
+      "speed_mps": 22.0,
+      "target_amplitude_m": 0.000934,
+      "training_case_id": "P80A310_U22"
+    },
+    {
+      "case_id": "U22_complete",
+      "config": "cases/U22_complete/grinderslev2022_p100_i50_iea10_single_blade/Control/vorlap_qblade_external.json",
+      "index": 7,
+      "requested_steps": 2000,
+      "result_dir": "results/U22_complete",
+      "role": "complete",
+      "sim": "cases/U22_complete/grinderslev2022_p100_i50_iea10_single_blade.sim",
+      "speed_mps": 22.0,
+      "target_amplitude_m": 0.000934,
+      "training_case_id": "P80A310_U22"
+    }
+  ],
+  "composition": [
+    "native_qblade_turbsim_aerodynamics",
+    "uncaptured_zero_mean_bidadi_fixed_body_spectrum",
+    "trained_motion_correlated_negative_damping"
+  ],
+  "fingerprint": "db51fc0ed302e5f0e5aa2e4fb428dc8546f6303ca58a432d0c9d20e59480ba71",
+  "public_iea_commit": "350cf06f5db9cec12bcd73c2b174a5d9642958d8",
+  "schema": "vorlap-iea10-actual-aero-complete-campaign-v1",
+  "scope": "training-space numerical integration; not independent validation",
+  "spectrum_bundle": {
+    "path": "data/airfoils/bidadi2024_ffa_w3_spectral/bundle_manifest.json",
+    "sha256": "fd4ae1307ada5103e58bab2c4f7461476e60c28fad09a29048d94c2de959239c"
+  },
+  "status": "prepared",
+  "training_model": {
+    "path": "examples/horcas2020_iea10_tip_geometry/evidence/combined_tip_v1/model.json",
+    "sha256": "656a2dac90eda862ec02d6e893679b1118ca5043d962c19c518b978ba202a0dc"
+  },
+  "wind_records": {
+    "10.0": {
+      "command": [
+        "/Users/kevmoor/Documents/coderepos/VorLap_Bridge/VorLap_independent_validation/run_headless/openfast/install/bin/turbsim",
+        "U10.inp"
+      ],
+      "elapsed_s": 1.2526021003723145,
+      "executable": "/Users/kevmoor/Documents/coderepos/VorLap_Bridge/VorLap_independent_validation/run_headless/openfast/install/bin/turbsim",
+      "generated": true,
+      "input_file": "/Users/kevmoor/Documents/coderepos/VorLap_Bridge/VorLap_independent_validation/run_headless/runs/iea10_actual_aero_complete_20260815_v10/winds/U10.inp",
+      "metadata_file": "/Users/kevmoor/Documents/coderepos/VorLap_Bridge/VorLap_independent_validation/run_headless/runs/iea10_actual_aero_complete_20260815_v10/winds/U10.bts.turbsim.json",
+      "provenance_status": "generated",
+      "returncode": 0,
+      "settings": {
+        "AnalysisTime": 22.0,
+        "GridHeight": 74.0,
+        "GridWidth": 12.0,
+        "HFlowAng": 0.0,
+        "HubHt": 37.5,
+        "IEC_WindType": "NTM",
+        "IECstandard": 1,
+        "IECturbc": "A",
+        "NumGrid_Y": 9,
+        "NumGrid_Z": 39,
+        "RandSeed1": 4433466,
+        "RefHt": 37.5,
+        "TimeStep": 0.006,
+        "TurbModel": "IECKAI",
+        "URef": 10.0,
+        "UsableTime": "ALL",
+        "VFlowAng": 0.0,
+        "WrADFF": true,
+        "WrBLFF": false
+      },
+      "skipped_existing": false,
+      "wind_file": "/Users/kevmoor/Documents/coderepos/VorLap_Bridge/VorLap_independent_validation/run_headless/runs/iea10_actual_aero_complete_20260815_v10/winds/U10.bts"
+    },
+    "14.0": {
+      "command": [
+        "/Users/kevmoor/Documents/coderepos/VorLap_Bridge/VorLap_independent_validation/run_headless/openfast/install/bin/turbsim",
+        "U14.inp"
+      ],
+      "elapsed_s": 1.283656358718872,
+      "executable": "/Users/kevmoor/Documents/coderepos/VorLap_Bridge/VorLap_independent_validation/run_headless/openfast/install/bin/turbsim",
+      "generated": true,
+      "input_file": "/Users/kevmoor/Documents/coderepos/VorLap_Bridge/VorLap_independent_validation/run_headless/runs/iea10_actual_aero_complete_20260815_v10/winds/U14.inp",
+      "metadata_file": "/Users/kevmoor/Documents/coderepos/VorLap_Bridge/VorLap_independent_validation/run_headless/runs/iea10_actual_aero_complete_20260815_v10/winds/U14.bts.turbsim.json",
+      "provenance_status": "generated",
+      "returncode": 0,
+      "settings": {
+        "AnalysisTime": 22.0,
+        "GridHeight": 74.0,
+        "GridWidth": 12.0,
+        "HFlowAng": 0.0,
+        "HubHt": 37.5,
+        "IEC_WindType": "NTM",
+        "IECstandard": 1,
+        "IECturbc": "A",
+        "NumGrid_Y": 9,
+        "NumGrid_Z": 39,
+        "RandSeed1": 4433470,
+        "RefHt": 37.5,
+        "TimeStep": 0.006,
+        "TurbModel": "IECKAI",
+        "URef": 14.0,
+        "UsableTime": "ALL",
+        "VFlowAng": 0.0,
+        "WrADFF": true,
+        "WrBLFF": false
+      },
+      "skipped_existing": false,
+      "wind_file": "/Users/kevmoor/Documents/coderepos/VorLap_Bridge/VorLap_independent_validation/run_headless/runs/iea10_actual_aero_complete_20260815_v10/winds/U14.bts"
+    },
+    "18.0": {
+      "command": [
+        "/Users/kevmoor/Documents/coderepos/VorLap_Bridge/VorLap_independent_validation/run_headless/openfast/install/bin/turbsim",
+        "U18.inp"
+      ],
+      "elapsed_s": 1.3485102653503418,
+      "executable": "/Users/kevmoor/Documents/coderepos/VorLap_Bridge/VorLap_independent_validation/run_headless/openfast/install/bin/turbsim",
+      "generated": true,
+      "input_file": "/Users/kevmoor/Documents/coderepos/VorLap_Bridge/VorLap_independent_validation/run_headless/runs/iea10_actual_aero_complete_20260815_v10/winds/U18.inp",
+      "metadata_file": "/Users/kevmoor/Documents/coderepos/VorLap_Bridge/VorLap_independent_validation/run_headless/runs/iea10_actual_aero_complete_20260815_v10/winds/U18.bts.turbsim.json",
+      "provenance_status": "generated",
+      "returncode": 0,
+      "settings": {
+        "AnalysisTime": 22.0,
+        "GridHeight": 74.0,
+        "GridWidth": 12.0,
+        "HFlowAng": 0.0,
+        "HubHt": 37.5,
+        "IEC_WindType": "NTM",
+        "IECstandard": 1,
+        "IECturbc": "A",
+        "NumGrid_Y": 9,
+        "NumGrid_Z": 39,
+        "RandSeed1": 4433474,
+        "RefHt": 37.5,
+        "TimeStep": 0.006,
+        "TurbModel": "IECKAI",
+        "URef": 18.0,
+        "UsableTime": "ALL",
+        "VFlowAng": 0.0,
+        "WrADFF": true,
+        "WrBLFF": false
+      },
+      "skipped_existing": false,
+      "wind_file": "/Users/kevmoor/Documents/coderepos/VorLap_Bridge/VorLap_independent_validation/run_headless/runs/iea10_actual_aero_complete_20260815_v10/winds/U18.bts"
+    },
+    "22.0": {
+      "command": [
+        "/Users/kevmoor/Documents/coderepos/VorLap_Bridge/VorLap_independent_validation/run_headless/openfast/install/bin/turbsim",
+        "U22.inp"
+      ],
+      "elapsed_s": 1.2313737869262695,
+      "executable": "/Users/kevmoor/Documents/coderepos/VorLap_Bridge/VorLap_independent_validation/run_headless/openfast/install/bin/turbsim",
+      "generated": true,
+      "input_file": "/Users/kevmoor/Documents/coderepos/VorLap_Bridge/VorLap_independent_validation/run_headless/runs/iea10_actual_aero_complete_20260815_v10/winds/U22.inp",
+      "metadata_file": "/Users/kevmoor/Documents/coderepos/VorLap_Bridge/VorLap_independent_validation/run_headless/runs/iea10_actual_aero_complete_20260815_v10/winds/U22.bts.turbsim.json",
+      "provenance_status": "generated",
+      "returncode": 0,
+      "settings": {
+        "AnalysisTime": 22.0,
+        "GridHeight": 74.0,
+        "GridWidth": 12.0,
+        "HFlowAng": 0.0,
+        "HubHt": 37.5,
+        "IEC_WindType": "NTM",
+        "IECstandard": 1,
+        "IECturbc": "A",
+        "NumGrid_Y": 9,
+        "NumGrid_Z": 39,
+        "RandSeed1": 4433478,
+        "RefHt": 37.5,
+        "TimeStep": 0.006,
+        "TurbModel": "IECKAI",
+        "URef": 22.0,
+        "UsableTime": "ALL",
+        "VFlowAng": 0.0,
+        "WrADFF": true,
+        "WrBLFF": false
+      },
+      "skipped_existing": false,
+      "wind_file": "/Users/kevmoor/Documents/coderepos/VorLap_Bridge/VorLap_independent_validation/run_headless/runs/iea10_actual_aero_complete_20260815_v10/winds/U22.bts"
+    }
+  }
+}

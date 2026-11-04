@@ -28,3 +28,13 @@ The automated test suite includes:
 - A single-blade verification case using repository reference data.
 
 See `tests/test_verification_case.py` for the verification-based regression test.
+
+## Developer References
+
+- [Developer Architecture](developer_architecture.md) maps the offline sweep,
+  loading-file export, Python SIL bridge, and native callback paths to modules
+  and data flow.
+- [Coordinate Frames and Sign Conventions](coordinate_frames.md) records the
+  implemented chord/normal basis, AOA, ADDFORCE, and mean-load conventions.
+- [QBlade Coupling Timing](qblade_timing.md) documents the proven Python SIL
+  step ordering and the remaining native callback evidence gap.

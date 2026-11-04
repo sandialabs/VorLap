@@ -1,0 +1,5 @@
+reynolds_number,strouhal_streamwise_width,mean_drag_coefficient,mean_lift_coefficient,rms_lift_coefficient_streamwise_width,strouhal_crossflow_depth,rms_lift_coefficient_crossflow_depth,sinusoidal_equivalent_lift_coefficient_crossflow_depth
+20800,0.640,0.225,-0.0811,0.0784,0.1280,0.3920,0.5543717164502532
+31200,0.621,0.230,-0.0684,0.0848,0.1242,0.4240,0.5996265504461923
+41600,0.622,0.240,-0.0690,0.0932,0.1244,0.4660,0.6590235200658624
+52000,0.601,0.252,-0.0706,0.1150,0.1202,0.5750,0.8131727983645297

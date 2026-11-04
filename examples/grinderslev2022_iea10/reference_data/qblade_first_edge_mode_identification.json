@@ -1,0 +1,95 @@
+{
+  "direction_basis_sample_time_s": 4.38,
+  "forced_mode_method": "project each stored nodal velocity onto the local chord direction recovered from the coherent frozen force; fit constant, linear trend, and 0.67 Hz sine/cosine; phase-align to the tip and take the real unit-tip ratio",
+  "frequency_method": "minimum-residual constant/trend/sine/cosine scan from 0.64 to 0.70 Hz in 1e-5 Hz increments on the independent unloaded tip decay",
+  "frequency_window_sensitivity": [
+    {
+      "end_s": 12.0,
+      "frequency_hz": 0.66985,
+      "residual_sum_squares_m2": 0.018052439951567127,
+      "start_s": 0.0
+    },
+    {
+      "end_s": 12.0,
+      "frequency_hz": 0.67039,
+      "residual_sum_squares_m2": 0.017096148298978493,
+      "start_s": 1.0
+    },
+    {
+      "end_s": 12.0,
+      "frequency_hz": 0.671,
+      "residual_sum_squares_m2": 0.0133663917598632,
+      "start_s": 2.0
+    },
+    {
+      "end_s": 10.0,
+      "frequency_hz": 0.66911,
+      "residual_sum_squares_m2": 0.013057191218814674,
+      "start_s": 0.5
+    },
+    {
+      "end_s": 10.0,
+      "frequency_hz": 0.67022,
+      "residual_sum_squares_m2": 0.009597424330283558,
+      "start_s": 2.0
+    }
+  ],
+  "modal_damping_ratio": 0.0036131908955160446,
+  "mode_csv_sha256": "0e08e5c98fe423b8c171ad5d3ea503fc37ab2f54447f57e2f7586cabdadcec18",
+  "mode_window_sensitivity": [
+    {
+      "end_s": 11.994,
+      "max_abs_phase_offset_rad": 0.01619829067808198,
+      "modal_mass_kg": 1679.2069804136597,
+      "public_projection_overlap": 0.9430217402406977,
+      "start_s": 0.0
+    },
+    {
+      "end_s": 11.994,
+      "max_abs_phase_offset_rad": 0.02306320026653964,
+      "modal_mass_kg": 1682.268333987071,
+      "public_projection_overlap": 0.9439441560982678,
+      "start_s": 2.0
+    },
+    {
+      "end_s": 11.994,
+      "max_abs_phase_offset_rad": 0.019580898625807367,
+      "modal_mass_kg": 1690.4774821111241,
+      "public_projection_overlap": 0.9462286685799798,
+      "start_s": 4.0
+    },
+    {
+      "end_s": 11.994,
+      "max_abs_phase_offset_rad": 0.025378101162255272,
+      "modal_mass_kg": 1694.1843198365325,
+      "public_projection_overlap": 0.9472538307758013,
+      "start_s": 6.0
+    }
+  ],
+  "natural_frequency_hz": 0.66985,
+  "public_openfast_modal_mass_kg": 1886.8146280823894,
+  "public_projection_overlap": 0.9430217402406977,
+  "qblade_modal_mass_kg": 1679.2069804136597,
+  "qblade_to_public_modal_mass_ratio": 0.8899692399142963,
+  "rayleigh_stiffness_coefficient_s": 0.00171697302786,
+  "schema": "grinderslev2022-qblade-structural-coordinate-v1",
+  "scope": "QBlade first-edgewise structural-coordinate identification only; independent of the Grinderslev aerodynamic-power curve and 120 s response result",
+  "selected_window_s": [
+    0.0,
+    11.994
+  ],
+  "source_paths": {
+    "forced_sil_history": "run_headless/runs/grinderslev2022_axis_corrected_v2_p100_i50_edge_12s/grinderslev2022_p100_i50_iea10_single_blade_results_sil_vorlap_history.csv",
+    "public_geometry": "examples/grinderslev2022_iea10/generated_case/iea10_blade_geometry.csv",
+    "qblade_structure": "examples/grinderslev2022_iea10/generated_case/grinderslev2022_p100_i50_iea10_single_blade/Structure/iea10_blade_hawc2.str",
+    "unloaded_qblade_result": "run_headless/runs/grinderslev2022_axis_corrected_v2_p100_i50_unloaded_12s/grinderslev2022_p100_i50_iea10_single_blade_results.txt"
+  },
+  "source_sha256": {
+    "forced_sil_history": "c783084145188a480ab99a1c626737b648ebef785af280d28c4673fd0aeb5997",
+    "public_geometry": "06d72b8f80e290ce0bac88011ad2a9698f5b42e1ae71da2c7f2b97f613c2c1b7",
+    "qblade_structure": "8455754fe52cfbb925c6a6432c48de7fb98ed1d29f09c5af899d19d0075a500c",
+    "unloaded_qblade_result": "6237bd70415c6b6165576a4f1fae01e33f9f0084d7a806716cb74e10d3518f15"
+  },
+  "structural_power_coefficient_wpm2": 452.342535828994,
+  "structural_power_relation": "P_struct(A_tip) = zeta M_QBlade omega_QBlade^3 A_tip^2"
+}

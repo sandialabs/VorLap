@@ -1,0 +1,275 @@
+{
+  "schema": "vorlap-fu2026-iea10-signed-work-shape-transfer-v1",
+  "status": "qualified_training_reproduction_only",
+  "method": {
+    "type": "grinderslev_landmark_constrained_quadratic_saturation_transfer",
+    "source_zero_work_amplitude_m": 1.57,
+    "source_fsi_lco_amplitude_m": 1.18,
+    "zero_to_equilibrium_amplitude_ratio": 1.3305084745762714,
+    "active_feedback_over_opposing_damping": 2.298275058275057,
+    "active_target_threshold_Ay_over_cbar": 0.01,
+    "reference_mean_chord_m": 3.72,
+    "inactive_correlated_feedback": "exactly_zero",
+    "runtime_balance": "c0=r_shape*c_opposing; A_limit=kappa*A_equilibrium; c_opposing is independently identified native-total QBlade damping",
+    "transfer_scope": "Only the Grinderslev zero-work-to-FSI-amplitude ratio constrains the quadratic branch; the full signed-power curve is not transferred."
+  },
+  "sources": {
+    "geometry_composed_training_model": {
+      "path": "examples/horcas2020_iea10_tip_geometry/evidence/combined_tip_v1/model.json",
+      "sha256": "656a2dac90eda862ec02d6e893679b1118ca5043d962c19c518b978ba202a0dc",
+      "model_fingerprint": "8b067d6f3a049f665c451f545a25dc8a0345b0a5bc829a3715f691038f899891"
+    },
+    "grinderslev_signed_power_curve": {
+      "path": "examples/grinderslev2022_iea10/reference_data/p100_i50_figure6_power_digitized.csv",
+      "sha256": "016ce5265b77dc0c9e577d7548e453d09f67ef732dda817618f79909546f323d",
+      "publication_doi": "10.5194/wes-7-2201-2022"
+    }
+  },
+  "claim_boundary": {
+    "supports": "Grinderslev-landmark-constrained quadratic reproduction of the 20 Fu turbine training rows",
+    "does_not_support": "independent validation on any Fu row, transfer of the complete Grinderslev signed-work curve, or universal transfer to other structures"
+  },
+  "cases": [
+    {
+      "case_id": "P80A310_U06",
+      "configuration": "P80A310",
+      "wind_speed_mps": 6.0,
+      "equilibrium_amplitude_m": 0.063285,
+      "equilibrium_amplitude_over_reference_chord": 0.017012096774193547,
+      "active_branch": true,
+      "original_feedback_over_structural_damping": 1.0010928894972484,
+      "original_limiting_amplitude_m": 1.9153575,
+      "transferred_feedback_over_opposing_damping": 2.298275058275057,
+      "transferred_limiting_amplitude_m": 0.08420122881355933
+    },
+    {
+      "case_id": "P80A310_U10",
+      "configuration": "P80A310",
+      "wind_speed_mps": 10.0,
+      "equilibrium_amplitude_m": 0.780549,
+      "equilibrium_amplitude_over_reference_chord": 0.209825,
+      "active_branch": true,
+      "original_feedback_over_structural_damping": 1.1991466189052438,
+      "original_limiting_amplitude_m": 1.9153575,
+      "transferred_feedback_over_opposing_damping": 2.298275058275057,
+      "transferred_limiting_amplitude_m": 1.0385270593220342
+    },
+    {
+      "case_id": "P80A310_U14",
+      "configuration": "P80A310",
+      "wind_speed_mps": 14.0,
+      "equilibrium_amplitude_m": 1.82415,
+      "equilibrium_amplitude_over_reference_chord": 0.4903629032258064,
+      "active_branch": true,
+      "original_feedback_over_structural_damping": 10.756097560975602,
+      "original_limiting_amplitude_m": 1.9153575,
+      "transferred_feedback_over_opposing_damping": 2.298275058275057,
+      "transferred_limiting_amplitude_m": 2.4270470338983055
+    },
+    {
+      "case_id": "P80A310_U18",
+      "configuration": "P80A310",
+      "wind_speed_mps": 18.0,
+      "equilibrium_amplitude_m": 1.187186,
+      "equilibrium_amplitude_over_reference_chord": 0.31913602150537634,
+      "active_branch": true,
+      "original_feedback_over_structural_damping": 1.6238583275793306,
+      "original_limiting_amplitude_m": 1.9153575,
+      "transferred_feedback_over_opposing_damping": 2.298275058275057,
+      "transferred_limiting_amplitude_m": 1.5795610338983055
+    },
+    {
+      "case_id": "P80A310_U22",
+      "configuration": "P80A310",
+      "wind_speed_mps": 22.0,
+      "equilibrium_amplitude_m": 0.000934,
+      "equilibrium_amplitude_over_reference_chord": 0.0002510752688172043,
+      "active_branch": false,
+      "original_feedback_over_structural_damping": 1.0000002377903152,
+      "original_limiting_amplitude_m": 1.9153575,
+      "transferred_feedback_over_opposing_damping": 0.0,
+      "transferred_limiting_amplitude_m": 1.9153575
+    },
+    {
+      "case_id": "P90A310_U06",
+      "configuration": "P90A310",
+      "wind_speed_mps": 6.0,
+      "equilibrium_amplitude_m": 0.009534,
+      "equilibrium_amplitude_over_reference_chord": 0.0025629032258064517,
+      "active_branch": false,
+      "original_feedback_over_structural_damping": 1.0000368779699391,
+      "original_limiting_amplitude_m": 1.57,
+      "transferred_feedback_over_opposing_damping": 0.0,
+      "transferred_limiting_amplitude_m": 1.57
+    },
+    {
+      "case_id": "P90A310_U10",
+      "configuration": "P90A310",
+      "wind_speed_mps": 10.0,
+      "equilibrium_amplitude_m": 0.047393,
+      "equilibrium_amplitude_over_reference_chord": 0.012740053763440859,
+      "active_branch": true,
+      "original_feedback_over_structural_damping": 1.0009120633824191,
+      "original_limiting_amplitude_m": 1.57,
+      "transferred_feedback_over_opposing_damping": 2.298275058275057,
+      "transferred_limiting_amplitude_m": 0.06305678813559323
+    },
+    {
+      "case_id": "P90A310_U14",
+      "configuration": "P90A310",
+      "wind_speed_mps": 14.0,
+      "equilibrium_amplitude_m": 0.11054,
+      "equilibrium_amplitude_over_reference_chord": 0.029715053763440857,
+      "active_branch": true,
+      "original_feedback_over_structural_damping": 1.0049819328548413,
+      "original_limiting_amplitude_m": 1.57,
+      "transferred_feedback_over_opposing_damping": 2.298275058275057,
+      "transferred_limiting_amplitude_m": 0.14707440677966105
+    },
+    {
+      "case_id": "P90A310_U18",
+      "configuration": "P90A310",
+      "wind_speed_mps": 18.0,
+      "equilibrium_amplitude_m": 0.026081,
+      "equilibrium_amplitude_over_reference_chord": 0.007011021505376343,
+      "active_branch": false,
+      "original_feedback_over_structural_damping": 1.0002760381059042,
+      "original_limiting_amplitude_m": 1.57,
+      "transferred_feedback_over_opposing_damping": 0.0,
+      "transferred_limiting_amplitude_m": 1.57
+    },
+    {
+      "case_id": "P90A310_U22",
+      "configuration": "P90A310",
+      "wind_speed_mps": 22.0,
+      "equilibrium_amplitude_m": 0.334796,
+      "equilibrium_amplitude_over_reference_chord": 0.08999892473118279,
+      "active_branch": true,
+      "original_feedback_over_structural_damping": 1.0476401764541536,
+      "original_limiting_amplitude_m": 1.57,
+      "transferred_feedback_over_opposing_damping": 2.298275058275057,
+      "transferred_limiting_amplitude_m": 0.44544891525423735
+    },
+    {
+      "case_id": "P95A310_U06",
+      "configuration": "P95A310",
+      "wind_speed_mps": 6.0,
+      "equilibrium_amplitude_m": 0.007433,
+      "equilibrium_amplitude_over_reference_chord": 0.0019981182795698925,
+      "active_branch": false,
+      "original_feedback_over_structural_damping": 1.0000223714095189,
+      "original_limiting_amplitude_m": 1.5715287,
+      "transferred_feedback_over_opposing_damping": 0.0,
+      "transferred_limiting_amplitude_m": 1.5715287
+    },
+    {
+      "case_id": "P95A310_U10",
+      "configuration": "P95A310",
+      "wind_speed_mps": 10.0,
+      "equilibrium_amplitude_m": 0.001123,
+      "equilibrium_amplitude_over_reference_chord": 0.00030188172043010754,
+      "active_branch": false,
+      "original_feedback_over_structural_damping": 1.0000005106403167,
+      "original_limiting_amplitude_m": 1.5715287,
+      "transferred_feedback_over_opposing_damping": 0.0,
+      "transferred_limiting_amplitude_m": 1.5715287
+    },
+    {
+      "case_id": "P95A310_U14",
+      "configuration": "P95A310",
+      "wind_speed_mps": 14.0,
+      "equilibrium_amplitude_m": 1.496694,
+      "equilibrium_amplitude_over_reference_chord": 0.4023370967741935,
+      "active_branch": true,
+      "original_feedback_over_structural_damping": 10.756097560975602,
+      "original_limiting_amplitude_m": 1.5715287,
+      "transferred_feedback_over_opposing_damping": 2.298275058275057,
+      "transferred_limiting_amplitude_m": 1.991364050847458
+    },
+    {
+      "case_id": "P95A310_U18",
+      "configuration": "P95A310",
+      "wind_speed_mps": 18.0,
+      "equilibrium_amplitude_m": 1.224951,
+      "equilibrium_amplitude_over_reference_chord": 0.3292879032258064,
+      "active_branch": true,
+      "original_feedback_over_structural_damping": 2.548193168570274,
+      "original_limiting_amplitude_m": 1.5715287,
+      "transferred_feedback_over_opposing_damping": 2.298275058275057,
+      "transferred_limiting_amplitude_m": 1.629807686440678
+    },
+    {
+      "case_id": "P95A310_U22",
+      "configuration": "P95A310",
+      "wind_speed_mps": 22.0,
+      "equilibrium_amplitude_m": 0.773306,
+      "equilibrium_amplitude_over_reference_chord": 0.20787795698924733,
+      "active_branch": true,
+      "original_feedback_over_structural_damping": 1.31949675615083,
+      "original_limiting_amplitude_m": 1.5715287,
+      "transferred_feedback_over_opposing_damping": 2.298275058275057,
+      "transferred_limiting_amplitude_m": 1.0288901864406783
+    },
+    {
+      "case_id": "P95A320_U06",
+      "configuration": "P95A320",
+      "wind_speed_mps": 6.0,
+      "equilibrium_amplitude_m": 0.006636,
+      "equilibrium_amplitude_over_reference_chord": 0.0017838709677419355,
+      "active_branch": false,
+      "original_feedback_over_structural_damping": 1.0000178657482028,
+      "original_limiting_amplitude_m": 1.57,
+      "transferred_feedback_over_opposing_damping": 0.0,
+      "transferred_limiting_amplitude_m": 1.57
+    },
+    {
+      "case_id": "P95A320_U10",
+      "configuration": "P95A320",
+      "wind_speed_mps": 10.0,
+      "equilibrium_amplitude_m": 0.879825,
+      "equilibrium_amplitude_over_reference_chord": 0.23651209677419352,
+      "active_branch": true,
+      "original_feedback_over_structural_damping": 1.4578237414572515,
+      "original_limiting_amplitude_m": 1.57,
+      "transferred_feedback_over_opposing_damping": 2.298275058275057,
+      "transferred_limiting_amplitude_m": 1.170614618644068
+    },
+    {
+      "case_id": "P95A320_U14",
+      "configuration": "P95A320",
+      "wind_speed_mps": 14.0,
+      "equilibrium_amplitude_m": 0.893942,
+      "equilibrium_amplitude_over_reference_chord": 0.2403069892473118,
+      "active_branch": true,
+      "original_feedback_over_structural_damping": 1.4797381405936056,
+      "original_limiting_amplitude_m": 1.57,
+      "transferred_feedback_over_opposing_damping": 2.298275058275057,
+      "transferred_limiting_amplitude_m": 1.1893974067796613
+    },
+    {
+      "case_id": "P95A320_U18",
+      "configuration": "P95A320",
+      "wind_speed_mps": 18.0,
+      "equilibrium_amplitude_m": 0.013087,
+      "equilibrium_amplitude_over_reference_chord": 0.0035180107526881716,
+      "active_branch": false,
+      "original_feedback_over_structural_damping": 1.0000694882024481,
+      "original_limiting_amplitude_m": 1.57,
+      "transferred_feedback_over_opposing_damping": 0.0,
+      "transferred_limiting_amplitude_m": 1.57
+    },
+    {
+      "case_id": "P95A320_U22",
+      "configuration": "P95A320",
+      "wind_speed_mps": 22.0,
+      "equilibrium_amplitude_m": 0.01103,
+      "equilibrium_amplitude_over_reference_chord": 0.00296505376344086,
+      "active_branch": false,
+      "original_feedback_over_structural_damping": 1.0000493597732785,
+      "original_limiting_amplitude_m": 1.57,
+      "transferred_feedback_over_opposing_damping": 0.0,
+      "transferred_limiting_amplitude_m": 1.57
+    }
+  ],
+  "model_fingerprint": "e9b3449161d5eacf1fa94accd5ab64bd8e5175867dc51ca30b082c4b63887837"
+}

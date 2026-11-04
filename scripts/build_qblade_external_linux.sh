@@ -17,6 +17,16 @@ fi
 echo "Building QBlade bridge with Python: ${PYTHON_EXE}"
 "${PYTHON_EXE}" -c "import sys, numpy; print(f'Python executable: {sys.executable}'); print(f'Python version: {sys.version.split()[0]}'); print(f'NumPy version: {numpy.__version__}')" 
 
+if [[ -f "${BUILD_DIR}/CMakeCache.txt" ]]; then
+  EXPECTED_SOURCE="${ROOT_DIR}/qblade_external_bridge"
+  CACHED_SOURCE="$(grep '^CMAKE_HOME_DIRECTORY:INTERNAL=' "${BUILD_DIR}/CMakeCache.txt" 2>/dev/null | sed 's/^CMAKE_HOME_DIRECTORY:INTERNAL=//')"
+  if [[ -n "${CACHED_SOURCE}" && "${CACHED_SOURCE}" != "${EXPECTED_SOURCE}" ]]; then
+    echo "Removing stale CMake cache from different source path: ${CACHED_SOURCE}"
+    rm -f "${BUILD_DIR}/CMakeCache.txt"
+    rm -rf "${BUILD_DIR}/CMakeFiles"
+  fi
+fi
+
 cmake -S "${ROOT_DIR}/qblade_external_bridge" \
       -B "${BUILD_DIR}" \
       -DCMAKE_BUILD_TYPE=Release \

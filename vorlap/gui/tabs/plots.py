@@ -8,8 +8,13 @@ This tab handles visualization, plotting, and data export functionality.
 import tkinter as tk
 from tkinter import ttk, messagebox, filedialog
 
+import copy
+import csv
+from dataclasses import dataclass
+import json
+from pathlib import Path
+
 import numpy as np
-import matplotlib.colors as mcolors
 
 import vorlap
 
@@ -17,11 +22,167 @@ from ..widgets import ScrollableFrame, PathEntry
 
 # --- Optional plotting support ---
 try:
+    import matplotlib.colors as mcolors
     from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
     from matplotlib.figure import Figure
     MATPLOTLIB_OK = True
 except Exception:
+    mcolors = None
+    FigureCanvasTkAgg = None
+    NavigationToolbar2Tk = None
+    Figure = None
     MATPLOTLIB_OK = False
+
+
+@dataclass(frozen=True)
+class ResultPlotData:
+    """Matplotlib-independent scalar plot data for analysis result heatmaps."""
+
+    data: np.ndarray
+    extent: tuple[float, float, float, float]
+    title: str
+    colorbar_label: str
+    cmap: str
+    vmin: float | None = None
+    vmax: float | None = None
+    zero_center_norm: bool = False
+
+
+@dataclass(frozen=True)
+class ResultPlotExport:
+    """Tabular data and provenance for exporting a scalar GUI plot."""
+
+    metadata: dict[str, object]
+    rows: tuple[dict[str, float], ...]
+
+
+def prepare_result_plot_data(results, plot_type: str) -> ResultPlotData:
+    """Prepare scalar analysis plot data without touching Tk or Matplotlib."""
+    if plot_type == "geometry":
+        raise ValueError("Geometry plots require component frame data, not scalar result grids.")
+    viv_params = results["viv_params"]
+    azimuths = np.asarray(viv_params.azimuths, dtype=float)
+    inflow_speeds = np.asarray(viv_params.inflow_speeds, dtype=float)
+    if azimuths.size < 1 or inflow_speeds.size < 1:
+        raise ValueError("Analysis results must include non-empty azimuth and inflow-speed grids.")
+    extent = (
+        float(azimuths[0]),
+        float(azimuths[-1]),
+        float(inflow_speeds[0]),
+        float(inflow_speeds[-1]),
+    )
+
+    if plot_type == "percdiff":
+        return ResultPlotData(
+            data=np.array(results["percdiff_matrix"], dtype=float, copy=True),
+            extent=extent,
+            title="Worst Percent Difference",
+            colorbar_label="Freq % Diff",
+            cmap="viridis_r",
+            vmin=0.0,
+            vmax=50.0,
+        )
+    if plot_type in {"fx", "fy", "fz"}:
+        idx = {"fx": 0, "fy": 1, "fz": 2}[plot_type]
+        force_data = np.asarray(results["total_global_force_vector"], dtype=float)
+        return ResultPlotData(
+            data=np.array(force_data[:, :, idx], dtype=float, copy=True),
+            extent=extent,
+            title=f"Force {plot_type.upper()}",
+            colorbar_label="Force (N)",
+            cmap="coolwarm",
+            zero_center_norm=True,
+        )
+    if plot_type in {"mx", "my", "mz"}:
+        idx = {"mx": 0, "my": 1, "mz": 2}[plot_type]
+        moment_data = np.asarray(results["total_global_moment_vector"], dtype=float)
+        return ResultPlotData(
+            data=np.array(moment_data[:, :, idx], dtype=float, copy=True),
+            extent=extent,
+            title=f"Moment {plot_type.upper()}",
+            colorbar_label="Moment (N-m)",
+            cmap="coolwarm",
+            zero_center_norm=True,
+        )
+    raise ValueError(f"Unsupported plot type: {plot_type}")
+
+
+def prepare_result_plot_export(results, plot_type: str) -> ResultPlotExport:
+    """Prepare CSV/JSON-ready records for a scalar analysis plot."""
+    prepared = prepare_result_plot_data(results, plot_type)
+    viv_params = results["viv_params"]
+    azimuths = np.asarray(viv_params.azimuths, dtype=float).reshape(-1)
+    inflow_speeds = np.asarray(viv_params.inflow_speeds, dtype=float).reshape(-1)
+    if prepared.data.shape != (inflow_speeds.size, azimuths.size):
+        raise ValueError(
+            f"Plot data shape {prepared.data.shape} does not match "
+            f"{inflow_speeds.size} inflow value(s) x {azimuths.size} azimuth value(s)."
+        )
+    rows: list[dict[str, float]] = []
+    for i_inflow, inflow_mps in enumerate(inflow_speeds):
+        for j_azimuth, azimuth_deg in enumerate(azimuths):
+            rows.append(
+                {
+                    "inflow_mps": float(inflow_mps),
+                    "azimuth_deg": float(azimuth_deg),
+                    "value": float(prepared.data[i_inflow, j_azimuth]),
+                }
+            )
+    return ResultPlotExport(
+        metadata={
+            "plot_type": str(plot_type),
+            "title": prepared.title,
+            "value_label": prepared.colorbar_label,
+            "value_unit": _unit_from_colorbar_label(prepared.colorbar_label),
+            "row_count": len(rows),
+            "azimuth_count": int(azimuths.size),
+            "inflow_count": int(inflow_speeds.size),
+        },
+        rows=tuple(rows),
+    )
+
+
+def _unit_from_colorbar_label(label: str) -> str:
+    start = label.rfind("(")
+    end = label.rfind(")")
+    if 0 <= start < end:
+        return label[start + 1 : end]
+    return ""
+
+
+def write_result_plot_export(path: str, results, plot_type: str) -> str:
+    """Write scalar plot data and provenance as CSV or JSON."""
+    export = prepare_result_plot_export(results, plot_type)
+    out_path = Path(path)
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    if out_path.suffix.lower() == ".json":
+        with out_path.open("w", encoding="utf-8") as handle:
+            json.dump({"metadata": export.metadata, "rows": list(export.rows)}, handle, indent=2, sort_keys=True)
+            handle.write("\n")
+    else:
+        fieldnames = [
+            "plot_type",
+            "title",
+            "value_label",
+            "value_unit",
+            "inflow_mps",
+            "azimuth_deg",
+            "value",
+        ]
+        with out_path.open("w", encoding="utf-8", newline="") as handle:
+            writer = csv.DictWriter(handle, fieldnames=fieldnames)
+            writer.writeheader()
+            for row in export.rows:
+                writer.writerow(
+                    {
+                        "plot_type": export.metadata["plot_type"],
+                        "title": export.metadata["title"],
+                        "value_label": export.metadata["value_label"],
+                        "value_unit": export.metadata["value_unit"],
+                        **row,
+                    }
+                )
+    return str(out_path)
 
 
 class PlotsOutputsTab(ttk.Frame):
@@ -33,6 +194,9 @@ class PlotsOutputsTab(ttk.Frame):
         self.content = self.scrollable.content
         self._colorbar = None
         self.toolbar = None
+        self.fig = None
+        self.ax = None
+        self.canvas = None
         self._last_plot_save_path = ""
         self._build()
 
@@ -44,7 +208,8 @@ class PlotsOutputsTab(ttk.Frame):
         top_actions.columnconfigure(1, weight=1)
         top_actions.columnconfigure(3, weight=1)
 
-        ttk.Button(top_actions, text="Run and Plot", command=self.run_and_plot).grid(
+        self.run_button = ttk.Button(top_actions, text="Run and Plot", command=self.run_and_plot)
+        self.run_button.grid(
             row=0, column=0, sticky="w", padx=(6, 8), pady=(6, 4)
         )
         ttk.Label(top_actions, text="Run analysis then switch plot types below.").grid(
@@ -107,6 +272,20 @@ class PlotsOutputsTab(ttk.Frame):
         )
         self.fancy_geometry_btn.grid(row=1, column=1, pady=(4, 0), sticky="w")
         ttk.Button(controls, text="Save Plot", command=self.save_plot).grid(row=0, column=len(plot_types) + 1, padx=5)
+        ttk.Button(controls, text="Export Data", command=self.export_plot_data).grid(row=0, column=len(plot_types) + 2, padx=5)
+
+        if not MATPLOTLIB_OK:
+            ttk.Label(
+                self.plot_frame,
+                text="Matplotlib is not available in this environment; plotting controls are disabled.",
+            ).grid(row=1, column=0, sticky="w", padx=8, pady=8)
+            self.toolbar_frame = ttk.Frame(self.plot_frame)
+            self.toolbar_frame.grid(row=2, column=0, sticky="ew")
+            container.columnconfigure(0, weight=1)
+            container.rowconfigure(1, weight=1)
+            self.winfo_toplevel().bind("<<VorLapThemeChanged>>", self._on_theme_changed, add="+")
+            self._update_geometry_controls()
+            return
 
         self.fig = Figure(figsize=(10, 8))
         self.ax = self.fig.add_subplot(111)
@@ -196,7 +375,9 @@ class PlotsOutputsTab(ttk.Frame):
             return
         try:
             results = self.app.analysis_results or {}
-            viv_params = results.get("viv_params", self.app.tab_setup.get_viv_params())
+            viv_params = results.get("viv_params")
+            if viv_params is None:
+                viv_params = self.app.tab_setup.get_viv_params()
             fig = vorlap.graphics.calc_structure_vectors_andplot(
                 self.app.components,
                 viv_params,
@@ -247,18 +428,15 @@ class PlotsOutputsTab(ttk.Frame):
             raise ValueError("No components loaded. Load geometry and run analysis first.")
 
         results = self.app.analysis_results or {}
-        viv_params = results.get("viv_params", self.app.tab_setup.get_viv_params())
+        viv_params = results.get("viv_params")
+        if viv_params is None:
+            viv_params = self.app.tab_setup.get_viv_params()
 
-        # Populate shape_xyz_global/chord_vector/normal_vector consistently.
-        vorlap.graphics.calc_structure_vectors_andplot(
-            self.app.components,
-            viv_params,
-            show_plot=False,
-            return_fig=False,
-        )
+        plot_components = copy.deepcopy(self.app.components)
+        vorlap.prepare_component_frames(plot_components)
 
         points = []
-        for comp in self.app.components:
+        for comp in plot_components:
             comp_pts = np.asarray(comp.shape_xyz_global, dtype=float)
             if comp_pts.ndim != 2 or comp_pts.shape[1] != 3 or comp_pts.shape[0] == 0:
                 continue
@@ -353,6 +531,8 @@ class PlotsOutputsTab(ttk.Frame):
     def update_plots(self, show_errors=True):
         """Update the plot based on current analysis results and selected plot type."""
         if not MATPLOTLIB_OK:
+            if show_errors:
+                self.app.log("Plot update skipped: Matplotlib is not available.\n")
             return
 
         plot_type = self.plot_type.get()
@@ -369,62 +549,25 @@ class PlotsOutputsTab(ttk.Frame):
                 self._colorbar = None
             else:
                 self.ax = self.fig.add_subplot(111)
-                viv_params = results["viv_params"]
-                extent = [
-                    viv_params.azimuths[0],
-                    viv_params.azimuths[-1],
-                    viv_params.inflow_speeds[0],
-                    viv_params.inflow_speeds[-1],
-                ]
-
-                if plot_type == "percdiff":
-                    data = results["percdiff_matrix"]
-                    im = self.ax.imshow(
-                        data,
-                        extent=extent,
-                        aspect="auto",
-                        origin="lower",
-                        cmap="viridis_r",
-                        vmin=0,
-                        vmax=50,
-                    )
-                    self.ax.set_title("Worst Percent Difference")
-                    label = "Freq % Diff"
-                elif plot_type.startswith("f"):
-                    force_data = results["total_global_force_vector"]
-                    idx = {"fx": 0, "fy": 1, "fz": 2}[plot_type]
-                    data = force_data[:, :, idx]
-                    im = self.ax.imshow(
-                        data,
-                        extent=extent,
-                        aspect="auto",
-                        origin="lower",
-                        cmap="coolwarm",
-                        norm=self._create_norm(data),
-                    )
-                    self.ax.set_title(f"Force {plot_type.upper()}")
-                    label = "Force (N)"
-                elif plot_type.startswith("m"):
-                    moment_data = results["total_global_moment_vector"]
-                    idx = {"mx": 0, "my": 1, "mz": 2}[plot_type]
-                    data = moment_data[:, :, idx]
-                    im = self.ax.imshow(
-                        data,
-                        extent=extent,
-                        aspect="auto",
-                        origin="lower",
-                        cmap="coolwarm",
-                        norm=self._create_norm(data),
-                    )
-                    self.ax.set_title(f"Moment {plot_type.upper()}")
-                    label = "Moment (N-m)"
+                prepared = prepare_result_plot_data(results, plot_type)
+                imshow_kwargs = {
+                    "extent": prepared.extent,
+                    "aspect": "auto",
+                    "origin": "lower",
+                    "cmap": prepared.cmap,
+                }
+                if prepared.zero_center_norm:
+                    imshow_kwargs["norm"] = self._create_norm(prepared.data)
                 else:
-                    raise ValueError(f"Unsupported plot type: {plot_type}")
+                    imshow_kwargs["vmin"] = prepared.vmin
+                    imshow_kwargs["vmax"] = prepared.vmax
+                im = self.ax.imshow(prepared.data, **imshow_kwargs)
+                self.ax.set_title(prepared.title)
 
                 self.ax.set_xlabel("Azimuth (deg)")
                 self.ax.set_ylabel("Inflow (m/s)")
                 self._apply_axis_theme(self.ax)
-                self._colorbar = self.fig.colorbar(im, ax=self.ax, label=label)
+                self._colorbar = self.fig.colorbar(im, ax=self.ax, label=prepared.colorbar_label)
                 if self._colorbar is not None:
                     self._colorbar.ax.yaxis.label.set_color(self._theme_colors()["fg"])
                     self._colorbar.ax.tick_params(colors=self._theme_colors()["fg"])
@@ -458,3 +601,30 @@ class PlotsOutputsTab(ttk.Frame):
 
         self.fig.savefig(path, dpi=150, bbox_inches="tight")
         self.app.log(f"Plot saved to: {path}\n")
+
+    def export_plot_data(self):
+        plot_type = self.plot_type.get()
+        if plot_type == "geometry":
+            messagebox.showinfo("Plot Data", "Geometry plot data is not exported from this view.")
+            return
+        results = self.app.analysis_results or {}
+        if not results:
+            messagebox.showinfo("Plot Data", "No analysis results are available to export.")
+            return
+
+        suggested = f"{plot_type}_plot_data.csv"
+        path = filedialog.asksaveasfilename(
+            title="Export plot data",
+            defaultextension=".csv",
+            initialfile=suggested,
+            filetypes=[("CSV", "*.csv"), ("JSON", "*.json"), ("All Files", "*.*")],
+        )
+        if not path:
+            return
+        try:
+            written = write_result_plot_export(path, results, plot_type)
+        except Exception as exc:
+            self.app.log(f"Plot data export failed ({plot_type}): {exc}\n")
+            messagebox.showerror("Plot Data Export Error", str(exc))
+            return
+        self.app.log(f"Plot data exported to: {written}\n")

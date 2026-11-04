@@ -1,0 +1,194 @@
+---------------------- QBLADE STRUCTURAL MODEL INPUT FILE -----------------
+0.0005 GLBGEOEPS
+0.0 PRECONE
+0.0 SHFTTILT
+0.0 OVERHANG
+0.0 TWR2SHFT
+0.0 YAWBRMASS
+0.0 NACMASS
+0.0 NACCMX
+0.0 NACCMY
+0.0 NACCMZ
+0 0 0 0 0 0 NACINER
+0.0 NACYINER
+0.0 HUBMASS
+0.0 HUBCM
+1.0 HUBINER
+1.0 GBRATIO
+1.0 GBOXEFF
+1.0 GENEFF
+false DRTRDOF
+1.0 GENINER
+1.0e12 DTTORSPR
+1.0e9 DTTORDMP
+1 NUMBLD
+cantilever_beam.str BLDFILE_1
+1.0 TWRHEIGHT
+rigid_tower.str TWRFILE
+true FOR_OUT
+true ROT_OUT
+true MOM_OUT
+true DEF_OUT
+true POS_OUT
+true VEL_OUT
+true ACC_OUT
+true LVE_OUT
+true LAC_OUT
+BLD_1_0.0000000000
+BLD_1_0.0500000000
+BLD_1_0.1000000000
+BLD_1_0.1500000000
+BLD_1_0.2000000000
+BLD_1_0.2500000000
+BLD_1_0.3000000000
+BLD_1_0.3500000000
+BLD_1_0.4000000000
+BLD_1_0.4500000000
+BLD_1_0.5000000000
+BLD_1_0.5500000000
+BLD_1_0.6000000000
+BLD_1_0.6500000000
+BLD_1_0.7000000000
+BLD_1_0.7500000000
+BLD_1_0.8000000000
+BLD_1_0.8500000000
+BLD_1_0.9000000000
+BLD_1_0.9500000000
+BLD_1_1.0000000000
+TWR_0.0
+TWR_1.0
+
+EXTERNAL_1_IN
+SWAP DATA
+0    "Time [s]"
+1    "Timestep [-]"
+2    "LSS Azimuthal Pos. [deg]"
+3    "X_g Vel. BLD_1 pos 0.000 [m/s]"
+4    "Y_g Vel. BLD_1 pos 0.000 [m/s]"
+5    "Z_g Vel. BLD_1 pos 0.000 [m/s]"
+6    "X_g Vel. BLD_1 pos 0.050 [m/s]"
+7    "Y_g Vel. BLD_1 pos 0.050 [m/s]"
+8    "Z_g Vel. BLD_1 pos 0.050 [m/s]"
+9    "X_g Vel. BLD_1 pos 0.100 [m/s]"
+10    "Y_g Vel. BLD_1 pos 0.100 [m/s]"
+11    "Z_g Vel. BLD_1 pos 0.100 [m/s]"
+12    "X_g Vel. BLD_1 pos 0.150 [m/s]"
+13    "Y_g Vel. BLD_1 pos 0.150 [m/s]"
+14    "Z_g Vel. BLD_1 pos 0.150 [m/s]"
+15    "X_g Vel. BLD_1 pos 0.200 [m/s]"
+16    "Y_g Vel. BLD_1 pos 0.200 [m/s]"
+17    "Z_g Vel. BLD_1 pos 0.200 [m/s]"
+18    "X_g Vel. BLD_1 pos 0.250 [m/s]"
+19    "Y_g Vel. BLD_1 pos 0.250 [m/s]"
+20    "Z_g Vel. BLD_1 pos 0.250 [m/s]"
+21    "X_g Vel. BLD_1 pos 0.300 [m/s]"
+22    "Y_g Vel. BLD_1 pos 0.300 [m/s]"
+23    "Z_g Vel. BLD_1 pos 0.300 [m/s]"
+24    "X_g Vel. BLD_1 pos 0.350 [m/s]"
+25    "Y_g Vel. BLD_1 pos 0.350 [m/s]"
+26    "Z_g Vel. BLD_1 pos 0.350 [m/s]"
+27    "X_g Vel. BLD_1 pos 0.400 [m/s]"
+28    "Y_g Vel. BLD_1 pos 0.400 [m/s]"
+29    "Z_g Vel. BLD_1 pos 0.400 [m/s]"
+30    "X_g Vel. BLD_1 pos 0.450 [m/s]"
+31    "Y_g Vel. BLD_1 pos 0.450 [m/s]"
+32    "Z_g Vel. BLD_1 pos 0.450 [m/s]"
+33    "X_g Vel. BLD_1 pos 0.500 [m/s]"
+34    "Y_g Vel. BLD_1 pos 0.500 [m/s]"
+35    "Z_g Vel. BLD_1 pos 0.500 [m/s]"
+36    "X_g Vel. BLD_1 pos 0.550 [m/s]"
+37    "Y_g Vel. BLD_1 pos 0.550 [m/s]"
+38    "Z_g Vel. BLD_1 pos 0.550 [m/s]"
+39    "X_g Vel. BLD_1 pos 0.600 [m/s]"
+40    "Y_g Vel. BLD_1 pos 0.600 [m/s]"
+41    "Z_g Vel. BLD_1 pos 0.600 [m/s]"
+42    "X_g Vel. BLD_1 pos 0.650 [m/s]"
+43    "Y_g Vel. BLD_1 pos 0.650 [m/s]"
+44    "Z_g Vel. BLD_1 pos 0.650 [m/s]"
+45    "X_g Vel. BLD_1 pos 0.700 [m/s]"
+46    "Y_g Vel. BLD_1 pos 0.700 [m/s]"
+47    "Z_g Vel. BLD_1 pos 0.700 [m/s]"
+48    "X_g Vel. BLD_1 pos 0.750 [m/s]"
+49    "Y_g Vel. BLD_1 pos 0.750 [m/s]"
+50    "Z_g Vel. BLD_1 pos 0.750 [m/s]"
+51    "X_g Vel. BLD_1 pos 0.800 [m/s]"
+52    "Y_g Vel. BLD_1 pos 0.800 [m/s]"
+53    "Z_g Vel. BLD_1 pos 0.800 [m/s]"
+54    "X_g Vel. BLD_1 pos 0.850 [m/s]"
+55    "Y_g Vel. BLD_1 pos 0.850 [m/s]"
+56    "Z_g Vel. BLD_1 pos 0.850 [m/s]"
+57    "X_g Vel. BLD_1 pos 0.900 [m/s]"
+58    "Y_g Vel. BLD_1 pos 0.900 [m/s]"
+59    "Z_g Vel. BLD_1 pos 0.900 [m/s]"
+60    "X_g Vel. BLD_1 pos 0.950 [m/s]"
+61    "Y_g Vel. BLD_1 pos 0.950 [m/s]"
+62    "Z_g Vel. BLD_1 pos 0.950 [m/s]"
+63    "X_g Vel. BLD_1 pos 1.000 [m/s]"
+64    "Y_g Vel. BLD_1 pos 1.000 [m/s]"
+65    "Z_g Vel. BLD_1 pos 1.000 [m/s]"
+
+EXTERNAL_1_OUT
+SWAP  ACTION     ID     POS  DIR  LOCAL
+66    ADDFORCE  BLD_1    0.000000 X    false
+67    ADDFORCE  BLD_1    0.000000 Y    false
+68    ADDFORCE  BLD_1    0.000000 Z    false
+69    ADDFORCE  BLD_1    0.050000 X    false
+70    ADDFORCE  BLD_1    0.050000 Y    false
+71    ADDFORCE  BLD_1    0.050000 Z    false
+72    ADDFORCE  BLD_1    0.100000 X    false
+73    ADDFORCE  BLD_1    0.100000 Y    false
+74    ADDFORCE  BLD_1    0.100000 Z    false
+75    ADDFORCE  BLD_1    0.150000 X    false
+76    ADDFORCE  BLD_1    0.150000 Y    false
+77    ADDFORCE  BLD_1    0.150000 Z    false
+78    ADDFORCE  BLD_1    0.200000 X    false
+79    ADDFORCE  BLD_1    0.200000 Y    false
+80    ADDFORCE  BLD_1    0.200000 Z    false
+81    ADDFORCE  BLD_1    0.250000 X    false
+82    ADDFORCE  BLD_1    0.250000 Y    false
+83    ADDFORCE  BLD_1    0.250000 Z    false
+84    ADDFORCE  BLD_1    0.300000 X    false
+85    ADDFORCE  BLD_1    0.300000 Y    false
+86    ADDFORCE  BLD_1    0.300000 Z    false
+87    ADDFORCE  BLD_1    0.350000 X    false
+88    ADDFORCE  BLD_1    0.350000 Y    false
+89    ADDFORCE  BLD_1    0.350000 Z    false
+90    ADDFORCE  BLD_1    0.400000 X    false
+91    ADDFORCE  BLD_1    0.400000 Y    false
+92    ADDFORCE  BLD_1    0.400000 Z    false
+93    ADDFORCE  BLD_1    0.450000 X    false
+94    ADDFORCE  BLD_1    0.450000 Y    false
+95    ADDFORCE  BLD_1    0.450000 Z    false
+96    ADDFORCE  BLD_1    0.500000 X    false
+97    ADDFORCE  BLD_1    0.500000 Y    false
+98    ADDFORCE  BLD_1    0.500000 Z    false
+99    ADDFORCE  BLD_1    0.550000 X    false
+100    ADDFORCE  BLD_1    0.550000 Y    false
+101    ADDFORCE  BLD_1    0.550000 Z    false
+102    ADDFORCE  BLD_1    0.600000 X    false
+103    ADDFORCE  BLD_1    0.600000 Y    false
+104    ADDFORCE  BLD_1    0.600000 Z    false
+105    ADDFORCE  BLD_1    0.650000 X    false
+106    ADDFORCE  BLD_1    0.650000 Y    false
+107    ADDFORCE  BLD_1    0.650000 Z    false
+108    ADDFORCE  BLD_1    0.700000 X    false
+109    ADDFORCE  BLD_1    0.700000 Y    false
+110    ADDFORCE  BLD_1    0.700000 Z    false
+111    ADDFORCE  BLD_1    0.750000 X    false
+112    ADDFORCE  BLD_1    0.750000 Y    false
+113    ADDFORCE  BLD_1    0.750000 Z    false
+114    ADDFORCE  BLD_1    0.800000 X    false
+115    ADDFORCE  BLD_1    0.800000 Y    false
+116    ADDFORCE  BLD_1    0.800000 Z    false
+117    ADDFORCE  BLD_1    0.850000 X    false
+118    ADDFORCE  BLD_1    0.850000 Y    false
+119    ADDFORCE  BLD_1    0.850000 Z    false
+120    ADDFORCE  BLD_1    0.900000 X    false
+121    ADDFORCE  BLD_1    0.900000 Y    false
+122    ADDFORCE  BLD_1    0.900000 Z    false
+123    ADDFORCE  BLD_1    0.950000 X    false
+124    ADDFORCE  BLD_1    0.950000 Y    false
+125    ADDFORCE  BLD_1    0.950000 Z    false
+126    ADDFORCE  BLD_1    1.000000 X    false
+127    ADDFORCE  BLD_1    1.000000 Y    false
+128    ADDFORCE  BLD_1    1.000000 Z    false

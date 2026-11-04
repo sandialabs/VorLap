@@ -1,0 +1,4 @@
+scruton_number,evaluated,pass,threshold_amplitude_over_diameter,coarse_peak_u_star,half_dt_peak_u_star,peak_location_difference_u_star,peak_location_tolerance_u_star,coarse_band_low_u_star,half_dt_band_low_u_star,band_low_difference_u_star,coarse_band_high_u_star,half_dt_band_high_u_star,band_high_difference_u_star,band_endpoint_tolerance_u_star
+2.94,False,False,0.054000000000000006,,,,0.25,,,,,,,0.15
+5.18,True,True,0.027000000000000003,6.25,6.25,0.0,0.25,5.5807981439256,5.581708896082527,0.0009107521569271526,6.7608479182401835,6.760772275495039,7.564274514493263e-05,0.15
+7.02,False,False,0.015,,,,0.25,,,,,,,0.15

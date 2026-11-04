@@ -1,0 +1,72 @@
+{
+  "aerodynamic_geometry": {
+    "blade_height_max_m": 10.54,
+    "blade_height_min_m": 0.0,
+    "clearance_m": 11.5,
+    "conservative_swept_radius_m": 5.77,
+    "maximum_blade_radius_m": 5.27,
+    "maximum_chord_m": 0.5,
+    "maximum_strut_chord_m": 0.5,
+    "maximum_strut_hub_radius_m": 0.364,
+    "rotor_bottom_m": 11.5,
+    "rotor_top_m": 22.04,
+    "strut_definitions_per_blade": 2,
+    "strut_endpoint_height_max_m": 7.913,
+    "strut_endpoint_height_min_m": 2.441,
+    "total_strut_count": 6
+  },
+  "grid": {
+    "grid_height_m": 26.0,
+    "grid_width_m": 26.0,
+    "hub_height_m": 18.0,
+    "lateral_bounds_m": [
+      -13.0,
+      13.0
+    ],
+    "num_grid_y": 26,
+    "num_grid_z": 38,
+    "ref_height_m": 18.0,
+    "spacing_y_m": 1.04,
+    "spacing_z_m": 0.7027027027027027,
+    "vertical_bounds_m": [
+      5.0,
+      31.0
+    ]
+  },
+  "issues": [],
+  "margins": {
+    "above_rotor_m": 8.96,
+    "below_rotor_m": 6.5,
+    "lateral_each_side_m": 7.23,
+    "required_minimum_m": 2.0
+  },
+  "passed": true,
+  "qblade_conventions": {
+    "center_height_parameter": "TurbSim HubHt",
+    "horizontal_inflow_angle_deg": 0.0,
+    "production_override": "The campaign writes HORANGLE and VERTANGLE from the archived manifest-row environment; the production values above supersede the source template.",
+    "reference_height_parameter": "TurbSim RefHt equals QBlade REFHEIGHT",
+    "source_template_horizontal_inflow_angle_deg": -20.0,
+    "source_template_vertical_inflow_angle_deg": 0.0,
+    "vertical_inflow_angle_deg": 0.0,
+    "wind_auto_shift": "QBlade WINDAUTOSHIFT is a time shift of rotor diameter divided by mean wind speed; it does not change the cross-plane bounds.",
+    "wind_box_cross_plane": "lateral y by vertical z"
+  },
+  "review_sha256": "f24739d9a73f3d8fbab5cc4961e9cede6249a7e33b11ad98ca0fbe44e0c66c5c",
+  "schema_version": 1,
+  "scope": "QBlade turbulent inflow coverage for the rotating VAWT blades, struts, and all VorLap aerodynamic action points. The fixed foundation and lower non-aerodynamic support are outside this sampling requirement.",
+  "source_files": {
+    "blade": {
+      "path": "examples/ReferenceHVAWTQBladeModel/10m_HVAWT_reference_turbine/Aero/10m_HVAWT_reference_rotor.bld",
+      "sha256": "fd817620a82154eb093d7c72515a6972438b4bf58f6fffcdf5bcde613d2f8400"
+    },
+    "simulation": {
+      "path": "examples/ReferenceHVAWTQBladeModel/baseline_10m_HVAWT_reference_turbine_Wwnd.sim",
+      "sha256": "b5b7d71865fde1312269b37924a5327a716c509b534fd2b3d7e17dee9fbd3ca1"
+    },
+    "turbine": {
+      "path": "examples/ReferenceHVAWTQBladeModel/10m_HVAWT_reference_turbine/10m_HVAWT_reference_turbine.trb",
+      "sha256": "db4de24622d000dde82fdb58c5cf8dc8bbef125a36732e98dbd3fb2ceee5e0f2"
+    }
+  }
+}

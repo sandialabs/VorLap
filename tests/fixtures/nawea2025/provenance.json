@@ -1,0 +1,9 @@
+{
+  "source_commit": "45f827e11356586b7963fc1be8a752e9e8c3745d",
+  "source_h5_sha256": "7f968617b10dab530bba5418b0802b885195f585d70d6218ea0083d939dc95dc",
+  "source_history_sha256": "48761388f0652b318ad1efa38b792bdca6cfc3d926c154cec258656568aa089a",
+  "fixture_sha256": "8ce8c70ebc2f05ae5975329b15675c6c6b5cafbbf136b1c079b891c5eecccb07",
+  "selection": "Re index 0, AOA=144 degrees, spectral indices 0:9 (DC plus eight peaks). All four coefficient fields.",
+  "expected_outputs": "Original companion reconstruction and raw force -(Fy_pressure+Fy_viscous) interpolated on arange(.0005,2,.001) s. rho=1.225 kg/m3, U=75 m/s, chord=1 m, CFD span=4 m.",
+  "tolerances": "Waveform rtol=1e-10, atol=1e-8 N; Pearson correlation absolute 1e-8."
+}

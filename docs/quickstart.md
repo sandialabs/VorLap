@@ -6,7 +6,7 @@
 python3 -m venv .venv
 source .venv/bin/activate
 python -m pip install --upgrade pip
-python -m pip install -e .[dev,docs,gui]
+python -m pip install -e ".[dev,docs,gui]"
 ```
 
 ## 2. Run the Test Suite
@@ -56,3 +56,27 @@ python examples/qblade_fastpath_loading.py --sim /path/to/case.sim --inflow data
 ```
 
 The exported file is compatible with QBlade `LOADINGFILE` parsing (`time Fx Fy Fz Mx My Mz` per target block).
+
+## 8. Run The Headless Parked QBlade Sweep
+
+The retained cluster runner lives in `run_headless/`. Install QBlade CE
+2.0.9.7 separately; the historical launchers expect it at
+`run_headless/QBladeCE_2.0.9.7` unless their documented override is set.
+The SIL CLI accepts `QBLADE_ROOT` or `--qblade-root`.
+
+```bash
+export PYTHON_EXE=/path/to/python
+sbatch run_headless/submit_vorlap_parked.sj
+```
+
+Use the same `PYTHON_EXE` for VorLap installation, QBlade SIL execution, and `scripts/build_qblade_external_linux.sh` so the compiled controller bridge links against the Python runtime QBlade will load. The default Slurm array runs 13 parked cases from 2 to 20 m/s; set `WIND_SPEEDS="2 8 14 20"` for a smaller four-case sweep.
+
+After the run:
+
+```bash
+scripts/plot_qblade_parked_sweep.py --run-root run_headless/runs/vorlap_parked
+```
+
+For the current SIL manuscript's exact inputs, replay commands, and scientific
+limits, use [paper reproducibility](reproducibility.md). The historical parked
+sweep above is a smaller workflow, not the current paper's full campaign.

@@ -1,0 +1,2280 @@
+{
+  "current_matrix_coverage": {
+    "matrix_wind_speeds_mps": [
+      3.0,
+      7.0,
+      8.0,
+      8.75,
+      11.25,
+      13.0,
+      14.75,
+      18.0,
+      19.25,
+      21.5,
+      35.0
+    ],
+    "passed": true,
+    "peak_checks": [
+      {
+        "covered": true,
+        "distance_mps": 0.0,
+        "nearest_matrix_wind_speed_mps": 7.0,
+        "peak_wind_speed_mps": 7.0,
+        "tolerance_mps": 0.5
+      },
+      {
+        "covered": true,
+        "distance_mps": 0.0,
+        "nearest_matrix_wind_speed_mps": 8.0,
+        "peak_wind_speed_mps": 8.0,
+        "tolerance_mps": 0.5
+      },
+      {
+        "covered": true,
+        "distance_mps": 0.0,
+        "nearest_matrix_wind_speed_mps": 8.75,
+        "peak_wind_speed_mps": 8.75,
+        "tolerance_mps": 0.5
+      },
+      {
+        "covered": true,
+        "distance_mps": 0.0,
+        "nearest_matrix_wind_speed_mps": 11.25,
+        "peak_wind_speed_mps": 11.25,
+        "tolerance_mps": 0.5625
+      },
+      {
+        "covered": true,
+        "distance_mps": 0.5,
+        "nearest_matrix_wind_speed_mps": 13.0,
+        "peak_wind_speed_mps": 12.5,
+        "tolerance_mps": 0.625
+      },
+      {
+        "covered": true,
+        "distance_mps": 0.0,
+        "nearest_matrix_wind_speed_mps": 14.75,
+        "peak_wind_speed_mps": 14.75,
+        "tolerance_mps": 0.7375
+      },
+      {
+        "covered": true,
+        "distance_mps": 0.5,
+        "nearest_matrix_wind_speed_mps": 18.0,
+        "peak_wind_speed_mps": 17.5,
+        "tolerance_mps": 0.875
+      },
+      {
+        "covered": true,
+        "distance_mps": 0.0,
+        "nearest_matrix_wind_speed_mps": 19.25,
+        "peak_wind_speed_mps": 19.25,
+        "tolerance_mps": 0.9625
+      },
+      {
+        "covered": true,
+        "distance_mps": 0.0,
+        "nearest_matrix_wind_speed_mps": 21.5,
+        "peak_wind_speed_mps": 21.5,
+        "tolerance_mps": 1.075
+      },
+      {
+        "covered": true,
+        "distance_mps": 0.0,
+        "nearest_matrix_wind_speed_mps": 35.0,
+        "peak_wind_speed_mps": 35.0,
+        "tolerance_mps": 1.75
+      }
+    ],
+    "uncovered_peak_wind_speeds_mps": []
+  },
+  "limitations": "This is a conservative frequency/amplitude screen, not a modal-response or lock-in prediction. It does not include generalized modal force, mode-shape participation, structural damping, turbulence broadening, or aeroelastic feedback. Final evidence comes from the time-domain QBlade baseline/VorLap runs.",
+  "matrix_spec": {
+    "current_dlc64_wind_speeds_mps": [
+      3.0,
+      7.0,
+      8.0,
+      8.75,
+      11.25,
+      13.0,
+      14.75,
+      18.0,
+      19.25,
+      21.5,
+      35.0
+    ],
+    "path": "run_headless/config/parked_dlc_matrix_draft.json"
+  },
+  "method": "For each mean wind speed, 1 RPM azimuth, and production VorLap action node, interpolate alternating AmpCF/STCF tones, dimensionalize STCF with the local relative flow and VorLap reference length, and compare each retained tone with the qualified Campbell modes. The force-overlap score is nodal harmonic-force amplitude times a Gaussian detuning kernel. The downtime-weighted score also multiplies by the project 1-percent Rayleigh downtime density.",
+  "mode_basis": {
+    "campbell_csv": "run_headless/config/changed_geometry_campbell_frequencies.csv",
+    "campbell_csv_sha256": "2a304994b97a9b46319c11d81775a377228952d77283a68c626db8ab2ac1e05a",
+    "mode_columns": [
+      "mode_01_hz",
+      "mode_02_hz",
+      "mode_03_hz",
+      "mode_04_hz",
+      "mode_05_hz",
+      "mode_06_hz",
+      "mode_07_hz",
+      "mode_08_hz",
+      "mode_09_hz",
+      "mode_10_hz",
+      "mode_11_hz",
+      "mode_12_hz"
+    ],
+    "natural_frequencies_hz": [
+      0.714393560902695,
+      0.7469032200374802,
+      1.5408083960677783,
+      1.5416472936826637,
+      1.5487890534657967,
+      2.5115545017693828,
+      4.054035796552485,
+      4.056239204740739,
+      4.128485134337729,
+      4.128749854279629,
+      4.128804993309907,
+      4.572593676110874
+    ],
+    "selected_rpm": 1.0
+  },
+  "passed": true,
+  "purpose": "Risk-informed preselection of DLC 6.4 mean wind speeds from VorLap/modal overlap.",
+  "ranked_downtime_weighted_overlap_peaks": [
+    {
+      "best_force_overlap": {
+        "amplitude_coefficient": 0.41160903865096526,
+        "aoa_deg": -143.4949852443121,
+        "azimuth_deg": 145.0,
+        "component_id": "BLD_1",
+        "detuning_percent": 0.22015366043815593,
+        "effective_velocity_mps": 12.05208962311054,
+        "forcing_frequency_hz": 4.582660408465796,
+        "natural_frequency_hz": 4.572593676110874,
+        "natural_mode_index": 12,
+        "node_id": "BLD_1_0.500000",
+        "overlap_kernel": 0.9990311169864556,
+        "overlap_score_n": 43.6786349439752,
+        "relative_detuning": 0.002201536604381559,
+        "reynolds": 365880.07356134,
+        "section_force_amplitude_n": 43.720995473825035,
+        "source_clipped": false,
+        "source_depth_index": 2,
+        "wind_speed_mps": 12.5
+      },
+      "best_frequency_match": {
+        "amplitude_coefficient": 0.0033753950587888815,
+        "aoa_deg": -22.203846202087185,
+        "azimuth_deg": 15.0,
+        "component_id": "STR_1_2",
+        "detuning_percent": 0.0010248507018043127,
+        "effective_velocity_mps": 9.410065966557353,
+        "forcing_frequency_hz": 4.056280775136695,
+        "natural_frequency_hz": 4.056239204740739,
+        "natural_mode_index": 8,
+        "node_id": "STR_1_2_0.172168",
+        "overlap_kernel": 0.999999978993621,
+        "overlap_score_n": 0.0022912305202332684,
+        "relative_detuning": 1.0248507018043128e-05,
+        "reynolds": 285672.9194461855,
+        "section_force_amplitude_n": 0.002291230568363726,
+        "source_clipped": false,
+        "source_depth_index": 19,
+        "wind_speed_mps": 12.5
+      },
+      "downtime_probability_density_per_mps": 0.000575533194137147,
+      "downtime_weighted_overlap_score_n_per_mps": 0.025138504284856453,
+      "minimum_detuning_percent": 0.0010248507018043127,
+      "overlap_score_n": 43.6786349439752,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 12.5,
+      "within_overlap_band_candidate_count": 17874
+    },
+    {
+      "best_force_overlap": {
+        "amplitude_coefficient": 0.40175544676463676,
+        "aoa_deg": -143.3208549325234,
+        "azimuth_deg": 145.0,
+        "component_id": "BLD_1",
+        "detuning_percent": 0.39347224167465356,
+        "effective_velocity_mps": 10.80257072404697,
+        "forcing_frequency_hz": 4.112240691332445,
+        "natural_frequency_hz": 4.128485134337729,
+        "natural_mode_index": 9,
+        "node_id": "BLD_1_0.500000",
+        "overlap_kernel": 0.9969083808280896,
+        "overlap_score_n": 34.1783970494554,
+        "relative_detuning": 0.003934722416746536,
+        "reynolds": 327946.8950833931,
+        "section_force_amplitude_n": 34.28439133099157,
+        "source_clipped": false,
+        "source_depth_index": 2,
+        "wind_speed_mps": 11.25
+      },
+      "best_frequency_match": {
+        "amplitude_coefficient": 0.004767019906712879,
+        "aoa_deg": 104.76523499389161,
+        "azimuth_deg": 85.0,
+        "component_id": "STR_2_1",
+        "detuning_percent": 0.0007789372576500736,
+        "effective_velocity_mps": 4.345134543192521,
+        "forcing_frequency_hz": 1.5408203979984443,
+        "natural_frequency_hz": 1.5408083960677783,
+        "natural_mode_index": 3,
+        "node_id": "STR_2_1_0.172800",
+        "overlap_kernel": 0.999999987865135,
+        "overlap_score_n": 0.0006813337982700673,
+        "relative_detuning": 7.789372576500736e-06,
+        "reynolds": 131910.5811533856,
+        "section_force_amplitude_n": 0.0006813338065379611,
+        "source_clipped": false,
+        "source_depth_index": 18,
+        "wind_speed_mps": 11.25
+      },
+      "downtime_probability_density_per_mps": 0.0006539961531315707,
+      "downtime_weighted_overlap_score_n_per_mps": 0.022352540190547256,
+      "minimum_detuning_percent": 0.0007789372576500736,
+      "overlap_score_n": 34.1783970494554,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 11.25,
+      "within_overlap_band_candidate_count": 21714
+    },
+    {
+      "best_force_overlap": {
+        "amplitude_coefficient": 0.34015976578189716,
+        "aoa_deg": -142.2323508359367,
+        "azimuth_deg": 145.0,
+        "component_id": "BLD_1",
+        "detuning_percent": 0.07106549720453659,
+        "effective_velocity_mps": 6.555578702715691,
+        "forcing_frequency_hz": 2.513339350463628,
+        "natural_frequency_hz": 2.5115545017693828,
+        "natural_mode_index": 6,
+        "node_id": "BLD_1_0.500000",
+        "overlap_kernel": 0.9998989990030857,
+        "overlap_score_n": 10.68911088615705,
+        "relative_detuning": 0.0007106549720453659,
+        "reynolds": 199015.7468948297,
+        "section_force_amplitude_n": 10.690190606065466,
+        "source_clipped": false,
+        "source_depth_index": 2,
+        "wind_speed_mps": 7.0
+      },
+      "best_frequency_match": {
+        "amplitude_coefficient": 0.009964499933414224,
+        "aoa_deg": 155.00194791323312,
+        "azimuth_deg": 190.0,
+        "component_id": "STR_1_2",
+        "detuning_percent": 0.00012651487305432126,
+        "effective_velocity_mps": 5.105206739489038,
+        "forcing_frequency_hz": 4.128479911190002,
+        "natural_frequency_hz": 4.128485134337729,
+        "natural_mode_index": 9,
+        "node_id": "STR_1_2_0.173878",
+        "overlap_kernel": 0.9999999996798797,
+        "overlap_score_n": 0.14827699225529334,
+        "relative_detuning": 1.2651487305432127e-06,
+        "reynolds": 154985.02548539886,
+        "section_force_amplitude_n": 0.1482769923027598,
+        "source_clipped": false,
+        "source_depth_index": 19,
+        "wind_speed_mps": 7.0
+      },
+      "downtime_probability_density_per_mps": 0.0007483104562049925,
+      "downtime_weighted_overlap_score_n_per_mps": 0.007998773443645933,
+      "minimum_detuning_percent": 0.00012651487305432126,
+      "overlap_score_n": 10.68911088615705,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 7.0,
+      "within_overlap_band_candidate_count": 19164
+    },
+    {
+      "best_force_overlap": {
+        "amplitude_coefficient": 0.16241857726803738,
+        "aoa_deg": -153.3806180340639,
+        "azimuth_deg": 275.0,
+        "component_id": "BLD_3",
+        "detuning_percent": 0.8268710992233785,
+        "effective_velocity_mps": 8.253129299777493,
+        "forcing_frequency_hz": 4.610403131703551,
+        "natural_frequency_hz": 4.572593676110874,
+        "natural_mode_index": 12,
+        "node_id": "BLD_3_0.500000",
+        "overlap_kernel": 0.9864187524682461,
+        "overlap_score_n": 7.980217969301868,
+        "relative_detuning": 0.008268710992233785,
+        "reynolds": 250550.3733994382,
+        "section_force_amplitude_n": 8.09009150458011,
+        "source_clipped": false,
+        "source_depth_index": 2,
+        "wind_speed_mps": 8.75
+      },
+      "best_frequency_match": {
+        "amplitude_coefficient": 0.038424857960549716,
+        "aoa_deg": -159.7268452446552,
+        "azimuth_deg": 45.0,
+        "component_id": "STR_1_1",
+        "detuning_percent": 0.0006452615513880789,
+        "effective_velocity_mps": 7.184102660718676,
+        "forcing_frequency_hz": 4.128778351718753,
+        "natural_frequency_hz": 4.128804993309907,
+        "natural_mode_index": 11,
+        "node_id": "STR_1_1_1.000000",
+        "overlap_kernel": 0.9999999916727507,
+        "overlap_score_n": 1.1299283260492177,
+        "relative_detuning": 6.452615513880789e-06,
+        "reynolds": 218096.6199368147,
+        "section_force_amplitude_n": 1.1299283354584126,
+        "source_clipped": false,
+        "source_depth_index": 1,
+        "wind_speed_mps": 8.75
+      },
+      "downtime_probability_density_per_mps": 0.0007533170006393036,
+      "downtime_weighted_overlap_score_n_per_mps": 0.006011633865082357,
+      "minimum_detuning_percent": 0.0006452615513880789,
+      "overlap_score_n": 7.980217969301868,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 8.75,
+      "within_overlap_band_candidate_count": 17052
+    },
+    {
+      "best_force_overlap": {
+        "amplitude_coefficient": 0.2271961997072543,
+        "aoa_deg": -151.6577812827947,
+        "azimuth_deg": 175.0,
+        "component_id": "STR_1_3",
+        "detuning_percent": 0.4600205611589376,
+        "effective_velocity_mps": 10.23956492565661,
+        "forcing_frequency_hz": 4.074898739092336,
+        "natural_frequency_hz": 4.056239204740739,
+        "natural_mode_index": 8,
+        "node_id": "STR_1_3_1.000000",
+        "overlap_kernel": 0.9957765655569749,
+        "overlap_score_n": 13.51510865663957,
+        "relative_detuning": 0.004600205611589376,
+        "reynolds": 310855.0372087617,
+        "section_force_amplitude_n": 13.572430928900268,
+        "source_clipped": false,
+        "source_depth_index": 2,
+        "wind_speed_mps": 14.75
+      },
+      "best_frequency_match": {
+        "amplitude_coefficient": 0.025053322748570743,
+        "aoa_deg": -65.87198979350433,
+        "azimuth_deg": 20.0,
+        "component_id": "STR_2_3",
+        "detuning_percent": 0.0008725124579049244,
+        "effective_velocity_mps": 5.967188923509643,
+        "forcing_frequency_hz": 1.5487755400883585,
+        "natural_frequency_hz": 1.5487890534657967,
+        "natural_mode_index": 5,
+        "node_id": "STR_2_3_0.163395",
+        "overlap_kernel": 0.9999999847744403,
+        "overlap_score_n": 0.005714269924264558,
+        "relative_detuning": 8.725124579049244e-06,
+        "reynolds": 181153.27636641296,
+        "section_force_amplitude_n": 0.005714270011267518,
+        "source_clipped": false,
+        "source_depth_index": 10,
+        "wind_speed_mps": 14.75
+      },
+      "downtime_probability_density_per_mps": 0.0004195841470980141,
+      "downtime_weighted_overlap_score_n_per_mps": 0.005670725338633101,
+      "minimum_detuning_percent": 0.0008725124579049244,
+      "overlap_score_n": 13.51510865663957,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 14.75,
+      "within_overlap_band_candidate_count": 13422
+    },
+    {
+      "best_force_overlap": {
+        "amplitude_coefficient": 0.17169811408047353,
+        "aoa_deg": -153.21877581819044,
+        "azimuth_deg": 275.0,
+        "component_id": "BLD_3",
+        "detuning_percent": 0.2316486264948464,
+        "effective_velocity_mps": 7.503458774706058,
+        "forcing_frequency_hz": 4.044644678312162,
+        "natural_frequency_hz": 4.054035796552485,
+        "natural_mode_index": 7,
+        "node_id": "BLD_3_0.500000",
+        "overlap_kernel": 0.9989273539733261,
+        "overlap_score_n": 7.061595972091849,
+        "relative_detuning": 0.002316486264948464,
+        "reynolds": 227791.70536448265,
+        "section_force_amplitude_n": 7.06917869853468,
+        "source_clipped": false,
+        "source_depth_index": 2,
+        "wind_speed_mps": 8.0
+      },
+      "best_frequency_match": {
+        "amplitude_coefficient": 0.008670603465016477,
+        "aoa_deg": 166.38934261276376,
+        "azimuth_deg": 155.0,
+        "component_id": "STR_2_3",
+        "detuning_percent": 0.0019051751310577216,
+        "effective_velocity_mps": 7.310385214860245,
+        "forcing_frequency_hz": 4.12840647946566,
+        "natural_frequency_hz": 4.128485134337729,
+        "natural_mode_index": 9,
+        "node_id": "STR_2_3_1.000000",
+        "overlap_kernel": 0.9999999274061571,
+        "overlap_score_n": 0.2605185687179089,
+        "relative_detuning": 1.9051751310577216e-05,
+        "reynolds": 221930.33439162857,
+        "section_force_amplitude_n": 0.26051858762995433,
+        "source_clipped": false,
+        "source_depth_index": 4,
+        "wind_speed_mps": 8.0
+      },
+      "downtime_probability_density_per_mps": 0.0007601681116683784,
+      "downtime_weighted_overlap_score_n_per_mps": 0.005368000075470088,
+      "minimum_detuning_percent": 0.0019051751310577216,
+      "overlap_score_n": 7.061595972091849,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 8.0,
+      "within_overlap_band_candidate_count": 17874
+    }
+  ],
+  "ranked_force_overlap_peaks": [
+    {
+      "best_force_overlap": {
+        "amplitude_coefficient": 0.41160903865096526,
+        "aoa_deg": -143.4949852443121,
+        "azimuth_deg": 145.0,
+        "component_id": "BLD_1",
+        "detuning_percent": 0.22015366043815593,
+        "effective_velocity_mps": 12.05208962311054,
+        "forcing_frequency_hz": 4.582660408465796,
+        "natural_frequency_hz": 4.572593676110874,
+        "natural_mode_index": 12,
+        "node_id": "BLD_1_0.500000",
+        "overlap_kernel": 0.9990311169864556,
+        "overlap_score_n": 43.6786349439752,
+        "relative_detuning": 0.002201536604381559,
+        "reynolds": 365880.07356134,
+        "section_force_amplitude_n": 43.720995473825035,
+        "source_clipped": false,
+        "source_depth_index": 2,
+        "wind_speed_mps": 12.5
+      },
+      "best_frequency_match": {
+        "amplitude_coefficient": 0.0033753950587888815,
+        "aoa_deg": -22.203846202087185,
+        "azimuth_deg": 15.0,
+        "component_id": "STR_1_2",
+        "detuning_percent": 0.0010248507018043127,
+        "effective_velocity_mps": 9.410065966557353,
+        "forcing_frequency_hz": 4.056280775136695,
+        "natural_frequency_hz": 4.056239204740739,
+        "natural_mode_index": 8,
+        "node_id": "STR_1_2_0.172168",
+        "overlap_kernel": 0.999999978993621,
+        "overlap_score_n": 0.0022912305202332684,
+        "relative_detuning": 1.0248507018043128e-05,
+        "reynolds": 285672.9194461855,
+        "section_force_amplitude_n": 0.002291230568363726,
+        "source_clipped": false,
+        "source_depth_index": 19,
+        "wind_speed_mps": 12.5
+      },
+      "downtime_probability_density_per_mps": 0.000575533194137147,
+      "downtime_weighted_overlap_score_n_per_mps": 0.025138504284856453,
+      "minimum_detuning_percent": 0.0010248507018043127,
+      "overlap_score_n": 43.6786349439752,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 12.5,
+      "within_overlap_band_candidate_count": 17874
+    },
+    {
+      "best_force_overlap": {
+        "amplitude_coefficient": 0.40175544676463676,
+        "aoa_deg": -143.3208549325234,
+        "azimuth_deg": 145.0,
+        "component_id": "BLD_1",
+        "detuning_percent": 0.39347224167465356,
+        "effective_velocity_mps": 10.80257072404697,
+        "forcing_frequency_hz": 4.112240691332445,
+        "natural_frequency_hz": 4.128485134337729,
+        "natural_mode_index": 9,
+        "node_id": "BLD_1_0.500000",
+        "overlap_kernel": 0.9969083808280896,
+        "overlap_score_n": 34.1783970494554,
+        "relative_detuning": 0.003934722416746536,
+        "reynolds": 327946.8950833931,
+        "section_force_amplitude_n": 34.28439133099157,
+        "source_clipped": false,
+        "source_depth_index": 2,
+        "wind_speed_mps": 11.25
+      },
+      "best_frequency_match": {
+        "amplitude_coefficient": 0.004767019906712879,
+        "aoa_deg": 104.76523499389161,
+        "azimuth_deg": 85.0,
+        "component_id": "STR_2_1",
+        "detuning_percent": 0.0007789372576500736,
+        "effective_velocity_mps": 4.345134543192521,
+        "forcing_frequency_hz": 1.5408203979984443,
+        "natural_frequency_hz": 1.5408083960677783,
+        "natural_mode_index": 3,
+        "node_id": "STR_2_1_0.172800",
+        "overlap_kernel": 0.999999987865135,
+        "overlap_score_n": 0.0006813337982700673,
+        "relative_detuning": 7.789372576500736e-06,
+        "reynolds": 131910.5811533856,
+        "section_force_amplitude_n": 0.0006813338065379611,
+        "source_clipped": false,
+        "source_depth_index": 18,
+        "wind_speed_mps": 11.25
+      },
+      "downtime_probability_density_per_mps": 0.0006539961531315707,
+      "downtime_weighted_overlap_score_n_per_mps": 0.022352540190547256,
+      "minimum_detuning_percent": 0.0007789372576500736,
+      "overlap_score_n": 34.1783970494554,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 11.25,
+      "within_overlap_band_candidate_count": 21714
+    },
+    {
+      "best_force_overlap": {
+        "amplitude_coefficient": 0.37451907723364253,
+        "aoa_deg": -142.83954034459077,
+        "azimuth_deg": 295.0,
+        "component_id": "STR_2_1",
+        "detuning_percent": 1.00013783578222,
+        "effective_velocity_mps": 12.093860855474714,
+        "forcing_frequency_hz": 4.618325915542244,
+        "natural_frequency_hz": 4.572593676110874,
+        "natural_mode_index": 12,
+        "node_id": "STR_2_1_1.000000",
+        "overlap_kernel": 0.9801932686911706,
+        "overlap_score_n": 30.187313215666293,
+        "relative_detuning": 0.010001378357822199,
+        "reynolds": 367148.1741188438,
+        "section_force_amplitude_n": 30.797307204501326,
+        "source_clipped": false,
+        "source_depth_index": 2,
+        "wind_speed_mps": 21.5
+      },
+      "best_frequency_match": {
+        "amplitude_coefficient": 0.004561877739150847,
+        "aoa_deg": 93.9167243441798,
+        "azimuth_deg": 330.0,
+        "component_id": "STR_2_2",
+        "detuning_percent": 0.001209617952541891,
+        "effective_velocity_mps": 8.079363683528547,
+        "forcing_frequency_hz": 4.056288269738357,
+        "natural_frequency_hz": 4.056239204740739,
+        "natural_mode_index": 8,
+        "node_id": "STR_2_2_1.000000",
+        "overlap_kernel": 0.9999999707364886,
+        "overlap_score_n": 0.16741979665266338,
+        "relative_detuning": 1.209617952541891e-05,
+        "reynolds": 245275.1573627367,
+        "section_force_amplitude_n": 0.16741980155195466,
+        "source_clipped": false,
+        "source_depth_index": 11,
+        "wind_speed_mps": 21.5
+      },
+      "downtime_probability_density_per_mps": 8.950574526329028e-05,
+      "downtime_weighted_overlap_score_n_per_mps": 0.0027019379668645834,
+      "minimum_detuning_percent": 0.001209617952541891,
+      "overlap_score_n": 30.187313215666293,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 21.5,
+      "within_overlap_band_candidate_count": 7860
+    },
+    {
+      "best_force_overlap": {
+        "amplitude_coefficient": 0.3849206169874682,
+        "aoa_deg": -143.02335385963286,
+        "azimuth_deg": 175.0,
+        "component_id": "STR_2_2",
+        "detuning_percent": 0.4557549459856545,
+        "effective_velocity_mps": 10.874307219498741,
+        "forcing_frequency_hz": 4.1476222262770195,
+        "natural_frequency_hz": 4.128804993309907,
+        "natural_mode_index": 11,
+        "node_id": "STR_2_2_1.000000",
+        "overlap_kernel": 0.9958543655501279,
+        "overlap_score_n": 25.48467309641935,
+        "relative_detuning": 0.004557549459856545,
+        "reynolds": 330124.6879022083,
+        "section_force_amplitude_n": 25.590763045298456,
+        "source_clipped": false,
+        "source_depth_index": 2,
+        "wind_speed_mps": 19.25
+      },
+      "best_frequency_match": {
+        "amplitude_coefficient": 0.10059960016111369,
+        "aoa_deg": 141.06246890139138,
+        "azimuth_deg": 295.0,
+        "component_id": "STR_1_1",
+        "detuning_percent": 0.0006353795132642632,
+        "effective_velocity_mps": 11.16857968032555,
+        "forcing_frequency_hz": 4.128778759728837,
+        "natural_frequency_hz": 4.128804993309907,
+        "natural_mode_index": 11,
+        "node_id": "STR_1_1_1.000000",
+        "overlap_kernel": 0.9999999919258575,
+        "overlap_score_n": 7.149665347356671,
+        "relative_detuning": 6.353795132642632e-06,
+        "reynolds": 339058.2780912432,
+        "section_force_amplitude_n": 7.149665405084088,
+        "source_clipped": false,
+        "source_depth_index": 9,
+        "wind_speed_mps": 19.25
+      },
+      "downtime_probability_density_per_mps": 0.00016465837660882565,
+      "downtime_weighted_overlap_score_n_per_mps": 0.004196264900463024,
+      "minimum_detuning_percent": 0.0006353795132642632,
+      "overlap_score_n": 25.48467309641935,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 19.25,
+      "within_overlap_band_candidate_count": 10443
+    },
+    {
+      "best_force_overlap": {
+        "amplitude_coefficient": 0.30110920683085585,
+        "aoa_deg": -145.51698761774878,
+        "azimuth_deg": 300.0,
+        "component_id": "STR_1_2",
+        "detuning_percent": 0.24906253462081626,
+        "effective_velocity_mps": 10.769759061771737,
+        "forcing_frequency_hz": 4.139088299675795,
+        "natural_frequency_hz": 4.128804993309907,
+        "natural_mode_index": 11,
+        "node_id": "STR_1_2_0.173878",
+        "overlap_kernel": 0.9987601263562298,
+        "overlap_score_n": 19.91538915744114,
+        "relative_detuning": 0.0024906253462081626,
+        "reynolds": 326950.79118918447,
+        "section_force_amplitude_n": 19.940112377231486,
+        "source_clipped": false,
+        "source_depth_index": 2,
+        "wind_speed_mps": 17.5
+      },
+      "best_frequency_match": {
+        "amplitude_coefficient": 0.006609829373512203,
+        "aoa_deg": -107.63017212649406,
+        "azimuth_deg": 35.0,
+        "component_id": "STR_2_3",
+        "detuning_percent": 0.001297843524084546,
+        "effective_velocity_mps": 6.858012515816685,
+        "forcing_frequency_hz": 4.572653021221782,
+        "natural_frequency_hz": 4.572593676110874,
+        "natural_mode_index": 12,
+        "node_id": "STR_2_3_1.000000",
+        "overlap_kernel": 0.9999999663120444,
+        "overlap_score_n": 0.17478157403570524,
+        "relative_detuning": 1.297843524084546e-05,
+        "reynolds": 208197.10126948042,
+        "section_force_amplitude_n": 0.17478157992373936,
+        "source_clipped": false,
+        "source_depth_index": 7,
+        "wind_speed_mps": 17.5
+      },
+      "downtime_probability_density_per_mps": 0.0002480603086898134,
+      "downtime_weighted_overlap_score_n_per_mps": 0.004940217582072612,
+      "minimum_detuning_percent": 0.001297843524084546,
+      "overlap_score_n": 19.91538915744114,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 17.5,
+      "within_overlap_band_candidate_count": 12690
+    },
+    {
+      "best_force_overlap": {
+        "amplitude_coefficient": 0.022505624063705532,
+        "aoa_deg": 84.10131807063752,
+        "azimuth_deg": 35.0,
+        "component_id": "BLD_3",
+        "detuning_percent": 1.3358283745437975,
+        "effective_velocity_mps": 35.05241058304143,
+        "forcing_frequency_hz": 4.51151167233279,
+        "natural_frequency_hz": 4.572593676110874,
+        "natural_mode_index": 12,
+        "node_id": "BLD_3_0.500000",
+        "overlap_kernel": 0.9649405855424107,
+        "overlap_score_n": 19.512272262140886,
+        "relative_detuning": 0.013358283745437976,
+        "reynolds": 1064129.0401651922,
+        "section_force_amplitude_n": 20.221216263976174,
+        "source_clipped": false,
+        "source_depth_index": 12,
+        "wind_speed_mps": 35.0
+      },
+      "best_frequency_match": {
+        "amplitude_coefficient": 0.008255071325171774,
+        "aoa_deg": 24.196691462660766,
+        "azimuth_deg": 250.0,
+        "component_id": "STR_2_3",
+        "detuning_percent": 0.021366294132110535,
+        "effective_velocity_mps": 24.52441522430224,
+        "forcing_frequency_hz": 4.055372536741552,
+        "natural_frequency_hz": 4.056239204740739,
+        "natural_mode_index": 8,
+        "node_id": "STR_2_3_0.174510",
+        "overlap_kernel": 0.9999908696711829,
+        "overlap_score_n": 2.7971886695767116,
+        "relative_detuning": 0.00021366294132110536,
+        "reynolds": 744517.7663722598,
+        "section_force_amplitude_n": 2.7972142090622123,
+        "source_clipped": false,
+        "source_depth_index": 1,
+        "wind_speed_mps": 35.0
+      },
+      "downtime_probability_density_per_mps": 3.645737015796524e-07,
+      "downtime_weighted_overlap_score_n_per_mps": 7.11366132483868e-06,
+      "minimum_detuning_percent": 0.021366294132110535,
+      "overlap_score_n": 19.512272262140886,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 35.0,
+      "within_overlap_band_candidate_count": 2964
+    }
+  ],
+  "recommended_dlc64_wind_speeds_mps": [
+    3.0,
+    7.0,
+    8.0,
+    8.75,
+    11.25,
+    13.0,
+    14.75,
+    18.0,
+    19.25,
+    21.5,
+    35.0
+  ],
+  "recommended_matrix_coverage": {
+    "matrix_wind_speeds_mps": [
+      3.0,
+      7.0,
+      8.0,
+      8.75,
+      11.25,
+      13.0,
+      14.75,
+      18.0,
+      19.25,
+      21.5,
+      35.0
+    ],
+    "passed": true,
+    "peak_checks": [
+      {
+        "covered": true,
+        "distance_mps": 0.0,
+        "nearest_matrix_wind_speed_mps": 7.0,
+        "peak_wind_speed_mps": 7.0,
+        "tolerance_mps": 0.5
+      },
+      {
+        "covered": true,
+        "distance_mps": 0.0,
+        "nearest_matrix_wind_speed_mps": 8.0,
+        "peak_wind_speed_mps": 8.0,
+        "tolerance_mps": 0.5
+      },
+      {
+        "covered": true,
+        "distance_mps": 0.0,
+        "nearest_matrix_wind_speed_mps": 8.75,
+        "peak_wind_speed_mps": 8.75,
+        "tolerance_mps": 0.5
+      },
+      {
+        "covered": true,
+        "distance_mps": 0.0,
+        "nearest_matrix_wind_speed_mps": 11.25,
+        "peak_wind_speed_mps": 11.25,
+        "tolerance_mps": 0.5625
+      },
+      {
+        "covered": true,
+        "distance_mps": 0.5,
+        "nearest_matrix_wind_speed_mps": 13.0,
+        "peak_wind_speed_mps": 12.5,
+        "tolerance_mps": 0.625
+      },
+      {
+        "covered": true,
+        "distance_mps": 0.0,
+        "nearest_matrix_wind_speed_mps": 14.75,
+        "peak_wind_speed_mps": 14.75,
+        "tolerance_mps": 0.7375
+      },
+      {
+        "covered": true,
+        "distance_mps": 0.5,
+        "nearest_matrix_wind_speed_mps": 18.0,
+        "peak_wind_speed_mps": 17.5,
+        "tolerance_mps": 0.875
+      },
+      {
+        "covered": true,
+        "distance_mps": 0.0,
+        "nearest_matrix_wind_speed_mps": 19.25,
+        "peak_wind_speed_mps": 19.25,
+        "tolerance_mps": 0.9625
+      },
+      {
+        "covered": true,
+        "distance_mps": 0.0,
+        "nearest_matrix_wind_speed_mps": 21.5,
+        "peak_wind_speed_mps": 21.5,
+        "tolerance_mps": 1.075
+      },
+      {
+        "covered": true,
+        "distance_mps": 0.0,
+        "nearest_matrix_wind_speed_mps": 35.0,
+        "peak_wind_speed_mps": 35.0,
+        "tolerance_mps": 1.75
+      }
+    ],
+    "uncovered_peak_wind_speeds_mps": []
+  },
+  "required_peak_wind_speeds_mps": [
+    7.0,
+    8.0,
+    8.75,
+    11.25,
+    12.5,
+    14.75,
+    17.5,
+    19.25,
+    21.5,
+    35.0
+  ],
+  "review_sha256": "99abd027c2ad88cba2adb21f4d158c409baa1c411192081589bb7f832df324b1",
+  "schema_version": 1,
+  "screening_parameters": {
+    "air_density_kg_m3": 1.0296,
+    "air_kinematic_viscosity_m2_s": 1.647e-05,
+    "amplitude_coefficient_cutoff": 0.002,
+    "annual_downtime_fraction": 0.010000000000000009,
+    "availability": 0.99,
+    "azimuth_count": 72,
+    "azimuth_step_deg": 5.0,
+    "minimum_coverage_tolerance_mps": 0.5,
+    "minimum_peak_spacing_mps": 0.75,
+    "minimum_relative_peak_score": 0.2,
+    "n_freq_depth": 20,
+    "node_count": 39,
+    "overlap_band_fraction": 0.05,
+    "rpm": 1.0,
+    "source_frequency_cap_hz": 66.66666666666667,
+    "vave_mps": 10.0,
+    "wind_max_mps": 35.0,
+    "wind_min_mps": 1.0,
+    "wind_speed_count": 137,
+    "wind_step_mps": 0.25
+  },
+  "source_basis": {
+    "airfoil_files": [
+      {
+        "path": "examples/ReferenceHVAWTQBladeModel/10m_HVAWT_reference_turbine/VorLapAirfoils/NACA0018.h5",
+        "sha256": "fdb7e49e52a292271e4bf09ef2c5464d0df4c2ffe4193542b2ccc6a4d49610fb"
+      }
+    ],
+    "inflow_vector": [
+      1.0,
+      0.0,
+      0.0
+    ],
+    "node_ids": [
+      "BLD_1_0.047438",
+      "BLD_1_0.230455",
+      "BLD_1_0.500000",
+      "BLD_1_0.769545",
+      "BLD_1_0.939753",
+      "BLD_2_0.047438",
+      "BLD_2_0.230455",
+      "BLD_2_0.500000",
+      "BLD_2_0.769545",
+      "BLD_2_0.939753",
+      "BLD_3_0.047438",
+      "BLD_3_0.230455",
+      "BLD_3_0.500000",
+      "BLD_3_0.769545",
+      "BLD_3_0.939753",
+      "STR_1_1_0.162763",
+      "STR_1_1_0.172168",
+      "STR_1_1_0.173878",
+      "STR_1_1_1.000000",
+      "STR_1_2_0.162763",
+      "STR_1_2_0.172168",
+      "STR_1_2_0.173878",
+      "STR_1_2_1.000000",
+      "STR_1_3_0.162763",
+      "STR_1_3_0.172168",
+      "STR_1_3_0.173878",
+      "STR_1_3_1.000000",
+      "STR_2_1_0.163395",
+      "STR_2_1_0.172800",
+      "STR_2_1_0.174510",
+      "STR_2_1_1.000000",
+      "STR_2_2_0.163395",
+      "STR_2_2_0.172800",
+      "STR_2_2_0.174510",
+      "STR_2_2_1.000000",
+      "STR_2_3_0.163395",
+      "STR_2_3_0.172800",
+      "STR_2_3_0.174510",
+      "STR_2_3_1.000000"
+    ],
+    "qblade_sim": "examples/ReferenceHVAWTQBladeModel/baseline_10m_HVAWT_reference_turbine_Wwnd.sim",
+    "qblade_sim_sha256": "b5b7d71865fde1312269b37924a5327a716c509b534fd2b3d7e17dee9fbd3ca1",
+    "qblade_structural_file": "examples/ReferenceHVAWTQBladeModel/10m_HVAWT_reference_turbine/Structure/10m_HVAWT_reference_main.str",
+    "qblade_structural_file_sha256": "406c21a732aa95524657374668504362eff96023dada186e3a6c1b50e0b141e9"
+  },
+  "source_domain_checks": {
+    "current_matrix_speeds": [
+      {
+        "passed": true,
+        "source_clip_query_fraction": 0.0,
+        "wind_speed_mps": 3.0
+      },
+      {
+        "passed": true,
+        "source_clip_query_fraction": 0.0,
+        "wind_speed_mps": 7.0
+      },
+      {
+        "passed": true,
+        "source_clip_query_fraction": 0.0,
+        "wind_speed_mps": 8.0
+      },
+      {
+        "passed": true,
+        "source_clip_query_fraction": 0.0,
+        "wind_speed_mps": 8.75
+      },
+      {
+        "passed": true,
+        "source_clip_query_fraction": 0.0,
+        "wind_speed_mps": 11.25
+      },
+      {
+        "passed": true,
+        "source_clip_query_fraction": 0.0,
+        "wind_speed_mps": 13.0
+      },
+      {
+        "passed": true,
+        "source_clip_query_fraction": 0.0,
+        "wind_speed_mps": 14.75
+      },
+      {
+        "passed": true,
+        "source_clip_query_fraction": 0.0,
+        "wind_speed_mps": 18.0
+      },
+      {
+        "passed": true,
+        "source_clip_query_fraction": 0.0,
+        "wind_speed_mps": 19.25
+      },
+      {
+        "passed": true,
+        "source_clip_query_fraction": 0.0,
+        "wind_speed_mps": 21.5
+      },
+      {
+        "passed": true,
+        "source_clip_query_fraction": 0.0,
+        "wind_speed_mps": 35.0
+      }
+    ],
+    "note": "The full 1--35 m/s sweep may clip low-Re source queries below the selected matrix; passing requires zero clipping at every selected matrix speed and ranked peak.",
+    "passed": true,
+    "required_peak_speeds": [
+      {
+        "passed": true,
+        "source_clip_query_fraction": 0.0,
+        "wind_speed_mps": 7.0
+      },
+      {
+        "passed": true,
+        "source_clip_query_fraction": 0.0,
+        "wind_speed_mps": 8.0
+      },
+      {
+        "passed": true,
+        "source_clip_query_fraction": 0.0,
+        "wind_speed_mps": 8.75
+      },
+      {
+        "passed": true,
+        "source_clip_query_fraction": 0.0,
+        "wind_speed_mps": 11.25
+      },
+      {
+        "passed": true,
+        "source_clip_query_fraction": 0.0,
+        "wind_speed_mps": 12.5
+      },
+      {
+        "passed": true,
+        "source_clip_query_fraction": 0.0,
+        "wind_speed_mps": 14.75
+      },
+      {
+        "passed": true,
+        "source_clip_query_fraction": 0.0,
+        "wind_speed_mps": 17.5
+      },
+      {
+        "passed": true,
+        "source_clip_query_fraction": 0.0,
+        "wind_speed_mps": 19.25
+      },
+      {
+        "passed": true,
+        "source_clip_query_fraction": 0.0,
+        "wind_speed_mps": 21.5
+      },
+      {
+        "passed": true,
+        "source_clip_query_fraction": 0.0,
+        "wind_speed_mps": 35.0
+      }
+    ]
+  },
+  "sweep": [
+    {
+      "downtime_probability_density_per_mps": 0.00015585076420147442,
+      "downtime_weighted_overlap_score_n_per_mps": 7.778189676294381e-06,
+      "minimum_detuning_percent": 0.0023796118129607827,
+      "overlap_score_n": 0.04990793414550864,
+      "source_clip_query_fraction": 0.6292735042735043,
+      "wind_speed_mps": 1.0,
+      "within_overlap_band_candidate_count": 4734
+    },
+    {
+      "downtime_probability_density_per_mps": 0.00019395469411280698,
+      "downtime_weighted_overlap_score_n_per_mps": 1.8303619451535352e-05,
+      "minimum_detuning_percent": 0.00681581347242755,
+      "overlap_score_n": 0.0943705927575524,
+      "source_clip_query_fraction": 0.4412393162393162,
+      "wind_speed_mps": 1.25,
+      "within_overlap_band_candidate_count": 7656
+    },
+    {
+      "downtime_probability_density_per_mps": 0.00023149228358146557,
+      "downtime_weighted_overlap_score_n_per_mps": 4.005738472317069e-05,
+      "minimum_detuning_percent": 0.0010730322573102196,
+      "overlap_score_n": 0.17303982708811935,
+      "source_clip_query_fraction": 0.30235042735042733,
+      "wind_speed_mps": 1.5,
+      "within_overlap_band_candidate_count": 9300
+    },
+    {
+      "downtime_probability_density_per_mps": 0.00026835637656447256,
+      "downtime_weighted_overlap_score_n_per_mps": 4.877543818037373e-05,
+      "minimum_detuning_percent": 0.0003467033444619377,
+      "overlap_score_n": 0.18175621091923427,
+      "source_clip_query_fraction": 0.19444444444444445,
+      "wind_speed_mps": 1.75,
+      "within_overlap_band_candidate_count": 9255
+    },
+    {
+      "downtime_probability_density_per_mps": 0.0003044430815275632,
+      "downtime_weighted_overlap_score_n_per_mps": 9.76243675861413e-05,
+      "minimum_detuning_percent": 0.00371743312276778,
+      "overlap_score_n": 0.32066541665622555,
+      "source_clip_query_fraction": 0.1346153846153846,
+      "wind_speed_mps": 2.0,
+      "within_overlap_band_candidate_count": 10584
+    },
+    {
+      "downtime_probability_density_per_mps": 0.00033965225862382116,
+      "downtime_weighted_overlap_score_n_per_mps": 0.00018442505710322655,
+      "minimum_detuning_percent": 0.0007536975542744823,
+      "overlap_score_n": 0.5429819835453674,
+      "source_clip_query_fraction": 0.09401709401709402,
+      "wind_speed_mps": 2.25,
+      "within_overlap_band_candidate_count": 12882
+    },
+    {
+      "downtime_probability_density_per_mps": 0.00037388798153522023,
+      "downtime_weighted_overlap_score_n_per_mps": 0.00024619145931668824,
+      "minimum_detuning_percent": 0.00018575291096338377,
+      "overlap_score_n": 0.6584631533375378,
+      "source_clip_query_fraction": 0.029914529914529916,
+      "wind_speed_mps": 2.5,
+      "within_overlap_band_candidate_count": 13389
+    },
+    {
+      "downtime_probability_density_per_mps": 0.00040705897100424334,
+      "downtime_weighted_overlap_score_n_per_mps": 0.00023065489032193887,
+      "minimum_detuning_percent": 0.0029469984871614225,
+      "overlap_score_n": 0.5666375310508375,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 2.75,
+      "within_overlap_band_candidate_count": 13857
+    },
+    {
+      "downtime_probability_density_per_mps": 0.0004390789973271768,
+      "downtime_weighted_overlap_score_n_per_mps": 0.0003804393533020072,
+      "minimum_detuning_percent": 0.0015603358723004352,
+      "overlap_score_n": 0.8664485334481288,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 3.0,
+      "within_overlap_band_candidate_count": 13338
+    },
+    {
+      "downtime_probability_density_per_mps": 0.00046986724934705196,
+      "downtime_weighted_overlap_score_n_per_mps": 0.0003807772523324827,
+      "minimum_detuning_percent": 0.00010494219672332047,
+      "overlap_score_n": 0.8103932607808427,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 3.25,
+      "within_overlap_band_candidate_count": 12006
+    },
+    {
+      "downtime_probability_density_per_mps": 0.0004993486677697253,
+      "downtime_weighted_overlap_score_n_per_mps": 0.00043469114019213624,
+      "minimum_detuning_percent": 0.00018542401423062355,
+      "overlap_score_n": 0.8705162709928248,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 3.5,
+      "within_overlap_band_candidate_count": 14958
+    },
+    {
+      "downtime_probability_density_per_mps": 0.0005274542409282882,
+      "downtime_weighted_overlap_score_n_per_mps": 0.0009323193210398366,
+      "minimum_detuning_percent": 0.0010363836167383287,
+      "overlap_score_n": 1.7675833251411721,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 3.75,
+      "within_overlap_band_candidate_count": 18048
+    },
+    {
+      "downtime_probability_density_per_mps": 0.0005541212614357605,
+      "downtime_weighted_overlap_score_n_per_mps": 0.0007345040907781543,
+      "minimum_detuning_percent": 0.005449124369951124,
+      "overlap_score_n": 1.3255295219588061,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 4.0,
+      "within_overlap_band_candidate_count": 18024
+    },
+    {
+      "downtime_probability_density_per_mps": 0.0005792935424906236,
+      "downtime_weighted_overlap_score_n_per_mps": 0.001085646784801746,
+      "minimum_detuning_percent": 0.0014388168659865226,
+      "overlap_score_n": 1.8740874965291332,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 4.25,
+      "within_overlap_band_candidate_count": 19104
+    },
+    {
+      "downtime_probability_density_per_mps": 0.0006029215929309186,
+      "downtime_weighted_overlap_score_n_per_mps": 0.001920448314766686,
+      "minimum_detuning_percent": 6.80986535663121e-05,
+      "overlap_score_n": 3.1852372469047174,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 4.5,
+      "within_overlap_band_candidate_count": 17595
+    },
+    {
+      "downtime_probability_density_per_mps": 0.0006249627504670325,
+      "downtime_weighted_overlap_score_n_per_mps": 0.0013358329827105088,
+      "minimum_detuning_percent": 0.0005965496558464342,
+      "overlap_score_n": 2.137460163365329,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 4.75,
+      "within_overlap_band_candidate_count": 18003
+    },
+    {
+      "downtime_probability_density_per_mps": 0.000645381272857653,
+      "downtime_weighted_overlap_score_n_per_mps": 0.0013412863149253188,
+      "minimum_detuning_percent": 0.002720630059280534,
+      "overlap_score_n": 2.0782851491588854,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 5.0,
+      "within_overlap_band_candidate_count": 18570
+    },
+    {
+      "downtime_probability_density_per_mps": 0.0006641483871244065,
+      "downtime_weighted_overlap_score_n_per_mps": 0.001016352398528623,
+      "minimum_detuning_percent": 0.00946495664103254,
+      "overlap_score_n": 1.5303092173861481,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 5.25,
+      "within_overlap_band_candidate_count": 18342
+    },
+    {
+      "downtime_probability_density_per_mps": 0.0006812422972252731,
+      "downtime_weighted_overlap_score_n_per_mps": 0.0010041078795865485,
+      "minimum_detuning_percent": 1.6273878091933493e-05,
+      "overlap_score_n": 1.473936488788673,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 5.5,
+      "within_overlap_band_candidate_count": 18213
+    },
+    {
+      "downtime_probability_density_per_mps": 0.000696648150921925,
+      "downtime_weighted_overlap_score_n_per_mps": 0.001647841885763587,
+      "minimum_detuning_percent": 0.0015764781063479986,
+      "overlap_score_n": 2.3653861473440765,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 5.75,
+      "within_overlap_band_candidate_count": 19392
+    },
+    {
+      "downtime_probability_density_per_mps": 0.0007103579668788017,
+      "downtime_weighted_overlap_score_n_per_mps": 0.0031498345766752408,
+      "minimum_detuning_percent": 1.6827683671306325e-06,
+      "overlap_score_n": 4.43415112315148,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 6.0,
+      "within_overlap_band_candidate_count": 19860
+    },
+    {
+      "downtime_probability_density_per_mps": 0.0007223705233193136,
+      "downtime_weighted_overlap_score_n_per_mps": 0.0021676168103522946,
+      "minimum_detuning_percent": 0.0012585581914115057,
+      "overlap_score_n": 3.0006994200040613,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 6.25,
+      "within_overlap_band_candidate_count": 20277
+    },
+    {
+      "downtime_probability_density_per_mps": 0.000732691209834561,
+      "downtime_weighted_overlap_score_n_per_mps": 0.0030285870353563733,
+      "minimum_detuning_percent": 0.0021173256646962106,
+      "overlap_score_n": 4.133510808789718,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 6.5,
+      "within_overlap_band_candidate_count": 19947
+    },
+    {
+      "downtime_probability_density_per_mps": 0.0007413318441901395,
+      "downtime_weighted_overlap_score_n_per_mps": 0.0054975270923885815,
+      "minimum_detuning_percent": 0.003551717697344697,
+      "overlap_score_n": 7.4157438878054664,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 6.75,
+      "within_overlap_band_candidate_count": 19869
+    },
+    {
+      "downtime_probability_density_per_mps": 0.0007483104562049925,
+      "downtime_weighted_overlap_score_n_per_mps": 0.007998773443645933,
+      "minimum_detuning_percent": 0.00012651487305432126,
+      "overlap_score_n": 10.68911088615705,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 7.0,
+      "within_overlap_band_candidate_count": 19164
+    },
+    {
+      "downtime_probability_density_per_mps": 0.0007536510409811445,
+      "downtime_weighted_overlap_score_n_per_mps": 0.006599966383144094,
+      "minimum_detuning_percent": 0.0007860317629691376,
+      "overlap_score_n": 8.757324045558132,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 7.25,
+      "within_overlap_band_candidate_count": 19392
+    },
+    {
+      "downtime_probability_density_per_mps": 0.0007573832839431201,
+      "downtime_weighted_overlap_score_n_per_mps": 0.0036559500993859316,
+      "minimum_detuning_percent": 0.0014519435010186788,
+      "overlap_score_n": 4.827080524344521,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 7.5,
+      "within_overlap_band_candidate_count": 18969
+    },
+    {
+      "downtime_probability_density_per_mps": 0.0007595422602997785,
+      "downtime_weighted_overlap_score_n_per_mps": 0.0031847444469191356,
+      "minimum_detuning_percent": 7.914728219223985e-05,
+      "overlap_score_n": 4.192978604853627,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 7.75,
+      "within_overlap_band_candidate_count": 18186
+    },
+    {
+      "downtime_probability_density_per_mps": 0.0007601681116683784,
+      "downtime_weighted_overlap_score_n_per_mps": 0.005368000075470088,
+      "minimum_detuning_percent": 0.0019051751310577216,
+      "overlap_score_n": 7.061595972091849,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 8.0,
+      "within_overlap_band_candidate_count": 17874
+    },
+    {
+      "downtime_probability_density_per_mps": 0.0007593057027004512,
+      "downtime_weighted_overlap_score_n_per_mps": 0.004948624940273165,
+      "minimum_detuning_percent": 0.0004177266062816254,
+      "overlap_score_n": 6.517302481297728,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 8.25,
+      "within_overlap_band_candidate_count": 18051
+    },
+    {
+      "downtime_probability_density_per_mps": 0.0007570042606212465,
+      "downtime_weighted_overlap_score_n_per_mps": 0.004713506596462283,
+      "minimum_detuning_percent": 0.00021034230079253747,
+      "overlap_score_n": 6.2265258488691675,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 8.5,
+      "within_overlap_band_candidate_count": 17544
+    },
+    {
+      "downtime_probability_density_per_mps": 0.0007533170006393036,
+      "downtime_weighted_overlap_score_n_per_mps": 0.006011633865082357,
+      "minimum_detuning_percent": 0.0006452615513880789,
+      "overlap_score_n": 7.980217969301868,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 8.75,
+      "within_overlap_band_candidate_count": 17052
+    },
+    {
+      "downtime_probability_density_per_mps": 0.0007483007402004083,
+      "downtime_weighted_overlap_score_n_per_mps": 0.003953574659399696,
+      "minimum_detuning_percent": 0.0006526673188815487,
+      "overlap_score_n": 5.283403379155897,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 9.0,
+      "within_overlap_band_candidate_count": 16581
+    },
+    {
+      "downtime_probability_density_per_mps": 0.0007420155050515455,
+      "downtime_weighted_overlap_score_n_per_mps": 0.004012380422772911,
+      "minimum_detuning_percent": 0.001072761098625768,
+      "overlap_score_n": 5.407407790615081,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 9.25,
+      "within_overlap_band_candidate_count": 17100
+    },
+    {
+      "downtime_probability_density_per_mps": 0.0007345241300463298,
+      "downtime_weighted_overlap_score_n_per_mps": 0.005499383867958623,
+      "minimum_detuning_percent": 0.0008847619370108899,
+      "overlap_score_n": 7.487002323002993,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 9.5,
+      "within_overlap_band_candidate_count": 17601
+    },
+    {
+      "downtime_probability_density_per_mps": 0.0007258918575649788,
+      "downtime_weighted_overlap_score_n_per_mps": 0.006835016883067138,
+      "minimum_detuning_percent": 0.0005032012381561573,
+      "overlap_score_n": 9.416026384419522,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 9.75,
+      "within_overlap_band_candidate_count": 18960
+    },
+    {
+      "downtime_probability_density_per_mps": 0.0007161859363405698,
+      "downtime_weighted_overlap_score_n_per_mps": 0.007219283745792067,
+      "minimum_detuning_percent": 0.0015176405170177713,
+      "overlap_score_n": 10.08018082940833,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 10.0,
+      "within_overlap_band_candidate_count": 19944
+    },
+    {
+      "downtime_probability_density_per_mps": 0.0007054752233806572,
+      "downtime_weighted_overlap_score_n_per_mps": 0.008868370033269965,
+      "minimum_detuning_percent": 0.0004089779391818265,
+      "overlap_score_n": 12.570774620223352,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 10.25,
+      "within_overlap_band_candidate_count": 20583
+    },
+    {
+      "downtime_probability_density_per_mps": 0.0006938297915510736,
+      "downtime_weighted_overlap_score_n_per_mps": 0.012951426831600072,
+      "minimum_detuning_percent": 0.000979716660034797,
+      "overlap_score_n": 18.66657642740713,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 10.5,
+      "within_overlap_band_candidate_count": 21186
+    },
+    {
+      "downtime_probability_density_per_mps": 0.0006813205452488042,
+      "downtime_weighted_overlap_score_n_per_mps": 0.017132258199408622,
+      "minimum_detuning_percent": 0.0002742115133332571,
+      "overlap_score_n": 25.145665016093528,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 10.75,
+      "within_overlap_band_candidate_count": 21549
+    },
+    {
+      "downtime_probability_density_per_mps": 0.0006680188464351984,
+      "downtime_weighted_overlap_score_n_per_mps": 0.0213951472097349,
+      "minimum_detuning_percent": 0.002730230270532506,
+      "overlap_score_n": 32.027759881188246,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 11.0,
+      "within_overlap_band_candidate_count": 21870
+    },
+    {
+      "downtime_probability_density_per_mps": 0.0006539961531315707,
+      "downtime_weighted_overlap_score_n_per_mps": 0.022352540190547256,
+      "minimum_detuning_percent": 0.0007789372576500736,
+      "overlap_score_n": 34.1783970494554,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 11.25,
+      "within_overlap_band_candidate_count": 21714
+    },
+    {
+      "downtime_probability_density_per_mps": 0.0006393236722986216,
+      "downtime_weighted_overlap_score_n_per_mps": 0.02149719939964969,
+      "minimum_detuning_percent": 0.0002786716826564168,
+      "overlap_score_n": 33.624907587668,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 11.5,
+      "within_overlap_band_candidate_count": 21378
+    },
+    {
+      "downtime_probability_density_per_mps": 0.0006240720288312493,
+      "downtime_weighted_overlap_score_n_per_mps": 0.01675327877409236,
+      "minimum_detuning_percent": 0.000259677848838821,
+      "overlap_score_n": 26.84510441121291,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 11.75,
+      "within_overlap_band_candidate_count": 20436
+    },
+    {
+      "downtime_probability_density_per_mps": 0.0006083109522034377,
+      "downtime_weighted_overlap_score_n_per_mps": 0.01903315270570892,
+      "minimum_detuning_percent": 0.0006870851788267416,
+      "overlap_score_n": 31.288525443716907,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 12.0,
+      "within_overlap_band_candidate_count": 19800
+    },
+    {
+      "downtime_probability_density_per_mps": 0.0005921089820962023,
+      "downtime_weighted_overlap_score_n_per_mps": 0.023102425953500386,
+      "minimum_detuning_percent": 0.004116624633036571,
+      "overlap_score_n": 39.01718543723568,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 12.25,
+      "within_overlap_band_candidate_count": 18984
+    },
+    {
+      "downtime_probability_density_per_mps": 0.000575533194137147,
+      "downtime_weighted_overlap_score_n_per_mps": 0.025138504284856453,
+      "minimum_detuning_percent": 0.0010248507018043127,
+      "overlap_score_n": 43.6786349439752,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 12.5,
+      "within_overlap_band_candidate_count": 17874
+    },
+    {
+      "downtime_probability_density_per_mps": 0.0005586489466751656,
+      "downtime_weighted_overlap_score_n_per_mps": 0.023036266481143496,
+      "minimum_detuning_percent": 0.0005947483378151647,
+      "overlap_score_n": 41.23567513775026,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 12.75,
+      "within_overlap_band_candidate_count": 17133
+    },
+    {
+      "downtime_probability_density_per_mps": 0.0005415196493101608,
+      "downtime_weighted_overlap_score_n_per_mps": 0.01777869675210165,
+      "minimum_detuning_percent": 0.004711113755484864,
+      "overlap_score_n": 32.83112030145137,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 13.0,
+      "within_overlap_band_candidate_count": 16062
+    },
+    {
+      "downtime_probability_density_per_mps": 0.0005242065536972623,
+      "downtime_weighted_overlap_score_n_per_mps": 0.011556485053905791,
+      "minimum_detuning_percent": 0.00039870305380411647,
+      "overlap_score_n": 22.04567068533799,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 13.25,
+      "within_overlap_band_candidate_count": 15417
+    },
+    {
+      "downtime_probability_density_per_mps": 0.0005067685669496538,
+      "downtime_weighted_overlap_score_n_per_mps": 0.008617232517997602,
+      "minimum_detuning_percent": 0.00010533091569830595,
+      "overlap_score_n": 17.004275876593,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 13.5,
+      "within_overlap_band_candidate_count": 15309
+    },
+    {
+      "downtime_probability_density_per_mps": 0.0004892620877754059,
+      "downtime_weighted_overlap_score_n_per_mps": 0.006256752532469561,
+      "minimum_detuning_percent": 0.0009621043880225851,
+      "overlap_score_n": 12.788140934683868,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 13.75,
+      "within_overlap_band_candidate_count": 15381
+    },
+    {
+      "downtime_probability_density_per_mps": 0.000471740865303134,
+      "downtime_weighted_overlap_score_n_per_mps": 0.004300759083751618,
+      "minimum_detuning_percent": 0.002575800147133567,
+      "overlap_score_n": 9.11678296301087,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 14.0,
+      "within_overlap_band_candidate_count": 15168
+    },
+    {
+      "downtime_probability_density_per_mps": 0.00045425588038016296,
+      "downtime_weighted_overlap_score_n_per_mps": 0.005029348580127803,
+      "minimum_detuning_percent": 0.0001270847478434174,
+      "overlap_score_n": 11.071620197670931,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 14.25,
+      "within_overlap_band_candidate_count": 14355
+    },
+    {
+      "downtime_probability_density_per_mps": 0.0004368552489663795,
+      "downtime_weighted_overlap_score_n_per_mps": 0.005628128155144126,
+      "minimum_detuning_percent": 0.0050879960821612,
+      "overlap_score_n": 12.883279229128064,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 14.5,
+      "within_overlap_band_candidate_count": 13806
+    },
+    {
+      "downtime_probability_density_per_mps": 0.0004195841470980141,
+      "downtime_weighted_overlap_score_n_per_mps": 0.005670725338633101,
+      "minimum_detuning_percent": 0.0008725124579049244,
+      "overlap_score_n": 13.51510865663957,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 14.75,
+      "within_overlap_band_candidate_count": 13422
+    },
+    {
+      "downtime_probability_density_per_mps": 0.0004024847567590931,
+      "downtime_weighted_overlap_score_n_per_mps": 0.005606188847807363,
+      "minimum_detuning_percent": 0.0007189036614189976,
+      "overlap_score_n": 13.928947006465,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 15.0,
+      "within_overlap_band_candidate_count": 13287
+    },
+    {
+      "downtime_probability_density_per_mps": 0.0003855962318748213,
+      "downtime_weighted_overlap_score_n_per_mps": 0.005155407657047278,
+      "minimum_detuning_percent": 0.0001293419209159652,
+      "overlap_score_n": 13.369963788237724,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 15.25,
+      "within_overlap_band_candidate_count": 13542
+    },
+    {
+      "downtime_probability_density_per_mps": 0.00036895468353120484,
+      "downtime_weighted_overlap_score_n_per_mps": 0.004280171799230474,
+      "minimum_detuning_percent": 0.001519436743111621,
+      "overlap_score_n": 11.600806251503979,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 15.5,
+      "within_overlap_band_candidate_count": 13350
+    },
+    {
+      "downtime_probability_density_per_mps": 0.00035259318342907917,
+      "downtime_weighted_overlap_score_n_per_mps": 0.003941684335774765,
+      "minimum_detuning_percent": 0.0013673850039228113,
+      "overlap_score_n": 11.179128017849493,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 15.75,
+      "within_overlap_band_candidate_count": 13260
+    },
+    {
+      "downtime_probability_density_per_mps": 0.0003365417844985099,
+      "downtime_weighted_overlap_score_n_per_mps": 0.003956542886201783,
+      "minimum_detuning_percent": 0.0007696184186787763,
+      "overlap_score_n": 11.756468493496389,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 16.0,
+      "within_overlap_band_candidate_count": 13377
+    },
+    {
+      "downtime_probability_density_per_mps": 0.00032082755753128984,
+      "downtime_weighted_overlap_score_n_per_mps": 0.004597755641616413,
+      "minimum_detuning_percent": 4.218759658985037e-05,
+      "overlap_score_n": 14.330924927382526,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 16.25,
+      "within_overlap_band_candidate_count": 13059
+    },
+    {
+      "downtime_probability_density_per_mps": 0.0003054746426347644,
+      "downtime_weighted_overlap_score_n_per_mps": 0.0049144418210006575,
+      "minimum_detuning_percent": 0.00021094844808951295,
+      "overlap_score_n": 16.087887945830342,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 16.5,
+      "within_overlap_band_candidate_count": 12666
+    },
+    {
+      "downtime_probability_density_per_mps": 0.0002905043142692334,
+      "downtime_weighted_overlap_score_n_per_mps": 0.004906127338131267,
+      "minimum_detuning_percent": 0.0014240516249510262,
+      "overlap_score_n": 16.888311454074895,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 16.75,
+      "within_overlap_band_candidate_count": 12486
+    },
+    {
+      "downtime_probability_density_per_mps": 0.00027593505860323353,
+      "downtime_weighted_overlap_score_n_per_mps": 0.005114810344832616,
+      "minimum_detuning_percent": 0.003147722046062149,
+      "overlap_score_n": 18.53628303240434,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 17.0,
+      "within_overlap_band_candidate_count": 12894
+    },
+    {
+      "downtime_probability_density_per_mps": 0.00026178266190561306,
+      "downtime_weighted_overlap_score_n_per_mps": 0.005027867247847431,
+      "minimum_detuning_percent": 0.005121564604690573,
+      "overlap_score_n": 19.206265270769734,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 17.25,
+      "within_overlap_band_candidate_count": 12939
+    },
+    {
+      "downtime_probability_density_per_mps": 0.0002480603086898134,
+      "downtime_weighted_overlap_score_n_per_mps": 0.004940217582072612,
+      "minimum_detuning_percent": 0.001297843524084546,
+      "overlap_score_n": 19.91538915744114,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 17.5,
+      "within_overlap_band_candidate_count": 12690
+    },
+    {
+      "downtime_probability_density_per_mps": 0.00023477868833347116,
+      "downtime_weighted_overlap_score_n_per_mps": 0.004563662419459155,
+      "minimum_detuning_percent": 0.0025447716494436117,
+      "overlap_score_n": 19.43814599124557,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 17.75,
+      "within_overlap_band_candidate_count": 12426
+    },
+    {
+      "downtime_probability_density_per_mps": 0.00022194610891456174,
+      "downtime_weighted_overlap_score_n_per_mps": 0.003888396030014908,
+      "minimum_detuning_percent": 0.00016545374927623928,
+      "overlap_score_n": 17.519550349547906,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 18.0,
+      "within_overlap_band_candidate_count": 12045
+    },
+    {
+      "downtime_probability_density_per_mps": 0.0002095686170329721,
+      "downtime_weighted_overlap_score_n_per_mps": 0.004172936403803431,
+      "minimum_detuning_percent": 0.00218743724614943,
+      "overlap_score_n": 19.91202911429668,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 18.25,
+      "within_overlap_band_candidate_count": 11712
+    },
+    {
+      "downtime_probability_density_per_mps": 0.0001976501224227412,
+      "downtime_weighted_overlap_score_n_per_mps": 0.004510316574830597,
+      "minimum_detuning_percent": 0.00017285936229914463,
+      "overlap_score_n": 22.81970038543042,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 18.5,
+      "within_overlap_band_candidate_count": 11253
+    },
+    {
+      "downtime_probability_density_per_mps": 0.0001861925262043023,
+      "downtime_weighted_overlap_score_n_per_mps": 0.004554591672301675,
+      "minimum_detuning_percent": 0.001457640311474495,
+      "overlap_score_n": 24.461731977920994,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 18.75,
+      "within_overlap_band_candidate_count": 11040
+    },
+    {
+      "downtime_probability_density_per_mps": 0.00017519585167698635,
+      "downtime_weighted_overlap_score_n_per_mps": 0.004330903266069195,
+      "minimum_detuning_percent": 0.003951551513478993,
+      "overlap_score_n": 24.720352820078222,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 19.0,
+      "within_overlap_band_candidate_count": 10704
+    },
+    {
+      "downtime_probability_density_per_mps": 0.00016465837660882565,
+      "downtime_weighted_overlap_score_n_per_mps": 0.004196264900463024,
+      "minimum_detuning_percent": 0.0006353795132642632,
+      "overlap_score_n": 25.48467309641935,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 19.25,
+      "within_overlap_band_candidate_count": 10443
+    },
+    {
+      "downtime_probability_density_per_mps": 0.0001545767660424199,
+      "downtime_weighted_overlap_score_n_per_mps": 0.0038248170661198044,
+      "minimum_detuning_percent": 0.0003187115915446357,
+      "overlap_score_n": 24.743803121551753,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 19.5,
+      "within_overlap_band_candidate_count": 10125
+    },
+    {
+      "downtime_probability_density_per_mps": 0.00014494620470133226,
+      "downtime_weighted_overlap_score_n_per_mps": 0.003435661545998988,
+      "minimum_detuning_percent": 0.0006446848203865504,
+      "overlap_score_n": 23.703011424675193,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 19.75,
+      "within_overlap_band_candidate_count": 9849
+    },
+    {
+      "downtime_probability_density_per_mps": 0.00013576052815029684,
+      "downtime_weighted_overlap_score_n_per_mps": 0.0028872963579097645,
+      "minimum_detuning_percent": 0.00045663327948603974,
+      "overlap_score_n": 21.267568690608776,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 20.0,
+      "within_overlap_band_candidate_count": 9585
+    },
+    {
+      "downtime_probability_density_per_mps": 0.00012701235193354136,
+      "downtime_weighted_overlap_score_n_per_mps": 0.0026362161794439344,
+      "minimum_detuning_percent": 0.004249042985547336,
+      "overlap_score_n": 20.755589037697078,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 20.25,
+      "within_overlap_band_candidate_count": 9345
+    },
+    {
+      "downtime_probability_density_per_mps": 0.00011869319798795373,
+      "downtime_weighted_overlap_score_n_per_mps": 0.002649068441052141,
+      "minimum_detuning_percent": 0.0003486931346386329,
+      "overlap_score_n": 22.318620493492787,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 20.5,
+      "within_overlap_band_candidate_count": 8865
+    },
+    {
+      "downtime_probability_density_per_mps": 0.00011079361770083656,
+      "downtime_weighted_overlap_score_n_per_mps": 0.002855672400053194,
+      "minimum_detuning_percent": 9.412428236069629e-05,
+      "overlap_score_n": 25.77470128075466,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 20.75,
+      "within_overlap_band_candidate_count": 8274
+    },
+    {
+      "downtime_probability_density_per_mps": 0.00010330331105489188,
+      "downtime_weighted_overlap_score_n_per_mps": 0.0029580167053029605,
+      "minimum_detuning_percent": 0.00016865927751301033,
+      "overlap_score_n": 28.63428746955817,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 21.0,
+      "within_overlap_band_candidate_count": 8121
+    },
+    {
+      "downtime_probability_density_per_mps": 9.621124137515895e-05,
+      "downtime_weighted_overlap_score_n_per_mps": 0.0029039474494290097,
+      "minimum_detuning_percent": 0.0027550180935594242,
+      "overlap_score_n": 30.183036908395906,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 21.25,
+      "within_overlap_band_candidate_count": 7992
+    },
+    {
+      "downtime_probability_density_per_mps": 8.950574526329028e-05,
+      "downtime_weighted_overlap_score_n_per_mps": 0.0027019379668645834,
+      "minimum_detuning_percent": 0.001209617952541891,
+      "overlap_score_n": 30.187313215666293,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 21.5,
+      "within_overlap_band_candidate_count": 7860
+    },
+    {
+      "downtime_probability_density_per_mps": 8.317463737323159e-05,
+      "downtime_weighted_overlap_score_n_per_mps": 0.002382665110310926,
+      "minimum_detuning_percent": 0.0022616945940258557,
+      "overlap_score_n": 28.6465343950841,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 21.75,
+      "within_overlap_band_candidate_count": 7701
+    },
+    {
+      "downtime_probability_density_per_mps": 7.720530974857801e-05,
+      "downtime_weighted_overlap_score_n_per_mps": 0.001991379780845286,
+      "minimum_detuning_percent": 0.0027079688615732297,
+      "overlap_score_n": 25.793300840710167,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 22.0,
+      "within_overlap_band_candidate_count": 7596
+    },
+    {
+      "downtime_probability_density_per_mps": 7.158482550519029e-05,
+      "downtime_weighted_overlap_score_n_per_mps": 0.0016069352509607176,
+      "minimum_detuning_percent": 0.0013018391803107587,
+      "overlap_score_n": 22.44798726015203,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 22.25,
+      "within_overlap_band_candidate_count": 7551
+    },
+    {
+      "downtime_probability_density_per_mps": 6.630000670269981e-05,
+      "downtime_weighted_overlap_score_n_per_mps": 0.001324927744230436,
+      "minimum_detuning_percent": 0.0004018364067264987,
+      "overlap_score_n": 19.983825192833404,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 22.5,
+      "within_overlap_band_candidate_count": 7485
+    },
+    {
+      "downtime_probability_density_per_mps": 6.133751630501652e-05,
+      "downtime_weighted_overlap_score_n_per_mps": 0.001035287833599505,
+      "minimum_detuning_percent": 0.005641703798361305,
+      "overlap_score_n": 16.878541812017147,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 22.75,
+      "within_overlap_band_candidate_count": 7320
+    },
+    {
+      "downtime_probability_density_per_mps": 5.668393418263436e-05,
+      "downtime_weighted_overlap_score_n_per_mps": 0.0008690469113908808,
+      "minimum_detuning_percent": 0.000840861799390038,
+      "overlap_score_n": 15.331450152892197,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 23.0,
+      "within_overlap_band_candidate_count": 7059
+    },
+    {
+      "downtime_probability_density_per_mps": 5.2325827158228885e-05,
+      "downtime_weighted_overlap_score_n_per_mps": 0.0007121473713183697,
+      "minimum_detuning_percent": 0.009297620121692409,
+      "overlap_score_n": 13.609863617920384,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 23.25,
+      "within_overlap_band_candidate_count": 6786
+    },
+    {
+      "downtime_probability_density_per_mps": 4.8249813141634225e-05,
+      "downtime_weighted_overlap_score_n_per_mps": 0.0005790706971977886,
+      "minimum_detuning_percent": 0.0006601709222174955,
+      "overlap_score_n": 12.001511705298501,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 23.5,
+      "within_overlap_band_candidate_count": 6456
+    },
+    {
+      "downtime_probability_density_per_mps": 4.444261944070193e-05,
+      "downtime_weighted_overlap_score_n_per_mps": 0.0005438022386725008,
+      "minimum_detuning_percent": 0.0020371828438948934,
+      "overlap_score_n": 12.236052814080303,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 23.75,
+      "within_overlap_band_candidate_count": 6225
+    },
+    {
+      "downtime_probability_density_per_mps": 4.089113537075878e-05,
+      "downtime_weighted_overlap_score_n_per_mps": 0.00047558093864689233,
+      "minimum_detuning_percent": 0.005355925248962398,
+      "overlap_score_n": 11.630416576473442,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 24.0,
+      "within_overlap_band_candidate_count": 5892
+    },
+    {
+      "downtime_probability_density_per_mps": 3.7582459317419284e-05,
+      "downtime_weighted_overlap_score_n_per_mps": 0.0003872654012212641,
+      "minimum_detuning_percent": 0.00027093737450488756,
+      "overlap_score_n": 10.304418823431506,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 24.25,
+      "within_overlap_band_candidate_count": 5727
+    },
+    {
+      "downtime_probability_density_per_mps": 3.450394043543403e-05,
+      "downtime_weighted_overlap_score_n_per_mps": 0.0003368939930935227,
+      "minimum_detuning_percent": 0.0009074684387242761,
+      "overlap_score_n": 9.763928085951232,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 24.5,
+      "within_overlap_band_candidate_count": 5598
+    },
+    {
+      "downtime_probability_density_per_mps": 3.164321519016768e-05,
+      "downtime_weighted_overlap_score_n_per_mps": 0.00031187383027508626,
+      "minimum_detuning_percent": 0.0006831217750556385,
+      "overlap_score_n": 9.855946319007211,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 24.75,
+      "within_overlap_band_candidate_count": 5670
+    },
+    {
+      "downtime_probability_density_per_mps": 2.8988238968336175e-05,
+      "downtime_weighted_overlap_score_n_per_mps": 0.0003314927200508555,
+      "minimum_detuning_percent": 0.003192869552331349,
+      "overlap_score_n": 11.435421117265683,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 25.0,
+      "within_overlap_band_candidate_count": 5925
+    },
+    {
+      "downtime_probability_density_per_mps": 2.6527313000948943e-05,
+      "downtime_weighted_overlap_score_n_per_mps": 0.00034890654224807615,
+      "minimum_detuning_percent": 0.001735833650276605,
+      "overlap_score_n": 13.152728368515687,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 25.25,
+      "within_overlap_band_candidate_count": 5982
+    },
+    {
+      "downtime_probability_density_per_mps": 2.424910685418633e-05,
+      "downtime_weighted_overlap_score_n_per_mps": 0.00034640392267566586,
+      "minimum_detuning_percent": 0.0025735134939820353,
+      "overlap_score_n": 14.285223977882847,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 25.5,
+      "within_overlap_band_candidate_count": 6111
+    },
+    {
+      "downtime_probability_density_per_mps": 2.214267675339961e-05,
+      "downtime_weighted_overlap_score_n_per_mps": 0.0003244141155037314,
+      "minimum_detuning_percent": 0.0015252440765829022,
+      "overlap_score_n": 14.651079411793493,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 25.75,
+      "within_overlap_band_candidate_count": 5994
+    },
+    {
+      "downtime_probability_density_per_mps": 2.019748001176714e-05,
+      "downtime_weighted_overlap_score_n_per_mps": 0.00028659225984777785,
+      "minimum_detuning_percent": 0.006251275069758931,
+      "overlap_score_n": 14.189505803734326,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 26.0,
+      "within_overlap_band_candidate_count": 5970
+    },
+    {
+      "downtime_probability_density_per_mps": 1.840338583861134e-05,
+      "downtime_weighted_overlap_score_n_per_mps": 0.00023882583896226583,
+      "minimum_detuning_percent": 0.0015110779262121538,
+      "overlap_score_n": 12.97727717370332,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 26.25,
+      "within_overlap_band_candidate_count": 5967
+    },
+    {
+      "downtime_probability_density_per_mps": 1.6750682803212778e-05,
+      "downtime_weighted_overlap_score_n_per_mps": 0.00019146188445374915,
+      "minimum_detuning_percent": 0.010705980835993764,
+      "overlap_score_n": 11.430094325290835,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 26.5,
+      "within_overlap_band_candidate_count": 5964
+    },
+    {
+      "downtime_probability_density_per_mps": 1.5230083228394684e-05,
+      "downtime_weighted_overlap_score_n_per_mps": 0.0001769185001676523,
+      "minimum_detuning_percent": 0.005356837818765827,
+      "overlap_score_n": 11.616384330573371,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 26.75,
+      "within_overlap_band_candidate_count": 5886
+    },
+    {
+      "downtime_probability_density_per_mps": 1.3832724784437983e-05,
+      "downtime_weighted_overlap_score_n_per_mps": 0.00016309691731079,
+      "minimum_detuning_percent": 0.0010423141895983816,
+      "overlap_score_n": 11.790657289319919,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 27.0,
+      "within_overlap_band_candidate_count": 5724
+    },
+    {
+      "downtime_probability_density_per_mps": 1.2550169548267194e-05,
+      "downtime_weighted_overlap_score_n_per_mps": 0.00015000398347672105,
+      "minimum_detuning_percent": 0.0025072483712347384,
+      "overlap_score_n": 11.952347169479646,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 27.25,
+      "within_overlap_band_candidate_count": 5820
+    },
+    {
+      "downtime_probability_density_per_mps": 1.137440078555918e-05,
+      "downtime_weighted_overlap_score_n_per_mps": 0.00013764081287854672,
+      "minimum_detuning_percent": 0.0009622636692539024,
+      "overlap_score_n": 12.100928697122582,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 27.5,
+      "within_overlap_band_candidate_count": 5850
+    },
+    {
+      "downtime_probability_density_per_mps": 1.0297817704703585e-05,
+      "downtime_weighted_overlap_score_n_per_mps": 0.0001260032755135063,
+      "minimum_detuning_percent": 0.008171981819460095,
+      "overlap_score_n": 12.235920184910011,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 27.75,
+      "within_overlap_band_candidate_count": 5775
+    },
+    {
+      "downtime_probability_density_per_mps": 9.31322842160892e-06,
+      "downtime_weighted_overlap_score_n_per_mps": 0.00011508250298920624,
+      "minimum_detuning_percent": 0.007066838069410115,
+      "overlap_score_n": 12.35688611719082,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 28.0,
+      "within_overlap_band_candidate_count": 5733
+    },
+    {
+      "downtime_probability_density_per_mps": 8.413841363417027e-06,
+      "downtime_weighted_overlap_score_n_per_mps": 0.00010486540256327863,
+      "minimum_detuning_percent": 0.0025733431782024104,
+      "overlap_score_n": 12.463439472394654,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 28.25,
+      "within_overlap_band_candidate_count": 5607
+    },
+    {
+      "downtime_probability_density_per_mps": 7.593255327462071e-06,
+      "downtime_weighted_overlap_score_n_per_mps": 9.533517161024328e-05,
+      "minimum_detuning_percent": 0.002330637739529922,
+      "overlap_score_n": 12.555243765536275,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 28.5,
+      "within_overlap_band_candidate_count": 5400
+    },
+    {
+      "downtime_probability_density_per_mps": 6.845448399480862e-06,
+      "downtime_weighted_overlap_score_n_per_mps": 8.647180546658546e-05,
+      "minimum_detuning_percent": 0.0009310102675214412,
+      "overlap_score_n": 12.632014795866874,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 28.75,
+      "within_overlap_band_candidate_count": 5400
+    },
+    {
+      "downtime_probability_density_per_mps": 6.16476592232338e-06,
+      "downtime_weighted_overlap_score_n_per_mps": 7.825259239689217e-05,
+      "minimum_detuning_percent": 0.0025249650013450553,
+      "overlap_score_n": 12.693522087112806,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 29.0,
+      "within_overlap_band_candidate_count": 5148
+    },
+    {
+      "downtime_probability_density_per_mps": 5.545907693391156e-06,
+      "downtime_weighted_overlap_score_n_per_mps": 7.089593190405161e-05,
+      "minimum_detuning_percent": 0.00243477180629928,
+      "overlap_score_n": 12.783467706924794,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 29.25,
+      "within_overlap_band_candidate_count": 5064
+    },
+    {
+      "downtime_probability_density_per_mps": 4.983914555893047e-06,
+      "downtime_weighted_overlap_score_n_per_mps": 6.474867934822776e-05,
+      "minimum_detuning_percent": 0.0046896318926246275,
+      "overlap_score_n": 12.99153077808448,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 29.5,
+      "within_overlap_band_candidate_count": 4947
+    },
+    {
+      "downtime_probability_density_per_mps": 4.474154535889199e-06,
+      "downtime_weighted_overlap_score_n_per_mps": 5.905101674974784e-05,
+      "minimum_detuning_percent": 0.0015875737614575887,
+      "overlap_score_n": 13.198251485520483,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 29.75,
+      "within_overlap_band_candidate_count": 4911
+    },
+    {
+      "downtime_probability_density_per_mps": 4.012308664112033e-06,
+      "downtime_weighted_overlap_score_n_per_mps": 5.3778990781704285e-05,
+      "minimum_detuning_percent": 0.0014145918400482454,
+      "overlap_score_n": 13.403502891671511,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 30.0,
+      "within_overlap_band_candidate_count": 4698
+    },
+    {
+      "downtime_probability_density_per_mps": 3.594356608815387e-06,
+      "downtime_weighted_overlap_score_n_per_mps": 4.890897985028457e-05,
+      "minimum_detuning_percent": 0.0007751807417767002,
+      "overlap_score_n": 13.60715843562439,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 30.25,
+      "within_overlap_band_candidate_count": 4809
+    },
+    {
+      "downtime_probability_density_per_mps": 3.2165622334994745e-06,
+      "downtime_weighted_overlap_score_n_per_mps": 4.441780400247574e-05,
+      "minimum_detuning_percent": 0.003168612625483658,
+      "overlap_score_n": 13.809092061045302,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 30.5,
+      "within_overlap_band_candidate_count": 4596
+    },
+    {
+      "downtime_probability_density_per_mps": 2.8754591813693007e-06,
+      "downtime_weighted_overlap_score_n_per_mps": 4.0282820492425295e-05,
+      "minimum_detuning_percent": 0.0005848606807132224,
+      "overlap_score_n": 14.009178343906283,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 30.75,
+      "within_overlap_band_candidate_count": 4455
+    },
+    {
+      "downtime_probability_density_per_mps": 2.5678365768725696e-06,
+      "downtime_weighted_overlap_score_n_per_mps": 3.648200564751499e-05,
+      "minimum_detuning_percent": 0.000356426607441215,
+      "overlap_score_n": 14.207292619823692,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 31.0,
+      "within_overlap_band_candidate_count": 4329
+    },
+    {
+      "downtime_probability_density_per_mps": 2.290724923683146e-06,
+      "downtime_weighted_overlap_score_n_per_mps": 3.299402374517004e-05,
+      "minimum_detuning_percent": 0.0028940856757285792,
+      "overlap_score_n": 14.403311110842825,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 31.25,
+      "within_overlap_band_candidate_count": 4071
+    },
+    {
+      "downtime_probability_density_per_mps": 2.0413822680901613e-06,
+      "downtime_weighted_overlap_score_n_per_mps": 3.0090700240788563e-05,
+      "minimum_detuning_percent": 0.000840514118515049,
+      "overlap_score_n": 14.740355449908098,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 31.5,
+      "within_overlap_band_candidate_count": 4026
+    },
+    {
+      "downtime_probability_density_per_mps": 1.8172806869518065e-06,
+      "downtime_weighted_overlap_score_n_per_mps": 2.7876817120828342e-05,
+      "minimum_detuning_percent": 0.0020623957127295926,
+      "overlap_score_n": 15.339852187383986,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 31.75,
+      "within_overlap_band_candidate_count": 3957
+    },
+    {
+      "downtime_probability_density_per_mps": 1.6160931501988139e-06,
+      "downtime_weighted_overlap_score_n_per_mps": 2.6624576986034168e-05,
+      "minimum_detuning_percent": 0.013736683526330555,
+      "overlap_score_n": 16.474654931096502,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 32.0,
+      "within_overlap_band_candidate_count": 3885
+    },
+    {
+      "downtime_probability_density_per_mps": 1.4356807993382228e-06,
+      "downtime_weighted_overlap_score_n_per_mps": 2.495074332153959e-05,
+      "minimum_detuning_percent": 0.0011131701127067687,
+      "overlap_score_n": 17.379032534976186,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 32.25,
+      "within_overlap_band_candidate_count": 3948
+    },
+    {
+      "downtime_probability_density_per_mps": 1.2740806755182788e-06,
+      "downtime_weighted_overlap_score_n_per_mps": 2.2356585296761138e-05,
+      "minimum_detuning_percent": 0.001066113700365637,
+      "overlap_score_n": 17.54722893639901,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 32.5,
+      "within_overlap_band_candidate_count": 3918
+    },
+    {
+      "downtime_probability_density_per_mps": 1.1294939234680124e-06,
+      "downtime_weighted_overlap_score_n_per_mps": 2.0241909365541373e-05,
+      "minimum_detuning_percent": 0.005212783388758806,
+      "overlap_score_n": 17.921220242947708,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 32.75,
+      "within_overlap_band_candidate_count": 3939
+    },
+    {
+      "downtime_probability_density_per_mps": 1.000274491011581e-06,
+      "downtime_weighted_overlap_score_n_per_mps": 1.7868268572520396e-05,
+      "minimum_detuning_percent": 0.0019889500592330466,
+      "overlap_score_n": 17.863365239325613,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 33.0,
+      "within_overlap_band_candidate_count": 3894
+    },
+    {
+      "downtime_probability_density_per_mps": 8.84918337864154e-07,
+      "downtime_weighted_overlap_score_n_per_mps": 1.5085159993118979e-05,
+      "minimum_detuning_percent": 0.011303207942342925,
+      "overlap_score_n": 17.04695150687988,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 33.25,
+      "within_overlap_band_candidate_count": 3699
+    },
+    {
+      "downtime_probability_density_per_mps": 7.820531620242607e-07,
+      "downtime_weighted_overlap_score_n_per_mps": 1.2557777411817303e-05,
+      "minimum_detuning_percent": 0.03301487250885118,
+      "overlap_score_n": 16.057447270352878,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 33.5,
+      "within_overlap_band_candidate_count": 3567
+    },
+    {
+      "downtime_probability_density_per_mps": 6.90428647264831e-07,
+      "downtime_weighted_overlap_score_n_per_mps": 1.1636210308407262e-05,
+      "minimum_detuning_percent": 0.0019334258816191927,
+      "overlap_score_n": 16.853602982009384,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 33.75,
+      "within_overlap_band_candidate_count": 3345
+    },
+    {
+      "downtime_probability_density_per_mps": 6.089072309659668e-07,
+      "downtime_weighted_overlap_score_n_per_mps": 1.0441125162113086e-05,
+      "minimum_detuning_percent": 0.0024739355404211918,
+      "overlap_score_n": 17.147316752256902,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 34.0,
+      "within_overlap_band_candidate_count": 3312
+    },
+    {
+      "downtime_probability_density_per_mps": 5.364553877987787e-07,
+      "downtime_weighted_overlap_score_n_per_mps": 9.277392204640841e-06,
+      "minimum_detuning_percent": 0.007344638762721675,
+      "overlap_score_n": 17.29387459916935,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 34.25,
+      "within_overlap_band_candidate_count": 3213
+    },
+    {
+      "downtime_probability_density_per_mps": 4.7213542153138665e-07,
+      "downtime_weighted_overlap_score_n_per_mps": 8.315333949977493e-06,
+      "minimum_detuning_percent": 0.0021949973623482887,
+      "overlap_score_n": 17.612179833926536,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 34.5,
+      "within_overlap_band_candidate_count": 3174
+    },
+    {
+      "downtime_probability_density_per_mps": 4.1509775445420735e-07,
+      "downtime_weighted_overlap_score_n_per_mps": 7.4688174503735466e-06,
+      "minimum_detuning_percent": 0.007624079793791022,
+      "overlap_score_n": 17.992912200148965,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 34.75,
+      "within_overlap_band_candidate_count": 3060
+    },
+    {
+      "downtime_probability_density_per_mps": 3.645737015796524e-07,
+      "downtime_weighted_overlap_score_n_per_mps": 7.11366132483868e-06,
+      "minimum_detuning_percent": 0.021366294132110535,
+      "overlap_score_n": 19.512272262140886,
+      "source_clip_query_fraction": 0.0,
+      "wind_speed_mps": 35.0,
+      "within_overlap_band_candidate_count": 2964
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+cff-version: 1.2.0
+message: "If you use VorLap, cite the software version and the methodology paper relevant to your calculation."
+type: software
+title: "VorLap: Vortex overLAP"
+version: 1.1.0
+authors:
+  - family-names: Moore
+    given-names: Kevin R.
+    affiliation: Sandia National Laboratories
+repository-code: "https://github.com/sandialabs/VorLap"
+url: "https://sandialabs.github.io/VorLap/"
+license: MIT

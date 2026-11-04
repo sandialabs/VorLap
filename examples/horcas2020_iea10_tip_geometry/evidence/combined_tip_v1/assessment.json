@@ -1,0 +1,210 @@
+{
+  "claim": "passed_multi_condition_turbine_hfm_geometry_validation",
+  "claim_boundary": {
+    "does_not_support": "Experimental validation, arbitrary blade-profile extrapolation, H-VAWT validation, spanwise load validation, rainflow/DEL agreement, fatigue life, or certification.",
+    "h_vawt_promotion": "H-VAWT preparation may proceed only after a frozen model passes this protocol and the heldout discrepancy is propagated as a conservative engineering uncertainty factor.",
+    "supports": "Multi-condition high-fidelity numerical wind-turbine validation of edgewise response amplitude, lock-in frequency, and finite inclination interval for one completely held-out combined tip geometry."
+  },
+  "conservative_engineering_envelope": {
+    "additive_floor_m": 0.16117055897983212,
+    "additive_floor_over_signed_saturation": 0.10265640699352364,
+    "covers_all_11_heldout_rows": true,
+    "fatigue_use_boundary": "The bound may be scaled with the local model saturation for conservative H-VAWT screening; it is not itself a fatigue validation and must be applied to cycle-load amplitude before rainflow/DEL calculation.",
+    "formula": "A_design=1.30*A_model+delta_A",
+    "multiplicative_factor": 1.3,
+    "status": "post_validation_discrepancy_bound_not_independent_validation"
+  },
+  "gates": {
+    "all": true,
+    "curve_nrmse": true,
+    "finite_interval": true,
+    "peak_amplitude": true,
+    "peak_inclination": true,
+    "resolved_frequency": true
+  },
+  "matrix": {
+    "all_holdout_rows_reported": true,
+    "heldout_case_count": 11,
+    "heldout_geometry": "COMB",
+    "training_case_count": 44,
+    "training_geometry_count": 4
+  },
+  "metrics": {
+    "curve_nrmse_by_target_peak": 0.12922581236076258,
+    "curve_rmse_m": 0.10879358718729044,
+    "interval_collapse_error_deg": 0.0,
+    "interval_onset_error_deg": 2.5,
+    "maximum_resolved_frequency_ratio_error": 0.039160768999999984,
+    "peak_amplitude_absolute_error_m": 0.023882327307587325,
+    "peak_amplitude_relative_error": 0.028367601686628965,
+    "peak_amplitude_tolerance_m": 0.2625662293,
+    "peak_inclination_error_deg": 0.0,
+    "predicted_peak_amplitude_m": 0.8180051036924126,
+    "predicted_peak_inclination_deg": 55.0,
+    "predicted_resolved_interval": {
+      "collapse_deg": 57.5,
+      "inclinations_deg": [
+        52.5,
+        55.0,
+        57.5
+      ],
+      "indices": [
+        5,
+        6,
+        7
+      ],
+      "onset_deg": 52.5,
+      "point_count": 3,
+      "threshold_m": 0.4090025518462063
+    },
+    "target_peak_amplitude_m": 0.841887431,
+    "target_peak_inclination_deg": 55.0,
+    "target_resolved_interval": {
+      "collapse_deg": 57.5,
+      "inclinations_deg": [
+        55.0,
+        57.5
+      ],
+      "indices": [
+        6,
+        7
+      ],
+      "onset_deg": 55.0,
+      "point_count": 2,
+      "threshold_m": 0.4209437155
+    }
+  },
+  "model_fingerprint": "8b067d6f3a049f665c451f545a25dc8a0345b0a5bc829a3715f691038f899891",
+  "rows": [
+    {
+      "absolute_amplitude_error_m": 0.014236280880179197,
+      "amplitude_error_m": 0.014236280880179197,
+      "case_id": "COMB_I040p0",
+      "frequency_ratio_absolute_error": 0.0003800449999999955,
+      "inclination_deg": 40.0,
+      "predicted_peak_edge_amplitude_m": 0.2176715398801792,
+      "predicted_response_frequency_over_fn": 1.0,
+      "target_peak_edge_amplitude_m": 0.203435259,
+      "target_response_frequency_over_fn": 1.000380045
+    },
+    {
+      "absolute_amplitude_error_m": 0.16332871975757188,
+      "amplitude_error_m": 0.16332871975757188,
+      "case_id": "COMB_I042p5",
+      "frequency_ratio_absolute_error": 0.11709481499999996,
+      "inclination_deg": 42.5,
+      "predicted_peak_edge_amplitude_m": 0.3039485287575719,
+      "predicted_response_frequency_over_fn": 1.0,
+      "target_peak_edge_amplitude_m": 0.140619809,
+      "target_response_frequency_over_fn": 1.117094815
+    },
+    {
+      "absolute_amplitude_error_m": 0.013646135332720022,
+      "amplitude_error_m": 0.013646135332720022,
+      "case_id": "COMB_I045p0",
+      "frequency_ratio_absolute_error": 0.06389163599999992,
+      "inclination_deg": 45.0,
+      "predicted_peak_edge_amplitude_m": 0.26793576333272,
+      "predicted_response_frequency_over_fn": 1.0,
+      "target_peak_edge_amplitude_m": 0.254289628,
+      "target_response_frequency_over_fn": 1.063891636
+    },
+    {
+      "absolute_amplitude_error_m": 0.18298861352294776,
+      "amplitude_error_m": -0.18298861352294776,
+      "case_id": "COMB_I047p5",
+      "frequency_ratio_absolute_error": 0.023278993999999997,
+      "inclination_deg": 47.5,
+      "predicted_peak_edge_amplitude_m": 0.07272684847705223,
+      "predicted_response_frequency_over_fn": 1.0,
+      "target_peak_edge_amplitude_m": 0.255715462,
+      "target_response_frequency_over_fn": 1.023278994
+    },
+    {
+      "absolute_amplitude_error_m": 0.06688891226398402,
+      "amplitude_error_m": -0.06688891226398402,
+      "case_id": "COMB_I050p0",
+      "frequency_ratio_absolute_error": 0.06389163599999992,
+      "inclination_deg": 50.0,
+      "predicted_peak_edge_amplitude_m": 0.251245943736016,
+      "predicted_response_frequency_over_fn": 1.0,
+      "target_peak_edge_amplitude_m": 0.318134856,
+      "target_response_frequency_over_fn": 1.063891636
+    },
+    {
+      "absolute_amplitude_error_m": 0.2238218445043479,
+      "amplitude_error_m": 0.2238218445043479,
+      "case_id": "COMB_I052p5",
+      "frequency_ratio_absolute_error": 0.06389163599999992,
+      "inclination_deg": 52.5,
+      "predicted_peak_edge_amplitude_m": 0.6204562215043479,
+      "predicted_response_frequency_over_fn": 1.0,
+      "target_peak_edge_amplitude_m": 0.396634377,
+      "target_response_frequency_over_fn": 1.063891636
+    },
+    {
+      "absolute_amplitude_error_m": 0.023882327307587325,
+      "amplitude_error_m": -0.023882327307587325,
+      "case_id": "COMB_I055p0",
+      "frequency_ratio_absolute_error": 0.039160768999999984,
+      "inclination_deg": 55.0,
+      "predicted_peak_edge_amplitude_m": 0.8180051036924126,
+      "predicted_response_frequency_over_fn": 1.0,
+      "target_peak_edge_amplitude_m": 0.841887431,
+      "target_response_frequency_over_fn": 1.039160769
+    },
+    {
+      "absolute_amplitude_error_m": 0.012340331931107562,
+      "amplitude_error_m": 0.012340331931107562,
+      "case_id": "COMB_I057p5",
+      "frequency_ratio_absolute_error": 0.01553216199999996,
+      "inclination_deg": 57.5,
+      "predicted_peak_edge_amplitude_m": 0.4429568359311076,
+      "predicted_response_frequency_over_fn": 1.0,
+      "target_peak_edge_amplitude_m": 0.430616504,
+      "target_response_frequency_over_fn": 1.015532162
+    },
+    {
+      "absolute_amplitude_error_m": 0.0071587667438816616,
+      "amplitude_error_m": -0.0071587667438816616,
+      "case_id": "COMB_I060p0",
+      "frequency_ratio_absolute_error": 0.023278993999999997,
+      "inclination_deg": 60.0,
+      "predicted_peak_edge_amplitude_m": 0.4004069152561183,
+      "predicted_response_frequency_over_fn": 1.0,
+      "target_peak_edge_amplitude_m": 0.407565682,
+      "target_response_frequency_over_fn": 1.023278994
+    },
+    {
+      "absolute_amplitude_error_m": 0.10666027990557944,
+      "amplitude_error_m": 0.10666027990557944,
+      "case_id": "COMB_I065p0",
+      "frequency_ratio_absolute_error": 0.01553216199999996,
+      "inclination_deg": 65.0,
+      "predicted_peak_edge_amplitude_m": 0.14826454390557944,
+      "predicted_response_frequency_over_fn": 1.0,
+      "target_peak_edge_amplitude_m": 0.041604264,
+      "target_response_frequency_over_fn": 1.015532162
+    },
+    {
+      "absolute_amplitude_error_m": 0.05409104734180935,
+      "amplitude_error_m": 0.05409104734180935,
+      "case_id": "COMB_I070p0",
+      "frequency_ratio_absolute_error": 0.01553216199999996,
+      "inclination_deg": 70.0,
+      "predicted_peak_edge_amplitude_m": 0.10630978634180935,
+      "predicted_response_frequency_over_fn": 1.0,
+      "target_peak_edge_amplitude_m": 0.052218739,
+      "target_response_frequency_over_fn": 1.015532162
+    }
+  ],
+  "schema": "horcas2020-combined-tip-validation-assessment-v1",
+  "source_identities": {
+    "assessment_code_sha256": "a5ff75f6bb3c66d5902ad48f2d14d6e79384debe1d936de7872f018bdbefb208",
+    "model_sha256": "656a2dac90eda862ec02d6e893679b1118ca5043d962c19c518b978ba202a0dc",
+    "predictions_sha256": "62b6f38008263a1f0c76d772a4a8b97666c7906189e3539a07f85f5dc35ddb69",
+    "provenance_sha256": "cafd90dee9107209a1f0c12cd8ee08dbce7d592d8d373d2f61d0f70ec64b8450",
+    "targets_sha256": "ffa8b9f134744ed966df576dccca9ae771808412ef0f752129edf0df1d1e1967"
+  },
+  "status": "passed"
+}

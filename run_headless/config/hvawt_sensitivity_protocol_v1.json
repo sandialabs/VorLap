@@ -1,0 +1,107 @@
+{
+  "acceptance_gates": {
+    "active_mode_absolute_frequency_relative_limit": 0.1,
+    "active_mode_absolute_frequency_gate_applicability": "apply separately to nominal complete and to each numerical variant only when that history's engineering damping ratio exceeds the activation threshold",
+    "active_mode_classification_consistency_required": true,
+    "active_mode_engineering_damping_ratio_threshold": 1.0,
+    "active_mode_intervariant_frequency_gate_applicability": "apply only when the same reviewed mode exceeds the activation threshold in both nominal-complete and numerical-variant histories; otherwise report the exact non-applicability reason",
+    "active_mode_intervariant_frequency_relative_limit": 0.05,
+    "complete_path_numerical_load_one_sided_fraction": 0.1,
+    "complete_path_numerical_load_symmetric_log_ratio_limit": 0.09531017980432493,
+    "finite_record_480_to_600s_damage_rate_del_relative_limit": 0.05,
+    "finite_record_480_to_600s_record_maximum_relative_limit": 0.05,
+    "nominal_complete_finite_record_gate_required": true,
+    "response_off_effect_closeness_gate_applied": false,
+    "response_off_requires_exactly_zero_response_force_and_power": true,
+    "response_off_requires_positive_residual_force": true,
+    "zero_alias_clip_nonfinite_or_energy_closure_violations": true
+  },
+  "analysis_contract": {
+    "equivalent_cycles": 600.0,
+    "finite_record_del_normalization": "damage divided by physical record duration before applying the inverse Wohler exponent",
+    "final_record_prefix_s": 480.0,
+    "full_retained_record_s": 600.0,
+    "primary_position": 0.23,
+    "modal_frequency_interpretation": "dominant frequency of filtered modal velocity; active classification must be unchanged between nominal and each numerical variant, absolute-band gates apply separately to each active history, and the intervariant gate applies only when both histories exceed an engineering aerodynamic-to-structural damping ratio of 1.0; internal consistency diagnostic, not physical lock-in validation",
+    "quantity": "selected local blade moment at r/R=0.23",
+    "response_off_interpretation": "dynamical response-work ablation within the complete residual partition; effect magnitude is reported without a closeness gate and is not pointwise force subtraction or isolated negative-damping validation",
+    "ratio_interpretation": "raw and one-way sensitivity denominators are not rerun; resulting ratios are diagnostic contextual numerator sensitivities, not independent gates or matched three-path numerical convergence",
+    "ten_percent_del_damage_sum_factor_at_m10": 2.5937424601000023,
+    "wohler_exponent": 10.0
+  },
+  "base_campaign_fingerprint": "10a397bfcfdf93499e3a0e7417db1814f7e9e39e44982fd7066b83343cd25ec1",
+  "case_count": 6,
+  "claim_boundary": "Two prespecified U35 engineering-screening rows and their selected local blade-moment channels at r/R=0.23 only. The package does not establish full timestep convergence, bandwidth independence, a resolved wind-distribution fatigue integral, H-VAWT physical validation, fatigue life, ultimate loads, governing structural loads, or certification loads. The 10% DEL screen is not an uncertainty bound and, for m=10, corresponds to about 2.59 times the underlying range-power sum.",
+  "execution_contract": {
+    "duration_s": 660.0,
+    "fresh_start_only": true,
+    "half_timestep_checkpoint_every": 48000,
+    "half_timestep_progress_every": 2000,
+    "nominal_checkpoint_every": 24000,
+    "nominal_progress_every": 1000,
+    "store_from_s": 60.0
+  },
+  "lower_cap_basis": {
+    "highest_reviewed_structural_mode_hz": 4.572593676110874,
+    "lower_cap_hz": 33.333333333333336,
+    "lower_cap_to_highest_reviewed_mode_ratio": 7.289810994295803,
+    "samples_per_shortest_retained_cycle": 4.0,
+    "statement": "Predeclared numerical bandwidth diagnostic at one-half nominal Nyquist; not a validated physical cutoff."
+  },
+  "schema": "vorlap-hvawt-targeted-sensitivity-protocol-v1",
+  "selected_rows": [
+    {
+      "axis": "Y",
+      "complete_case_index": 98,
+      "row_id": "dlc6p4_U35p00ms_s4433458",
+      "seed": 4433458,
+      "selection_role": "governing_complete_weighted_del_power_contributor"
+    },
+    {
+      "axis": "X",
+      "complete_case_index": 92,
+      "row_id": "dlc6p4_U35p00ms_s4433456",
+      "seed": 4433456,
+      "selection_role": "largest_material_complete_to_one_way_composition_ratio"
+    }
+  ],
+  "selection_fingerprint": "55a0622ee828175667a63f8379115b4ace317f36585834d9c8be4cdf97252c1e",
+  "status": "frozen_before_case_generation_or_execution",
+  "variants": [
+    {
+      "force_scale": 0.0,
+      "name": "complete_response_off",
+      "response_force_scale": 0.0,
+      "residual_source_scale": 1.0,
+      "retained_rows": 80000,
+      "source_frequency_cap_hz": 66.66666666666667,
+      "timestep_s": 0.0075,
+      "total_steps": 88000,
+      "velocity_basis": "local_rigid_body_relative_unscaled"
+    },
+    {
+      "force_scale": 0.0,
+      "name": "complete_half_timestep",
+      "response_force_scale": 1.0,
+      "residual_source_scale": 1.0,
+      "retained_rows": 160000,
+      "source_frequency_cap_hz": 66.66666666666667,
+      "timestep_s": 0.00375,
+      "total_steps": 176000,
+      "velocity_basis": "local_rigid_body_relative_unscaled",
+      "wind_timestep_s": 0.0075,
+      "wind_to_qblade_timestep_ratio": 2.0
+    },
+    {
+      "force_scale": 0.0,
+      "name": "complete_lower_cap",
+      "response_force_scale": 1.0,
+      "residual_source_scale": 1.0,
+      "retained_rows": 80000,
+      "source_frequency_cap_hz": 33.333333333333336,
+      "timestep_s": 0.0075,
+      "total_steps": 88000,
+      "velocity_basis": "local_rigid_body_relative_unscaled"
+    }
+  ]
+}

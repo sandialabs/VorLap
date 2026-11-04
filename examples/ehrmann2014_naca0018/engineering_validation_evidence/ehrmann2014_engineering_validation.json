@@ -1,0 +1,162 @@
+{
+  "acceptance": {
+    "checks": {
+      "all_52_cases_stationary": true,
+      "both_mass_damping_cases_pass": true
+    },
+    "mass_damping_results": [
+      {
+        "amplitude_absolute_error_over_chord": 0.0004755413043478242,
+        "amplitude_tolerance_over_chord": 0.004309905,
+        "checks": {
+          "finite_adjacent_lockin_interval": true,
+          "paired_timestep_amplitude": true,
+          "paired_timestep_frequency": true,
+          "peak_amplitude_within_30_percent_plus_digitization": true,
+          "peak_frequency_within_10_percent": true,
+          "peak_reduced_velocity_within_10_percent": true
+        },
+        "dt_amplitude_difference_over_chord": 4.6630434782608116e-05,
+        "dt_frequency_difference_over_fn": 7.313413812093383e-05,
+        "experimental_peak_amplitude_over_chord": 0.01236635,
+        "experimental_peak_reduced_velocity": 4.586149,
+        "latest_peak_amplitude_over_chord": 0.012841891304347824,
+        "latest_peak_frequency_over_fn": 0.9750975097497835,
+        "latest_peak_reduced_velocity": 4.7,
+        "lockin_reduced_velocities": [
+          4.5,
+          4.6,
+          4.7,
+          4.8
+        ],
+        "mass_damping": 0.96,
+        "pass": true,
+        "raw_peak_amplitude_over_chord": 1.586956521735981e-09
+      },
+      {
+        "amplitude_absolute_error_over_chord": 0.0013439138750231863,
+        "amplitude_tolerance_over_chord": 0.00264498285815913,
+        "checks": {
+          "finite_adjacent_lockin_interval": true,
+          "paired_timestep_amplitude": true,
+          "paired_timestep_frequency": true,
+          "peak_amplitude_within_30_percent_plus_digitization": true,
+          "peak_frequency_within_10_percent": true,
+          "peak_reduced_velocity_within_10_percent": true
+        },
+        "dt_amplitude_difference_over_chord": 5.8891304347826606e-05,
+        "dt_frequency_difference_over_fn": 7.313413812093383e-05,
+        "experimental_peak_amplitude_over_chord": 0.0068166095271971,
+        "experimental_peak_reduced_velocity": 4.586149,
+        "latest_peak_amplitude_over_chord": 0.0054726956521739135,
+        "latest_peak_frequency_over_fn": 0.9750975097497835,
+        "latest_peak_reduced_velocity": 4.7,
+        "lockin_reduced_velocities": [
+          4.6,
+          4.7,
+          4.8
+        ],
+        "mass_damping": 1.44,
+        "pass": true,
+        "raw_peak_amplitude_over_chord": 2.1739130436303377e-11
+      }
+    ],
+    "pass": true,
+    "status": "passed"
+  },
+  "artifacts": {
+    "case_metrics_csv": {
+      "path": "ehrmann2014_engineering_case_metrics.csv",
+      "sha256": "9ff8f9080452164077596ad46041f20d9d69ce62d279ea5c4c36a07c03cbbb61"
+    },
+    "comparison_pdf": {
+      "path": "ehrmann2014_engineering_validation.pdf",
+      "sha256": "ab57e4a0923d6d6b9d398ce028659f9b14f3b46d0f0a291254750a6222836252"
+    },
+    "comparison_png": {
+      "path": "ehrmann2014_engineering_validation.png",
+      "sha256": "f53e5b7be1a22e47710729bc86f3a2cdbc5ac93f850621c707326c4f9095221b"
+    },
+    "plot_data_csv": {
+      "path": "ehrmann2014_engineering_validation_plot_data.csv",
+      "sha256": "d7e98a8c4ba7eaa1419bcd4dcf062b0ae926c470856127b68b811bd33c43b873"
+    }
+  },
+  "calibration_identity": {
+    "fingerprint": "7bc822add11596d9f0a31e2a23860cf015eafa7d91889449defc271f269582e6",
+    "holdout_status": "passed",
+    "maximum_holdout_absolute_relative_error": 0.14643395776926113,
+    "nalu_required": false,
+    "schema": "vorlap-ehrmann2014-engineering-lockin-calibration-v1",
+    "sha256": "d96c0b73a708b918360a15e79224f6a3a3f4e80702edf721bc606501a46fa02d",
+    "stationary_force_spectrum_sha256": "64399e25dc5008caaed88d42e5cf24160c1045f17a282a06234648202cece369"
+  },
+  "campaign_fingerprint": "496c92e1f2cd302313e6d0a588f791c07a7e5a808df9b887a93984c7850f46e6",
+  "claim_boundary": {
+    "hvawt_advancement_allowed": true,
+    "independent_cross_airfoil_validation": false,
+    "nalu_required": false,
+    "qualifies_only_ehrmann_naca0018_engineering_screen": true
+  },
+  "comparison": {
+    "baseline": "Raw QBlade",
+    "experiment": "Ehrmann et al. NACA0018",
+    "latest_model": "VorLap-QBlade engineering spectral negative damping"
+  },
+  "execution_contract": {
+    "calibration_sha256": "d96c0b73a708b918360a15e79224f6a3a3f4e80702edf721bc606501a46fa02d",
+    "campaign_schema": "vorlap-ehrmann2014-naca0018-engineering-lockin-campaign-v5",
+    "complete_at_end": 52,
+    "container": {
+      "image_id": "sha256:99864db6be24387033888d0fe4b8859879f2987b2e4042df08c501e71a71cc61",
+      "image_reference": "vorlap-qblade-headless:amd64",
+      "inspect_file": {
+        "path": "docker_inspect.json",
+        "sha256": "8b9eead3e00d291d6b7e66562dc2f27bf3818c5b34e122aa75211a50af8d8ec6"
+      },
+      "nano_cpus": 8000000000,
+      "oom_killed": false,
+      "platform": "docker_linux_amd64"
+    },
+    "exact_raw_reuse_case_count": 18,
+    "hybrid_case_count": 26,
+    "nalu_required": false,
+    "new_raw_case_count": 8,
+    "raw_reuse_root": "/Users/kevmoor/Documents/coderepos/VorLap_Bridge/VorLap/run_headless/runs/ehrmann2014_naca0018_validation_v1/results",
+    "schema": "vorlap-ehrmann2014-engineering-local-docker-execution-v2",
+    "threads_per_case": 1
+  },
+  "pass": true,
+  "schema": "vorlap-ehrmann2014-engineering-validation-evidence-v1",
+  "source_artifacts": {
+    "campaign_analysis": {
+      "path": "analysis/ehrmann2014_analysis.json",
+      "sha256": "2030d27a0bfbdb23c572b78eaa64636d4f519b881a4b1171fae274e5e9c39b0d"
+    },
+    "campaign_case_metrics": {
+      "path": "analysis/ehrmann2014_case_metrics.csv",
+      "sha256": "9ff8f9080452164077596ad46041f20d9d69ce62d279ea5c4c36a07c03cbbb61"
+    },
+    "campaign_manifest": {
+      "path": "campaign_manifest.json",
+      "sha256": "0b30a99d6baa18a1a22e47f8e4d5b54ffbd3b74b5a3a361e52a05bd2643b2d49"
+    },
+    "execution_report": {
+      "path": "local_docker_execution_report.json",
+      "sha256": "98dda8b9627232d5b738c8d2d6dccf0f4bc8cc7ed2d6805072f8eae8801c3ce5"
+    },
+    "experiment_digitization_provenance": {
+      "path": "reference_data/ehrmann2014_digitization_provenance.json",
+      "sha256": "5c26c08c9d17a452d639eecc52c43e94ae0b618d05a938510e56499ec27bf3b1"
+    },
+    "experiment_figure6_digitization": {
+      "path": "reference_data/ehrmann2014_figure6_naca0018_digitized.csv",
+      "sha256": "03c0161de5d45ba2f740f87d8d354452a911534d3b87a26c6ee23cb088a6890a"
+    },
+    "experiment_figure7_digitization": {
+      "path": "reference_data/ehrmann2014_figure7_naca0018_peak_digitized.csv",
+      "sha256": "1afdfca3cfa4b98318f91f5a46954b34886fa470c8e21763eee1bd5c71f73f83"
+    }
+  },
+  "status": "passed"
+}

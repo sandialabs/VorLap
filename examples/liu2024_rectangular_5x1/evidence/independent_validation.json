@@ -1,0 +1,107 @@
+{
+  "claim_boundary": {
+    "fatigue_use_requires_matched_hvawt_histories_and_conservative_discrepancy_factor": true,
+    "independent_cross_profile_experimental_validation": true,
+    "qualifies_model_for_hvawt_pilot_preparation": true,
+    "validated_quantity": "peak RMS cross-flow response and lock-in onset for one 5:1 rectangular section",
+    "validates_fatigue_loads": false,
+    "validates_hvawt_response": false
+  },
+  "experiment": {
+    "inferred_mass_per_span_kgpm": 7.638546475819045,
+    "published_frequency_behavior": "response frequency locks near the structural frequency; no numerical marker was used for fitting",
+    "reported_onset_reduced_velocity": 8.35,
+    "scruton_number": 21.0,
+    "study": "Liu et al. bare 5:1 rectangular cylinder",
+    "target_peak_hrms_over_depth": 0.02095808383233533,
+    "target_uncertainty_hrms_over_depth": 0.0015
+  },
+  "gates": {
+    "finite_compact_lock_in_interval": true,
+    "nonlinear_sdof_matches_analytic_equilibrium": true,
+    "onset_reduced_velocity_within_10_percent": true,
+    "paired_timestep_repeatability": true,
+    "peak_amplitude_within_30_percent": true,
+    "terminal_stationarity": true
+  },
+  "model": {
+    "calibration_fingerprint": "388a723782aa00899df352119c06b86188796453125ef67c68046dbc94a74354",
+    "calibration_sha256": "1e50141d607621af4bdadc57df4153782da9789be79ac343b397c7815f413a35",
+    "retuned_for_liu_5x1": false,
+    "trained_only_on": "Mannini 3:2 frequency window and Marra 4:1 Griffin amplitudes",
+    "type": "static_spectrum_gao_scanlan_griffin_v1"
+  },
+  "numerical_verification": {
+    "simulations": [
+      {
+        "dominant_frequency_hz": 11.700000000000001,
+        "dt_s": 0.001,
+        "duration_s": 60.0,
+        "early_rms_over_depth": 0.017312506616083974,
+        "frequency_ratio_to_natural": 0.9982935153583619,
+        "late_rms_over_depth": 0.017329699539122674,
+        "stationarity_delta_over_depth": 1.719292303870011e-05,
+        "terminal_rms_over_depth": 0.017321105210814636
+      },
+      {
+        "dominant_frequency_hz": 11.700000000000001,
+        "dt_s": 0.0005,
+        "duration_s": 60.0,
+        "early_rms_over_depth": 0.01731474903990736,
+        "frequency_ratio_to_natural": 0.9982935153583619,
+        "late_rms_over_depth": 0.017328314190867243,
+        "stationarity_delta_over_depth": 1.3565150959884702e-05,
+        "terminal_rms_over_depth": 0.01732153294331053
+      }
+    ],
+    "timestep_amplitude_delta_over_depth": 4.2773249589456164e-07,
+    "timestep_frequency_ratio_delta": 0.0
+  },
+  "pass": true,
+  "prediction": {
+    "onset_absolute_relative_error": 0.03585375571191718,
+    "peak_absolute_relative_error": 0.1736867534049297,
+    "peak_hrms_over_depth": 0.01731794229390866,
+    "predicted_high_edge_reduced_velocity": 9.801159617022627,
+    "predicted_onset_reduced_velocity": 8.050621139805491,
+    "predicted_peak_reduced_velocity": 9.384703843566223,
+    "self_consistent_static_queries": {
+      "high": {
+        "frequency_ratio": 1.21875,
+        "interpolated_sinusoidal_equivalent_coefficient": 0.6434410428674927,
+        "interpolated_strouhal_depth": 0.12434753107002547,
+        "reduced_velocity": 9.801159617022627,
+        "reynolds_number": 38871.615641324286,
+        "wind_speed_mps": 8.040871349805364
+      },
+      "low": {
+        "frequency_ratio": 1.0,
+        "interpolated_sinusoidal_equivalent_coefficient": 0.6037897146291233,
+        "interpolated_strouhal_depth": 0.12421401810297593,
+        "reduced_velocity": 8.050621139805491,
+        "reynolds_number": 31928.94135474792,
+        "wind_speed_mps": 6.604729583096426
+      },
+      "peak": {
+        "frequency_ratio": 1.166666667,
+        "interpolated_sinusoidal_equivalent_coefficient": 0.6340079314077921,
+        "interpolated_strouhal_depth": 0.12431576813154527,
+        "reduced_velocity": 9.384703843566223,
+        "reynolds_number": 37219.94284035368,
+        "wind_speed_mps": 7.69921103326173
+      }
+    }
+  },
+  "schema": "vorlap-liu2024-independent-griffin-validation-v1",
+  "sources": {
+    "liu_response_provenance": {
+      "path": "examples/liu2024_rectangular_5x1/reference_data/validation_provenance.json",
+      "sha256": "61682ca212ddfca2a2ef71aa033996241b5db607059c95612071a4c7be636c2c"
+    },
+    "nguyen_fixed_body_spectrum": {
+      "path": "examples/liu2024_rectangular_5x1/reference_data/nguyen2018_fixed_body_spectrum.csv",
+      "sha256": "145e48c1a443371055d4ae7c8a9037720a9e6c945bf1c58e6fdbc0a582d9e66c"
+    }
+  },
+  "status": "passed_untouched_independent_5x1_validation"
+}

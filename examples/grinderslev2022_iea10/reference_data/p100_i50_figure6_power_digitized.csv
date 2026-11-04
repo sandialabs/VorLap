@@ -1,0 +1,16 @@
+tip_amplitude_m,aerodynamic_power_w,amplitude_uncertainty_m,power_uncertainty_w,series
+0.00,0,0.01,20,p100_i50_forced_motion
+0.10,45,0.01,20,p100_i50_forced_motion
+0.20,175,0.01,20,p100_i50_forced_motion
+0.30,375,0.01,20,p100_i50_forced_motion
+0.40,590,0.01,20,p100_i50_forced_motion
+0.50,770,0.01,20,p100_i50_forced_motion
+0.60,930,0.01,20,p100_i50_forced_motion
+0.75,1200,0.01,20,p100_i50_forced_motion
+1.00,1390,0.01,20,p100_i50_forced_motion
+1.20,1020,0.01,20,p100_i50_forced_motion
+1.30,620,0.01,20,p100_i50_forced_motion
+1.40,330,0.01,20,p100_i50_forced_motion
+1.50,115,0.01,20,p100_i50_forced_motion
+1.57,0,0.01,20,p100_i50_forced_motion
+1.60,-45,0.01,20,p100_i50_forced_motion

@@ -6,6 +6,7 @@ import numpy as np
 import pytest
 
 from vorlap.fileio import (
+    compare_qblade_loading_file,
     convert_qblade_to_vorlap_inputs,
     load_airfoil_coords,
     load_airfoil_fft,
@@ -14,10 +15,40 @@ from vorlap.fileio import (
     load_qblade_blade_definition,
     load_qblade_simulation_definition,
     load_qblade_turbine_definition,
+    read_qblade_loading_file,
     write_components_to_csv,
     write_force_time_series,
     write_qblade_loading_file,
 )
+from vorlap import airfoil_io, component_io, inflow_io, qblade_conversion, qblade_loading_file, qblade_parser
+
+
+def test_qblade_loading_file_helpers_are_reexported_from_fileio():
+    assert write_qblade_loading_file is qblade_loading_file.write_qblade_loading_file
+    assert read_qblade_loading_file is qblade_loading_file.read_qblade_loading_file
+    assert compare_qblade_loading_file is qblade_loading_file.compare_qblade_loading_file
+
+
+def test_component_csv_helpers_are_reexported_from_fileio():
+    assert write_components_to_csv is component_io.write_components_to_csv
+    assert load_components_from_csv is component_io.load_components_from_csv
+
+
+def test_inflow_csv_helpers_are_reexported_from_fileio():
+    assert load_inflow_time_series is inflow_io.load_inflow_time_series
+    assert write_force_time_series is inflow_io.write_force_time_series
+
+
+def test_qblade_parser_and_conversion_helpers_are_reexported_from_fileio():
+    assert load_qblade_simulation_definition is qblade_parser.load_qblade_simulation_definition
+    assert load_qblade_turbine_definition is qblade_parser.load_qblade_turbine_definition
+    assert load_qblade_blade_definition is qblade_parser.load_qblade_blade_definition
+    assert convert_qblade_to_vorlap_inputs is qblade_conversion.convert_qblade_to_vorlap_inputs
+
+
+def test_airfoil_helpers_are_reexported_from_fileio():
+    assert load_airfoil_fft is airfoil_io.load_airfoil_fft
+    assert load_airfoil_coords is airfoil_io.load_airfoil_coords
 
 
 def _write_component_csv(path: Path, include_offset: bool = True) -> None:
@@ -113,19 +144,31 @@ def test_load_airfoil_fft_orients_dimensions(tmp_path: Path):
     freq = 3
 
     # Stored as [freq, AOA, Re], loader should transpose to [Re, AOA, freq].
-    raw = np.arange(freq * aoa.size * re.size, dtype=float).reshape(freq, aoa.size, re.size)
+    valid_st = np.zeros((re.size, aoa.size, freq), dtype=float)
+    valid_st[:, :, 1] = 0.2
+    valid_st[:, :, 2] = 0.4
+    valid_amp = np.ones((re.size, aoa.size, freq), dtype=float)
+    valid_pha = np.zeros((re.size, aoa.size, freq), dtype=float)
+    raw_st = np.transpose(valid_st, (2, 1, 0))
+    raw_amp = np.transpose(valid_amp, (2, 1, 0))
+    raw_pha = np.transpose(valid_pha, (2, 1, 0))
 
     with h5py.File(h5_path, "w") as h5:
         h5.create_dataset("Airfoilname", data=b"synthetic")
         h5.create_dataset("Re", data=re)
         h5.create_dataset("AOA", data=aoa)
         h5.create_dataset("Thickness", data=np.array([0.1]))
-        for key in ("CL_ST", "CD_ST", "CM_ST", "CF_ST", "CL_Amp", "CD_Amp", "CM_Amp", "CF_Amp", "CL_Pha", "CD_Pha", "CM_Pha", "CF_Pha"):
-            h5.create_dataset(key, data=raw)
+        for key in ("CL_ST", "CD_ST", "CM_ST", "CF_ST"):
+            h5.create_dataset(key, data=raw_st)
+        for key in ("CL_Amp", "CD_Amp", "CM_Amp", "CF_Amp"):
+            h5.create_dataset(key, data=raw_amp)
+        for key in ("CL_Pha", "CD_Pha", "CM_Pha", "CF_Pha"):
+            h5.create_dataset(key, data=raw_pha)
 
-    afft = load_airfoil_fft(str(h5_path))
+    with pytest.warns(RuntimeWarning):
+        afft = load_airfoil_fft(str(h5_path))
     assert afft.CL_ST.shape == (2, 2, 3)
-    np.testing.assert_allclose(afft.CL_ST[0, 0, :], raw[:, 0, 0])
+    np.testing.assert_allclose(afft.CL_ST[0, 0, :], valid_st[0, 0, :])
 
 
 def test_load_airfoil_fft_accepts_scalar_thickness(tmp_path: Path):
@@ -144,6 +187,95 @@ def test_load_airfoil_fft_accepts_scalar_thickness(tmp_path: Path):
 
     afft = load_airfoil_fft(str(h5_path))
     assert afft.Thickness == pytest.approx(0.18)
+
+
+def test_load_airfoil_fft_requires_dc_strouhal_at_index_zero(tmp_path: Path):
+    h5_path = tmp_path / "airfoil_missing_dc.h5"
+    re = np.array([1.0, 2.0])
+    aoa = np.array([-5.0, 5.0])
+    arr = np.zeros((2, 2, 2), dtype=float)
+    bad_st = arr.copy()
+    bad_st[:, :, 0] = 0.2
+    bad_st[:, :, 1] = 0.0
+
+    with h5py.File(h5_path, "w") as h5:
+        h5.create_dataset("Airfoilname", data=b"missing_dc")
+        h5.create_dataset("Re", data=re)
+        h5.create_dataset("AOA", data=aoa)
+        h5.create_dataset("Thickness", data=np.array(0.18))
+        for key in ("CL_ST", "CD_ST", "CM_ST", "CF_ST"):
+            h5.create_dataset(key, data=bad_st)
+        for key in ("CL_Amp", "CD_Amp", "CM_Amp", "CF_Amp"):
+            h5.create_dataset(key, data=arr)
+        for key in ("CL_Pha", "CD_Pha", "CM_Pha", "CF_Pha"):
+            h5.create_dataset(key, data=arr)
+
+    with pytest.raises(ValueError, match="index 0 must be DC"):
+        load_airfoil_fft(str(h5_path), repair_legacy_dc_strouhal=False)
+
+
+def test_load_airfoil_fft_repairs_legacy_nonzero_dc_strouhal_and_signed_harmonics(tmp_path: Path):
+    h5_path = tmp_path / "airfoil_legacy_dc_st.h5"
+    re = np.array([1.0, 2.0])
+    aoa = np.array([-5.0, 5.0])
+    st = np.ones((2, 2, 2), dtype=float) * 0.2
+    st[:, :, 1] = 0.5
+    amp = np.ones((2, 2, 2), dtype=float)
+    amp[:, :, 1] = -0.25
+    pha = np.zeros((2, 2, 2), dtype=float)
+
+    with h5py.File(h5_path, "w") as h5:
+        h5.create_dataset("Airfoilname", data=b"legacy")
+        h5.create_dataset("Re", data=re)
+        h5.create_dataset("AOA", data=aoa)
+        h5.create_dataset("Thickness", data=np.array(0.18))
+        for key in ("CL_ST", "CD_ST", "CM_ST", "CF_ST"):
+            h5.create_dataset(key, data=st)
+        for key in ("CL_Amp", "CD_Amp", "CM_Amp", "CF_Amp"):
+            h5.create_dataset(key, data=amp)
+        for key in ("CL_Pha", "CD_Pha", "CM_Pha", "CF_Pha"):
+            h5.create_dataset(key, data=pha)
+
+    with pytest.warns(RuntimeWarning):
+        afft = load_airfoil_fft(str(h5_path))
+
+    np.testing.assert_allclose(afft.CL_ST[:, :, 0], 0.0)
+    np.testing.assert_allclose(afft.CL_Amp[:, :, 1], 0.25)
+    np.testing.assert_allclose(afft.CL_Pha[:, :, 1], np.pi)
+
+
+def test_load_airfoil_fft_zeros_legacy_active_zero_strouhal_harmonics(tmp_path: Path):
+    h5_path = tmp_path / "airfoil_legacy_zero_st_harmonics.h5"
+    re = np.array([1.0, 2.0])
+    aoa = np.array([-5.0, 5.0])
+    st = np.zeros((2, 2, 3), dtype=float)
+    st[:, :, 2] = 0.5
+    amp = np.zeros((2, 2, 3), dtype=float)
+    amp[:, :, 0] = 1.0
+    amp[:, :, 1] = 0.25
+    amp[:, :, 2] = 0.5
+    pha = np.ones((2, 2, 3), dtype=float)
+
+    with h5py.File(h5_path, "w") as h5:
+        h5.create_dataset("Airfoilname", data=b"legacy_zero_st")
+        h5.create_dataset("Re", data=re)
+        h5.create_dataset("AOA", data=aoa)
+        h5.create_dataset("Thickness", data=np.array(0.18))
+        for key in ("CL_ST", "CD_ST", "CM_ST", "CF_ST"):
+            h5.create_dataset(key, data=st)
+        for key in ("CL_Amp", "CD_Amp", "CM_Amp", "CF_Amp"):
+            h5.create_dataset(key, data=amp)
+        for key in ("CL_Pha", "CD_Pha", "CM_Pha", "CF_Pha"):
+            h5.create_dataset(key, data=pha)
+
+    with pytest.warns(RuntimeWarning) as caught:
+        afft = load_airfoil_fft(str(h5_path))
+
+    assert any("zeroing CL harmonic amplitudes" in str(warning.message) for warning in caught)
+    np.testing.assert_allclose(afft.CL_Amp[:, :, 1], 0.0)
+    np.testing.assert_allclose(afft.CL_Pha[:, :, 1], 0.0)
+    np.testing.assert_allclose(afft.CL_Amp[:, :, 2], 0.5)
+    np.testing.assert_allclose(afft.CL_ST[:, :, 2], 0.5)
 
 
 def test_load_airfoil_coords_falls_back_with_warning():
@@ -280,6 +412,33 @@ def test_load_qblade_definition_files(tmp_path: Path):
     assert len(bld_data["strut_rows"]) == 1
 
 
+def test_convert_qblade_to_vorlap_inputs_reports_malformed_qblade_files(tmp_path: Path):
+    sim_missing_turb = tmp_path / "missing_turb.sim"
+    sim_missing_turb.write_text("0.05 TIMESTEP - timestep\n", encoding="utf-8")
+    with pytest.raises(ValueError, match="does not specify TURBFILE"):
+        convert_qblade_to_vorlap_inputs(str(sim_missing_turb))
+
+    sim_missing_reference = tmp_path / "missing_reference.sim"
+    sim_missing_reference.write_text("missing.trb TURBFILE - turbine file\n", encoding="utf-8")
+    with pytest.raises(FileNotFoundError, match="QBlade file does not exist"):
+        convert_qblade_to_vorlap_inputs(str(sim_missing_reference))
+
+    trb_missing_blade = tmp_path / "missing_blade.trb"
+    trb_missing_blade.write_text("3 NUMBLADES - blades\n", encoding="utf-8")
+    sim = tmp_path / "case.sim"
+    sim.write_text("missing_blade.trb TURBFILE - turbine file\n", encoding="utf-8")
+    with pytest.raises(ValueError, match="does not specify BLADEFILE"):
+        convert_qblade_to_vorlap_inputs(str(sim))
+
+    malformed_bld = tmp_path / "malformed.bld"
+    malformed_bld.write_text("3 NUMBLADES - blades\nNo blade geometry table here\n", encoding="utf-8")
+    trb = tmp_path / "case.trb"
+    trb.write_text("malformed.bld BLADEFILE - blade file\n3 NUMBLADES - blades\n", encoding="utf-8")
+    sim.write_text("case.trb TURBFILE - turbine file\n", encoding="utf-8")
+    with pytest.raises(ValueError, match="Could not locate blade data table"):
+        convert_qblade_to_vorlap_inputs(str(sim))
+
+
 def test_convert_qblade_to_vorlap_inputs(tmp_path: Path):
     sim, _trb, _bld = _write_qblade_minimal_files(tmp_path)
 
@@ -316,9 +475,16 @@ def test_write_qblade_loading_file(tmp_path: Path):
         ],
         dtype=float,
     )
+    torque = np.array(
+        [
+            [[0.1, 0.4], [0.2, 0.5], [0.3, 0.6]],
+            [[0.7, 1.0], [0.8, 1.1], [0.9, 1.2]],
+        ],
+        dtype=float,
+    )
     node_ids = ["BLD_1_0.000000", "BLD_1_1.000000"]
 
-    write_qblade_loading_file(str(outfile), time, force, node_ids, local=True)
+    write_qblade_loading_file(str(outfile), time, force, node_ids, local=True, node_torque_vector_nodes=torque)
     lines = outfile.read_text().splitlines()
 
     assert any("VorLap-generated QBlade external loading file" in line for line in lines)
@@ -329,3 +495,81 @@ def test_write_qblade_loading_file(tmp_path: Path):
     assert data_line[0] == "0"
     assert data_line[1] == "1"
     assert data_line[2] == "2"
+    assert data_line[3] == "3"
+    assert data_line[4] == "0.1"
+    assert data_line[5] == "0.2"
+    assert data_line[6] == "0.3"
+
+    parsed = read_qblade_loading_file(str(outfile))
+    assert list(parsed) == node_ids
+    for inode, node_id in enumerate(node_ids):
+        block = parsed[node_id]
+        assert block["local"] is True
+        data = block["data"]
+        np.testing.assert_allclose(data[:, 0], time)
+        np.testing.assert_allclose(data[:, 1:4], force[:, :, inode])
+        np.testing.assert_allclose(data[:, 4:7], torque[:, :, inode])
+
+    node0 = parsed[node_ids[0]]["data"]
+    midpoint = np.array([np.interp(0.25, node0[:, 0], node0[:, column]) for column in range(1, 7)])
+    np.testing.assert_allclose(midpoint, np.array([4.0, 5.0, 6.0, 0.4, 0.5, 0.6]))
+
+
+def test_compare_qblade_loading_file_reports_parity_and_mismatches(tmp_path: Path):
+    outfile = tmp_path / "qblade_loading.txt"
+    time = np.array([0.0, 0.5], dtype=float)
+    force = np.array(
+        [
+            [[1.0, 4.0], [2.0, 5.0], [3.0, 6.0]],
+            [[7.0, 10.0], [8.0, 11.0], [9.0, 12.0]],
+        ],
+        dtype=float,
+    )
+    torque = 0.1 * force
+    node_ids = ["BLD_1_0.000000", "BLD_1_1.000000"]
+    write_qblade_loading_file(str(outfile), time, force, node_ids, local=True, node_torque_vector_nodes=torque)
+
+    report = compare_qblade_loading_file(
+        str(outfile),
+        time,
+        force,
+        node_ids,
+        local=True,
+        node_torque_vector_nodes=torque,
+    )
+
+    assert report["passed"] is True
+    assert report["node_count"] == 2
+    assert report["compared_rows"] == 4
+    assert report["node_order_matches"] is True
+    assert report["max_force_abs_error_n"] == pytest.approx(0.0)
+    assert report["max_torque_abs_error_nm"] == pytest.approx(0.0)
+
+    expected_force = force.copy()
+    expected_force[1, 2, 0] += 1.0
+    mismatch = compare_qblade_loading_file(
+        str(outfile),
+        time,
+        expected_force,
+        node_ids,
+        local=False,
+        node_torque_vector_nodes=torque,
+    )
+
+    assert mismatch["passed"] is False
+    assert mismatch["local_mismatches"] == node_ids
+    assert mismatch["force_mismatches"] == ["BLD_1_0.000000"]
+    assert mismatch["max_force_abs_error_n"] == pytest.approx(1.0)
+
+
+def test_write_qblade_loading_file_validates_interpolation_inputs(tmp_path: Path):
+    force = np.zeros((2, 3, 1), dtype=float)
+    node_ids = ["BLD_1_0.000000"]
+
+    with pytest.raises(ValueError, match="strictly increasing"):
+        write_qblade_loading_file(str(tmp_path / "bad_time.txt"), np.array([0.0, 0.0]), force, node_ids)
+
+    bad_force = force.copy()
+    bad_force[1, 2, 0] = np.nan
+    with pytest.raises(ValueError, match="finite"):
+        write_qblade_loading_file(str(tmp_path / "bad_force.txt"), np.array([0.0, 0.5]), bad_force, node_ids)

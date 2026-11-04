@@ -1,0 +1,439 @@
+{
+  "case_name": "grinderslev2022_p100_i50_iea10_single_blade",
+  "scope": "single-blade structural and imposed-load transfer benchmark; not physical VIV validation",
+  "reference": {
+    "doi": "10.5194/wes-7-2201-2022",
+    "corrigendum_doi": "10.5194/wes-7-2201-2022-corrigendum",
+    "case": "P100-I50",
+    "inflow_speed_mps": 18.0,
+    "first_edgewise_frequency_hz": 0.67,
+    "published_fsi_lco_amplitude_m": 1.18,
+    "published_fsi_zero_damping_lco_amplitude_m": 1.63,
+    "published_forced_motion_damped_intersection_m": 1.24
+  },
+  "public_model": {
+    "repository": "https://github.com/IEAWindSystems/IEA-10.0-198-RWT",
+    "commit": "350cf06f5db9cec12bcd73c2b174a5d9642958d8",
+    "expected_commit": "350cf06f5db9cec12bcd73c2b174a5d9642958d8",
+    "windio_file": "yaml/IEA-10-198-RWT.yaml",
+    "windio_sha256": "298ffdcd700e558aa69bee2a78e15c6f43f4e0ff5253a619aa314ffa9bb3b7f5",
+    "openfast_mode_file": "OpenFAST/IEA-10.0-198-RWT_ElastoDyn_blade.dat",
+    "openfast_mode_file_sha256": "3cce43291b7311f1074770e78edcfde5796239ca2956a61060865709e1e6c3ba",
+    "hawc2_structure_file": "hawc2/data/iea10mw_rc1_hawc2_blade_st.dat",
+    "hawc2_structure_file_sha256": "6253063b02799d9c6b5441683e22c7df3e9980480261ad94bb826d345e1743bf",
+    "hawc2_structure_set": 1,
+    "license": "Apache-2.0",
+    "license_file": "LICENSE",
+    "license_sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+  },
+  "qblade_mapping": {
+    "station_count": 30,
+    "structural_section_count": 19,
+    "structural_element_count": 18,
+    "blade_span_m": 96.755,
+    "hub_radius_m": 2.936247966823771,
+    "beam_type": "Timoshenko",
+    "structural_source": "official HAWC2 set 1 converted to QBlade sectional properties",
+    "elastic_center_mapping": "QBlade beam reference held on WindIO aerodynamic axis; HAWC2 elastic-center offsets omitted",
+    "structural_pitch_mapping": "QBlade section axes held on WindIO blade frame; HAWC2 principal-axis pitch omitted",
+    "bending_axis_mapping": "HAWC2 E*Ix to QBlade EIx and HAWC2 E*Iy to QBlade EIy",
+    "mass_and_shear_center_offsets_retained": true,
+    "damping_mapping": {
+      "source": "OpenFAST/IEA-10.0-198-RWT_ElastoDyn_blade.dat BldEdDmp1",
+      "source_edge_damping_ratio": 0.003614,
+      "single_mode_stiffness_proportional_beta_s": 0.001716973027863014,
+      "relation": "beta = damping_ratio / (pi * first_edgewise_frequency_hz)",
+      "scope": "selected first-edgewise single-mode approximation; not the paper's HAWC2 Rayleigh matrix"
+    },
+    "timestep_s": 0.006,
+    "duration_s": 12.0,
+    "inflow_unit_vector": [
+      -0.6385893206743061,
+      -0.022433278682517113,
+      -0.7692206624423715
+    ],
+    "root_frame_angle_audit": {
+      "target_pitch_deg": 100.0,
+      "target_inclination_deg": 50.0,
+      "recovered_pitch_deg": 100.0,
+      "recovered_inclination_deg": 50.00000000000001,
+      "qblade_horizontal_angle_deg": -177.98805929599237,
+      "qblade_vertical_angle_deg": -50.28395651304442
+    },
+    "rotation_axis": [
+      1.0,
+      0.0,
+      0.0
+    ]
+  },
+  "probe_source": {
+    "kind": "synthetic coherent first-edgewise modal load",
+    "target_frequency_hz": 0.67,
+    "coefficient_channel": "CD mapped to the section-chord direction",
+    "peak_chordwise_amplitude": 0.08,
+    "phase_rad": 0.0,
+    "wake_response_feedback": false,
+    "calibrated_to_published_amplitude": false
+  },
+  "preparation": {
+    "swap_size": 183,
+    "node_count": 30,
+    "structural_node_count": 30,
+    "converted_node_count": 30,
+    "runtime_mutable_files_excluded_from_static_hashes": [
+      "grinderslev2022_p100_i50_iea10_single_blade/Control/vorlap_qblade_geometry_audit.csv"
+    ]
+  },
+  "files": [
+    {
+      "path": "IEA_PUBLIC_MODEL_LICENSE.txt",
+      "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+      "bytes": 11357
+    },
+    {
+      "path": "grinderslev2022_p100_i50_iea10_single_blade/Aero/Airfoils/NACA0018_placeholder.afl",
+      "sha256": "923c7625f0059d434c406141ffef02f4b540c1f95cdaa6744c222ec0fb005dc7",
+      "bytes": 247
+    },
+    {
+      "path": "grinderslev2022_p100_i50_iea10_single_blade/Aero/Polars/IEA10_STATION_00.plr",
+      "sha256": "0b1b9bece13d3ee89b0415211b4bc974077f51a1e4f2644349d3844c9db8b0e3",
+      "bytes": 777
+    },
+    {
+      "path": "grinderslev2022_p100_i50_iea10_single_blade/Aero/Polars/IEA10_STATION_01.plr",
+      "sha256": "44fe5479aae47fb2f89367887f3781048b9b0325e414988067e707314acf000c",
+      "bytes": 777
+    },
+    {
+      "path": "grinderslev2022_p100_i50_iea10_single_blade/Aero/Polars/IEA10_STATION_02.plr",
+      "sha256": "ca66f0b207cc98c675e0af16079ac8141aff4e06fe4b0b5395d4de8d371d3fba",
+      "bytes": 777
+    },
+    {
+      "path": "grinderslev2022_p100_i50_iea10_single_blade/Aero/Polars/IEA10_STATION_03.plr",
+      "sha256": "44148a94508be90c45a07d3e86af95821ae4102d1f17afc44dbbe7e81deae9cc",
+      "bytes": 777
+    },
+    {
+      "path": "grinderslev2022_p100_i50_iea10_single_blade/Aero/Polars/IEA10_STATION_04.plr",
+      "sha256": "31e5c5355ec92edcf552db6366e313e4e8e90140a4b712f899525edbcc01822e",
+      "bytes": 777
+    },
+    {
+      "path": "grinderslev2022_p100_i50_iea10_single_blade/Aero/Polars/IEA10_STATION_05.plr",
+      "sha256": "ea4bff18f5d07fb3fe58f67b3967feeb40f8db5ba41869f6101b2d7a8e7ef8f9",
+      "bytes": 777
+    },
+    {
+      "path": "grinderslev2022_p100_i50_iea10_single_blade/Aero/Polars/IEA10_STATION_06.plr",
+      "sha256": "c662d06b2ae9c929c42c4d62287dd0570a175081aea6e9c58be60c90c1d89604",
+      "bytes": 777
+    },
+    {
+      "path": "grinderslev2022_p100_i50_iea10_single_blade/Aero/Polars/IEA10_STATION_07.plr",
+      "sha256": "9af77fab95c4b2a3d55711f4557255a4a553c8797d86fd34b2a16760991e8b77",
+      "bytes": 777
+    },
+    {
+      "path": "grinderslev2022_p100_i50_iea10_single_blade/Aero/Polars/IEA10_STATION_08.plr",
+      "sha256": "dbe64b3b880c6eaf49b8586469a5ee12b6bf2aaef5a569b1237577e72186d817",
+      "bytes": 777
+    },
+    {
+      "path": "grinderslev2022_p100_i50_iea10_single_blade/Aero/Polars/IEA10_STATION_09.plr",
+      "sha256": "58c53705633e451e16388289020b7eeb4aaa56009d8aeba5fe28f1588181b2ae",
+      "bytes": 777
+    },
+    {
+      "path": "grinderslev2022_p100_i50_iea10_single_blade/Aero/Polars/IEA10_STATION_10.plr",
+      "sha256": "20e94071e0a904f4b1258ba9f9306d6f186f784adfe4ea805825c56ec4d40dc6",
+      "bytes": 777
+    },
+    {
+      "path": "grinderslev2022_p100_i50_iea10_single_blade/Aero/Polars/IEA10_STATION_11.plr",
+      "sha256": "da74580dfb3ce9892532da6612c243ab17367309e99b0be5920d2da96599029f",
+      "bytes": 777
+    },
+    {
+      "path": "grinderslev2022_p100_i50_iea10_single_blade/Aero/Polars/IEA10_STATION_12.plr",
+      "sha256": "1652a9b879071db6b437d59ec6fe4769f1f71ce59c3e1dce64d74b2b1712c109",
+      "bytes": 777
+    },
+    {
+      "path": "grinderslev2022_p100_i50_iea10_single_blade/Aero/Polars/IEA10_STATION_13.plr",
+      "sha256": "c5f89dd89bb4f06272e0c867cdafad34842f3d15e8a2026f394f245e4f57286e",
+      "bytes": 777
+    },
+    {
+      "path": "grinderslev2022_p100_i50_iea10_single_blade/Aero/Polars/IEA10_STATION_14.plr",
+      "sha256": "41ae3346b21d820d459ca7543266da5bdf4fe9918257fdc5aae07206ac71109e",
+      "bytes": 777
+    },
+    {
+      "path": "grinderslev2022_p100_i50_iea10_single_blade/Aero/Polars/IEA10_STATION_15.plr",
+      "sha256": "32e9338376fb99194bac8120bb8670209c32c81a5da8c978dc737e0e4f4df86f",
+      "bytes": 777
+    },
+    {
+      "path": "grinderslev2022_p100_i50_iea10_single_blade/Aero/Polars/IEA10_STATION_16.plr",
+      "sha256": "2c19f9c1c6c00ec1764850596bc9391a32e7a91af70107b7d23feccb713fc95a",
+      "bytes": 777
+    },
+    {
+      "path": "grinderslev2022_p100_i50_iea10_single_blade/Aero/Polars/IEA10_STATION_17.plr",
+      "sha256": "5768d6ac20df35a0e2f987f04d6182c21b9871a6ccac69650995a1780faf5ff7",
+      "bytes": 777
+    },
+    {
+      "path": "grinderslev2022_p100_i50_iea10_single_blade/Aero/Polars/IEA10_STATION_18.plr",
+      "sha256": "1863febfeb8524bb3727f97fdb288bf9dc305ffb98607c4e80910528d826c364",
+      "bytes": 777
+    },
+    {
+      "path": "grinderslev2022_p100_i50_iea10_single_blade/Aero/Polars/IEA10_STATION_19.plr",
+      "sha256": "88afe0ce8a139ba3bff24e7f8bc78271c4909193067604dda061be0a03ff7058",
+      "bytes": 777
+    },
+    {
+      "path": "grinderslev2022_p100_i50_iea10_single_blade/Aero/Polars/IEA10_STATION_20.plr",
+      "sha256": "8f84075f0482cfb6a7738004686bb57a42db2eb5aa3f6fb2bc3c7345ff80f96d",
+      "bytes": 777
+    },
+    {
+      "path": "grinderslev2022_p100_i50_iea10_single_blade/Aero/Polars/IEA10_STATION_21.plr",
+      "sha256": "c36dc4f9ab3f407cbaa76b48caaa000ae4b50c686e32bd0c2d76a9b1659f87e9",
+      "bytes": 777
+    },
+    {
+      "path": "grinderslev2022_p100_i50_iea10_single_blade/Aero/Polars/IEA10_STATION_22.plr",
+      "sha256": "44a73b35947450a5ec8ce6942985d0af8ee527464a3fa4d192df1fef80d4b04a",
+      "bytes": 777
+    },
+    {
+      "path": "grinderslev2022_p100_i50_iea10_single_blade/Aero/Polars/IEA10_STATION_23.plr",
+      "sha256": "33ec66d3724749a9ddcadd219b7d93bf953ccf3ead9f9f4448c7103fb04ca40b",
+      "bytes": 777
+    },
+    {
+      "path": "grinderslev2022_p100_i50_iea10_single_blade/Aero/Polars/IEA10_STATION_24.plr",
+      "sha256": "ede81b61e3371e25aef4941447b9643b3981cad53e07bd734744e3b322ecb918",
+      "bytes": 777
+    },
+    {
+      "path": "grinderslev2022_p100_i50_iea10_single_blade/Aero/Polars/IEA10_STATION_25.plr",
+      "sha256": "feba47962f3c06607b0f82e1c7ff0419a980df0169eb316be62261c8b94c52a4",
+      "bytes": 777
+    },
+    {
+      "path": "grinderslev2022_p100_i50_iea10_single_blade/Aero/Polars/IEA10_STATION_26.plr",
+      "sha256": "5fea351836f8028a54eb22c2fe2d8369731082a4b82e40f07a669d47d5d52629",
+      "bytes": 777
+    },
+    {
+      "path": "grinderslev2022_p100_i50_iea10_single_blade/Aero/Polars/IEA10_STATION_27.plr",
+      "sha256": "086ad08c310aed27d482fa4b7625ef8a1a59cd486cf28485c626c1844e3ab5fc",
+      "bytes": 777
+    },
+    {
+      "path": "grinderslev2022_p100_i50_iea10_single_blade/Aero/Polars/IEA10_STATION_28.plr",
+      "sha256": "b148f0fdecc9e542283aad734fe4a967d12d7ea9cf3c7f8d36b41bf8f1b49a54",
+      "bytes": 777
+    },
+    {
+      "path": "grinderslev2022_p100_i50_iea10_single_blade/Aero/Polars/IEA10_STATION_29.plr",
+      "sha256": "3276e7c4da708bac6599254be15fc0f5c3f3323c6ea0eeee209513ca102fe4ce",
+      "bytes": 777
+    },
+    {
+      "path": "grinderslev2022_p100_i50_iea10_single_blade/Aero/grinderslev2022_p100_i50_iea10_single_blade.bld",
+      "sha256": "11f7ccbe84348fef15360364a3145e13e91ba278e03c81cf7ab016a1b52b16e5",
+      "bytes": 4672
+    },
+    {
+      "path": "grinderslev2022_p100_i50_iea10_single_blade/Control/vorlap_qblade_external.json",
+      "sha256": "030b14dc5af033492f9e654c7b6f7fabca41cfcc8a116ace2c90589615d415fb",
+      "bytes": 43155
+    },
+    {
+      "path": "grinderslev2022_p100_i50_iea10_single_blade/Structure/iea10_blade_hawc2.str",
+      "sha256": "8455754fe52cfbb925c6a6432c48de7fb98ed1d29f09c5af899d19d0075a500c",
+      "bytes": 6867
+    },
+    {
+      "path": "grinderslev2022_p100_i50_iea10_single_blade/Structure/iea10_single_blade_main.str",
+      "sha256": "3121e6bfd5b0fa1de15994932e6e692a57b48b9ca99c01fd37187f22428ef833",
+      "bytes": 9458
+    },
+    {
+      "path": "grinderslev2022_p100_i50_iea10_single_blade/Structure/rigid_tower.str",
+      "sha256": "9f112412747ea3f3a3f8f4a3ce15ff2000d24c0338dc00e696e97aa43646b8b3",
+      "bytes": 478
+    },
+    {
+      "path": "grinderslev2022_p100_i50_iea10_single_blade/VorLapAirfoils/IEA10_STATION_00.h5",
+      "sha256": "d3c9a89d5c32829383348edabed4b58a38a378ebd7a0b90148659d453bcde957",
+      "bytes": 12832
+    },
+    {
+      "path": "grinderslev2022_p100_i50_iea10_single_blade/VorLapAirfoils/IEA10_STATION_01.h5",
+      "sha256": "2b6018f51b70107b2986420e58921a871f2e4971e032c7f95cfe81545076126f",
+      "bytes": 12832
+    },
+    {
+      "path": "grinderslev2022_p100_i50_iea10_single_blade/VorLapAirfoils/IEA10_STATION_02.h5",
+      "sha256": "c4a98e7cc3aaa1813ce745810fd602179351bfe4f6f35007b2c37ce2dd1c0765",
+      "bytes": 12832
+    },
+    {
+      "path": "grinderslev2022_p100_i50_iea10_single_blade/VorLapAirfoils/IEA10_STATION_03.h5",
+      "sha256": "0368f79c3b53354559bfc569d2a3572486acbcb2ec0bd814037e16453df360aa",
+      "bytes": 12832
+    },
+    {
+      "path": "grinderslev2022_p100_i50_iea10_single_blade/VorLapAirfoils/IEA10_STATION_04.h5",
+      "sha256": "7e10676175692e082fbe4bcf1bd97966463be6e9a9c1b97ce4405bf3b44f20df",
+      "bytes": 12832
+    },
+    {
+      "path": "grinderslev2022_p100_i50_iea10_single_blade/VorLapAirfoils/IEA10_STATION_05.h5",
+      "sha256": "8998a15a3aee7941574b25526f504e66a23553996e7c013688bd0bfc15d2a932",
+      "bytes": 12832
+    },
+    {
+      "path": "grinderslev2022_p100_i50_iea10_single_blade/VorLapAirfoils/IEA10_STATION_06.h5",
+      "sha256": "e34c546df0df398c80e1dda4ccdadc378d5d573cafab6c11002341cf153944d5",
+      "bytes": 12832
+    },
+    {
+      "path": "grinderslev2022_p100_i50_iea10_single_blade/VorLapAirfoils/IEA10_STATION_07.h5",
+      "sha256": "775d696825588ee7ff56a71dd3891323977c2041a27bd996100bfed341f9afc4",
+      "bytes": 12832
+    },
+    {
+      "path": "grinderslev2022_p100_i50_iea10_single_blade/VorLapAirfoils/IEA10_STATION_08.h5",
+      "sha256": "ba8f63a75a56e2086b75c9526757417ba0305a5dc1ec3fa2543c807f4f4a332d",
+      "bytes": 12832
+    },
+    {
+      "path": "grinderslev2022_p100_i50_iea10_single_blade/VorLapAirfoils/IEA10_STATION_09.h5",
+      "sha256": "b0f6efeb81018f099b6b1abbcc0265f68541d46ff67427ea47acd43085c07785",
+      "bytes": 12832
+    },
+    {
+      "path": "grinderslev2022_p100_i50_iea10_single_blade/VorLapAirfoils/IEA10_STATION_10.h5",
+      "sha256": "6bd6574fce3c40d0652bfb6f220d8ac7079c64a66e26cb7935ebcaa994db7134",
+      "bytes": 12832
+    },
+    {
+      "path": "grinderslev2022_p100_i50_iea10_single_blade/VorLapAirfoils/IEA10_STATION_11.h5",
+      "sha256": "07dc0f5c938719324dc1300717a65ebbd84039fd9cd5012da2b125f3208d2110",
+      "bytes": 12832
+    },
+    {
+      "path": "grinderslev2022_p100_i50_iea10_single_blade/VorLapAirfoils/IEA10_STATION_12.h5",
+      "sha256": "2b44f7e486cebc73cb4d5b803ecb75090b54b1367e2a944c448047bf8420a773",
+      "bytes": 12832
+    },
+    {
+      "path": "grinderslev2022_p100_i50_iea10_single_blade/VorLapAirfoils/IEA10_STATION_13.h5",
+      "sha256": "36e633478addec41f864cc94c53cfad92c01fbb2b0a1924adfbd380afceb1e7f",
+      "bytes": 12832
+    },
+    {
+      "path": "grinderslev2022_p100_i50_iea10_single_blade/VorLapAirfoils/IEA10_STATION_14.h5",
+      "sha256": "5b4ab1becf937599ba533ee0efc74f42dacbb64a67ca89629a1b49f7d68704dd",
+      "bytes": 12832
+    },
+    {
+      "path": "grinderslev2022_p100_i50_iea10_single_blade/VorLapAirfoils/IEA10_STATION_15.h5",
+      "sha256": "4d6b25692344a68b1ecf2568d388110e227f20d1a5bda7ee0f43e6db2f4bebcb",
+      "bytes": 12832
+    },
+    {
+      "path": "grinderslev2022_p100_i50_iea10_single_blade/VorLapAirfoils/IEA10_STATION_16.h5",
+      "sha256": "1e6376f8c70a3e65caeece71ddb840d39610fb4d38902be7309c01b9fad63d02",
+      "bytes": 12832
+    },
+    {
+      "path": "grinderslev2022_p100_i50_iea10_single_blade/VorLapAirfoils/IEA10_STATION_17.h5",
+      "sha256": "3764796a4e98afbdf133702cea2d38f241e73d3650e45d6e97a05164d0eba265",
+      "bytes": 12832
+    },
+    {
+      "path": "grinderslev2022_p100_i50_iea10_single_blade/VorLapAirfoils/IEA10_STATION_18.h5",
+      "sha256": "e4236adb41c05b9256f5cc5c9949f9306c6a093bd1bb46754ae37c4ea9d4b88d",
+      "bytes": 12832
+    },
+    {
+      "path": "grinderslev2022_p100_i50_iea10_single_blade/VorLapAirfoils/IEA10_STATION_19.h5",
+      "sha256": "a146a87c19f9f706c63babbf0d4c171cb160d005f10d3f056273916a22f8ea48",
+      "bytes": 12832
+    },
+    {
+      "path": "grinderslev2022_p100_i50_iea10_single_blade/VorLapAirfoils/IEA10_STATION_20.h5",
+      "sha256": "b86f127b5a104912dfaa0c348132f346520bf582cde016c7cf604b62b7142957",
+      "bytes": 12832
+    },
+    {
+      "path": "grinderslev2022_p100_i50_iea10_single_blade/VorLapAirfoils/IEA10_STATION_21.h5",
+      "sha256": "fede66e26a3ca0c7046ef9399f41b8b7c10f03aa87e5a13401f7163293fd8b89",
+      "bytes": 12832
+    },
+    {
+      "path": "grinderslev2022_p100_i50_iea10_single_blade/VorLapAirfoils/IEA10_STATION_22.h5",
+      "sha256": "3a970bada650846ae4f8cbed6b73e5efe3be331154419241865fe1ac5c75d26e",
+      "bytes": 12832
+    },
+    {
+      "path": "grinderslev2022_p100_i50_iea10_single_blade/VorLapAirfoils/IEA10_STATION_23.h5",
+      "sha256": "f00e8382cd43d13e6eb71fd0f8c9374a84e87d9285fb3ada54a1d09d99947938",
+      "bytes": 12832
+    },
+    {
+      "path": "grinderslev2022_p100_i50_iea10_single_blade/VorLapAirfoils/IEA10_STATION_24.h5",
+      "sha256": "bc4bfe12579a76aa4ea533c1a3dd3823ca5bb19934fdd7a1af2060b42199b678",
+      "bytes": 12832
+    },
+    {
+      "path": "grinderslev2022_p100_i50_iea10_single_blade/VorLapAirfoils/IEA10_STATION_25.h5",
+      "sha256": "5ccf3d791e4958b56469c9595eef5d2c409089d26163374d91377d673a7cbaed",
+      "bytes": 12832
+    },
+    {
+      "path": "grinderslev2022_p100_i50_iea10_single_blade/VorLapAirfoils/IEA10_STATION_26.h5",
+      "sha256": "b33c6382aa00828341808d37ed003a8271246e73dbb0d554ece1c344cb037f3e",
+      "bytes": 12832
+    },
+    {
+      "path": "grinderslev2022_p100_i50_iea10_single_blade/VorLapAirfoils/IEA10_STATION_27.h5",
+      "sha256": "ade924c03f18fb3fa5dee48e9ebb89ddac5ac990c9303e27ea77dc950275efd5",
+      "bytes": 12832
+    },
+    {
+      "path": "grinderslev2022_p100_i50_iea10_single_blade/VorLapAirfoils/IEA10_STATION_28.h5",
+      "sha256": "24bef2d8e4e6c3e550458b1e2c32676a2db4f097cad0a0c3c09259ad9282e865",
+      "bytes": 12832
+    },
+    {
+      "path": "grinderslev2022_p100_i50_iea10_single_blade/VorLapAirfoils/IEA10_STATION_29.h5",
+      "sha256": "1b88d8bfabda0913dbe5900e0f665da2b6e86915cca27208af12b6491ded5b87",
+      "bytes": 12832
+    },
+    {
+      "path": "grinderslev2022_p100_i50_iea10_single_blade/grinderslev2022_p100_i50_iea10_single_blade.trb",
+      "sha256": "ac596efef5e28459b2620c586be65b0e35cb5709cc13b874d5341528c8115646",
+      "bytes": 11341
+    },
+    {
+      "path": "grinderslev2022_p100_i50_iea10_single_blade.sim",
+      "sha256": "e7aeccf9b9fc6bbde49210205d3f8c4cbf1ef8a2502211c50743b7f0823da89f",
+      "bytes": 12284
+    },
+    {
+      "path": "iea10_blade_geometry.csv",
+      "sha256": "06d72b8f80e290ce0bac88011ad2a9698f5b42e1ae71da2c7f2b97f613c2c1b7",
+      "bytes": 6899
+    }
+  ]
+}

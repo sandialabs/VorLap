@@ -1,0 +1,68 @@
+{
+  "schema": "vorlap-hvawt-turbulent-20case-checkpoint-policy-v1",
+  "status": "approved_for_scoped_execution_attempt",
+  "campaign_contract": "exact_subset_of_sealed_34-row_102-case_three-path_campaign",
+  "case_count": 20,
+  "case_indices": [
+    0,
+    2,
+    9,
+    11,
+    18,
+    20,
+    27,
+    29,
+    36,
+    38,
+    45,
+    47,
+    54,
+    56,
+    63,
+    65,
+    81,
+    83,
+    90,
+    92
+  ],
+  "scenarios": [
+    "raw_qblade",
+    "complete_hybrid_v8"
+  ],
+  "seed": 4433456,
+  "wind_speeds_mps": [
+    3.0,
+    7.0,
+    8.0,
+    8.75,
+    11.25,
+    13.0,
+    14.75,
+    18.0,
+    21.5,
+    35.0
+  ],
+  "pairs": [
+    {"wind_speed_mps": 3.0, "seed": 4433456, "raw_case_index": 0, "complete_case_index": 2},
+    {"wind_speed_mps": 7.0, "seed": 4433456, "raw_case_index": 9, "complete_case_index": 11},
+    {"wind_speed_mps": 8.0, "seed": 4433456, "raw_case_index": 18, "complete_case_index": 20},
+    {"wind_speed_mps": 8.75, "seed": 4433456, "raw_case_index": 27, "complete_case_index": 29},
+    {"wind_speed_mps": 11.25, "seed": 4433456, "raw_case_index": 36, "complete_case_index": 38},
+    {"wind_speed_mps": 13.0, "seed": 4433456, "raw_case_index": 45, "complete_case_index": 47},
+    {"wind_speed_mps": 14.75, "seed": 4433456, "raw_case_index": 54, "complete_case_index": 56},
+    {"wind_speed_mps": 18.0, "seed": 4433456, "raw_case_index": 63, "complete_case_index": 65},
+    {"wind_speed_mps": 21.5, "seed": 4433456, "raw_case_index": 81, "complete_case_index": 83},
+    {"wind_speed_mps": 35.0, "seed": 4433456, "raw_case_index": 90, "complete_case_index": 92}
+  ],
+  "omitted_dlc64_wind_speed_mps": 19.25,
+  "omission_basis": "The omitted 19.25 m/s row has the smallest approved DLC 6.4 fatigue weight and is bracketed by retained 18.0 and 21.5 m/s rows.",
+  "selection_basis": "One immutable TurbSim realization at each retained speed provides an execution and raw-versus-complete checkpoint spanning both response bands, the highest-ranked modal-overlap neighborhoods, the 3 m/s bridge to the uniform campaign, and the 35 m/s DLC 6.4 endpoint.",
+  "reuse_contract": "Every selected case is executed in its final path inside the sealed 102-case campaign root. A later extension must classify and reuse exact completed results rather than rerun them.",
+  "limitations": [
+    "The checkpoint contains one realization per wind speed and cannot establish realization spread or seed convergence.",
+    "The checkpoint omits the one-way path and cannot isolate the imposed-spectrum mechanism from response feedback.",
+    "The checkpoint is not a complete weighted DLC 6.4 result and excludes DLC 6.1 U50.",
+    "Turbulent response is not expected to be rotor-periodic; half-record peak equality is diagnostic only.",
+    "The checkpoint is engineering execution and load-screening evidence, not physical validation, fatigue life, certification loads, or certification evidence."
+  ]
+}

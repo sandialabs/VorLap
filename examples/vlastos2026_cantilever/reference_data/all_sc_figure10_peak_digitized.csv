@@ -1,0 +1,13 @@
+scruton_number,series,peak_tip_amplitude_over_diameter,digitization_uncertainty
+2.94,experiment_lupi2021,0.350,0.010
+5.18,experiment_lupi2021,0.235,0.010
+7.02,experiment_lupi2021,0.150,0.010
+2.94,hgast_hartlen_currie,0.540,0.010
+5.18,hgast_hartlen_currie,0.270,0.010
+7.02,hgast_hartlen_currie,0.150,0.010
+2.94,eurocode_approach_2,0.530,0.010
+5.18,eurocode_approach_2,0.500,0.010
+7.02,eurocode_approach_2,0.480,0.010
+2.94,blevins_1977,0.145,0.010
+5.18,blevins_1977,0.085,0.010
+7.02,blevins_1977,0.063,0.010

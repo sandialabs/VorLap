@@ -19,7 +19,7 @@ At a high level, the methodology is:
 - Compute local Reynolds number from effective speed and local chord.
 
 3. Interpolation in aerodynamic parameter space:
-- Interpolate `St`, amplitude, and phase over Reynolds number and angle of attack grids (per ranked peak index).
+- Interpolate `St`, amplitude, and phase over Reynolds number and angle of attack grids (per ranked peak index). Phase interpolation is performed through unit phasors, not by direct linear interpolation of radians, so values on opposite sides of the `+pi/-pi` branch cut remain adjacent.
 - Use this to map source spectral data onto the local conditions at each node.
 
 4. Combinatorial overlap reduction:
@@ -69,8 +69,28 @@ where `r` is the node position relative to `rotation_axis_offset`.
 
 ## Frequency Overlap
 
+VorLap airfoil FFT files use an explicit DC-first spectral schema:
+
+- Spectral index 0 is the mean/DC coefficient entry for `CL`, `CD`, `CM`, and `CF`.
+- The index-0 Strouhal number must be exactly zero.
+- The index-0 amplitude is the signed mean coefficient; DC phase is ignored but must be finite.
+- Spectral indices 1 and higher are oscillatory peaks with nonnegative amplitudes.
+- Any nonzero harmonic amplitude must have a positive Strouhal number.
+
+The `AirfoilFFT` constructor validates this schema strictly. The HDF5 loader also validates after orienting dimensions. For legacy files that store the mean coefficient at index 0 but carry nonzero index-0 Strouhal metadata, the loader repairs only the index-0 Strouhal values to zero and emits a `RuntimeWarning`. The loader also converts signed harmonic coefficients to nonnegative amplitude/phase form by adding pi to the phase where needed. A ranked-peak file that omits the DC entry, or stores a zero-Strouhal DC entry away from index 0, is rejected rather than interpreted as a mean-load spectrum.
+
+FFT phase offsets are circular variables. The scalar and batch interpolation paths therefore interpolate `sin(phase)` and `cos(phase)` and recover phase with `atan2`, with a deterministic fallback only for exactly cancelled phasors where the circular mean is undefined. This prevents a `+179 deg` / `-179 deg` neighborhood from being interpolated as `0 deg`.
+
+Reynolds-number and AOA queries outside the source grid are not extrapolated linearly. VorLap flat-clips them to the nearest source-grid boundary. The interpolation API now diagnoses this explicitly: the default `bounds_policy="warn"` emits `AirfoilRangeWarning`, `bounds_policy="raise"` fails strict audit runs, and `bounds_policy="clip"` keeps silent clipping only when a caller has explicitly accepted it. Paper-grade campaigns should use warning-strict or raise-on-out-of-range settings and report any clipped cases.
+
+The current QBlade bridge returns nodal forces reconstructed from CL/CD spectra. CM spectra are loaded and schema-validated as source metadata, but they are not reconstructed into QBlade nodal torque columns by the present force path. Loading files written without an explicit torque array intentionally contain zero moment columns.
+
 Shedding frequencies are estimated from Strouhal form:
 
 `f = St * V_eff / L_st`
 
-with `L_st = chord * |sin(AOA)|` and a small epsilon floor to avoid divide-by-zero at near-zero AOA.
+with:
+
+`L_st = chord * max(|sin(AOA)|, thickness_ratio)`
+
+This uses the projected cross-flow chord length for the Strouhal scaling while preventing the reference length from collapsing below the physical airfoil thickness at low angles of attack. For a typical 12% thick airfoil, the thickness floor is active only at very low AOA; above that, the scaling is the requested `chord * |sin(AOA)|` convention. For round or very bluff members where `thickness_ratio` is near 1, the same expression recovers a diameter-like reference length.

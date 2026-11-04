@@ -1,0 +1,78 @@
+{
+  "schema": "horcas2020-iea10-tip-geometry-validation-protocol-v1",
+  "status": "frozen_before_combined_geometry_model_evaluation",
+  "objective": "Validate transfer of a frozen semi-empirical turbine VIV closure to an unseen combined sweep-plus-dihedral blade-tip geometry over 11 high-fidelity FSI operating conditions.",
+  "reference": {
+    "targets_path": "targets.csv",
+    "targets_sha256": "ffa8b9f134744ed966df576dccca9ae771808412ef0f752129edf0df1d1e1967",
+    "provenance_path": "provenance.json",
+    "provenance_sha256": "cafd90dee9107209a1f0c12cd8ee08dbce7d592d8d373d2f61d0f70ec64b8450",
+    "publication_doi": "10.1063/5.0004005",
+    "source_pdf_sha256": "cbd11afc906ed268a8cbb7589fe370df2ea2fa218833c8e823ccfbbd4942a89d"
+  },
+  "training_geometries": [
+    "BASE",
+    "EXT",
+    "SWEEP",
+    "DIHE"
+  ],
+  "primary_holdout_geometry": "COMB",
+  "matrix_requirements": {
+    "training_geometry_count": 4,
+    "training_case_count": 44,
+    "holdout_geometry_count": 1,
+    "holdout_case_count": 11,
+    "holdout_inclinations_deg": [
+      40.0,
+      42.5,
+      45.0,
+      47.5,
+      50.0,
+      52.5,
+      55.0,
+      57.5,
+      60.0,
+      65.0,
+      70.0
+    ],
+    "minimum_resolved_viv_holdout_points": 2
+  },
+  "resolved_viv_definition": {
+    "rule": "A point is in the resolved finite VIV interval when its peak amplitude is at least 0.5 times the maximum peak amplitude for that geometry; the interval is the contiguous sampled component containing the peak.",
+    "fraction_of_geometry_peak": 0.5
+  },
+  "acceptance": {
+    "curve_rule": "RMSE over all 11 holdout peak amplitudes, normalized by the maximum holdout target amplitude, must be <= 0.30.",
+    "maximum_curve_nrmse_by_target_peak": 0.30,
+    "peak_amplitude_rule": "abs(predicted_peak-target_peak) <= 0.30*target_peak + 0.01 m vector-digitization allowance.",
+    "maximum_peak_amplitude_relative_error_after_digitization_allowance": 0.30,
+    "peak_digitization_allowance_m": 0.01,
+    "peak_inclination_rule": "The predicted and target peak inclinations may differ by at most one 2.5-degree sampling interval.",
+    "maximum_peak_inclination_error_deg": 2.5,
+    "finite_interval_rule": "The onset and collapse of the predicted and target resolved VIV intervals may each differ by at most one 2.5-degree sampling interval.",
+    "maximum_interval_endpoint_error_deg": 2.5,
+    "frequency_rule": "At each target point in the resolved VIV interval, abs(predicted_f/fn-target_f/fn) must be <= 0.10.",
+    "maximum_frequency_ratio_absolute_error": 0.10,
+    "aggregate_rule": "All curve, peak-amplitude, peak-location, finite-interval, and resolved-frequency gates must pass. Every one of the 11 holdout operating points must remain visible in the evidence table and plot."
+  },
+  "freeze_rule": {
+    "metadata_correction": "The source coauthor list was corrected after the first frozen assessment; no target, role, equation, threshold, prediction, or metric changed.",
+    "required_before_holdout_evaluation": [
+      "negative-damping and saturation equations",
+      "geometry-composition rule",
+      "all fitted coefficients and training rows",
+      "structural frequency and damping treatment",
+      "static-spectrum inputs and hashes",
+      "model and code fingerprint",
+      "the present acceptance thresholds"
+    ],
+    "no_retuning": "No equation, coefficient, geometry rule, input, or scoring threshold may be changed after the 11 COMB targets are evaluated while retaining a validation claim.",
+    "failure_policy": "A failed frozen assessment is preserved. If COMB values are subsequently used for fitting, COMB becomes training and a different untouched validation dataset is required.",
+    "blindness_boundary": "The published targets are public and have been digitized, so this is a locked holdout from fitting rather than a blinded experiment."
+  },
+  "claim_boundary": {
+    "supports": "Multi-condition high-fidelity numerical wind-turbine validation of edgewise response amplitude, lock-in frequency, and finite inclination interval for one completely held-out combined tip geometry.",
+    "does_not_support": "Experimental validation, arbitrary blade-profile extrapolation, H-VAWT validation, spanwise load validation, rainflow/DEL agreement, fatigue life, or certification.",
+    "h_vawt_promotion": "H-VAWT preparation may proceed only after a frozen model passes this protocol and the heldout discrepancy is propagated as a conservative engineering uncertainty factor."
+  }
+}

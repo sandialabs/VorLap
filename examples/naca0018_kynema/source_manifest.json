@@ -1,0 +1,156 @@
+{
+  "source_repository": "airfoil_vortexshedding_mesh_run_post_nalu",
+  "base_commit": "a34649a0b70e2a02a5efff0e36bd3b1504617a73",
+  "source_state": "Author working tree at 2026-11-03; original unmodified files preserved privately with the paper. Public launcher safety/portability edits are listed in README.",
+  "files": [
+    {
+      "path": "README.md",
+      "source_sha256": "928d744b7d4fcca99fe734bd669929009809d4bc0ee356d8179d09a50afa81f8",
+      "disposition": "public_portable_example",
+      "public_sha256": "a97ebf59327c2026b62fe6e106b26249f60a4a7e94d429908d934efb6682518a"
+    },
+    {
+      "path": "mesh_gen_scripts/IEA_Airfoil_Mesh.glf",
+      "source_sha256": "5bda3462666a6d633b3f05f1c1527f4e8461b51d89c80793ecdac77b02d4dcc1",
+      "disposition": "public_portable_example",
+      "public_sha256": "5bda3462666a6d633b3f05f1c1527f4e8461b51d89c80793ecdac77b02d4dcc1"
+    },
+    {
+      "path": "mesh_gen_scripts/NACA0018_coords.dat",
+      "source_sha256": "5cfbbfae5dbc7c9ced332e19d4d441902d0b09552e4d173d8aab7bf4ef2ec417",
+      "disposition": "public_portable_example",
+      "public_sha256": "5cfbbfae5dbc7c9ced332e19d4d441902d0b09552e4d173d8aab7bf4ef2ec417"
+    },
+    {
+      "path": "mesh_gen_scripts/NACA0021_coords.dat",
+      "source_sha256": "4bf7d8bcf7e4be481220e775d9ef01a2d432f1fb6237ebd064ca2a6914374269",
+      "disposition": "public_portable_example",
+      "public_sha256": "4bf7d8bcf7e4be481220e775d9ef01a2d432f1fb6237ebd064ca2a6914374269"
+    },
+    {
+      "path": "mesh_gen_scripts/README_mesh_gen.md",
+      "source_sha256": "b89b739e055eaac5315961059c619e1a8fa66b1d6cbafe005b339c0e8cb7566d",
+      "disposition": "public_portable_example",
+      "public_sha256": "beeb0307798bd81a2850e7796186b818924b07d9a93932ea2c504069a89b76a5"
+    },
+    {
+      "path": "mesh_gen_scripts/create_grids.py",
+      "source_sha256": "455bd99585fb161ae43add1c5da02c05d508361edd3cd2ed970e8f06d5cb72fa",
+      "disposition": "public_portable_example",
+      "public_sha256": "4df6aace7975190eb86ea2670f85aea70ae217fd1bc594632cdb7cae6cf564ba"
+    },
+    {
+      "path": "mesh_gen_scripts/cylinder_coords.dat",
+      "source_sha256": "7b0677b6a3459943c8556b8c06190f5613ab813bb19d7560ae50070f39556fa7",
+      "disposition": "public_portable_example",
+      "public_sha256": "7b0677b6a3459943c8556b8c06190f5613ab813bb19d7560ae50070f39556fa7"
+    },
+    {
+      "path": "mesh_gen_scripts/flat_plate_coords.dat",
+      "source_sha256": "31b9ef8b4f61cfb3dde81fc24a9d7377b31d52813ebb9c1653a312b33f8735c1",
+      "disposition": "public_portable_example",
+      "public_sha256": "31b9ef8b4f61cfb3dde81fc24a9d7377b31d52813ebb9c1653a312b33f8735c1"
+    },
+    {
+      "path": "mesh_gen_scripts/load_run_meshing.sh",
+      "source_sha256": "13b26e2d208dbe545247e56b9bc01d26fdee92279ccf801c22efabffab3fc239",
+      "disposition": "private_historical_source_only"
+    },
+    {
+      "path": "nalu_runs/submission_scripts/FrequencyStruhaulReynoldsScaling_forNALUparams.py",
+      "source_sha256": "6c6247df94eaa827f63ffb3c1a951cacfdffaa26d1cb941716968cd5b184aec8",
+      "disposition": "public_portable_example",
+      "public_sha256": "6c6247df94eaa827f63ffb3c1a951cacfdffaa26d1cb941716968cd5b184aec8"
+    },
+    {
+      "path": "nalu_runs/submission_scripts/FrequencyStruhaulReynoldsScaling_forNALUparams.xlsx",
+      "source_sha256": "9712b911bc162d62e402a682d5aa93242e3859dc4a8cfa1c5ffb76f07940df29",
+      "disposition": "public_portable_example",
+      "public_sha256": "9712b911bc162d62e402a682d5aa93242e3859dc4a8cfa1c5ffb76f07940df29"
+    },
+    {
+      "path": "nalu_runs/submission_scripts/README_job_list.md",
+      "source_sha256": "e7e2d5a6a93258b585deb44c8fdeb3619bc6b9bb45d0eba51aef3882cddd0315",
+      "disposition": "private_historical_source_only"
+    },
+    {
+      "path": "nalu_runs/submission_scripts/copy_force_files_to_projects_dir.sh",
+      "source_sha256": "c577a08a4d8bb651ce22a574e3be8fcfe3f2f5447b1e2ccfa6b80418a4c70d29",
+      "disposition": "private_historical_source_only"
+    },
+    {
+      "path": "nalu_runs/submission_scripts/gen_submit_nalu.py",
+      "source_sha256": "e25b4da596ecd6633a21b483e69e24faf6e7cbee7ca8dc5590ff2e8b4b22915e",
+      "disposition": "public_portable_example",
+      "public_sha256": "e1631fc23ae0c1bc85da4571cb850c225e5db2daae257294532bccb438047852"
+    },
+    {
+      "path": "nalu_runs/submission_scripts/line_number_check.sh",
+      "source_sha256": "3111fa2eb36858a4fb5f5357cdd053e806cd037f9729581d9b88edc08b3c5875",
+      "disposition": "private_historical_source_only"
+    },
+    {
+      "path": "nalu_runs/submission_scripts/load_run_gen_inp_files.sh",
+      "source_sha256": "d35202c83a7421432b28cfc6eac932928d408a449e60430ff47349230e0b51ec",
+      "disposition": "private_historical_source_only"
+    },
+    {
+      "path": "nalu_runs/submission_scripts/success.sh",
+      "source_sha256": "3ea1813dcfe269846c41f7987eaefcf04de7189ffa525733ee85329fbbdbd0c7",
+      "disposition": "private_historical_source_only"
+    },
+    {
+      "path": "nalu_runs/submission_scripts/templates/hypre_file.yaml",
+      "source_sha256": "447d3e1bbc08896af232d77770b002afe2abe0ef3d6234f080368933a95f3854",
+      "disposition": "public_portable_example",
+      "public_sha256": "447d3e1bbc08896af232d77770b002afe2abe0ef3d6234f080368933a95f3854"
+    },
+    {
+      "path": "nalu_runs/submission_scripts/templates/runNALUbatch.slurm",
+      "source_sha256": "3b101c7b1aaf23625a879f62c14f3361de7ccb2b7cc1e5569685bc9b97306ed6",
+      "disposition": "private_historical_source_only"
+    },
+    {
+      "path": "nalu_runs/submission_scripts/templates/runNALUsingle.slurm",
+      "source_sha256": "060ce7bcea8d14edb3e2c5ceaf452ee0931b0a12a4b6f88d4d5934c569a01423",
+      "disposition": "public_portable_example",
+      "public_sha256": "9f388f69b995960c71b2cc5c58604946d93f22912be1e3a1d4140febe3edb54a"
+    },
+    {
+      "path": "nalu_runs/submission_scripts/templates/template_nalu_run.yaml",
+      "source_sha256": "77a741922c1078b35a99b1056863ff21b9fcb33f905ce07877c1653f69be9ea3",
+      "disposition": "public_portable_example",
+      "public_sha256": "77a741922c1078b35a99b1056863ff21b9fcb33f905ce07877c1653f69be9ea3"
+    },
+    {
+      "path": "post_proc_scripts/README_post_proc.py",
+      "source_sha256": "ba4c00667d2957127b74a5f44f95194d713509f37a8a517443ebd89a12a3ed5c",
+      "disposition": "private_historical_source_only"
+    },
+    {
+      "path": "post_proc_scripts/plot_amplitude.py",
+      "source_sha256": "f610f80bc406e73bcb888fe77ffb3ae31944e7a45f7ffa71be497d64ecf42fd2",
+      "disposition": "private_historical_source_only"
+    },
+    {
+      "path": "post_proc_scripts/plot_frequency.py",
+      "source_sha256": "967e4422ae0ff9d3bbd09350e53f07de34ac15269efa8b77570d6a1671c8c030",
+      "disposition": "private_historical_source_only"
+    },
+    {
+      "path": "post_proc_scripts/plot_lift_drag_comp_ref_data.py",
+      "source_sha256": "abd224e2eea460b8173c474930a5e0534b980bb19084c14284951c30d5a34cdd",
+      "disposition": "private_historical_source_only"
+    },
+    {
+      "path": "post_proc_scripts/plot_lift_drag_time_all_airfoils.py",
+      "source_sha256": "a20ab0796c0b00d76bf33d93251b64107b62098f1f1857c686dc4d86a5ac8447",
+      "disposition": "private_historical_source_only"
+    },
+    {
+      "path": "post_proc_scripts/plot_st.py",
+      "source_sha256": "03905aea265466cee8857050dfee9092058e7d6924fdce3e78f41c135de33c89",
+      "disposition": "private_historical_source_only"
+    }
+  ]
+}

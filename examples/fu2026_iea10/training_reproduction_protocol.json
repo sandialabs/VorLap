@@ -1,0 +1,81 @@
+{
+  "schema": "fu2026-iea10-training-reproduction-protocol-v2",
+  "status": "frozen_before_production_matrix_after_local_inactive_gate_correction",
+  "revision": {
+    "timing": "The inactive-row stationarity policy was corrected after the local P80 U22 screen and before the 40-case production matrix.",
+    "reason": "A relative amplitude-change denominator is ill-conditioned for a response already classified as inactive near zero. The active-row 5 percent amplitude and frequency stationarity gates are unchanged.",
+    "inactive_rule": "Both adjacent half-window amplitudes must remain below 0.02 mean chord and their absolute difference must not exceed 0.005 mean chord. Frequency is not scored for an inactive broadband response.",
+    "model_effect": "No closure coefficient, force law, target, inactive amplitude ceiling, or active acceptance limit changed."
+  },
+  "objective": "Execute and quantify reproduction of all 20 Fu et al. IEA-10-MW response rows already used to train the semi-empirical closure. This protocol is not an independent validation protocol.",
+  "reference": {
+    "targets_path": "targets.csv",
+    "targets_sha256": "64e958175ade5423bf51c15ed68756a8458199fc06601b60205f2bf14ff39ff1",
+    "publication_doi": "10.1016/j.jfluidstructs.2026.104537",
+    "source_pdf_sha256": "304bc4e37021f4dd64e17d0a6e3a4b0ed06eddf232a10878031269b9014485e7"
+  },
+  "training_evidence": [
+    {
+      "study": "Fu et al. 2026 IEA-10-MW response matrix",
+      "role": "All 20 amplitude rows are closure-training targets and reproduction scores."
+    },
+    {
+      "study": "Grinderslev et al. 2022 IEA-10-MW forced-motion and FSI response",
+      "doi": "10.5194/wes-7-2201-2022",
+      "role": "One shared quadratic saturation landmark ratio, including the digitized 1.57 m zero-work amplitude and approximately 1.18 m FSI equilibrium. The full signed-work curve is not transferred."
+    },
+    {
+      "study": "Bidadi et al. 2024 seven-profile FFA-W3 fixed-body spectra",
+      "doi": "10.3390/en17174328",
+      "dataset_doi": "10.5281/zenodo.12706820",
+      "role": "Profile-, incidence-, and frequency-dependent stationary forcing and correlated-load spatial weighting."
+    },
+    {
+      "study": "Target-free native QBlade decay prepass",
+      "role": "Speed- and configuration-dependent total passive damping correction, with no Fu response target used in the decay fit."
+    }
+  ],
+  "matrix": {
+    "configuration_count": 4,
+    "wind_speeds_mps": [6, 10, 14, 18, 22],
+    "target_row_count": 20,
+    "execution_roles": ["native", "complete"],
+    "execution_case_count": 40
+  },
+  "matrix_requirements": {
+    "configuration_count": 4,
+    "scored_speed_count_per_configuration": 4,
+    "scored_wind_speeds_mps": [6, 10, 14, 22],
+    "training_linked_speed_mps": 18
+  },
+  "measurement": {
+    "primary_channel": "Y_b Tip Trl.Def. BLD_1 [m]",
+    "amplitude": "sqrt(2)*RMS(y-mean(y)) over the stationary terminal window",
+    "frequency": "dominant frequency of the same demeaned terminal signal",
+    "native_subtraction_is_primary": false,
+    "minimum_terminal_cycles": 20,
+    "stationarity_half_window_cycles": 18,
+    "maximum_half_window_amplitude_change": 0.05,
+    "maximum_half_window_frequency_change_over_fn": 0.02,
+    "maximum_inactive_half_window_absolute_change_over_cbar": 0.005
+  },
+  "acceptance": {
+    "active_target_threshold_Ay_over_cbar": 0.01,
+    "active_amplitude_rule": "abs(predicted-target)/target <= 0.30",
+    "maximum_active_amplitude_relative_error": 0.30,
+    "digitization_uncertainty_role": "reported separately and never added to the 30 percent pass threshold",
+    "inactive_amplitude_rule": "predicted_Ay_over_cbar <= 0.02",
+    "maximum_inactive_predicted_Ay_over_cbar": 0.02,
+    "inactive_stationarity_rule": "Both adjacent half-window amplitudes are <=0.02*cbar and their absolute difference is <=0.005*cbar; inactive frequency is not scored.",
+    "frequency_rule": "For every active row, abs(predicted_fy_over_fn2-target_fy_over_fn2) <= 0.10.",
+    "maximum_frequency_ratio_absolute_error": 0.10,
+    "configuration_peak_speed_rule": "Among U=6,10,14,22 m/s, predicted and target maximum-amplitude speeds may differ by at most 4 m/s; U=18 m/s remains a separately reported training-linked diagnostic.",
+    "maximum_configuration_peak_speed_error_mps": 4.0,
+    "aggregate_rule": "All 40 execution receipts, stationarity gates, active amplitude and frequency gates, inactive gates, and configuration peak-speed gates must pass."
+  },
+  "claim_boundary": {
+    "supports": "Quantified actual-QBlade reproduction of the Fu training matrix and verification of the composed native-aero, residual-spectrum, and motion-correlated bridge implementation.",
+    "does_not_support": "Independent or blind validation, experimental validation, fatigue validation, H-VAWT validation, certification, or prediction outside the trained rows.",
+    "next_validation": "Freeze a target-excluded closure and evaluate a separate profile, orientation, or turbine VIV dataset without using its response values in fitting."
+  }
+}

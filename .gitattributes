@@ -1,0 +1,7 @@
+run_headless/config/hvawt_pilot_hpc_inputs/StrModel_qblade_2.0.4.cpp -diff -whitespace
+
+# Flight-promoted CSVs are byte-bound CRLF artifacts. Treat them as binary so
+# Git never normalizes line endings or reports their required CR bytes as
+# whitespace errors.
+paper_drafts/NAWEA_QBladeBridge/plot_data/hvawt_three_path_*.csv binary
+paper_drafts/NAWEA_QBladeBridge/generated/hvawt_sensitivity_paper_recovered_v2/*.csv binary

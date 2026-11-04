@@ -1,0 +1,77 @@
+{
+  "claim_boundary": {
+    "does_not_validate_hvawt_or_fatigue": true,
+    "liu_5x1_used_for_parameter_fitting": false,
+    "mannini_3x2_is_training": true,
+    "marra_4x1_is_training": true,
+    "ready_for_untouched_liu_assessment": true
+  },
+  "method": {
+    "cycle_mean_aerodynamic_power": "0.5*rho*U^2*D*Ceff*w*(2*Gc*V/pi-Gv*V^2/(2U))",
+    "force_per_span": "0.5*rho*U^2*D*Ceff*w*(Gc*sign(v)-Gv*v/U)",
+    "motion_phase_from_static_spectrum": false,
+    "name": "static-spectrum-scaled Gao--Scanlan reciprocal-Griffin work closure",
+    "positive_power_sign": "aerodynamic force does work on the structure",
+    "static_spectrum_role": "shedding frequency and sinusoidal-equivalent force scale only",
+    "structural_power": "0.5*(2*zeta*m*omega)*V^2"
+  },
+  "model_type": "static_spectrum_gao_scanlan_griffin_v1",
+  "parameters": {
+    "coulomb_work_gain": 0.697721189157052,
+    "frequency_ratio_high": 1.21875,
+    "frequency_ratio_low": 1.0,
+    "frequency_ratio_peak": 1.166666667,
+    "regularization_velocity_over_wind": 1e-05,
+    "velocity_damping_gain": 18.88355431292741
+  },
+  "schema": "vorlap-gao-scanlan-griffin-calibration-v1",
+  "sources": {
+    "liu_validation_freeze": {
+      "path": "examples/liu2024_rectangular_5x1/reference_data/validation_provenance.json",
+      "sha256": "61682ca212ddfca2a2ef71aa033996241b5db607059c95612071a4c7be636c2c"
+    },
+    "mannini_frequency_training": {
+      "path": "examples/mannini2016_rectangular_3x2/reference_data/mannini2015_figure4_sc87p7_digitized.csv",
+      "sha256": "b82be5a9970c2049ab742474b63ecebb434beddea1367a73a7522c67b0fc92e5"
+    },
+    "marra_provenance": {
+      "path": "examples/marra2015_rectangular_4x1/reference_data/training_provenance.json",
+      "sha256": "d509eccc2fe7bf76720e097a80997fdccca55e7d4e1e81f6d4c214b433d82b7f"
+    },
+    "marra_training_csv": {
+      "path": "examples/marra2015_rectangular_4x1/reference_data/gao2025_table5_training.csv",
+      "sha256": "817c3999cfd4a47628dfcfd744660caba63c9a1477fd0a88d860ec3cecc98e9d"
+    }
+  },
+  "status": "trained_4x1_ready_for_untouched_validation",
+  "training": {
+    "fit_space": "linear least squares in reciprocal dimensional amplitude",
+    "frequency_window_source": "previously failed Mannini 3:2 response",
+    "maximum_relative_error": 0.00219124624187011,
+    "rank": 2,
+    "response_quantity": "peak harmonic displacement amplitude Ay/D",
+    "row_count": 3,
+    "rows": [
+      {
+        "absolute_relative_error": 0.00219124624187011,
+        "predicted_peak_amplitude_over_depth": 0.06565354854130491,
+        "scruton_number": 1.9,
+        "target_peak_amplitude_over_depth": 0.06551
+      },
+      {
+        "absolute_relative_error": 0.00115245680829746,
+        "predicted_peak_amplitude_over_depth": 0.029166348261197714,
+        "scruton_number": 21.7,
+        "target_peak_amplitude_over_depth": 0.0292
+      },
+      {
+        "absolute_relative_error": 0.00010355495633015936,
+        "predicted_peak_amplitude_over_depth": 0.011061145317817012,
+        "scruton_number": 78.1,
+        "target_peak_amplitude_over_depth": 0.01106
+      }
+    ],
+    "static_sinusoidal_equivalent_coefficient": 0.9050966799187808,
+    "study": "Marra et al. 4:1 rectangular cylinder"
+  }
+}

@@ -1,0 +1,63 @@
+{
+  "schema": "vorlap-ehrmann2014-naca0018-benchmark-v1",
+  "status": "completed_validation_failed_no_sustained_lockin",
+  "reference": {
+    "citation_key": "Ehrmann2014",
+    "doi": "10.1016/j.jfluidstructs.2013.10.008",
+    "title": "Lock-in of elastically mounted airfoils at a 90 degree angle of attack",
+    "profile": "NACA0018",
+    "incidence_deg": 90.0,
+    "nominal_natural_frequency_hz": 6.0,
+    "reported_lockin_reynolds_number": 125000.0,
+    "reported_mass_damping_range": [0.96, 1.44],
+    "chord_m": 0.23,
+    "reported_mass_ratio": 47.7,
+    "response_data_state": "publisher_figures_6_and_7_digitized_and_provenance_bound",
+    "mass_damping_pairing_policy": "run_both_reported_range_endpoints_0.96_and_1.44_without_inference"
+  },
+  "source_compatibility": {
+    "vorlap_airfoil_file": "data/airfoils/NACA0018.h5",
+    "available_reynolds_numbers": [40000.0, 267000.0, 500000.0],
+    "reynolds_number_brackets_experiment": true,
+    "profile_matches_experiment": true
+  },
+  "comparison_series": [
+    "Ehrmann et al. experiment",
+    "Raw QBlade native aerodynamics",
+    "Raw QBlade plus latest VorLap spectral-lockin bridge"
+  ],
+  "excluded_comparators": [
+    "legacy frozen-source VorLap",
+    "Grinderslev CFD as experimental validation",
+    "circular-cylinder response as airfoil validation"
+  ],
+  "primary_acceptance": {
+    "peak_amplitude_absolute_error_over_chord": "<= 0.30*(A_experiment/c) + 0.01",
+    "paired_timestep_required": true,
+    "stationarity_required": true,
+    "dominant_frequency_and_lockin_interval_reported": true,
+    "raw_qblade_and_hybrid_share_identical_structural_and_native_aero_inputs": true
+  },
+  "executable_campaign": {
+    "entrypoint": "examples/ehrmann2014_naca0018/campaign.py",
+    "slurm_entrypoint": "run_headless/submit_ehrmann2014_flight.sj",
+    "slurm_fallback_entrypoint": "run_headless/submit_ehrmann2014_validation.sj",
+    "reduced_velocity_range": [3.0, 6.3],
+    "paired_timestep_reduced_velocity": 5.8,
+    "mass_damping_endpoints": [0.96, 1.44],
+    "expected_case_count": 40,
+    "latest_hybrid_residual_source_scale": 0.0,
+    "raw_reuse_policy": "exact native_case_identity match only",
+    "structural_qualification_report": "examples/ehrmann2014_naca0018/structural_verification_report.json",
+    "verified_crossflow_channel": "Y_b Tip Trl.Def. BLD_1 [m]",
+    "orthogonal_to_crossflow_stiffness_ratio": 100.0
+  },
+  "completed_evidence": {
+    "campaign_fingerprint": "23903688f3c33cc23c2962dd834018f17cfe7652a8f4cf7dceec3f64df64cc94",
+    "completed_cases": 40,
+    "validation_metrics": "examples/ehrmann2014_naca0018/validation_evidence/ehrmann2014_validation_metrics.json",
+    "comparison_figure": "examples/ehrmann2014_naca0018/validation_evidence/ehrmann2014_raw_qblade_bridge.pdf",
+    "result": "failed_more_than_99p99_percent_peak_underprediction_and_no_numerical_lockin"
+  },
+  "claim_boundary": "The simulation and experiment comparison is complete and is negative evidence: clean execution and timestep agreement pass, but neither raw QBlade nor the latest bridge sustains the measured NACA0018 lock-in response. The present closure is not validated for H-VAWT response or fatigue use."
+}

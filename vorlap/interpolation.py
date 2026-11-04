@@ -3,9 +3,127 @@ from vorlap.structs import AirfoilFFT
 
 
 import numpy as np
+import warnings
 
 
-from typing import Dict, List, Tuple, Optional
+from typing import Dict, List, Tuple, Optional, Sequence
+
+
+_PHASE_VECTOR_TOL = 1.0e-12
+
+
+class AirfoilRangeWarning(RuntimeWarning):
+    """Warn when Re/AOA queries are outside an airfoil FFT source grid."""
+
+
+def _normalize_bounds_policy(bounds_policy: str) -> str:
+    """Validate range-handling policy for airfoil FFT queries."""
+    policy = str(bounds_policy).lower()
+    if policy not in ("warn", "raise", "clip"):
+        raise ValueError("bounds_policy must be one of: 'warn', 'raise', or 'clip'.")
+    return policy
+
+
+def _format_range(value_min: float, value_max: float) -> str:
+    """Format a query/source range compactly for diagnostics."""
+    return f"[{value_min:.6g}, {value_max:.6g}]"
+
+
+def _check_query_ranges(
+    afft: AirfoilFFT,
+    Re_q: np.ndarray,
+    AOA_q: np.ndarray,
+    *,
+    fields: Sequence[str],
+    bounds_policy: str = "warn",
+) -> None:
+    """
+    Diagnose Re/AOA queries outside the available source-data range.
+
+    Interpolation deliberately flat-clips outside the source grid, but final
+    paper campaigns must not depend on that behavior silently. The default
+    policy warns once per airfoil/field-set/dimension; strict audit paths can
+    use `bounds_policy="raise"`.
+    """
+    policy = _normalize_bounds_policy(bounds_policy)
+    re_arr = np.asarray(Re_q, dtype=float).reshape(-1)
+    aoa_arr = np.asarray(AOA_q, dtype=float).reshape(-1)
+    if re_arr.shape != aoa_arr.shape:
+        raise ValueError("Re and AOA query arrays must have the same shape.")
+    if np.any(~np.isfinite(re_arr)) or np.any(~np.isfinite(aoa_arr)):
+        raise ValueError("Re and AOA query values must be finite.")
+
+    re_min = float(np.min(afft.Re))
+    re_max = float(np.max(afft.Re))
+    aoa_min = float(np.min(afft.AOA))
+    aoa_max = float(np.max(afft.AOA))
+    re_below = re_arr < re_min
+    re_above = re_arr > re_max
+    reynolds_independent = (
+        getattr(afft, "reynolds_model", "") == "replicated_reynolds_independent"
+    )
+    warning_only_re_below = re_below & reynolds_independent
+    hard_re_out = re_above | (re_below & ~reynolds_independent)
+    re_out = re_below | re_above
+    aoa_out = (aoa_arr < aoa_min) | (aoa_arr > aoa_max)
+    if not (np.any(re_out) or np.any(aoa_out)):
+        return
+
+    labels = []
+    if np.any(re_out):
+        labels.append(
+            f"Re requested {_format_range(float(np.min(re_arr)), float(np.max(re_arr)))} "
+            f"outside source {_format_range(re_min, re_max)} ({int(np.count_nonzero(re_out))}/{re_arr.size} queries)"
+        )
+    if np.any(aoa_out):
+        labels.append(
+            f"AOA requested {_format_range(float(np.min(aoa_arr)), float(np.max(aoa_arr)))} deg "
+            f"outside source {_format_range(aoa_min, aoa_max)} deg ({int(np.count_nonzero(aoa_out))}/{aoa_arr.size} queries)"
+        )
+
+    field_key = tuple(str(field) for field in fields)
+    message = (
+        f"Airfoil FFT '{getattr(afft, 'name', 'unknown')}' query outside source grid "
+        f"for fields {field_key}: " + "; ".join(labels) + ". "
+        "Values will be clipped to the nearest source-grid boundary."
+    )
+    if policy == "raise" and (np.any(hard_re_out) or np.any(aoa_out)):
+        raise ValueError(message)
+    if policy == "warn" or (policy == "raise" and np.any(warning_only_re_below)):
+        warned = getattr(afft, "_range_warning_keys", None)
+        if warned is None:
+            warned = set()
+            setattr(afft, "_range_warning_keys", warned)
+        if policy == "raise":
+            message = (
+                f"Airfoil FFT '{getattr(afft, 'name', 'unknown')}' requested Reynolds range "
+                f"{_format_range(float(np.min(re_arr)), float(np.max(re_arr)))} includes values below source minimum "
+                f"{re_min:.6g} ({int(np.count_nonzero(warning_only_re_below))}/{re_arr.size} queries). "
+                "The source is verified as replicated_reynolds_independent, so values are clipped "
+                "to the nearest Reynolds plane and this lower-bound excursion is warning-only."
+            )
+            range_key = ("replicated_reynolds_independent_lower_re",)
+        else:
+            range_key = (field_key, bool(np.any(re_out)), bool(np.any(aoa_out)))
+        if range_key not in warned:
+            warned.add(range_key)
+            warnings.warn(message, AirfoilRangeWarning, stacklevel=3)
+
+
+def _field_tensors(afft: AirfoilFFT, field: str) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
+    """Return Strouhal, amplitude, and phase tensors for an FFT field."""
+    if field not in ("CL", "CD", "CM", "CF"):
+        raise ValueError(f"Invalid field symbol: {field}")
+    return (
+        getattr(afft, f"{field}_ST"),
+        getattr(afft, f"{field}_Amp"),
+        getattr(afft, f"{field}_Pha"),
+    )
+
+
+def _wrap_phase_radians(phase: np.ndarray) -> np.ndarray:
+    """Wrap phase angles to the principal [-pi, pi] interval."""
+    return np.arctan2(np.sin(phase), np.cos(phase))
 
 
 def _find_nearest_indices(Re_grid: np.ndarray,
@@ -60,13 +178,15 @@ def lookup_fft_spectrum_nearest(afft,
                                 Re_val: float,
                                 AOA_val: float,
                                 fields: List[str],
-                                n_freq_depth: Optional[int] = None) -> Dict[str, Tuple[np.ndarray, np.ndarray, np.ndarray]]:
+                                n_freq_depth: Optional[int] = None,
+                                bounds_policy: str = "warn") -> Dict[str, Tuple[np.ndarray, np.ndarray, np.ndarray]]:
     """
     Nearest-neighbor lookup (no interpolation).
     Matches your return structure: { 'CL': (ST, Amp, Pha), ... }.
     """
     Re_q  = np.atleast_1d(Re_val).astype(float)
     AOA_q = np.atleast_1d(AOA_val).astype(float)
+    _check_query_ranges(afft, Re_q, AOA_q, fields=fields, bounds_policy=bounds_policy)
 
     # find nearest grid indices (no clamping needed beyond edges)
     i_nn, j_nn = _find_nearest_indices(afft.Re, afft.AOA, Re_q, AOA_q)
@@ -179,19 +299,224 @@ def _bilinear_apply_tensor(F: np.ndarray,
         + w11[:, None] * f11
     )
 
+
+def _bilinear_apply_phase_tensor(P: np.ndarray,
+                                 i: np.ndarray,
+                                 j: np.ndarray,
+                                 t: np.ndarray,
+                                 u: np.ndarray,
+                                 n_freq_depth: Optional[int] = None) -> np.ndarray:
+    """
+    Bilinearly interpolate phase angles through their unit phasors.
+
+    Direct radian interpolation is wrong at the branch cut: +179 deg and
+    -179 deg should interpolate near 180 deg, not 0 deg. The fallback is used
+    only where the weighted phasor magnitude vanishes and the circular mean is
+    mathematically undefined.
+    """
+    return _bilinear_apply_precomputed_phase_tensor(
+        P,
+        np.cos(P),
+        np.sin(P),
+        i,
+        j,
+        t,
+        u,
+        n_freq_depth,
+    )
+
+
+def _bilinear_apply_precomputed_phase_tensor(
+    P: np.ndarray,
+    cos_source: np.ndarray,
+    sin_source: np.ndarray,
+    i: np.ndarray,
+    j: np.ndarray,
+    t: np.ndarray,
+    u: np.ndarray,
+    n_freq_depth: Optional[int] = None,
+) -> np.ndarray:
+    """Interpolate phase using source phasors prepared from the same tensor."""
+    if cos_source.shape != P.shape or sin_source.shape != P.shape:
+        raise ValueError("Cached phase phasors must match the source phase tensor.")
+    cos_phase = _bilinear_apply_tensor(cos_source, i, j, t, u, n_freq_depth)
+    sin_phase = _bilinear_apply_tensor(sin_source, i, j, t, u, n_freq_depth)
+    phase = np.arctan2(sin_phase, cos_phase)
+
+    magnitude = np.hypot(cos_phase, sin_phase)
+    if np.any(magnitude <= _PHASE_VECTOR_TOL):
+        linear_fallback = _wrap_phase_radians(_bilinear_apply_tensor(P, i, j, t, u, n_freq_depth))
+        phase = np.where(magnitude > _PHASE_VECTOR_TOL, phase, linear_fallback)
+    return phase
+
+
+def interpolate_fft_spectra_batch_prepared(
+    afft: AirfoilFFT,
+    Re_vals: np.ndarray,
+    AOA_vals: np.ndarray,
+    fields: List[str],
+    *,
+    n_freq_depth: Optional[int] = None,
+    bounds_policy: str = "warn",
+    phase_phasors: Dict[str, Tuple[np.ndarray, np.ndarray]] | None = None,
+) -> Dict[str, Tuple[np.ndarray, np.ndarray, np.ndarray]]:
+    """Interpolate several fields with shared query weights and cached phasors."""
+    Re_vals = np.asarray(Re_vals, dtype=float)
+    AOA_vals = np.asarray(AOA_vals, dtype=float)
+    if Re_vals.shape != AOA_vals.shape:
+        raise ValueError("Re_vals and AOA_vals must have the same shape")
+    Re_flat = Re_vals.reshape(-1)
+    AOA_flat = AOA_vals.reshape(-1)
+    _check_query_ranges(
+        afft,
+        Re_flat,
+        AOA_flat,
+        fields=fields,
+        bounds_policy=bounds_policy,
+    )
+    i, j, t, u = _find_cells_and_weights(afft.Re, afft.AOA, Re_flat, AOA_flat)
+    result: Dict[str, Tuple[np.ndarray, np.ndarray, np.ndarray]] = {}
+    for field in fields:
+        STsrc, Asrc, Psrc = _field_tensors(afft, field)
+        if phase_phasors is None or field not in phase_phasors:
+            phase = _bilinear_apply_phase_tensor(
+                Psrc, i, j, t, u, n_freq_depth
+            )
+        else:
+            cos_source, sin_source = phase_phasors[field]
+            phase = _bilinear_apply_precomputed_phase_tensor(
+                Psrc,
+                cos_source,
+                sin_source,
+                i,
+                j,
+                t,
+                u,
+                n_freq_depth,
+            )
+        result[field] = (
+            _bilinear_apply_tensor(STsrc, i, j, t, u, n_freq_depth),
+            _bilinear_apply_tensor(Asrc, i, j, t, u, n_freq_depth),
+            phase,
+        )
+    return result
+
+
+def prepare_fft_spectra_packed_tensor(
+    afft: AirfoilFFT,
+    fields: List[str],
+    *,
+    n_freq_depth: int,
+) -> np.ndarray:
+    """Pack ST, amplitude, and phase phasors for one-call interpolation."""
+
+    if type(n_freq_depth) is not int or n_freq_depth < 1:
+        raise ValueError("n_freq_depth must be a positive integer")
+    tensors: List[np.ndarray] = []
+    for field in fields:
+        st_source, amplitude_source, phase_source = _field_tensors(afft, field)
+        depth = min(n_freq_depth, int(st_source.shape[2]))
+        if depth != n_freq_depth:
+            raise ValueError("Packed interpolation depth exceeds source depth")
+        tensors.extend(
+            (
+                st_source[:, :, :depth],
+                amplitude_source[:, :, :depth],
+                np.cos(phase_source[:, :, :depth]),
+                np.sin(phase_source[:, :, :depth]),
+            )
+        )
+    return np.concatenate(tensors, axis=2)
+
+
+def interpolate_fft_spectra_batch_packed(
+    afft: AirfoilFFT,
+    Re_vals: np.ndarray,
+    AOA_vals: np.ndarray,
+    fields: List[str],
+    *,
+    n_freq_depth: int,
+    bounds_policy: str,
+    packed_tensor: np.ndarray,
+) -> Dict[str, Tuple[np.ndarray, np.ndarray, np.ndarray]]:
+    """Interpolate several FFT fields through one packed bilinear gather."""
+
+    Re_vals = np.asarray(Re_vals, dtype=float)
+    AOA_vals = np.asarray(AOA_vals, dtype=float)
+    if Re_vals.shape != AOA_vals.shape:
+        raise ValueError("Re_vals and AOA_vals must have the same shape")
+    Re_flat = Re_vals.reshape(-1)
+    AOA_flat = AOA_vals.reshape(-1)
+    _check_query_ranges(
+        afft,
+        Re_flat,
+        AOA_flat,
+        fields=fields,
+        bounds_policy=bounds_policy,
+    )
+    expected_shape = (
+        len(afft.Re),
+        len(afft.AOA),
+        4 * n_freq_depth * len(fields),
+    )
+    packed = np.asarray(packed_tensor, dtype=float)
+    if packed.shape != expected_shape:
+        raise ValueError("Packed FFT interpolation tensor has the wrong shape")
+    i, j, t, u = _find_cells_and_weights(afft.Re, afft.AOA, Re_flat, AOA_flat)
+    interpolated = _bilinear_apply_tensor(packed, i, j, t, u)
+    result: Dict[str, Tuple[np.ndarray, np.ndarray, np.ndarray]] = {}
+    stride = 4 * n_freq_depth
+    for field_index, field in enumerate(fields):
+        offset = field_index * stride
+        st = interpolated[:, offset : offset + n_freq_depth]
+        amplitude = interpolated[
+            :, offset + n_freq_depth : offset + 2 * n_freq_depth
+        ]
+        cos_phase = interpolated[
+            :, offset + 2 * n_freq_depth : offset + 3 * n_freq_depth
+        ]
+        sin_phase = interpolated[
+            :, offset + 3 * n_freq_depth : offset + 4 * n_freq_depth
+        ]
+        phase = np.arctan2(sin_phase, cos_phase)
+        magnitude = np.hypot(cos_phase, sin_phase)
+        if np.any(magnitude <= _PHASE_VECTOR_TOL):
+            phase_source = _field_tensors(afft, field)[2]
+            linear_fallback = _wrap_phase_radians(
+                _bilinear_apply_tensor(
+                    phase_source,
+                    i,
+                    j,
+                    t,
+                    u,
+                    n_freq_depth,
+                )
+            )
+            phase = np.where(
+                magnitude > _PHASE_VECTOR_TOL,
+                phase,
+                linear_fallback,
+            )
+        result[field] = (st, amplitude, phase)
+    return result
+
 # interpolation.py (continued)
 def interpolate_fft_spectrum_optimized(afft: AirfoilFFT,
                                        Re_val: float,
                                        AOA_val: float,
                                        fields: List[str],
-                                       n_freq_depth: Optional[int] = None) -> Dict[str, Tuple[np.ndarray, np.ndarray, np.ndarray]]:
+                                       n_freq_depth: Optional[int] = None,
+                                       bounds_policy: str = "warn") -> Dict[str, Tuple[np.ndarray, np.ndarray, np.ndarray]]:
     """
     Vectorized, fast bilinear + flat extrapolation for multiple fields at once.
     Matches your return structure: { 'CL': (ST, Amp, Pha), ... } with arrays length n_freq_depth.
+    `bounds_policy` controls out-of-range Re/AOA queries: "warn" clips with
+    `AirfoilRangeWarning`, "raise" fails, and "clip" clips silently.
     """
     # inputs -> 1D arrays to allow easy batching later (for now 1 query)
     Re_q  = np.atleast_1d(Re_val).astype(float)
     AOA_q = np.atleast_1d(AOA_val).astype(float)
+    _check_query_ranges(afft, Re_q, AOA_q, fields=fields, bounds_policy=bounds_policy)
 
     # compute indices/weights once
     i, j, t, u = _find_cells_and_weights(afft.Re, afft.AOA, Re_q, AOA_q)
@@ -199,21 +524,12 @@ def interpolate_fft_spectrum_optimized(afft: AirfoilFFT,
     out: Dict[str, Tuple[np.ndarray, np.ndarray, np.ndarray]] = {}
 
     for field in fields:
-        if field == 'CL':
-            STsrc, Asrc, Psrc = afft.CL_ST, afft.CL_Amp, afft.CL_Pha
-        elif field == 'CD':
-            STsrc, Asrc, Psrc = afft.CD_ST, afft.CD_Amp, afft.CD_Pha
-        elif field == 'CF':
-            STsrc, Asrc, Psrc = afft.CF_ST, afft.CF_Amp, afft.CF_Pha
-        elif field == 'CM':
-            STsrc, Asrc, Psrc = afft.CM_ST, afft.CM_Amp, afft.CM_Pha
-        else:
-            raise ValueError(f"Invalid field symbol: {field}")
+        STsrc, Asrc, Psrc = _field_tensors(afft, field)
 
         # Each returns (nq, K_sel). We have nq==1, so take [0]
         ST = _bilinear_apply_tensor(STsrc, i, j, t, u, n_freq_depth)[0]
         Amp = _bilinear_apply_tensor(Asrc,  i, j, t, u, n_freq_depth)[0]
-        Pha = _bilinear_apply_tensor(Psrc,  i, j, t, u, n_freq_depth)[0]
+        Pha = _bilinear_apply_phase_tensor(Psrc, i, j, t, u, n_freq_depth)[0]
 
         out[field] = (ST, Amp, Pha)
 
@@ -221,16 +537,19 @@ def interpolate_fft_spectrum_optimized(afft: AirfoilFFT,
 
 
 def interpolate_fft_spectrum_batch(afft: AirfoilFFT, Re_vals: np.ndarray, AOA_vals: np.ndarray,
-                                 field: str, n_freq_depth: Optional[int] = None) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
+                                 field: str, n_freq_depth: Optional[int] = None,
+                                 bounds_policy: str = "warn") -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
     """
     Batch interpolation for multiple Re/AOA points simultaneously.
 
     Args:
-        afft: AirfoilFFT struct containing FFT results with cached interpolators.
+        afft: AirfoilFFT struct containing FFT results.
         Re_vals: Array of Reynolds numbers.
         AOA_vals: Array of angles of attack (degrees).
         field: Field string ('CL', 'CD', 'CM', 'CF') to interpolate.
         n_freq_depth: Optional number of frequencies to return.
+        bounds_policy: "warn" clips with `AirfoilRangeWarning`, "raise" fails,
+            and "clip" preserves explicit silent flat-clipping.
 
     Returns:
         ST_out: Array of shape [n_points, n_freq]
@@ -241,60 +560,22 @@ def interpolate_fft_spectrum_batch(afft: AirfoilFFT, Re_vals: np.ndarray, AOA_va
     AOA_vals = np.asarray(AOA_vals, dtype=float)
     if Re_vals.shape != AOA_vals.shape:
         raise ValueError("Re_vals and AOA_vals must have the same shape")
+    Re_flat = Re_vals.reshape(-1)
+    AOA_flat = AOA_vals.reshape(-1)
+    _check_query_ranges(afft, Re_flat, AOA_flat, fields=[field], bounds_policy=bounds_policy)
+    i, j, t, u = _find_cells_and_weights(afft.Re, afft.AOA, Re_flat, AOA_flat)
 
-    if field == 'CM':
-        n_points = len(Re_vals)
-        if n_freq_depth is None:
-            n_freq_depth = afft.CM_ST.shape[2]
-        else:
-            n_freq_depth = min(n_freq_depth, afft.CM_ST.shape[2])
-        ST_out = np.zeros((n_points, n_freq_depth))
-        amp_out = np.zeros((n_points, n_freq_depth))
-        phase_out = np.zeros((n_points, n_freq_depth))
-        for idx, (re_val, aoa_val) in enumerate(zip(Re_vals, AOA_vals)):
-            ST_out[idx, :], amp_out[idx, :], phase_out[idx, :] = interpolate_fft_spectrum(
-                afft, re_val, aoa_val, field, n_freq_depth=n_freq_depth
-            )
-        return ST_out, amp_out, phase_out
-
-    # Ensure interpolators are cached
-    afft._cache_interpolators()
-
-    if n_freq_depth is None:
-        n_freq_depth = afft.CL_ST.shape[2]
-    else:
-        n_freq_depth = min(n_freq_depth, afft.CL_ST.shape[2])
-
-    n_points = len(Re_vals)
-    points = np.column_stack([
-        np.clip(Re_vals, afft.Re[0], afft.Re[-1]),
-        np.clip(AOA_vals, afft.AOA[0], afft.AOA[-1]),
-    ])
-
-    ST_out = np.zeros((n_points, n_freq_depth))
-    amp_out = np.zeros((n_points, n_freq_depth))
-    phase_out = np.zeros((n_points, n_freq_depth))
-
-    # Get the appropriate cached interpolators
-    if field == 'CL':
-        st_interps, amp_interps, pha_interps = afft._cl_st_interps, afft._cl_amp_interps, afft._cl_pha_interps
-    elif field == 'CD':
-        st_interps, amp_interps, pha_interps = afft._cd_st_interps, afft._cd_amp_interps, afft._cd_pha_interps
-    elif field == 'CF':
-        st_interps, amp_interps, pha_interps = afft._cf_st_interps, afft._cf_amp_interps, afft._cf_pha_interps
-    else:
-        raise ValueError(f"Invalid field symbol: {field}")
-
-    # Batch interpolation
-    for k in range(n_freq_depth):
-        ST_out[:, k] = st_interps[k](points)
-        amp_out[:, k] = amp_interps[k](points)
-        phase_out[:, k] = pha_interps[k](points)
+    STsrc, Asrc, Psrc = _field_tensors(afft, field)
+    ST_out = _bilinear_apply_tensor(STsrc, i, j, t, u, n_freq_depth)
+    amp_out = _bilinear_apply_tensor(Asrc, i, j, t, u, n_freq_depth)
+    phase_out = _bilinear_apply_phase_tensor(Psrc, i, j, t, u, n_freq_depth)
 
     return ST_out, amp_out, phase_out
 
 
-def interpolate_fft_spectrum(afft: AirfoilFFT, Re_val: float, AOA_val: float, field: str, n_freq_depth: Optional[int] = None) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
+def interpolate_fft_spectrum(afft: AirfoilFFT, Re_val: float, AOA_val: float, field: str,
+                             n_freq_depth: Optional[int] = None,
+                             bounds_policy: str = "warn") -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
     """
     Interpolates the FFT amplitude and phase spectra for a given Reynolds number `Re_val`
     and angle of attack `AOA_val` using bilinear interpolation over the stored Re × AOA grid.
@@ -305,6 +586,8 @@ def interpolate_fft_spectrum(afft: AirfoilFFT, Re_val: float, AOA_val: float, fi
         AOA_val: Desired angle of attack (degrees).
         field: String ('CL', 'CD', 'CM', or 'CF') indicating which force coefficient to interpolate.
         n_freq_depth: Optional number of frequencies to return. If None, returns all frequencies.
+        bounds_policy: "warn" clips with `AirfoilRangeWarning`, "raise" fails,
+            and "clip" preserves explicit silent flat-clipping.
 
     Returns:
         freqs: Vector of frequency values.
@@ -322,65 +605,9 @@ def interpolate_fft_spectrum(afft: AirfoilFFT, Re_val: float, AOA_val: float, fi
         AOA_val,
         [field],
         n_freq_depth=n_freq_depth,
+        bounds_policy=bounds_policy,
     )
     return result[field]
-
-
-# def interpolate_fft_spectrum_optimized(afft: AirfoilFFT, Re_val: float, AOA_val: float,
-#                                      fields: List[str], n_freq_depth: Optional[int] = None) -> Dict[str, Tuple[np.ndarray, np.ndarray, np.ndarray]]:
-#     """
-#     Optimized version that interpolates multiple fields simultaneously using cached interpolators.
-
-#     Args:
-#         afft: AirfoilFFT struct containing FFT results with cached interpolators.
-#         Re_val: Desired Reynolds number.
-#         AOA_val: Desired angle of attack (degrees).
-#         fields: List of field strings ('CL', 'CD', 'CM', 'CF') to interpolate.
-#         n_freq_depth: Optional number of frequencies to return. If None, returns all frequencies.
-
-#     Returns:
-#         Dictionary mapping field names to (ST_out, amp_out, phase_out) tuples.
-#     """
-#     # Ensure interpolators are cached
-#     afft._cache_interpolators()
-
-#     if n_freq_depth is None:
-#         n_freq_depth = afft.CL_ST.shape[2]
-#     else:
-#         n_freq_depth = min(n_freq_depth, afft.CL_ST.shape[2])
-
-#     # Pre-compute the interpolation point as array to avoid repeated array creation
-#     point = np.array([Re_val, AOA_val])
-
-#     results = {}
-
-#     for field in fields:
-#         ST_out = np.zeros(n_freq_depth)
-#         amp_out = np.zeros(n_freq_depth)
-#         phase_out = np.zeros(n_freq_depth)
-
-#         # Get the appropriate cached interpolators
-#         if field == 'CL':
-#             st_interps, amp_interps, pha_interps = afft._cl_st_interps, afft._cl_amp_interps, afft._cl_pha_interps
-#         elif field == 'CD':
-#             st_interps, amp_interps, pha_interps = afft._cd_st_interps, afft._cd_amp_interps, afft._cd_pha_interps
-#         elif field == 'CF':
-#             st_interps, amp_interps, pha_interps = afft._cf_st_interps, afft._cf_amp_interps, afft._cf_pha_interps
-#         elif field == 'CM':
-#             # CM not cached in current implementation, fall back to original method
-#             return {field: interpolate_fft_spectrum(afft, Re_val, AOA_val, field, n_freq_depth)}
-#         else:
-#             raise ValueError(f"Invalid field symbol: {field}")
-
-#         # Vectorized interpolation using cached interpolators
-#         for k in range(n_freq_depth):
-#             ST_out[k] = st_interps[k](point)
-#             amp_out[k] = amp_interps[k](point)
-#             phase_out[k] = pha_interps[k](point)
-
-#         results[field] = (ST_out, amp_out, phase_out)
-
-#     return results
 
 
 def resample_airfoil(xy: np.ndarray, npoints: int = 200) -> np.ndarray:

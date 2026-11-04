@@ -1,0 +1,54 @@
+{
+  "status": "passed_two_four_step_native_input_checks",
+  "docker_image": "vorlap-qblade-headless:amd64",
+  "docker_image_id": "fc81d0c506c2",
+  "qblade_library_sha256": "7d4d07401dddf65dcf25d7cb7d809a78fbf8ab9ecad629aaaf6d2a4308a0764d",
+  "script_sha256": "51cc8fd8ae45ad2fed4318a35a0c78971aaf5acf079dd8bca2964cf547a5cc18",
+  "scope": "QBlade TurbSim sampling, moving nodal positions, explicit SIL input, analytic DC-force scaling and global force directions",
+  "automatic_sampler_verified": false,
+  "response_calibration_or_fatigue_verified": false,
+  "array_scalar_difference": "CPU array getter adds bound-blade induction omitted by scalar getter; equality is required only with zero native polar coefficients",
+  "cases": [
+    {
+      "mode": "zero_induction",
+      "steps": 4,
+      "nodes": 39,
+      "times_s": [
+        0.0,
+        0.0,
+        0.007499999832361937,
+        0.014999999664723873
+      ],
+      "position_change_m": 0.0017391443252563477,
+      "maximum_array_scalar_difference_mps": 0.0,
+      "maximum_array_permutation_error_mps": 0.0,
+      "maximum_force_error_n": 7.105427357601002e-15,
+      "maximum_force_component_n": 20.45883189559787,
+      "raw_receipt": "run_headless/runs/nodal_inflow_verification_20261007/zero_induction/verification.json"
+    },
+    {
+      "mode": "native_aero",
+      "steps": 4,
+      "nodes": 39,
+      "times_s": [
+        0.0,
+        0.0,
+        0.007499999832361937,
+        0.014999999664723873
+      ],
+      "position_change_m": 0.001738428371027112,
+      "maximum_array_scalar_difference_mps": 0.11043142527341843,
+      "maximum_array_permutation_error_mps": 0.0,
+      "maximum_force_error_n": 8.881784197001252e-15,
+      "maximum_force_component_n": 20.88197047660755,
+      "raw_receipt": "run_headless/runs/nodal_inflow_verification_20261007/native_aero/verification.json"
+    }
+  ],
+  "paper": {
+    "section": 2,
+    "pages": 19,
+    "build": "latexmk -norc -outdir=/private/tmp/vorlap-nodal-note-20261007 -pdf -interaction=nonstopmode -halt-on-error NAWEA2026_QBladeBridge.tex",
+    "qpdf_check": "passed",
+    "rendered_page": 7
+  }
+}

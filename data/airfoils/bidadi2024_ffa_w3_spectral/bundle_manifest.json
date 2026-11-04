@@ -1,0 +1,3404 @@
+{
+  "bundle_fingerprint": "8357814be50c52a7525578bc3d120a548e1beaf40d4deaa0fc16b0e0ac0f88c8",
+  "claim_boundary": {
+    "force_motion_phase_identified": false,
+    "reynolds_dependence_identified": false,
+    "static_fixed_body_spectrum": true,
+    "use": "engineering spectral forcing and lock-in frequency support"
+  },
+  "processing": {
+    "aoa_periodic": true,
+    "dynamic_viscosity_pa_s": 9e-06,
+    "force_normalization": "0.5*rho*U^2*chord*span",
+    "frequency_entries_including_dc": 200,
+    "generator": "scripts/process_naluout_to_h5.py",
+    "initial_timestep_skip": 0,
+    "low_frequency_bins_skipped": 6,
+    "output_reynolds": [
+      50000.0,
+      10000000.0,
+      20000000.0
+    ],
+    "retained_final_samples": 8000,
+    "reynolds_model": "replicated_reynolds_independent",
+    "reynolds_replication_justification": "The published source resolves one Re=1e7 plane. For the IEA-10-MW engineering verification, those fixed-body spectra are held Reynolds-independent over Re=5e4..2e7; this supplies coverage but no Reynolds trend and is not Reynolds-resolved validation.",
+    "rho_kg_m3": 1.2,
+    "source_record_flow_through_times": 160,
+    "source_reynolds": 10000000.0
+  },
+  "products": [
+    {
+      "airfoil_name": "FFA_W3_211",
+      "bytes": 3443080,
+      "path": "ffa_w3_211.h5",
+      "sha256": "3f9fb0ab2c890398282b6a44a8b3eb45c0056027b987cff3b6a28f68b97d79ba",
+      "source_data_sha256": "5da186acd22c9b4262967766fff8bdf9c59867ed059287eb7520f21701ffe01a",
+      "source_files": 59
+    },
+    {
+      "airfoil_name": "FFA_W3_241",
+      "bytes": 3443096,
+      "path": "ffa_w3_241.h5",
+      "sha256": "2d87e4b3eb6c67cfcc34481af70836b860aa72e93cd000fae34dec53483870ec",
+      "source_data_sha256": "76ea467c5034c09348b4a67cd50f706e428a38614a9fdf6ebf559ecbb9f9ded4",
+      "source_files": 59
+    },
+    {
+      "airfoil_name": "FFA_W3_270",
+      "bytes": 3443080,
+      "path": "ffa_w3_270.h5",
+      "sha256": "9940b166ba33601effa9abd03049e8009825e767d2a2efeec396e635bd571578",
+      "source_data_sha256": "050d8ba95f871380e034825eae4ef87b03380bd427e7d23e5bd0b0f1244c92ce",
+      "source_files": 59
+    },
+    {
+      "airfoil_name": "FFA_W3_301",
+      "bytes": 3443080,
+      "path": "ffa_w3_301.h5",
+      "sha256": "cc97d15a8ee867f6c86de4f24fa6524a2773565e02dc5c8d14d6173c29ea30e9",
+      "source_data_sha256": "1f61f23489375decb0d59bed8d56d515f5d15c117b8071eff4bf709bc0421323",
+      "source_files": 59
+    },
+    {
+      "airfoil_name": "FFA_W3_330",
+      "bytes": 3443080,
+      "path": "ffa_w3_330.h5",
+      "sha256": "8dcf6afa2404e43d14fd67ff996932713a6fa1a269c04ca577aa933d061ed15b",
+      "source_data_sha256": "2127a86eea275462f6c1c7c97baf546fb85e7090d699b6ac6b37aceafe071b20",
+      "source_files": 59
+    },
+    {
+      "airfoil_name": "FFA_W3_360",
+      "bytes": 3443080,
+      "path": "ffa_w3_360.h5",
+      "sha256": "a6e830af215e3aa5f64f0f70c6b8bf618b844f8def22865189a9e15de403c62d",
+      "source_data_sha256": "bf70d59997b9563d64d2604066a5e357614c75ea645d02cb788132adf6e15770",
+      "source_files": 59
+    },
+    {
+      "airfoil_name": "FFA_W3_500",
+      "bytes": 3443080,
+      "path": "ffa_w3_500.h5",
+      "sha256": "02c6452eec960aed9cd134cf667c6644bc96b7bb4fa940cdbbf805915f0162af",
+      "source_data_sha256": "443e8a66ddf23519f0b5b596f9d85a2bd235b7bdb93c89da2145baa7e7afbfcc",
+      "source_files": 59
+    }
+  ],
+  "schema": "vorlap-bidadi2024-ffa-w3-spectral-bundle-v1",
+  "source": {
+    "archive_filename": "ffa_data_files_ftt_160.zip",
+    "archive_md5": "fe58ef6d357de9402d1d3ac1a84676d6",
+    "dataset_doi": "10.5281/zenodo.12706820",
+    "doi": "10.3390/en17174328",
+    "files": [
+      {
+        "aoa_deg": -180,
+        "bytes": 3088386,
+        "path": "ffa_w3_211/data_files/ffa_w3_211_-180.dat",
+        "profile": "FFA-W3-211",
+        "sha256": "e33a3b8607b8375f8581eb87abae9b6fc39c0bf7fdc49f1f4292140ccb622aa9",
+        "thickness_ratio": 0.211
+      },
+      {
+        "aoa_deg": -175,
+        "bytes": 3088386,
+        "path": "ffa_w3_211/data_files/ffa_w3_211_-175.dat",
+        "profile": "FFA-W3-211",
+        "sha256": "4882a472b694cdd9f07e442a5c3977637c5e633bff33de882f2baea351c21fd1",
+        "thickness_ratio": 0.211
+      },
+      {
+        "aoa_deg": -170,
+        "bytes": 3088386,
+        "path": "ffa_w3_211/data_files/ffa_w3_211_-170.dat",
+        "profile": "FFA-W3-211",
+        "sha256": "489a11048ff5f29364e3ef614c3509347af1b8651aeebe8831022a86946e69f9",
+        "thickness_ratio": 0.211
+      },
+      {
+        "aoa_deg": -165,
+        "bytes": 3088386,
+        "path": "ffa_w3_211/data_files/ffa_w3_211_-165.dat",
+        "profile": "FFA-W3-211",
+        "sha256": "6ec1047304d23b1d8ce5dcf66949844add4d3b65f7c3af4d99833a6ab01c863e",
+        "thickness_ratio": 0.211
+      },
+      {
+        "aoa_deg": -160,
+        "bytes": 3088386,
+        "path": "ffa_w3_211/data_files/ffa_w3_211_-160.dat",
+        "profile": "FFA-W3-211",
+        "sha256": "f19359e0b12de32dd2c38776afa8c96e126908a7f9f07f2361929464483493aa",
+        "thickness_ratio": 0.211
+      },
+      {
+        "aoa_deg": -152,
+        "bytes": 3088386,
+        "path": "ffa_w3_211/data_files/ffa_w3_211_-152.dat",
+        "profile": "FFA-W3-211",
+        "sha256": "f446068fd1439557abe4366b7a69f414931c0e9d647742920a1501173fba8e04",
+        "thickness_ratio": 0.211
+      },
+      {
+        "aoa_deg": -144,
+        "bytes": 3088386,
+        "path": "ffa_w3_211/data_files/ffa_w3_211_-144.dat",
+        "profile": "FFA-W3-211",
+        "sha256": "61b06b17247f44056b2ac6b0e20667d1888d074cbbaf35c7691e2ec45bbb062e",
+        "thickness_ratio": 0.211
+      },
+      {
+        "aoa_deg": -136,
+        "bytes": 3088386,
+        "path": "ffa_w3_211/data_files/ffa_w3_211_-136.dat",
+        "profile": "FFA-W3-211",
+        "sha256": "056e3dc473be2cba81b8f4b3aeeaa65420a0adb1ffbd64bb8fbab966543cfdf4",
+        "thickness_ratio": 0.211
+      },
+      {
+        "aoa_deg": -128,
+        "bytes": 3088386,
+        "path": "ffa_w3_211/data_files/ffa_w3_211_-128.dat",
+        "profile": "FFA-W3-211",
+        "sha256": "1c1f2dde7e471cef566d53d2f287583bd9fe101089d81a166000336634c1a2ce",
+        "thickness_ratio": 0.211
+      },
+      {
+        "aoa_deg": -120,
+        "bytes": 3088386,
+        "path": "ffa_w3_211/data_files/ffa_w3_211_-120.dat",
+        "profile": "FFA-W3-211",
+        "sha256": "9c8d7236549a7e919c7abfd354f54e7597a3bf80ea9932e23f09ce3a1abdb993",
+        "thickness_ratio": 0.211
+      },
+      {
+        "aoa_deg": -110,
+        "bytes": 3088386,
+        "path": "ffa_w3_211/data_files/ffa_w3_211_-110.dat",
+        "profile": "FFA-W3-211",
+        "sha256": "4ab943f0e4eb7f47b3dd67aacd46034eced5c9c655c12afddb512b3c1c760983",
+        "thickness_ratio": 0.211
+      },
+      {
+        "aoa_deg": -100,
+        "bytes": 3088386,
+        "path": "ffa_w3_211/data_files/ffa_w3_211_-100.dat",
+        "profile": "FFA-W3-211",
+        "sha256": "52d2f258f5cdf195e586e6f4f937b33774a039ddac5c399d0e57d5d136a80c1a",
+        "thickness_ratio": 0.211
+      },
+      {
+        "aoa_deg": -90,
+        "bytes": 3088386,
+        "path": "ffa_w3_211/data_files/ffa_w3_211_-90.dat",
+        "profile": "FFA-W3-211",
+        "sha256": "a79cf695210253c3751711e4ba880c64fdd99838e5397555c1ebe9b734469563",
+        "thickness_ratio": 0.211
+      },
+      {
+        "aoa_deg": -80,
+        "bytes": 3088386,
+        "path": "ffa_w3_211/data_files/ffa_w3_211_-80.dat",
+        "profile": "FFA-W3-211",
+        "sha256": "cb30994d449c057a5a416fcc0841bfb5cd4e342cabcce7ec4ef037adf9a6278d",
+        "thickness_ratio": 0.211
+      },
+      {
+        "aoa_deg": -70,
+        "bytes": 3088386,
+        "path": "ffa_w3_211/data_files/ffa_w3_211_-70.dat",
+        "profile": "FFA-W3-211",
+        "sha256": "67019ba89c72e0f66dff06dbdd891367c02e1625e34caba945150c79c6ddc75b",
+        "thickness_ratio": 0.211
+      },
+      {
+        "aoa_deg": -60,
+        "bytes": 3088386,
+        "path": "ffa_w3_211/data_files/ffa_w3_211_-60.dat",
+        "profile": "FFA-W3-211",
+        "sha256": "69087f2395e659ad09280ee927950a479675a9d42dd163138d2f08d78121d09d",
+        "thickness_ratio": 0.211
+      },
+      {
+        "aoa_deg": -50,
+        "bytes": 3088386,
+        "path": "ffa_w3_211/data_files/ffa_w3_211_-50.dat",
+        "profile": "FFA-W3-211",
+        "sha256": "96110121f753a95eb6079a607e5939c613def06b9e99e413aab9fd87b871fff6",
+        "thickness_ratio": 0.211
+      },
+      {
+        "aoa_deg": -40,
+        "bytes": 3088386,
+        "path": "ffa_w3_211/data_files/ffa_w3_211_-40.dat",
+        "profile": "FFA-W3-211",
+        "sha256": "c045857422941ba81b5b59c8cd8acd8e893bfedbd855df66c12449a16fd29760",
+        "thickness_ratio": 0.211
+      },
+      {
+        "aoa_deg": -33,
+        "bytes": 3088386,
+        "path": "ffa_w3_211/data_files/ffa_w3_211_-33.dat",
+        "profile": "FFA-W3-211",
+        "sha256": "852124045d14c7b6f76fc5ec1b3cbcd5276af6b1ceeaba9281b6017ad1123c1a",
+        "thickness_ratio": 0.211
+      },
+      {
+        "aoa_deg": -30,
+        "bytes": 3088386,
+        "path": "ffa_w3_211/data_files/ffa_w3_211_-30.dat",
+        "profile": "FFA-W3-211",
+        "sha256": "1f692f87afce98985580997104c1c2919604b3af6d18c1a101374081f549e85c",
+        "thickness_ratio": 0.211
+      },
+      {
+        "aoa_deg": -27,
+        "bytes": 3088386,
+        "path": "ffa_w3_211/data_files/ffa_w3_211_-27.dat",
+        "profile": "FFA-W3-211",
+        "sha256": "20b547b3b6db22ec67b1d7a9c7d614f3d3628486fd3c727cc3cacf20c83f00c1",
+        "thickness_ratio": 0.211
+      },
+      {
+        "aoa_deg": -24,
+        "bytes": 3088386,
+        "path": "ffa_w3_211/data_files/ffa_w3_211_-24.dat",
+        "profile": "FFA-W3-211",
+        "sha256": "6997592d0a364bdc3a7d7b2d4563e83a4e81896c6f26dcd57630191cd2841f71",
+        "thickness_ratio": 0.211
+      },
+      {
+        "aoa_deg": -21,
+        "bytes": 3088386,
+        "path": "ffa_w3_211/data_files/ffa_w3_211_-21.dat",
+        "profile": "FFA-W3-211",
+        "sha256": "03510436931c5acc6f43569f4d6f8b0f2e234cdc573a9ca139b7f8aed32a6875",
+        "thickness_ratio": 0.211
+      },
+      {
+        "aoa_deg": -18,
+        "bytes": 3088386,
+        "path": "ffa_w3_211/data_files/ffa_w3_211_-18.dat",
+        "profile": "FFA-W3-211",
+        "sha256": "6d611e86dc18b9906f690b6658243830438e0986b1d8cf14ce0fc9d8d6161e71",
+        "thickness_ratio": 0.211
+      },
+      {
+        "aoa_deg": -15,
+        "bytes": 3088386,
+        "path": "ffa_w3_211/data_files/ffa_w3_211_-15.dat",
+        "profile": "FFA-W3-211",
+        "sha256": "742c149b9b517e6fd7da35bfafee595935a782db089fb9587e15c45c5a7f100c",
+        "thickness_ratio": 0.211
+      },
+      {
+        "aoa_deg": -12,
+        "bytes": 3088386,
+        "path": "ffa_w3_211/data_files/ffa_w3_211_-12.dat",
+        "profile": "FFA-W3-211",
+        "sha256": "5058986e772c51f12ef2d063957aa22de7b7f496467f7e3154db134e4e702c74",
+        "thickness_ratio": 0.211
+      },
+      {
+        "aoa_deg": -9,
+        "bytes": 3088386,
+        "path": "ffa_w3_211/data_files/ffa_w3_211_-9.dat",
+        "profile": "FFA-W3-211",
+        "sha256": "efa84d86ddf4d600a22728cfc58520db5b6854500809af5f2d8d74f1ca42ca1a",
+        "thickness_ratio": 0.211
+      },
+      {
+        "aoa_deg": -6,
+        "bytes": 3088386,
+        "path": "ffa_w3_211/data_files/ffa_w3_211_-6.dat",
+        "profile": "FFA-W3-211",
+        "sha256": "1f3f9bf7f228458b4d95afcf628d50711936fe282f2fc75177e757c0d96c3034",
+        "thickness_ratio": 0.211
+      },
+      {
+        "aoa_deg": -3,
+        "bytes": 3088386,
+        "path": "ffa_w3_211/data_files/ffa_w3_211_-3.dat",
+        "profile": "FFA-W3-211",
+        "sha256": "3169f6ab048fd2fa8fec91c682026635485e5d4603dff1e5a3e313510a1aacde",
+        "thickness_ratio": 0.211
+      },
+      {
+        "aoa_deg": 0,
+        "bytes": 3088386,
+        "path": "ffa_w3_211/data_files/ffa_w3_211_0.dat",
+        "profile": "FFA-W3-211",
+        "sha256": "6fdf05cfe269ed8815932fd8bf4075426cc769cf2fcafefb6b8688601997c449",
+        "thickness_ratio": 0.211
+      },
+      {
+        "aoa_deg": 3,
+        "bytes": 3088386,
+        "path": "ffa_w3_211/data_files/ffa_w3_211_3.dat",
+        "profile": "FFA-W3-211",
+        "sha256": "176a9c1eb37b0f9380d074fdf3fe1ddfe0d41168388e93141ea61757f6514c68",
+        "thickness_ratio": 0.211
+      },
+      {
+        "aoa_deg": 6,
+        "bytes": 3088386,
+        "path": "ffa_w3_211/data_files/ffa_w3_211_6.dat",
+        "profile": "FFA-W3-211",
+        "sha256": "7b15b6935a845cbfe751abb6f1054a28717bce4472295bf77ea9a0a6376a1aa4",
+        "thickness_ratio": 0.211
+      },
+      {
+        "aoa_deg": 9,
+        "bytes": 3088386,
+        "path": "ffa_w3_211/data_files/ffa_w3_211_9.dat",
+        "profile": "FFA-W3-211",
+        "sha256": "42cce769496b983357e25407bba0c2d4e5e0cc5354954a109320c468893dd423",
+        "thickness_ratio": 0.211
+      },
+      {
+        "aoa_deg": 12,
+        "bytes": 3088386,
+        "path": "ffa_w3_211/data_files/ffa_w3_211_12.dat",
+        "profile": "FFA-W3-211",
+        "sha256": "843548b8956dda9b2a122b632fb4a14e879ec47e0f2c186f0546d92f582453a2",
+        "thickness_ratio": 0.211
+      },
+      {
+        "aoa_deg": 15,
+        "bytes": 3088386,
+        "path": "ffa_w3_211/data_files/ffa_w3_211_15.dat",
+        "profile": "FFA-W3-211",
+        "sha256": "083dc682a12b504b652e9bc42c3bea0bdc584b95cf50ff9d48bf8aee7bf47b7f",
+        "thickness_ratio": 0.211
+      },
+      {
+        "aoa_deg": 18,
+        "bytes": 3088386,
+        "path": "ffa_w3_211/data_files/ffa_w3_211_18.dat",
+        "profile": "FFA-W3-211",
+        "sha256": "36c593bdf21d091ae978417cc7a4239da845bf0732ef96a9c3262fef8cc3fb72",
+        "thickness_ratio": 0.211
+      },
+      {
+        "aoa_deg": 21,
+        "bytes": 3088386,
+        "path": "ffa_w3_211/data_files/ffa_w3_211_21.dat",
+        "profile": "FFA-W3-211",
+        "sha256": "1ac73f843ff680530b6c1d51fc2f77464ef16ba9e9eb710ab0790f8ca3cca2b8",
+        "thickness_ratio": 0.211
+      },
+      {
+        "aoa_deg": 24,
+        "bytes": 3088386,
+        "path": "ffa_w3_211/data_files/ffa_w3_211_24.dat",
+        "profile": "FFA-W3-211",
+        "sha256": "82046055269ab2b7e26c49ad81bb874c2897e90bb7b1e3c6acbd5437a33009e5",
+        "thickness_ratio": 0.211
+      },
+      {
+        "aoa_deg": 27,
+        "bytes": 3088386,
+        "path": "ffa_w3_211/data_files/ffa_w3_211_27.dat",
+        "profile": "FFA-W3-211",
+        "sha256": "907d835430266e569485f5d718e0af61f018ab60766ec423b9e4b00621cb9bec",
+        "thickness_ratio": 0.211
+      },
+      {
+        "aoa_deg": 30,
+        "bytes": 3088386,
+        "path": "ffa_w3_211/data_files/ffa_w3_211_30.dat",
+        "profile": "FFA-W3-211",
+        "sha256": "97d82a4400a44b2e16f170e6d3f86192f8feeb8feef0d0c81f907d6cdfabd614",
+        "thickness_ratio": 0.211
+      },
+      {
+        "aoa_deg": 33,
+        "bytes": 3088386,
+        "path": "ffa_w3_211/data_files/ffa_w3_211_33.dat",
+        "profile": "FFA-W3-211",
+        "sha256": "574c19575dffa60eb4cffe967df0cae0fe48776267d2072610a593f4b29fd86c",
+        "thickness_ratio": 0.211
+      },
+      {
+        "aoa_deg": 40,
+        "bytes": 3088386,
+        "path": "ffa_w3_211/data_files/ffa_w3_211_40.dat",
+        "profile": "FFA-W3-211",
+        "sha256": "05557b52b851c95aadd7aa87d82ae9b81480e28eaf6fe72f7ef1e711bd030bcc",
+        "thickness_ratio": 0.211
+      },
+      {
+        "aoa_deg": 50,
+        "bytes": 3088386,
+        "path": "ffa_w3_211/data_files/ffa_w3_211_50.dat",
+        "profile": "FFA-W3-211",
+        "sha256": "c6cdcb4a26cef5c7df4898e828733123bd995dcf43a36ba2fbce90f72afb4dab",
+        "thickness_ratio": 0.211
+      },
+      {
+        "aoa_deg": 60,
+        "bytes": 3088386,
+        "path": "ffa_w3_211/data_files/ffa_w3_211_60.dat",
+        "profile": "FFA-W3-211",
+        "sha256": "23bb1472bfd71d353e83f5f53c2f275e35c31bac22e4569f825ba5b9c13bcb63",
+        "thickness_ratio": 0.211
+      },
+      {
+        "aoa_deg": 70,
+        "bytes": 3088386,
+        "path": "ffa_w3_211/data_files/ffa_w3_211_70.dat",
+        "profile": "FFA-W3-211",
+        "sha256": "b6f15a3e4236870f22578ded94979df059804470483393e7aaba03e03f55993c",
+        "thickness_ratio": 0.211
+      },
+      {
+        "aoa_deg": 80,
+        "bytes": 3088386,
+        "path": "ffa_w3_211/data_files/ffa_w3_211_80.dat",
+        "profile": "FFA-W3-211",
+        "sha256": "35041be8a927498a3d6000520e60ed3b27daeb9952e0c3a54ebfacd869d4431d",
+        "thickness_ratio": 0.211
+      },
+      {
+        "aoa_deg": 90,
+        "bytes": 3088386,
+        "path": "ffa_w3_211/data_files/ffa_w3_211_90.dat",
+        "profile": "FFA-W3-211",
+        "sha256": "50932a8b3e94ab996b8d0d1a4108d00a570266085280114d59bd44825d9da71a",
+        "thickness_ratio": 0.211
+      },
+      {
+        "aoa_deg": 100,
+        "bytes": 3088386,
+        "path": "ffa_w3_211/data_files/ffa_w3_211_100.dat",
+        "profile": "FFA-W3-211",
+        "sha256": "4f8c48d4d245ba2e2ff8d5a1bf574ef1e3af60c9b3dadf03f6d28cd1122bd5c4",
+        "thickness_ratio": 0.211
+      },
+      {
+        "aoa_deg": 110,
+        "bytes": 3088386,
+        "path": "ffa_w3_211/data_files/ffa_w3_211_110.dat",
+        "profile": "FFA-W3-211",
+        "sha256": "af0c3843465f98dacdbc2008f7e0c209878e73427a9f838c5c70efdb872f8ad9",
+        "thickness_ratio": 0.211
+      },
+      {
+        "aoa_deg": 120,
+        "bytes": 3088386,
+        "path": "ffa_w3_211/data_files/ffa_w3_211_120.dat",
+        "profile": "FFA-W3-211",
+        "sha256": "8f4481c8b9149a8ed6fe8b96d71b22d0180d5f6b0658c2f05984029fdb801227",
+        "thickness_ratio": 0.211
+      },
+      {
+        "aoa_deg": 128,
+        "bytes": 3088386,
+        "path": "ffa_w3_211/data_files/ffa_w3_211_128.dat",
+        "profile": "FFA-W3-211",
+        "sha256": "259d8a364600ea697194ac6d53939c40f0c1901dd07299b489520b5fec0e0b11",
+        "thickness_ratio": 0.211
+      },
+      {
+        "aoa_deg": 136,
+        "bytes": 3088386,
+        "path": "ffa_w3_211/data_files/ffa_w3_211_136.dat",
+        "profile": "FFA-W3-211",
+        "sha256": "ec4099d3baea648a52bcd284b93930bcb3cd085f4cf3560a4f438310f895c549",
+        "thickness_ratio": 0.211
+      },
+      {
+        "aoa_deg": 144,
+        "bytes": 3069086,
+        "path": "ffa_w3_211/data_files/ffa_w3_211_144.dat",
+        "profile": "FFA-W3-211",
+        "sha256": "48761388f0652b318ad1efa38b792bdca6cfc3d926c154cec258656568aa089a",
+        "thickness_ratio": 0.211
+      },
+      {
+        "aoa_deg": 152,
+        "bytes": 3088386,
+        "path": "ffa_w3_211/data_files/ffa_w3_211_152.dat",
+        "profile": "FFA-W3-211",
+        "sha256": "76075eeca5ec616dde3c9637ac0be1f85dca1883f1287e951944ebe3f5f4b207",
+        "thickness_ratio": 0.211
+      },
+      {
+        "aoa_deg": 160,
+        "bytes": 3088386,
+        "path": "ffa_w3_211/data_files/ffa_w3_211_160.dat",
+        "profile": "FFA-W3-211",
+        "sha256": "c0003828a99de9583caa122e30a12c43f8b5cb952080a8fe81b02ac9c5e18ead",
+        "thickness_ratio": 0.211
+      },
+      {
+        "aoa_deg": 165,
+        "bytes": 3088386,
+        "path": "ffa_w3_211/data_files/ffa_w3_211_165.dat",
+        "profile": "FFA-W3-211",
+        "sha256": "3ce7315004429dffefa0025bcdd3764f28d9614d815946b1548549b3a901b47c",
+        "thickness_ratio": 0.211
+      },
+      {
+        "aoa_deg": 170,
+        "bytes": 3088386,
+        "path": "ffa_w3_211/data_files/ffa_w3_211_170.dat",
+        "profile": "FFA-W3-211",
+        "sha256": "33f9f8005ceeabdb9cf155ba9dc1891feb30b56127708c2f363bcd0e3c61af1a",
+        "thickness_ratio": 0.211
+      },
+      {
+        "aoa_deg": 175,
+        "bytes": 3088386,
+        "path": "ffa_w3_211/data_files/ffa_w3_211_175.dat",
+        "profile": "FFA-W3-211",
+        "sha256": "31d1a646126c4d4c947d4d20bcc01ceeb146dc6feaddaf7c6522459ac45d6c54",
+        "thickness_ratio": 0.211
+      },
+      {
+        "aoa_deg": 180,
+        "bytes": 3088386,
+        "path": "ffa_w3_211/data_files/ffa_w3_211_180.dat",
+        "profile": "FFA-W3-211",
+        "sha256": "fde2e1613c669d6a78305d868dfebe352cf3a11a71fd806db4378ba5afbc1652",
+        "thickness_ratio": 0.211
+      },
+      {
+        "aoa_deg": -180,
+        "bytes": 3088386,
+        "path": "ffa_w3_241/data_files/ffa_w3_241_-180.dat",
+        "profile": "FFA-W3-241",
+        "sha256": "a35806199cb7e6fe016ca1013b04c812041f295e6838864245b0728e53659037",
+        "thickness_ratio": 0.241
+      },
+      {
+        "aoa_deg": -175,
+        "bytes": 3088386,
+        "path": "ffa_w3_241/data_files/ffa_w3_241_-175.dat",
+        "profile": "FFA-W3-241",
+        "sha256": "60810f829bcfbd17dace234ccb87eafb8d6886f9e4cb7d769bb561fe943fdde7",
+        "thickness_ratio": 0.241
+      },
+      {
+        "aoa_deg": -170,
+        "bytes": 3088386,
+        "path": "ffa_w3_241/data_files/ffa_w3_241_-170.dat",
+        "profile": "FFA-W3-241",
+        "sha256": "0f89ef370da4a72a74c5dc9ea711487a8fcfb774e2072fa8f23a6faea345f811",
+        "thickness_ratio": 0.241
+      },
+      {
+        "aoa_deg": -165,
+        "bytes": 3088386,
+        "path": "ffa_w3_241/data_files/ffa_w3_241_-165.dat",
+        "profile": "FFA-W3-241",
+        "sha256": "0bfe905e0a688c8a216660886c0bfbbdc7a448d88448f717c2313da5c85d99b9",
+        "thickness_ratio": 0.241
+      },
+      {
+        "aoa_deg": -160,
+        "bytes": 3088386,
+        "path": "ffa_w3_241/data_files/ffa_w3_241_-160.dat",
+        "profile": "FFA-W3-241",
+        "sha256": "a68fb9e9da80f67e47914f8ce4e32a6b3b9331785ba46788d5274ef3050d07cd",
+        "thickness_ratio": 0.241
+      },
+      {
+        "aoa_deg": -152,
+        "bytes": 3088386,
+        "path": "ffa_w3_241/data_files/ffa_w3_241_-152.dat",
+        "profile": "FFA-W3-241",
+        "sha256": "970e42c05d1be714951407ee1149fcea43046472588d88b03a62a8ca2b1a3a3c",
+        "thickness_ratio": 0.241
+      },
+      {
+        "aoa_deg": -144,
+        "bytes": 3088386,
+        "path": "ffa_w3_241/data_files/ffa_w3_241_-144.dat",
+        "profile": "FFA-W3-241",
+        "sha256": "afd90c1030f17eaf0eac8de748fc33c6a92b6efeb00108d87da4387464204026",
+        "thickness_ratio": 0.241
+      },
+      {
+        "aoa_deg": -136,
+        "bytes": 3064068,
+        "path": "ffa_w3_241/data_files/ffa_w3_241_-136.dat",
+        "profile": "FFA-W3-241",
+        "sha256": "f8791878cf3328263fe9e08757506df303d82fd0f17f02dc7bdb5939573f1d65",
+        "thickness_ratio": 0.241
+      },
+      {
+        "aoa_deg": -128,
+        "bytes": 2610711,
+        "path": "ffa_w3_241/data_files/ffa_w3_241_-128.dat",
+        "profile": "FFA-W3-241",
+        "sha256": "16d257a730c75ab0ea0d8514ad64f96e81a7040119294f2d750493e95fdc42cc",
+        "thickness_ratio": 0.241
+      },
+      {
+        "aoa_deg": -120,
+        "bytes": 3088386,
+        "path": "ffa_w3_241/data_files/ffa_w3_241_-120.dat",
+        "profile": "FFA-W3-241",
+        "sha256": "6b5e65af23e32d9b688f389f7e9d75ca859e3a65c0c25328cdf413323a126282",
+        "thickness_ratio": 0.241
+      },
+      {
+        "aoa_deg": -110,
+        "bytes": 3088386,
+        "path": "ffa_w3_241/data_files/ffa_w3_241_-110.dat",
+        "profile": "FFA-W3-241",
+        "sha256": "b4264973f0e3027acac14a6b0c1c2a16cd6de907b0a1f699af5ae7d6255bc016",
+        "thickness_ratio": 0.241
+      },
+      {
+        "aoa_deg": -100,
+        "bytes": 3088386,
+        "path": "ffa_w3_241/data_files/ffa_w3_241_-100.dat",
+        "profile": "FFA-W3-241",
+        "sha256": "91b538cd9fc55b4befcb3c81114746a8ffa5c73d336dff989c190057c34af946",
+        "thickness_ratio": 0.241
+      },
+      {
+        "aoa_deg": -90,
+        "bytes": 3088386,
+        "path": "ffa_w3_241/data_files/ffa_w3_241_-90.dat",
+        "profile": "FFA-W3-241",
+        "sha256": "f4793ddd71e5ba026f32844a34210bf4cac4dfb15787368e9f0526a373868c51",
+        "thickness_ratio": 0.241
+      },
+      {
+        "aoa_deg": -80,
+        "bytes": 3088386,
+        "path": "ffa_w3_241/data_files/ffa_w3_241_-80.dat",
+        "profile": "FFA-W3-241",
+        "sha256": "5babd17ae726838978f236be7b6bf56e973b87df0579b2b6c3cb2c8920fcede3",
+        "thickness_ratio": 0.241
+      },
+      {
+        "aoa_deg": -70,
+        "bytes": 3088386,
+        "path": "ffa_w3_241/data_files/ffa_w3_241_-70.dat",
+        "profile": "FFA-W3-241",
+        "sha256": "e5a557f69b1500159df163e88894580815cb976fcc2d0c6787a5cd2c0368e9b1",
+        "thickness_ratio": 0.241
+      },
+      {
+        "aoa_deg": -60,
+        "bytes": 3088386,
+        "path": "ffa_w3_241/data_files/ffa_w3_241_-60.dat",
+        "profile": "FFA-W3-241",
+        "sha256": "66a8723d1bfb1d8d8eb67513f1e535977b15c29851d6031e98feeb2cb7da2e19",
+        "thickness_ratio": 0.241
+      },
+      {
+        "aoa_deg": -50,
+        "bytes": 3088386,
+        "path": "ffa_w3_241/data_files/ffa_w3_241_-50.dat",
+        "profile": "FFA-W3-241",
+        "sha256": "5431b2e76d27bba76b09fe46bbf362f7073441261208c578601c31738c8c3069",
+        "thickness_ratio": 0.241
+      },
+      {
+        "aoa_deg": -40,
+        "bytes": 3088386,
+        "path": "ffa_w3_241/data_files/ffa_w3_241_-40.dat",
+        "profile": "FFA-W3-241",
+        "sha256": "24444163d58293f6ba9f613bb461769e5042dc4c3d6b76bbfb735cc86a26cd60",
+        "thickness_ratio": 0.241
+      },
+      {
+        "aoa_deg": -33,
+        "bytes": 3088386,
+        "path": "ffa_w3_241/data_files/ffa_w3_241_-33.dat",
+        "profile": "FFA-W3-241",
+        "sha256": "8019c34c99f69541bc999a74854ce72bb30c459fe6c4fd96c16cd2179b4c1690",
+        "thickness_ratio": 0.241
+      },
+      {
+        "aoa_deg": -30,
+        "bytes": 3088386,
+        "path": "ffa_w3_241/data_files/ffa_w3_241_-30.dat",
+        "profile": "FFA-W3-241",
+        "sha256": "30b510849d972bf59eae3c8ae9f2937fa517d79a8b767809cbf9925996f75311",
+        "thickness_ratio": 0.241
+      },
+      {
+        "aoa_deg": -27,
+        "bytes": 3088386,
+        "path": "ffa_w3_241/data_files/ffa_w3_241_-27.dat",
+        "profile": "FFA-W3-241",
+        "sha256": "36815213ffe8b5509d892a3ba43ed2f1af847f007d228e75bb1823023f1036ec",
+        "thickness_ratio": 0.241
+      },
+      {
+        "aoa_deg": -24,
+        "bytes": 3088386,
+        "path": "ffa_w3_241/data_files/ffa_w3_241_-24.dat",
+        "profile": "FFA-W3-241",
+        "sha256": "71d89e1b7c91f4359f0cd699e667c1932d2596a388b4e68180664c8ab30a56ca",
+        "thickness_ratio": 0.241
+      },
+      {
+        "aoa_deg": -21,
+        "bytes": 3088386,
+        "path": "ffa_w3_241/data_files/ffa_w3_241_-21.dat",
+        "profile": "FFA-W3-241",
+        "sha256": "8b5ad5a67d924c3df5960f1c6e36bfdb7b35483e152a2a2e2e41aaa548009fe3",
+        "thickness_ratio": 0.241
+      },
+      {
+        "aoa_deg": -18,
+        "bytes": 3088386,
+        "path": "ffa_w3_241/data_files/ffa_w3_241_-18.dat",
+        "profile": "FFA-W3-241",
+        "sha256": "4e970bf122864e1795bdcfd1a6d355d47ef0cd0421525badef02dfdc8a3c86dc",
+        "thickness_ratio": 0.241
+      },
+      {
+        "aoa_deg": -15,
+        "bytes": 3088386,
+        "path": "ffa_w3_241/data_files/ffa_w3_241_-15.dat",
+        "profile": "FFA-W3-241",
+        "sha256": "151f81e4cd89ddcc20bf20714c1cfba2c7d885d691be371eccece8374a804661",
+        "thickness_ratio": 0.241
+      },
+      {
+        "aoa_deg": -12,
+        "bytes": 3088386,
+        "path": "ffa_w3_241/data_files/ffa_w3_241_-12.dat",
+        "profile": "FFA-W3-241",
+        "sha256": "a71255bdbbba6d8df989276992ef3a40a958a93c83bbe100064b1a744af9a438",
+        "thickness_ratio": 0.241
+      },
+      {
+        "aoa_deg": -9,
+        "bytes": 3088386,
+        "path": "ffa_w3_241/data_files/ffa_w3_241_-9.dat",
+        "profile": "FFA-W3-241",
+        "sha256": "b4d7d75e934b292475bf56554a6d82e231525c25cd7d717b045217b2671235ce",
+        "thickness_ratio": 0.241
+      },
+      {
+        "aoa_deg": -6,
+        "bytes": 3088386,
+        "path": "ffa_w3_241/data_files/ffa_w3_241_-6.dat",
+        "profile": "FFA-W3-241",
+        "sha256": "b8439bff90fc9e35c38628a2dc4fcc47cfdc542489f785ca7918df5a47eb98ba",
+        "thickness_ratio": 0.241
+      },
+      {
+        "aoa_deg": -3,
+        "bytes": 3088386,
+        "path": "ffa_w3_241/data_files/ffa_w3_241_-3.dat",
+        "profile": "FFA-W3-241",
+        "sha256": "1da2cc7529ac10d8fd8910ddf57f26163dea83e674b7981edd209c6a59a0e07f",
+        "thickness_ratio": 0.241
+      },
+      {
+        "aoa_deg": 0,
+        "bytes": 1792970,
+        "path": "ffa_w3_241/data_files/ffa_w3_241_0.dat",
+        "profile": "FFA-W3-241",
+        "sha256": "6309b929f85b45e866176102624d927f9ff192cfaa5770c2e78c6388d4fdbcd9",
+        "thickness_ratio": 0.241
+      },
+      {
+        "aoa_deg": 3,
+        "bytes": 3088386,
+        "path": "ffa_w3_241/data_files/ffa_w3_241_3.dat",
+        "profile": "FFA-W3-241",
+        "sha256": "e0528b714f0091a7799a6894d1a9f23a438386a61bc6e123f7e3a3c454c31d77",
+        "thickness_ratio": 0.241
+      },
+      {
+        "aoa_deg": 6,
+        "bytes": 3088386,
+        "path": "ffa_w3_241/data_files/ffa_w3_241_6.dat",
+        "profile": "FFA-W3-241",
+        "sha256": "da2fb3dc61d8223eafafa5c275d860b988d49cfaa812a4fab5063d681dad4ec0",
+        "thickness_ratio": 0.241
+      },
+      {
+        "aoa_deg": 9,
+        "bytes": 3088386,
+        "path": "ffa_w3_241/data_files/ffa_w3_241_9.dat",
+        "profile": "FFA-W3-241",
+        "sha256": "ab4f785d110cd3dde867530782fbb41d9f555ebecccf9ecd8a6a3adc96ba24c9",
+        "thickness_ratio": 0.241
+      },
+      {
+        "aoa_deg": 12,
+        "bytes": 3088386,
+        "path": "ffa_w3_241/data_files/ffa_w3_241_12.dat",
+        "profile": "FFA-W3-241",
+        "sha256": "7f3af215f8cb3fa1b0e6ae2f41a397973869d6ace99bc4959fa0c06a08412331",
+        "thickness_ratio": 0.241
+      },
+      {
+        "aoa_deg": 15,
+        "bytes": 3088386,
+        "path": "ffa_w3_241/data_files/ffa_w3_241_15.dat",
+        "profile": "FFA-W3-241",
+        "sha256": "b7c97ebbd75364a9a1377b005032b7cbcd398a1a446163fe86b2777f0166b2c2",
+        "thickness_ratio": 0.241
+      },
+      {
+        "aoa_deg": 18,
+        "bytes": 3088386,
+        "path": "ffa_w3_241/data_files/ffa_w3_241_18.dat",
+        "profile": "FFA-W3-241",
+        "sha256": "e690e9860dba638105d364df8ba957fe0e317a77b8725e0cbba2ee494a7f1259",
+        "thickness_ratio": 0.241
+      },
+      {
+        "aoa_deg": 21,
+        "bytes": 3088386,
+        "path": "ffa_w3_241/data_files/ffa_w3_241_21.dat",
+        "profile": "FFA-W3-241",
+        "sha256": "1c6b5048bac292953bd9d4318b7a1ca4bd7003f1547860df31940c0c4abc863e",
+        "thickness_ratio": 0.241
+      },
+      {
+        "aoa_deg": 24,
+        "bytes": 3088386,
+        "path": "ffa_w3_241/data_files/ffa_w3_241_24.dat",
+        "profile": "FFA-W3-241",
+        "sha256": "48ff3ae4926e3620b8d529506d38fbcc5ae5cf9c859913e446a5e41990f2f6c9",
+        "thickness_ratio": 0.241
+      },
+      {
+        "aoa_deg": 27,
+        "bytes": 3088386,
+        "path": "ffa_w3_241/data_files/ffa_w3_241_27.dat",
+        "profile": "FFA-W3-241",
+        "sha256": "73e5542a50264fbfb5e45d51ceb5c4da07d617336c1b1458b4e5c3a1947d52a8",
+        "thickness_ratio": 0.241
+      },
+      {
+        "aoa_deg": 30,
+        "bytes": 2705474,
+        "path": "ffa_w3_241/data_files/ffa_w3_241_30.dat",
+        "profile": "FFA-W3-241",
+        "sha256": "0b8aeea3a06dae6d54dd6717a54c925b9905038e9be494a2f8be399365ec6933",
+        "thickness_ratio": 0.241
+      },
+      {
+        "aoa_deg": 33,
+        "bytes": 3088386,
+        "path": "ffa_w3_241/data_files/ffa_w3_241_33.dat",
+        "profile": "FFA-W3-241",
+        "sha256": "1a087986ac8d63338091675baba36cf680871b2d4635d756dd1e87c43a9a54c2",
+        "thickness_ratio": 0.241
+      },
+      {
+        "aoa_deg": 40,
+        "bytes": 3088386,
+        "path": "ffa_w3_241/data_files/ffa_w3_241_40.dat",
+        "profile": "FFA-W3-241",
+        "sha256": "64474238c64681b3bcbe0103166cf36608e342f1494710fa98b7b130569b5407",
+        "thickness_ratio": 0.241
+      },
+      {
+        "aoa_deg": 50,
+        "bytes": 3088386,
+        "path": "ffa_w3_241/data_files/ffa_w3_241_50.dat",
+        "profile": "FFA-W3-241",
+        "sha256": "acbe0624889897f93045cee88513e50a52abae2b5093ee7df97c94d8e742b541",
+        "thickness_ratio": 0.241
+      },
+      {
+        "aoa_deg": 60,
+        "bytes": 3088386,
+        "path": "ffa_w3_241/data_files/ffa_w3_241_60.dat",
+        "profile": "FFA-W3-241",
+        "sha256": "b91d92b814480fc9265d41531c233ef49c4e8570b6664a3f2ec85442759f131d",
+        "thickness_ratio": 0.241
+      },
+      {
+        "aoa_deg": 70,
+        "bytes": 3088386,
+        "path": "ffa_w3_241/data_files/ffa_w3_241_70.dat",
+        "profile": "FFA-W3-241",
+        "sha256": "b36ad1ec5e2a16947154b79db73dfd76f81eb1c45d95a7b4f2cdaf679b5a8e6d",
+        "thickness_ratio": 0.241
+      },
+      {
+        "aoa_deg": 80,
+        "bytes": 3088386,
+        "path": "ffa_w3_241/data_files/ffa_w3_241_80.dat",
+        "profile": "FFA-W3-241",
+        "sha256": "08205c2c9d2668c10d33e56600517fecc5dba2f33bc44a1c28b2436f68487655",
+        "thickness_ratio": 0.241
+      },
+      {
+        "aoa_deg": 90,
+        "bytes": 3088386,
+        "path": "ffa_w3_241/data_files/ffa_w3_241_90.dat",
+        "profile": "FFA-W3-241",
+        "sha256": "5b0400d1a61defe07964bc9b5236e170cb13c2f328bbeda0bcfc307ff9bd7686",
+        "thickness_ratio": 0.241
+      },
+      {
+        "aoa_deg": 100,
+        "bytes": 3088386,
+        "path": "ffa_w3_241/data_files/ffa_w3_241_100.dat",
+        "profile": "FFA-W3-241",
+        "sha256": "ddf80d801017f7de5bc49cda7d87d0753cf5d92d1b27dd38a20dd021ac03ab92",
+        "thickness_ratio": 0.241
+      },
+      {
+        "aoa_deg": 110,
+        "bytes": 1769617,
+        "path": "ffa_w3_241/data_files/ffa_w3_241_110.dat",
+        "profile": "FFA-W3-241",
+        "sha256": "1969470c69c56e42e59663bc02457db3ceb82f56fcdf2b1945e4cc17501ac0a6",
+        "thickness_ratio": 0.241
+      },
+      {
+        "aoa_deg": 120,
+        "bytes": 3088386,
+        "path": "ffa_w3_241/data_files/ffa_w3_241_120.dat",
+        "profile": "FFA-W3-241",
+        "sha256": "a0250624d73e6bb4ad2d41cafdd61996bba78d2c8ad29cd24f7df53c226fb351",
+        "thickness_ratio": 0.241
+      },
+      {
+        "aoa_deg": 128,
+        "bytes": 3088386,
+        "path": "ffa_w3_241/data_files/ffa_w3_241_128.dat",
+        "profile": "FFA-W3-241",
+        "sha256": "8a28cfd81468bd1d9d3c86418b3efbe23559d57e2c00119721f3f78e56e6f895",
+        "thickness_ratio": 0.241
+      },
+      {
+        "aoa_deg": 136,
+        "bytes": 3076420,
+        "path": "ffa_w3_241/data_files/ffa_w3_241_136.dat",
+        "profile": "FFA-W3-241",
+        "sha256": "78dbce78e5a7b4d93a1b54eab0acdbd67d76253b6b8617550e81079d63378131",
+        "thickness_ratio": 0.241
+      },
+      {
+        "aoa_deg": 144,
+        "bytes": 3081631,
+        "path": "ffa_w3_241/data_files/ffa_w3_241_144.dat",
+        "profile": "FFA-W3-241",
+        "sha256": "61a025422252adfc8f2ac155a61f438e6b416ba3872b0d2761f0613e50fbd3aa",
+        "thickness_ratio": 0.241
+      },
+      {
+        "aoa_deg": 152,
+        "bytes": 3088386,
+        "path": "ffa_w3_241/data_files/ffa_w3_241_152.dat",
+        "profile": "FFA-W3-241",
+        "sha256": "92012f9324868450c85e10b397e497edd6f3f18d05ffb27f9e57f363bfdfc0bc",
+        "thickness_ratio": 0.241
+      },
+      {
+        "aoa_deg": 160,
+        "bytes": 3088386,
+        "path": "ffa_w3_241/data_files/ffa_w3_241_160.dat",
+        "profile": "FFA-W3-241",
+        "sha256": "26d2b1dc403dfb722b260918d5385ac7d75fdbc8d9b9e5ce267d4a71298e6cfc",
+        "thickness_ratio": 0.241
+      },
+      {
+        "aoa_deg": 165,
+        "bytes": 3059822,
+        "path": "ffa_w3_241/data_files/ffa_w3_241_165.dat",
+        "profile": "FFA-W3-241",
+        "sha256": "1fcdda4847762706f55bc1aaca07cf384850e33395b1ceb6a3b4fabd7264dcd8",
+        "thickness_ratio": 0.241
+      },
+      {
+        "aoa_deg": 170,
+        "bytes": 3088386,
+        "path": "ffa_w3_241/data_files/ffa_w3_241_170.dat",
+        "profile": "FFA-W3-241",
+        "sha256": "cb6a69e1496dd172f4b463061fc40c4634301da28a24a11f461af2c31b01c46b",
+        "thickness_ratio": 0.241
+      },
+      {
+        "aoa_deg": 175,
+        "bytes": 3088386,
+        "path": "ffa_w3_241/data_files/ffa_w3_241_175.dat",
+        "profile": "FFA-W3-241",
+        "sha256": "e4e0cc3f400454e2fc6a229e8263fef14aa1a0bc555851399aac4ee80cfe502f",
+        "thickness_ratio": 0.241
+      },
+      {
+        "aoa_deg": 180,
+        "bytes": 3088386,
+        "path": "ffa_w3_241/data_files/ffa_w3_241_180.dat",
+        "profile": "FFA-W3-241",
+        "sha256": "10d74bce348a1e2f0dfa6bf38777e4f6d802b099f49d79bd22d102ed368d0348",
+        "thickness_ratio": 0.241
+      },
+      {
+        "aoa_deg": -180,
+        "bytes": 3088386,
+        "path": "ffa_w3_270/data_files/ffa_w3_270_-180.dat",
+        "profile": "FFA-W3-270",
+        "sha256": "4d6fc592693ffc3019fb276ae01863dc7c73f225f1393b7d53cea8e5e56adbf9",
+        "thickness_ratio": 0.27
+      },
+      {
+        "aoa_deg": -175,
+        "bytes": 3088386,
+        "path": "ffa_w3_270/data_files/ffa_w3_270_-175.dat",
+        "profile": "FFA-W3-270",
+        "sha256": "d9e1b6f2943f8917a9a98dd2e1986430960df41d374efb2094b5ba4f8586f3f0",
+        "thickness_ratio": 0.27
+      },
+      {
+        "aoa_deg": -170,
+        "bytes": 3088386,
+        "path": "ffa_w3_270/data_files/ffa_w3_270_-170.dat",
+        "profile": "FFA-W3-270",
+        "sha256": "c5792661183e8532cf1d43a7431d579090ade96d01be40ac55f827c757576435",
+        "thickness_ratio": 0.27
+      },
+      {
+        "aoa_deg": -165,
+        "bytes": 3088386,
+        "path": "ffa_w3_270/data_files/ffa_w3_270_-165.dat",
+        "profile": "FFA-W3-270",
+        "sha256": "56718885d30b417fedfdfcfefac6660c51616812ca5618f84c803326d0879426",
+        "thickness_ratio": 0.27
+      },
+      {
+        "aoa_deg": -160,
+        "bytes": 3088386,
+        "path": "ffa_w3_270/data_files/ffa_w3_270_-160.dat",
+        "profile": "FFA-W3-270",
+        "sha256": "d49541ead88d0e9b52b2f063054940990a819597f83db2c5504659b3348852fc",
+        "thickness_ratio": 0.27
+      },
+      {
+        "aoa_deg": -152,
+        "bytes": 3088386,
+        "path": "ffa_w3_270/data_files/ffa_w3_270_-152.dat",
+        "profile": "FFA-W3-270",
+        "sha256": "d816243753d2f5cb78fe4bcefe3c0aab0104848e0b698e18a06cbf05a45d84f2",
+        "thickness_ratio": 0.27
+      },
+      {
+        "aoa_deg": -144,
+        "bytes": 3088386,
+        "path": "ffa_w3_270/data_files/ffa_w3_270_-144.dat",
+        "profile": "FFA-W3-270",
+        "sha256": "bce0ffa3574f8f21717537a91bb6ecbd876a261650115e2b2bf6e285026f4da6",
+        "thickness_ratio": 0.27
+      },
+      {
+        "aoa_deg": -136,
+        "bytes": 3088386,
+        "path": "ffa_w3_270/data_files/ffa_w3_270_-136.dat",
+        "profile": "FFA-W3-270",
+        "sha256": "69248d2ef479eadbf3b6d66eadd21655f2a7c75df51262ef43595682e691da0e",
+        "thickness_ratio": 0.27
+      },
+      {
+        "aoa_deg": -128,
+        "bytes": 3088386,
+        "path": "ffa_w3_270/data_files/ffa_w3_270_-128.dat",
+        "profile": "FFA-W3-270",
+        "sha256": "a6a7a8808707bd2643c0d7c52d9774644558cc43bdc627b615c341c8e3c1d97b",
+        "thickness_ratio": 0.27
+      },
+      {
+        "aoa_deg": -120,
+        "bytes": 3088386,
+        "path": "ffa_w3_270/data_files/ffa_w3_270_-120.dat",
+        "profile": "FFA-W3-270",
+        "sha256": "ef2b46261e11c6bad1cec5e6f0b480842479a15cd85080a0069211043f657449",
+        "thickness_ratio": 0.27
+      },
+      {
+        "aoa_deg": -110,
+        "bytes": 3088386,
+        "path": "ffa_w3_270/data_files/ffa_w3_270_-110.dat",
+        "profile": "FFA-W3-270",
+        "sha256": "90688d68c9a63b78835d1c745d369bc735067776b876f3192034d9bcf89abbf4",
+        "thickness_ratio": 0.27
+      },
+      {
+        "aoa_deg": -100,
+        "bytes": 3088386,
+        "path": "ffa_w3_270/data_files/ffa_w3_270_-100.dat",
+        "profile": "FFA-W3-270",
+        "sha256": "465b97c5c1f7b89940b16e0351bda75fff4c57511dea2bff5b27e69fb7e9564f",
+        "thickness_ratio": 0.27
+      },
+      {
+        "aoa_deg": -90,
+        "bytes": 3088386,
+        "path": "ffa_w3_270/data_files/ffa_w3_270_-90.dat",
+        "profile": "FFA-W3-270",
+        "sha256": "354b533f2cbc539fb89c21de27c389fb60278b4782f027ea4d3e3b0de2c86d6e",
+        "thickness_ratio": 0.27
+      },
+      {
+        "aoa_deg": -80,
+        "bytes": 3088386,
+        "path": "ffa_w3_270/data_files/ffa_w3_270_-80.dat",
+        "profile": "FFA-W3-270",
+        "sha256": "61e627f50b5ed0e4a6d54fb502c87f5e16ee34fafc0291ffc96f9f3e884b1cd0",
+        "thickness_ratio": 0.27
+      },
+      {
+        "aoa_deg": -70,
+        "bytes": 3088386,
+        "path": "ffa_w3_270/data_files/ffa_w3_270_-70.dat",
+        "profile": "FFA-W3-270",
+        "sha256": "803385d6afc1dc6bb48c75e237a1b7d9f6c0ef69618b849ed80b230074bd9f4b",
+        "thickness_ratio": 0.27
+      },
+      {
+        "aoa_deg": -60,
+        "bytes": 3088386,
+        "path": "ffa_w3_270/data_files/ffa_w3_270_-60.dat",
+        "profile": "FFA-W3-270",
+        "sha256": "61bf5d4656d6371037258156c15332b4ddb1b3e9cb9ae445cb668bb9047ba308",
+        "thickness_ratio": 0.27
+      },
+      {
+        "aoa_deg": -50,
+        "bytes": 3088386,
+        "path": "ffa_w3_270/data_files/ffa_w3_270_-50.dat",
+        "profile": "FFA-W3-270",
+        "sha256": "8f8d6f3f7bc0fab24dc93a39891b3ab59fd7adfdbec404af34612265010f01f4",
+        "thickness_ratio": 0.27
+      },
+      {
+        "aoa_deg": -40,
+        "bytes": 3088386,
+        "path": "ffa_w3_270/data_files/ffa_w3_270_-40.dat",
+        "profile": "FFA-W3-270",
+        "sha256": "4501ee2efaca272d860525dfb8362d816858b53b01a17e260f82d85282d1fbef",
+        "thickness_ratio": 0.27
+      },
+      {
+        "aoa_deg": -33,
+        "bytes": 3088386,
+        "path": "ffa_w3_270/data_files/ffa_w3_270_-33.dat",
+        "profile": "FFA-W3-270",
+        "sha256": "5e8371fd4d9ac143f977cb194213090e8a2e8ea657dd1e0348c535ba7fbbb57b",
+        "thickness_ratio": 0.27
+      },
+      {
+        "aoa_deg": -30,
+        "bytes": 3088386,
+        "path": "ffa_w3_270/data_files/ffa_w3_270_-30.dat",
+        "profile": "FFA-W3-270",
+        "sha256": "35cfd3504acfe7c4e1d3231fc4134258991cdc1e1f6ff20f3c4f105633bf7dab",
+        "thickness_ratio": 0.27
+      },
+      {
+        "aoa_deg": -27,
+        "bytes": 3088386,
+        "path": "ffa_w3_270/data_files/ffa_w3_270_-27.dat",
+        "profile": "FFA-W3-270",
+        "sha256": "894c9cb00d2c761556836e5c3fd8e5d5f912d99b9c23dd701469a997a6521f79",
+        "thickness_ratio": 0.27
+      },
+      {
+        "aoa_deg": -24,
+        "bytes": 3088386,
+        "path": "ffa_w3_270/data_files/ffa_w3_270_-24.dat",
+        "profile": "FFA-W3-270",
+        "sha256": "9b825c7539a688fd3fc066316bee056d94cbe9ec7525b6fad6c32ed1e43748d3",
+        "thickness_ratio": 0.27
+      },
+      {
+        "aoa_deg": -21,
+        "bytes": 3088386,
+        "path": "ffa_w3_270/data_files/ffa_w3_270_-21.dat",
+        "profile": "FFA-W3-270",
+        "sha256": "0a75efe3253f6197935cc0323e0a788175d59978fa797c0576d496a58fd34d5a",
+        "thickness_ratio": 0.27
+      },
+      {
+        "aoa_deg": -18,
+        "bytes": 3088386,
+        "path": "ffa_w3_270/data_files/ffa_w3_270_-18.dat",
+        "profile": "FFA-W3-270",
+        "sha256": "83940c9b44f3a24232b5d47029f40b1f8d49800695d3c818ea8b90d08c7f5323",
+        "thickness_ratio": 0.27
+      },
+      {
+        "aoa_deg": -15,
+        "bytes": 3088386,
+        "path": "ffa_w3_270/data_files/ffa_w3_270_-15.dat",
+        "profile": "FFA-W3-270",
+        "sha256": "6da5d78056ce01db6af0d91c52586a6353949653c3bebca3dea8d9da6eab7341",
+        "thickness_ratio": 0.27
+      },
+      {
+        "aoa_deg": -12,
+        "bytes": 3088386,
+        "path": "ffa_w3_270/data_files/ffa_w3_270_-12.dat",
+        "profile": "FFA-W3-270",
+        "sha256": "564aa7b51dca221cfbb2d3918d744e4c0ae2cc138924c512e42b9f9511bbc9dc",
+        "thickness_ratio": 0.27
+      },
+      {
+        "aoa_deg": -9,
+        "bytes": 3088386,
+        "path": "ffa_w3_270/data_files/ffa_w3_270_-9.dat",
+        "profile": "FFA-W3-270",
+        "sha256": "ef90454ce03f4688ca1bf5b80c6f446515083562b2fd886c0ca503fe94d0e1c7",
+        "thickness_ratio": 0.27
+      },
+      {
+        "aoa_deg": -6,
+        "bytes": 3088386,
+        "path": "ffa_w3_270/data_files/ffa_w3_270_-6.dat",
+        "profile": "FFA-W3-270",
+        "sha256": "90893b970b3f95624ede983f39249d016e145129845024c51290d06c3db80295",
+        "thickness_ratio": 0.27
+      },
+      {
+        "aoa_deg": -3,
+        "bytes": 3088386,
+        "path": "ffa_w3_270/data_files/ffa_w3_270_-3.dat",
+        "profile": "FFA-W3-270",
+        "sha256": "5d214142fbcea14d18813990d5cbce24989a7ff27bea4c0a35ff5bcc3d3a192b",
+        "thickness_ratio": 0.27
+      },
+      {
+        "aoa_deg": 0,
+        "bytes": 3088386,
+        "path": "ffa_w3_270/data_files/ffa_w3_270_0.dat",
+        "profile": "FFA-W3-270",
+        "sha256": "627d3b5462451b65ac19f892daf8ff5330bdb5968fcbe0da12b63937b5d8ffba",
+        "thickness_ratio": 0.27
+      },
+      {
+        "aoa_deg": 3,
+        "bytes": 3088386,
+        "path": "ffa_w3_270/data_files/ffa_w3_270_3.dat",
+        "profile": "FFA-W3-270",
+        "sha256": "3ca27930fb4e63eeca01ac6863c143bc190b73fe9e9b1deb2a43cc7e642f8a83",
+        "thickness_ratio": 0.27
+      },
+      {
+        "aoa_deg": 6,
+        "bytes": 3088386,
+        "path": "ffa_w3_270/data_files/ffa_w3_270_6.dat",
+        "profile": "FFA-W3-270",
+        "sha256": "1cda839ea39a7bc354dcd8be39f12f61cba6dc71a63fd16fce729ecc5809bd16",
+        "thickness_ratio": 0.27
+      },
+      {
+        "aoa_deg": 9,
+        "bytes": 3088386,
+        "path": "ffa_w3_270/data_files/ffa_w3_270_9.dat",
+        "profile": "FFA-W3-270",
+        "sha256": "27e32d9e9e4558c62f3c92ee3334b80a3fff95784ae0509d491ead7a87fecee0",
+        "thickness_ratio": 0.27
+      },
+      {
+        "aoa_deg": 12,
+        "bytes": 3088386,
+        "path": "ffa_w3_270/data_files/ffa_w3_270_12.dat",
+        "profile": "FFA-W3-270",
+        "sha256": "35e9168d5cbd16cdd4c1902baf00742f072e3d0c69ac0b18a4b9dac1b373571a",
+        "thickness_ratio": 0.27
+      },
+      {
+        "aoa_deg": 15,
+        "bytes": 3088386,
+        "path": "ffa_w3_270/data_files/ffa_w3_270_15.dat",
+        "profile": "FFA-W3-270",
+        "sha256": "91bcd6b183b2bbf6ecdbf42af86ed6adc7c250f3903209d9d45f96e6b56939cc",
+        "thickness_ratio": 0.27
+      },
+      {
+        "aoa_deg": 18,
+        "bytes": 3088386,
+        "path": "ffa_w3_270/data_files/ffa_w3_270_18.dat",
+        "profile": "FFA-W3-270",
+        "sha256": "ea5b63ee9112abb67a22cbee15743be75277b3d9ed4f836de8deae10b47dfd87",
+        "thickness_ratio": 0.27
+      },
+      {
+        "aoa_deg": 21,
+        "bytes": 3088386,
+        "path": "ffa_w3_270/data_files/ffa_w3_270_21.dat",
+        "profile": "FFA-W3-270",
+        "sha256": "e8794629d46ff59d3c32c2916c981c8013a2cdd5661a085e0fb50c0fb8d572e1",
+        "thickness_ratio": 0.27
+      },
+      {
+        "aoa_deg": 24,
+        "bytes": 3088386,
+        "path": "ffa_w3_270/data_files/ffa_w3_270_24.dat",
+        "profile": "FFA-W3-270",
+        "sha256": "bb7221c844a3023a852688a064f499c9dadb19360f6037b1127e2159b1aa5142",
+        "thickness_ratio": 0.27
+      },
+      {
+        "aoa_deg": 27,
+        "bytes": 3088386,
+        "path": "ffa_w3_270/data_files/ffa_w3_270_27.dat",
+        "profile": "FFA-W3-270",
+        "sha256": "e69eb694bc5915a86bb48f413048ea78d5e9cff5e06022c129e79f9725f901a2",
+        "thickness_ratio": 0.27
+      },
+      {
+        "aoa_deg": 30,
+        "bytes": 3088386,
+        "path": "ffa_w3_270/data_files/ffa_w3_270_30.dat",
+        "profile": "FFA-W3-270",
+        "sha256": "8fe4c3a7258525bc0f91e2203b71d5abba6f0106c9d8c7b96b0fedb99f23b281",
+        "thickness_ratio": 0.27
+      },
+      {
+        "aoa_deg": 33,
+        "bytes": 3088386,
+        "path": "ffa_w3_270/data_files/ffa_w3_270_33.dat",
+        "profile": "FFA-W3-270",
+        "sha256": "2743040c8a43c8ef24774e1c4dc575187381941a1124cac7a6860b6cbb4d102d",
+        "thickness_ratio": 0.27
+      },
+      {
+        "aoa_deg": 40,
+        "bytes": 3088386,
+        "path": "ffa_w3_270/data_files/ffa_w3_270_40.dat",
+        "profile": "FFA-W3-270",
+        "sha256": "179a457c868e07b1a465bf0db73e564441c3a4a4ad35327d37ba90d6a2deffde",
+        "thickness_ratio": 0.27
+      },
+      {
+        "aoa_deg": 50,
+        "bytes": 3088386,
+        "path": "ffa_w3_270/data_files/ffa_w3_270_50.dat",
+        "profile": "FFA-W3-270",
+        "sha256": "9dcd2bd0fc70947f79571e48725b3690964d9fe48410af61b580c33637d51e80",
+        "thickness_ratio": 0.27
+      },
+      {
+        "aoa_deg": 60,
+        "bytes": 3088386,
+        "path": "ffa_w3_270/data_files/ffa_w3_270_60.dat",
+        "profile": "FFA-W3-270",
+        "sha256": "a7a43c55d129b3468d594ea9148224f17ba86bd1a7e704e2e7a52bb8209720d7",
+        "thickness_ratio": 0.27
+      },
+      {
+        "aoa_deg": 70,
+        "bytes": 3088386,
+        "path": "ffa_w3_270/data_files/ffa_w3_270_70.dat",
+        "profile": "FFA-W3-270",
+        "sha256": "8c8d8a13b4e0a41d838689e09bbd92140c7a3aa46b3a9a845c8171423fb308f8",
+        "thickness_ratio": 0.27
+      },
+      {
+        "aoa_deg": 80,
+        "bytes": 3088386,
+        "path": "ffa_w3_270/data_files/ffa_w3_270_80.dat",
+        "profile": "FFA-W3-270",
+        "sha256": "39b2c6ef200b4629928044ca6c3a35ee7e4d2d7c48d663a418b579d3a78c4d83",
+        "thickness_ratio": 0.27
+      },
+      {
+        "aoa_deg": 90,
+        "bytes": 3088386,
+        "path": "ffa_w3_270/data_files/ffa_w3_270_90.dat",
+        "profile": "FFA-W3-270",
+        "sha256": "e25564e2f7b5bf61b92bc4d6cfe6c3340788b962b2fe5b6bd89459964b9ff6c0",
+        "thickness_ratio": 0.27
+      },
+      {
+        "aoa_deg": 100,
+        "bytes": 3088386,
+        "path": "ffa_w3_270/data_files/ffa_w3_270_100.dat",
+        "profile": "FFA-W3-270",
+        "sha256": "9a2824498849bfe21af16bdb40a8e1b13c90723b0d880ac4f2f9ca2fd23a594c",
+        "thickness_ratio": 0.27
+      },
+      {
+        "aoa_deg": 110,
+        "bytes": 3088386,
+        "path": "ffa_w3_270/data_files/ffa_w3_270_110.dat",
+        "profile": "FFA-W3-270",
+        "sha256": "8c758d04c08567ac759902b53235aae996b7e28701b8f101b53ad9cb5b7b79e9",
+        "thickness_ratio": 0.27
+      },
+      {
+        "aoa_deg": 120,
+        "bytes": 3088386,
+        "path": "ffa_w3_270/data_files/ffa_w3_270_120.dat",
+        "profile": "FFA-W3-270",
+        "sha256": "778c7d4ec1a3b71a37bc9d8e64bc6f0539b819237dbea84384e0d8568ff2d3c5",
+        "thickness_ratio": 0.27
+      },
+      {
+        "aoa_deg": 128,
+        "bytes": 3088386,
+        "path": "ffa_w3_270/data_files/ffa_w3_270_128.dat",
+        "profile": "FFA-W3-270",
+        "sha256": "2040c1cb062734c6446abf8f471051b67829b49bcf6f882ff23877267075679b",
+        "thickness_ratio": 0.27
+      },
+      {
+        "aoa_deg": 136,
+        "bytes": 3080666,
+        "path": "ffa_w3_270/data_files/ffa_w3_270_136.dat",
+        "profile": "FFA-W3-270",
+        "sha256": "a94ff8d062d6ac78ce8fe1deffb81ac6ba95e900d7d602cb736b715f01f53000",
+        "thickness_ratio": 0.27
+      },
+      {
+        "aoa_deg": 144,
+        "bytes": 3087614,
+        "path": "ffa_w3_270/data_files/ffa_w3_270_144.dat",
+        "profile": "FFA-W3-270",
+        "sha256": "3bd118063c428a193a0fce21ac52ac8f74ab8f235bd3d55af21f4f88b694763d",
+        "thickness_ratio": 0.27
+      },
+      {
+        "aoa_deg": 152,
+        "bytes": 3088386,
+        "path": "ffa_w3_270/data_files/ffa_w3_270_152.dat",
+        "profile": "FFA-W3-270",
+        "sha256": "7f70954b35853d5fcdd37f78926e9be9123dd0054049a312182257570fcb15f8",
+        "thickness_ratio": 0.27
+      },
+      {
+        "aoa_deg": 160,
+        "bytes": 3088386,
+        "path": "ffa_w3_270/data_files/ffa_w3_270_160.dat",
+        "profile": "FFA-W3-270",
+        "sha256": "e1d151be5c7b42aae7387412de0d6d555e7717d457103a78dc05d11cc85f19c8",
+        "thickness_ratio": 0.27
+      },
+      {
+        "aoa_deg": 165,
+        "bytes": 3088386,
+        "path": "ffa_w3_270/data_files/ffa_w3_270_165.dat",
+        "profile": "FFA-W3-270",
+        "sha256": "06031597e5674806bc11dd983ffbf653c5f2a2b90b9a020b446d78f6982dee0c",
+        "thickness_ratio": 0.27
+      },
+      {
+        "aoa_deg": 170,
+        "bytes": 3088386,
+        "path": "ffa_w3_270/data_files/ffa_w3_270_170.dat",
+        "profile": "FFA-W3-270",
+        "sha256": "d6dbde7f489950a0f9a0d4fb371919b3a6249f239f9c449178cc9e7aadc4b498",
+        "thickness_ratio": 0.27
+      },
+      {
+        "aoa_deg": 175,
+        "bytes": 3088386,
+        "path": "ffa_w3_270/data_files/ffa_w3_270_175.dat",
+        "profile": "FFA-W3-270",
+        "sha256": "40aa7f98a6bec4b9c9be69c172dab3418d631d65f08104305fc03f53d2125999",
+        "thickness_ratio": 0.27
+      },
+      {
+        "aoa_deg": 180,
+        "bytes": 3088386,
+        "path": "ffa_w3_270/data_files/ffa_w3_270_180.dat",
+        "profile": "FFA-W3-270",
+        "sha256": "19df6f247051fe554f90228e5f66262b806de0e1bdb74ce9d0dc2b097d6e2dcb",
+        "thickness_ratio": 0.27
+      },
+      {
+        "aoa_deg": -180,
+        "bytes": 3088386,
+        "path": "ffa_w3_301/data_files/ffa_w3_301_-180.dat",
+        "profile": "FFA-W3-301",
+        "sha256": "ef90e53beaa118cdd31c9bed440c8bd598732baf39499a0585c739153f482205",
+        "thickness_ratio": 0.301
+      },
+      {
+        "aoa_deg": -175,
+        "bytes": 3088386,
+        "path": "ffa_w3_301/data_files/ffa_w3_301_-175.dat",
+        "profile": "FFA-W3-301",
+        "sha256": "0e2d4543f1f7f4217a3b2c9317f01f52ffeb59cb5d9fab1db55d31d57dff9bb0",
+        "thickness_ratio": 0.301
+      },
+      {
+        "aoa_deg": -170,
+        "bytes": 3088386,
+        "path": "ffa_w3_301/data_files/ffa_w3_301_-170.dat",
+        "profile": "FFA-W3-301",
+        "sha256": "9c200449f5448d8c6a0b52b335d3e8e62d067e00218be97d02b02ead55b552e7",
+        "thickness_ratio": 0.301
+      },
+      {
+        "aoa_deg": -165,
+        "bytes": 3088386,
+        "path": "ffa_w3_301/data_files/ffa_w3_301_-165.dat",
+        "profile": "FFA-W3-301",
+        "sha256": "15269168330a0426401d120490eba99165e53544eb38104079ea3185590faaa6",
+        "thickness_ratio": 0.301
+      },
+      {
+        "aoa_deg": -160,
+        "bytes": 3088386,
+        "path": "ffa_w3_301/data_files/ffa_w3_301_-160.dat",
+        "profile": "FFA-W3-301",
+        "sha256": "d8a7917325c6adf92f985de2ad713eb6348e4cc3f7b2ad2b455b300e1481c3c6",
+        "thickness_ratio": 0.301
+      },
+      {
+        "aoa_deg": -152,
+        "bytes": 3088386,
+        "path": "ffa_w3_301/data_files/ffa_w3_301_-152.dat",
+        "profile": "FFA-W3-301",
+        "sha256": "168580bb03d8b7249acf0db8f38b52ca4ec719f382674aec481b9efb56676440",
+        "thickness_ratio": 0.301
+      },
+      {
+        "aoa_deg": -144,
+        "bytes": 3086456,
+        "path": "ffa_w3_301/data_files/ffa_w3_301_-144.dat",
+        "profile": "FFA-W3-301",
+        "sha256": "39d0b04acec195d30ae040c9e95c8e3b9904d034f4622c72cc71b692f233a89c",
+        "thickness_ratio": 0.301
+      },
+      {
+        "aoa_deg": -136,
+        "bytes": 3088386,
+        "path": "ffa_w3_301/data_files/ffa_w3_301_-136.dat",
+        "profile": "FFA-W3-301",
+        "sha256": "2e43507c56ef668216e5c55825f8a7ea5a17ab2708950fbdff1b97b1a679fd44",
+        "thickness_ratio": 0.301
+      },
+      {
+        "aoa_deg": -128,
+        "bytes": 3088386,
+        "path": "ffa_w3_301/data_files/ffa_w3_301_-128.dat",
+        "profile": "FFA-W3-301",
+        "sha256": "d9bd2732105a589fff6aad94148509faefbecbdda5d2ad87dc1e67182f328ac6",
+        "thickness_ratio": 0.301
+      },
+      {
+        "aoa_deg": -120,
+        "bytes": 3088386,
+        "path": "ffa_w3_301/data_files/ffa_w3_301_-120.dat",
+        "profile": "FFA-W3-301",
+        "sha256": "3467d77338f38bcee2bc57fb7b559c6bc5f2f795f5936d596c8f4b22cc6faa43",
+        "thickness_ratio": 0.301
+      },
+      {
+        "aoa_deg": -110,
+        "bytes": 3088386,
+        "path": "ffa_w3_301/data_files/ffa_w3_301_-110.dat",
+        "profile": "FFA-W3-301",
+        "sha256": "6484ec6da0cb97a3dd8aca5bad83a949326fa60c063e5313b85b4a2a89b5e80a",
+        "thickness_ratio": 0.301
+      },
+      {
+        "aoa_deg": -100,
+        "bytes": 3088386,
+        "path": "ffa_w3_301/data_files/ffa_w3_301_-100.dat",
+        "profile": "FFA-W3-301",
+        "sha256": "7f37bb783a50f99b54728b717f189228e5c498f8bf4809db66e1681eb6fad415",
+        "thickness_ratio": 0.301
+      },
+      {
+        "aoa_deg": -90,
+        "bytes": 3088386,
+        "path": "ffa_w3_301/data_files/ffa_w3_301_-90.dat",
+        "profile": "FFA-W3-301",
+        "sha256": "2350bbecc850a8c8158b021a1ae1259a11ceacb409b8487c1b4fbd606b9d2a03",
+        "thickness_ratio": 0.301
+      },
+      {
+        "aoa_deg": -80,
+        "bytes": 3088386,
+        "path": "ffa_w3_301/data_files/ffa_w3_301_-80.dat",
+        "profile": "FFA-W3-301",
+        "sha256": "46afd292955bdb5689ed7ff69c36077bdaa61916a992499f16ac2587769603d2",
+        "thickness_ratio": 0.301
+      },
+      {
+        "aoa_deg": -70,
+        "bytes": 3088386,
+        "path": "ffa_w3_301/data_files/ffa_w3_301_-70.dat",
+        "profile": "FFA-W3-301",
+        "sha256": "ae75b9c77e01f42d042838e03f7165acc17727d7db9aac3939ee92118fa0c0e6",
+        "thickness_ratio": 0.301
+      },
+      {
+        "aoa_deg": -60,
+        "bytes": 3088386,
+        "path": "ffa_w3_301/data_files/ffa_w3_301_-60.dat",
+        "profile": "FFA-W3-301",
+        "sha256": "85863e112b043a1ba27c0c5fa34c4a862176ce5a6c746ee477c166fa61a0edce",
+        "thickness_ratio": 0.301
+      },
+      {
+        "aoa_deg": -50,
+        "bytes": 3088386,
+        "path": "ffa_w3_301/data_files/ffa_w3_301_-50.dat",
+        "profile": "FFA-W3-301",
+        "sha256": "458a6184c55ea497f64614961e8b81031b0f7448cd727eedf7d727c18d959101",
+        "thickness_ratio": 0.301
+      },
+      {
+        "aoa_deg": -40,
+        "bytes": 3088386,
+        "path": "ffa_w3_301/data_files/ffa_w3_301_-40.dat",
+        "profile": "FFA-W3-301",
+        "sha256": "f797fdd4737b0db95c3c09e85b3d8f9815a048f3e06fe70ce89984234a159750",
+        "thickness_ratio": 0.301
+      },
+      {
+        "aoa_deg": -33,
+        "bytes": 3088386,
+        "path": "ffa_w3_301/data_files/ffa_w3_301_-33.dat",
+        "profile": "FFA-W3-301",
+        "sha256": "6243f8c3e5fdac458577543f47aa97495a7fee6b87252d4b36cae46397394d1d",
+        "thickness_ratio": 0.301
+      },
+      {
+        "aoa_deg": -30,
+        "bytes": 3088386,
+        "path": "ffa_w3_301/data_files/ffa_w3_301_-30.dat",
+        "profile": "FFA-W3-301",
+        "sha256": "ef4eac0a15fa899821726b83025676cb723be88681fc3371adf73b443de9cd67",
+        "thickness_ratio": 0.301
+      },
+      {
+        "aoa_deg": -27,
+        "bytes": 3088386,
+        "path": "ffa_w3_301/data_files/ffa_w3_301_-27.dat",
+        "profile": "FFA-W3-301",
+        "sha256": "c9e56e7cce0c1883df4d655062d1d83906a2e47f52fec0a5ad84a091a4422b3b",
+        "thickness_ratio": 0.301
+      },
+      {
+        "aoa_deg": -24,
+        "bytes": 3088386,
+        "path": "ffa_w3_301/data_files/ffa_w3_301_-24.dat",
+        "profile": "FFA-W3-301",
+        "sha256": "77424ba236b880a4854a79d9eb18ab67f51f0d5dc373c2063a0900fdcaad8dba",
+        "thickness_ratio": 0.301
+      },
+      {
+        "aoa_deg": -21,
+        "bytes": 3088386,
+        "path": "ffa_w3_301/data_files/ffa_w3_301_-21.dat",
+        "profile": "FFA-W3-301",
+        "sha256": "c2620bf5cfd706e33785813abee3e14c1161e0990ab905b92fd076b33efa5f94",
+        "thickness_ratio": 0.301
+      },
+      {
+        "aoa_deg": -18,
+        "bytes": 3088386,
+        "path": "ffa_w3_301/data_files/ffa_w3_301_-18.dat",
+        "profile": "FFA-W3-301",
+        "sha256": "4eef57f49766da4b4372ad52e8cf3dda2501f7559c91671624b67cf02f1fac55",
+        "thickness_ratio": 0.301
+      },
+      {
+        "aoa_deg": -15,
+        "bytes": 3088386,
+        "path": "ffa_w3_301/data_files/ffa_w3_301_-15.dat",
+        "profile": "FFA-W3-301",
+        "sha256": "07a31319735e9adab9b138d6af52e84e0add2fd3c663f1ba4be1297945608bc1",
+        "thickness_ratio": 0.301
+      },
+      {
+        "aoa_deg": -12,
+        "bytes": 3088386,
+        "path": "ffa_w3_301/data_files/ffa_w3_301_-12.dat",
+        "profile": "FFA-W3-301",
+        "sha256": "b5d181c2d162c2cf2919a6ce7971a90b52bd77a38304f62bfc97ba91899c7ce9",
+        "thickness_ratio": 0.301
+      },
+      {
+        "aoa_deg": -9,
+        "bytes": 3088386,
+        "path": "ffa_w3_301/data_files/ffa_w3_301_-9.dat",
+        "profile": "FFA-W3-301",
+        "sha256": "53abc2d451b2169a80bfcf91111b700b287bf24ac13e0344b70ab975415f2209",
+        "thickness_ratio": 0.301
+      },
+      {
+        "aoa_deg": -6,
+        "bytes": 3088386,
+        "path": "ffa_w3_301/data_files/ffa_w3_301_-6.dat",
+        "profile": "FFA-W3-301",
+        "sha256": "eada50328e05948185b15177a7945c978fda805027179a74be5c40779ffc2442",
+        "thickness_ratio": 0.301
+      },
+      {
+        "aoa_deg": -3,
+        "bytes": 3088386,
+        "path": "ffa_w3_301/data_files/ffa_w3_301_-3.dat",
+        "profile": "FFA-W3-301",
+        "sha256": "ee4303c0bf10960b226d008f88043d77c1d354baf45c5b1f143c7c344d165ef1",
+        "thickness_ratio": 0.301
+      },
+      {
+        "aoa_deg": 0,
+        "bytes": 3088386,
+        "path": "ffa_w3_301/data_files/ffa_w3_301_0.dat",
+        "profile": "FFA-W3-301",
+        "sha256": "7c0ba2e4dfcab03def4b16b1433a1ac0e2f7511ef0a93f6db8f344f7dcc6762e",
+        "thickness_ratio": 0.301
+      },
+      {
+        "aoa_deg": 3,
+        "bytes": 3088386,
+        "path": "ffa_w3_301/data_files/ffa_w3_301_3.dat",
+        "profile": "FFA-W3-301",
+        "sha256": "b10d8912e7d793be16352740fefdfbb9f3d5aca410bab1308385e8efad5fa05b",
+        "thickness_ratio": 0.301
+      },
+      {
+        "aoa_deg": 6,
+        "bytes": 3088386,
+        "path": "ffa_w3_301/data_files/ffa_w3_301_6.dat",
+        "profile": "FFA-W3-301",
+        "sha256": "608dc71d3a6a99ab198cb8c2e026e6fc4bd0a6be840fa263d8a1a41e0262c318",
+        "thickness_ratio": 0.301
+      },
+      {
+        "aoa_deg": 9,
+        "bytes": 3088386,
+        "path": "ffa_w3_301/data_files/ffa_w3_301_9.dat",
+        "profile": "FFA-W3-301",
+        "sha256": "75c19c5e2978384582d4dd7c2d932f0ab58bf4b1009663ec852c245fc293e3c2",
+        "thickness_ratio": 0.301
+      },
+      {
+        "aoa_deg": 12,
+        "bytes": 3088386,
+        "path": "ffa_w3_301/data_files/ffa_w3_301_12.dat",
+        "profile": "FFA-W3-301",
+        "sha256": "1f53d69f57f1a8fd8dded66071b0834b62eae22ae62b1d9689efe31463d4a6e3",
+        "thickness_ratio": 0.301
+      },
+      {
+        "aoa_deg": 15,
+        "bytes": 3088386,
+        "path": "ffa_w3_301/data_files/ffa_w3_301_15.dat",
+        "profile": "FFA-W3-301",
+        "sha256": "d2ad905e1f52aaf5068d8da9f127750e84f34f1bcd71dbef3381509dfb6c3fe8",
+        "thickness_ratio": 0.301
+      },
+      {
+        "aoa_deg": 18,
+        "bytes": 3088386,
+        "path": "ffa_w3_301/data_files/ffa_w3_301_18.dat",
+        "profile": "FFA-W3-301",
+        "sha256": "41808f7e339d1e09975d36e372831b76720614bbebcd284adbb33dbd88ce9e61",
+        "thickness_ratio": 0.301
+      },
+      {
+        "aoa_deg": 21,
+        "bytes": 3088386,
+        "path": "ffa_w3_301/data_files/ffa_w3_301_21.dat",
+        "profile": "FFA-W3-301",
+        "sha256": "943c5127b66151d3d5552f977c1af1cd9b8e06d4d9e1580016625285fe44639e",
+        "thickness_ratio": 0.301
+      },
+      {
+        "aoa_deg": 24,
+        "bytes": 3088386,
+        "path": "ffa_w3_301/data_files/ffa_w3_301_24.dat",
+        "profile": "FFA-W3-301",
+        "sha256": "d3a24e71a9f7ea291f61607ce09ef8969385c1318272f81395b6095d8a6a4dbf",
+        "thickness_ratio": 0.301
+      },
+      {
+        "aoa_deg": 27,
+        "bytes": 3088386,
+        "path": "ffa_w3_301/data_files/ffa_w3_301_27.dat",
+        "profile": "FFA-W3-301",
+        "sha256": "80221329bdf935b1872095704b9b4bf73e3d2a51a44ff94debc2a967020b3f60",
+        "thickness_ratio": 0.301
+      },
+      {
+        "aoa_deg": 30,
+        "bytes": 3088386,
+        "path": "ffa_w3_301/data_files/ffa_w3_301_30.dat",
+        "profile": "FFA-W3-301",
+        "sha256": "b693fb1dc18486e0c5daac0210f406c2bda03d940a166aa9daa89cdff752a99e",
+        "thickness_ratio": 0.301
+      },
+      {
+        "aoa_deg": 33,
+        "bytes": 3088386,
+        "path": "ffa_w3_301/data_files/ffa_w3_301_33.dat",
+        "profile": "FFA-W3-301",
+        "sha256": "753c3eee53f7ad1e483fdc2e2b80b7efbf83de40b3361554d89793fcbb21fdf8",
+        "thickness_ratio": 0.301
+      },
+      {
+        "aoa_deg": 40,
+        "bytes": 3088386,
+        "path": "ffa_w3_301/data_files/ffa_w3_301_40.dat",
+        "profile": "FFA-W3-301",
+        "sha256": "74892fc0cf351a4957cc318e5353f64ae635358c9f0ae300a3628c19cb021e10",
+        "thickness_ratio": 0.301
+      },
+      {
+        "aoa_deg": 50,
+        "bytes": 3088386,
+        "path": "ffa_w3_301/data_files/ffa_w3_301_50.dat",
+        "profile": "FFA-W3-301",
+        "sha256": "cb31069ac2bd2b85beb9465f33bf0dff1c96d542b170235725dc607e4b06d800",
+        "thickness_ratio": 0.301
+      },
+      {
+        "aoa_deg": 60,
+        "bytes": 3088386,
+        "path": "ffa_w3_301/data_files/ffa_w3_301_60.dat",
+        "profile": "FFA-W3-301",
+        "sha256": "d539cb945ada9378897b26c35c7c8e0da53874e09df212f6a7bff8403da683ba",
+        "thickness_ratio": 0.301
+      },
+      {
+        "aoa_deg": 70,
+        "bytes": 3088386,
+        "path": "ffa_w3_301/data_files/ffa_w3_301_70.dat",
+        "profile": "FFA-W3-301",
+        "sha256": "1554da44536a6360e2f899cb15bc2220d8edeb32dee23d4b3751c75a195c3487",
+        "thickness_ratio": 0.301
+      },
+      {
+        "aoa_deg": 80,
+        "bytes": 3088386,
+        "path": "ffa_w3_301/data_files/ffa_w3_301_80.dat",
+        "profile": "FFA-W3-301",
+        "sha256": "b6efc8e16f63bbc3b87647baca0d565136049a33bd6d5e45a8b4e55f44621a92",
+        "thickness_ratio": 0.301
+      },
+      {
+        "aoa_deg": 90,
+        "bytes": 3088386,
+        "path": "ffa_w3_301/data_files/ffa_w3_301_90.dat",
+        "profile": "FFA-W3-301",
+        "sha256": "333cd06327ba1f3f35da1b678bf72becaa1d70570990570410038919f34a8a62",
+        "thickness_ratio": 0.301
+      },
+      {
+        "aoa_deg": 100,
+        "bytes": 3088386,
+        "path": "ffa_w3_301/data_files/ffa_w3_301_100.dat",
+        "profile": "FFA-W3-301",
+        "sha256": "06ec1773b9927c20a66702b9e0d1ca9cd2f11d10abdf1772e2bbf689d30d4bc3",
+        "thickness_ratio": 0.301
+      },
+      {
+        "aoa_deg": 110,
+        "bytes": 3088386,
+        "path": "ffa_w3_301/data_files/ffa_w3_301_110.dat",
+        "profile": "FFA-W3-301",
+        "sha256": "6a16b9204ff75601fdc9b27e430380d044f0c5151d17db8c766d00cc99086287",
+        "thickness_ratio": 0.301
+      },
+      {
+        "aoa_deg": 120,
+        "bytes": 3088386,
+        "path": "ffa_w3_301/data_files/ffa_w3_301_120.dat",
+        "profile": "FFA-W3-301",
+        "sha256": "4b1b0db0d9128f5d8211f0c485bb0e66ef62cf17f0e7698053c3e6e75727a59d",
+        "thickness_ratio": 0.301
+      },
+      {
+        "aoa_deg": 128,
+        "bytes": 3088386,
+        "path": "ffa_w3_301/data_files/ffa_w3_301_128.dat",
+        "profile": "FFA-W3-301",
+        "sha256": "8afe32e6b4fe0c4428f135d6f22f99682216e1a41d56b65884c3b73a4855278b",
+        "thickness_ratio": 0.301
+      },
+      {
+        "aoa_deg": 136,
+        "bytes": 3088386,
+        "path": "ffa_w3_301/data_files/ffa_w3_301_136.dat",
+        "profile": "FFA-W3-301",
+        "sha256": "9dab23d2004ba37ca8b0a9000bc39d6b8deec63ebcbd00bd630549fbe55699e9",
+        "thickness_ratio": 0.301
+      },
+      {
+        "aoa_deg": 144,
+        "bytes": 3078736,
+        "path": "ffa_w3_301/data_files/ffa_w3_301_144.dat",
+        "profile": "FFA-W3-301",
+        "sha256": "768f5cbb53e6b6e26d6db538bb5796aee9e76210bfecce702bd8d50d1262ceb6",
+        "thickness_ratio": 0.301
+      },
+      {
+        "aoa_deg": 152,
+        "bytes": 3088386,
+        "path": "ffa_w3_301/data_files/ffa_w3_301_152.dat",
+        "profile": "FFA-W3-301",
+        "sha256": "7612651bf593745415636e5e496d6ffe68fb3258b3f3d31ef552039657476cfb",
+        "thickness_ratio": 0.301
+      },
+      {
+        "aoa_deg": 160,
+        "bytes": 3088386,
+        "path": "ffa_w3_301/data_files/ffa_w3_301_160.dat",
+        "profile": "FFA-W3-301",
+        "sha256": "e89a4f74f4371669d646bcc57fce2e1ee83c906854d56a1baf92e9641b6633bd",
+        "thickness_ratio": 0.301
+      },
+      {
+        "aoa_deg": 165,
+        "bytes": 3088386,
+        "path": "ffa_w3_301/data_files/ffa_w3_301_165.dat",
+        "profile": "FFA-W3-301",
+        "sha256": "4a1d135e4aaab2d983db9a43e46a6435291a166017cb8584a3ade40b94d2765c",
+        "thickness_ratio": 0.301
+      },
+      {
+        "aoa_deg": 170,
+        "bytes": 3088386,
+        "path": "ffa_w3_301/data_files/ffa_w3_301_170.dat",
+        "profile": "FFA-W3-301",
+        "sha256": "22e6539e8e1083161eec8087ab467636b3d2e08f8340ec73a590af5b577f4c24",
+        "thickness_ratio": 0.301
+      },
+      {
+        "aoa_deg": 175,
+        "bytes": 3088386,
+        "path": "ffa_w3_301/data_files/ffa_w3_301_175.dat",
+        "profile": "FFA-W3-301",
+        "sha256": "e5f152ce0aa1b4dd593bbd74d41b0044d2fef27a6ddb8b86d5f9c87f0837f411",
+        "thickness_ratio": 0.301
+      },
+      {
+        "aoa_deg": 180,
+        "bytes": 3088386,
+        "path": "ffa_w3_301/data_files/ffa_w3_301_180.dat",
+        "profile": "FFA-W3-301",
+        "sha256": "68204d19bee9eb268b07300e6964e1dad4ab61a630fe65aa85cfce9d97818314",
+        "thickness_ratio": 0.301
+      },
+      {
+        "aoa_deg": -180,
+        "bytes": 3088386,
+        "path": "ffa_w3_330/data_files/ffa_w3_330_-180.dat",
+        "profile": "FFA-W3-330",
+        "sha256": "9b96ece5d3cf439e985d8d41b055b303e1393e6b7182f19442bf1aaa225da3e4",
+        "thickness_ratio": 0.33
+      },
+      {
+        "aoa_deg": -175,
+        "bytes": 3088386,
+        "path": "ffa_w3_330/data_files/ffa_w3_330_-175.dat",
+        "profile": "FFA-W3-330",
+        "sha256": "b76063052591fbd05fd59e4bf65bbb30d09149ff58e83b4ffadac35143136578",
+        "thickness_ratio": 0.33
+      },
+      {
+        "aoa_deg": -170,
+        "bytes": 3088386,
+        "path": "ffa_w3_330/data_files/ffa_w3_330_-170.dat",
+        "profile": "FFA-W3-330",
+        "sha256": "11f7224d4a5482fcde542e07462d52a9c3297f94aa121b6976038945abdccd41",
+        "thickness_ratio": 0.33
+      },
+      {
+        "aoa_deg": -165,
+        "bytes": 3088386,
+        "path": "ffa_w3_330/data_files/ffa_w3_330_-165.dat",
+        "profile": "FFA-W3-330",
+        "sha256": "41532ba0593d49aff6b25ef6fa5b68c92cf7e46825f629e33470a7c15394a975",
+        "thickness_ratio": 0.33
+      },
+      {
+        "aoa_deg": -160,
+        "bytes": 3088386,
+        "path": "ffa_w3_330/data_files/ffa_w3_330_-160.dat",
+        "profile": "FFA-W3-330",
+        "sha256": "050518cd0e4ca6eb4887abbfdd34b7cb4f040173311a7956d9f36b90e4457b98",
+        "thickness_ratio": 0.33
+      },
+      {
+        "aoa_deg": -152,
+        "bytes": 3088386,
+        "path": "ffa_w3_330/data_files/ffa_w3_330_-152.dat",
+        "profile": "FFA-W3-330",
+        "sha256": "b58967c8c389c06914d9c971b7da1066557e7552d8a12f254be6ec29e95877f6",
+        "thickness_ratio": 0.33
+      },
+      {
+        "aoa_deg": -144,
+        "bytes": 3088386,
+        "path": "ffa_w3_330/data_files/ffa_w3_330_-144.dat",
+        "profile": "FFA-W3-330",
+        "sha256": "8c85207b7435d166835bc9989603a7da360448eeb93581c806c43e6b1bd3d81f",
+        "thickness_ratio": 0.33
+      },
+      {
+        "aoa_deg": -136,
+        "bytes": 3088386,
+        "path": "ffa_w3_330/data_files/ffa_w3_330_-136.dat",
+        "profile": "FFA-W3-330",
+        "sha256": "c59e615c1979e1dbbac0930aab665f154334abd5587fba32462295c3fc13a633",
+        "thickness_ratio": 0.33
+      },
+      {
+        "aoa_deg": -128,
+        "bytes": 3088386,
+        "path": "ffa_w3_330/data_files/ffa_w3_330_-128.dat",
+        "profile": "FFA-W3-330",
+        "sha256": "2c6fecf4137cb940a6ff74c60506cfed861823768acc4c27385aa854653efeeb",
+        "thickness_ratio": 0.33
+      },
+      {
+        "aoa_deg": -120,
+        "bytes": 3088386,
+        "path": "ffa_w3_330/data_files/ffa_w3_330_-120.dat",
+        "profile": "FFA-W3-330",
+        "sha256": "31e36afa3047ef8f28be7bb996e05861e6dfaf2856c7113a510d68f147e5885c",
+        "thickness_ratio": 0.33
+      },
+      {
+        "aoa_deg": -110,
+        "bytes": 3088386,
+        "path": "ffa_w3_330/data_files/ffa_w3_330_-110.dat",
+        "profile": "FFA-W3-330",
+        "sha256": "2650d0fc12d3225753958f19c0c2babda5dfdf835b25c5b2c63d2badb6a90b3c",
+        "thickness_ratio": 0.33
+      },
+      {
+        "aoa_deg": -100,
+        "bytes": 3088386,
+        "path": "ffa_w3_330/data_files/ffa_w3_330_-100.dat",
+        "profile": "FFA-W3-330",
+        "sha256": "c5aeaccd1299bca3b722579dea842653ad6fd2b44a1d7a1ba6d9af6523ab3533",
+        "thickness_ratio": 0.33
+      },
+      {
+        "aoa_deg": -90,
+        "bytes": 3088386,
+        "path": "ffa_w3_330/data_files/ffa_w3_330_-90.dat",
+        "profile": "FFA-W3-330",
+        "sha256": "6012e71b56fa19837c1e65a7b6276dd280a47dfdfda929d7c0d09d2c9a378a6b",
+        "thickness_ratio": 0.33
+      },
+      {
+        "aoa_deg": -80,
+        "bytes": 3088386,
+        "path": "ffa_w3_330/data_files/ffa_w3_330_-80.dat",
+        "profile": "FFA-W3-330",
+        "sha256": "16b90cb1d6797ebc3ad2fb1992d1a3dae4a4289d2cc7659b978c9c5dbc9fe944",
+        "thickness_ratio": 0.33
+      },
+      {
+        "aoa_deg": -70,
+        "bytes": 3088386,
+        "path": "ffa_w3_330/data_files/ffa_w3_330_-70.dat",
+        "profile": "FFA-W3-330",
+        "sha256": "bbaa5786468eb013ddc5962ebc3c0f1544be5d5655fd4d7e535867709c7d9ecf",
+        "thickness_ratio": 0.33
+      },
+      {
+        "aoa_deg": -60,
+        "bytes": 3088386,
+        "path": "ffa_w3_330/data_files/ffa_w3_330_-60.dat",
+        "profile": "FFA-W3-330",
+        "sha256": "94fc5e1ad9310fbfb4a3d5f28b7ebcec1a7ce0a9a4484c1a1292ca6d602372f7",
+        "thickness_ratio": 0.33
+      },
+      {
+        "aoa_deg": -50,
+        "bytes": 3088386,
+        "path": "ffa_w3_330/data_files/ffa_w3_330_-50.dat",
+        "profile": "FFA-W3-330",
+        "sha256": "173f56722a9901c8c594ffa0936a2fca8d87e92dd8827aeadd6b6b082815e322",
+        "thickness_ratio": 0.33
+      },
+      {
+        "aoa_deg": -40,
+        "bytes": 3088386,
+        "path": "ffa_w3_330/data_files/ffa_w3_330_-40.dat",
+        "profile": "FFA-W3-330",
+        "sha256": "30b253f959ae9ff5a7f45d3914ed5be161afa4b1baf2d731d3b99e07b1de94d1",
+        "thickness_ratio": 0.33
+      },
+      {
+        "aoa_deg": -33,
+        "bytes": 3088386,
+        "path": "ffa_w3_330/data_files/ffa_w3_330_-33.dat",
+        "profile": "FFA-W3-330",
+        "sha256": "d1c5fd4ab7f67afc7adcd8ae899183397fbe19025f304b7f8477b016be064565",
+        "thickness_ratio": 0.33
+      },
+      {
+        "aoa_deg": -30,
+        "bytes": 3088386,
+        "path": "ffa_w3_330/data_files/ffa_w3_330_-30.dat",
+        "profile": "FFA-W3-330",
+        "sha256": "3ba2132a2f25f64b82d08e31f6efb85e73e337dc30befcfdaa72f3c8666fcbe6",
+        "thickness_ratio": 0.33
+      },
+      {
+        "aoa_deg": -27,
+        "bytes": 3088386,
+        "path": "ffa_w3_330/data_files/ffa_w3_330_-27.dat",
+        "profile": "FFA-W3-330",
+        "sha256": "b1e3bd630c3154d7de0915f7f4734353ce9777806ddb6ecd837ae61fb2bb4f0c",
+        "thickness_ratio": 0.33
+      },
+      {
+        "aoa_deg": -24,
+        "bytes": 3088386,
+        "path": "ffa_w3_330/data_files/ffa_w3_330_-24.dat",
+        "profile": "FFA-W3-330",
+        "sha256": "a8461e089276bdeda7bf45fbbe24ea17350b9e90288660886a7984be6724c64a",
+        "thickness_ratio": 0.33
+      },
+      {
+        "aoa_deg": -21,
+        "bytes": 3088386,
+        "path": "ffa_w3_330/data_files/ffa_w3_330_-21.dat",
+        "profile": "FFA-W3-330",
+        "sha256": "448c3466cc46f373e99b2777eef05f4d481f3c682082bcde5498eb0a2ac5109f",
+        "thickness_ratio": 0.33
+      },
+      {
+        "aoa_deg": -18,
+        "bytes": 3088386,
+        "path": "ffa_w3_330/data_files/ffa_w3_330_-18.dat",
+        "profile": "FFA-W3-330",
+        "sha256": "1e6833b14dc13e3d75c89cfc0079ecb32db73adb904a5606ddc02afbfd47a896",
+        "thickness_ratio": 0.33
+      },
+      {
+        "aoa_deg": -15,
+        "bytes": 3088386,
+        "path": "ffa_w3_330/data_files/ffa_w3_330_-15.dat",
+        "profile": "FFA-W3-330",
+        "sha256": "0e6d7b9caaebbf708ffd8d9a264a45423820d16cbd05c321e3f20bb9443b1de7",
+        "thickness_ratio": 0.33
+      },
+      {
+        "aoa_deg": -12,
+        "bytes": 3088386,
+        "path": "ffa_w3_330/data_files/ffa_w3_330_-12.dat",
+        "profile": "FFA-W3-330",
+        "sha256": "32295b200b45485f4fed1628deb0ac18308d0c88f5962d977570acd398553828",
+        "thickness_ratio": 0.33
+      },
+      {
+        "aoa_deg": -9,
+        "bytes": 3088386,
+        "path": "ffa_w3_330/data_files/ffa_w3_330_-9.dat",
+        "profile": "FFA-W3-330",
+        "sha256": "fbb39aa488c2343183d1bbe69fe0cb09ff9a11c67dbb2287bf92a00615c4dd88",
+        "thickness_ratio": 0.33
+      },
+      {
+        "aoa_deg": -6,
+        "bytes": 3088386,
+        "path": "ffa_w3_330/data_files/ffa_w3_330_-6.dat",
+        "profile": "FFA-W3-330",
+        "sha256": "a793d680e41a3c3d50d7c726487a4be24a1cca7a8f04c5830038913535a4fdcb",
+        "thickness_ratio": 0.33
+      },
+      {
+        "aoa_deg": -3,
+        "bytes": 3088386,
+        "path": "ffa_w3_330/data_files/ffa_w3_330_-3.dat",
+        "profile": "FFA-W3-330",
+        "sha256": "8db502a0aa9510d16bb129e71727750d522a499c971c673fabf107c1f66e6231",
+        "thickness_ratio": 0.33
+      },
+      {
+        "aoa_deg": 0,
+        "bytes": 3088386,
+        "path": "ffa_w3_330/data_files/ffa_w3_330_0.dat",
+        "profile": "FFA-W3-330",
+        "sha256": "1e2f638e502af28baf84325ed8fbff4ebb79adb5700ad9012b98f3f4da7bca58",
+        "thickness_ratio": 0.33
+      },
+      {
+        "aoa_deg": 3,
+        "bytes": 3088386,
+        "path": "ffa_w3_330/data_files/ffa_w3_330_3.dat",
+        "profile": "FFA-W3-330",
+        "sha256": "a4dcd97915380d0e10fa60d84a4ed1d9e2ec57e6865991f62a8944ace6583396",
+        "thickness_ratio": 0.33
+      },
+      {
+        "aoa_deg": 6,
+        "bytes": 3088386,
+        "path": "ffa_w3_330/data_files/ffa_w3_330_6.dat",
+        "profile": "FFA-W3-330",
+        "sha256": "ee2600ebf6a73536fc35e2624df8efea4fdbf4dbcd98d823e5ca8a1cd56968a9",
+        "thickness_ratio": 0.33
+      },
+      {
+        "aoa_deg": 9,
+        "bytes": 3088386,
+        "path": "ffa_w3_330/data_files/ffa_w3_330_9.dat",
+        "profile": "FFA-W3-330",
+        "sha256": "11ab3138737c8799171c5632d78b842c183a4bfe3b87408d40e47e3da6ff8e78",
+        "thickness_ratio": 0.33
+      },
+      {
+        "aoa_deg": 12,
+        "bytes": 3088386,
+        "path": "ffa_w3_330/data_files/ffa_w3_330_12.dat",
+        "profile": "FFA-W3-330",
+        "sha256": "4d15e6849a85bf78664d019600da14d1174ac978abb079271a9737deb50d482f",
+        "thickness_ratio": 0.33
+      },
+      {
+        "aoa_deg": 15,
+        "bytes": 3088386,
+        "path": "ffa_w3_330/data_files/ffa_w3_330_15.dat",
+        "profile": "FFA-W3-330",
+        "sha256": "929512e9feee0410dfb6912870e28e5b6a823358d3f196ab652e977ff8498485",
+        "thickness_ratio": 0.33
+      },
+      {
+        "aoa_deg": 18,
+        "bytes": 3088386,
+        "path": "ffa_w3_330/data_files/ffa_w3_330_18.dat",
+        "profile": "FFA-W3-330",
+        "sha256": "f6fb1d1b2ff75c2e4300efdd2b5da9217ff19e4ea0760c3fae37a1f367f7619e",
+        "thickness_ratio": 0.33
+      },
+      {
+        "aoa_deg": 21,
+        "bytes": 3088386,
+        "path": "ffa_w3_330/data_files/ffa_w3_330_21.dat",
+        "profile": "FFA-W3-330",
+        "sha256": "802883bb9d8c702338d2514b96cfa3639b1b727e0bb4068fafeed7b27d4fe6df",
+        "thickness_ratio": 0.33
+      },
+      {
+        "aoa_deg": 24,
+        "bytes": 3088386,
+        "path": "ffa_w3_330/data_files/ffa_w3_330_24.dat",
+        "profile": "FFA-W3-330",
+        "sha256": "c05ec0e16337bebeb8eb4e9a03da4987bc7929da1751979471cdc9b45746133d",
+        "thickness_ratio": 0.33
+      },
+      {
+        "aoa_deg": 27,
+        "bytes": 3088386,
+        "path": "ffa_w3_330/data_files/ffa_w3_330_27.dat",
+        "profile": "FFA-W3-330",
+        "sha256": "49753eb30cbefbc1a98b3eb56cdf67c92f0af79760a6467d292767e523a93735",
+        "thickness_ratio": 0.33
+      },
+      {
+        "aoa_deg": 30,
+        "bytes": 3088386,
+        "path": "ffa_w3_330/data_files/ffa_w3_330_30.dat",
+        "profile": "FFA-W3-330",
+        "sha256": "d7333846b72e5855f30bd979a6c08d9479f8a6d09abc7d221e79ac94f99e28c9",
+        "thickness_ratio": 0.33
+      },
+      {
+        "aoa_deg": 33,
+        "bytes": 3088386,
+        "path": "ffa_w3_330/data_files/ffa_w3_330_33.dat",
+        "profile": "FFA-W3-330",
+        "sha256": "8fb69d2d107ca39d89079a0781f7cc5480dfabb5e6f4599852ae22fb15c7a2f9",
+        "thickness_ratio": 0.33
+      },
+      {
+        "aoa_deg": 40,
+        "bytes": 3088386,
+        "path": "ffa_w3_330/data_files/ffa_w3_330_40.dat",
+        "profile": "FFA-W3-330",
+        "sha256": "51fdc27e8044ecff73069577c6016b648ad98fbd866f9401c5815f6bc82cdaa6",
+        "thickness_ratio": 0.33
+      },
+      {
+        "aoa_deg": 50,
+        "bytes": 3088386,
+        "path": "ffa_w3_330/data_files/ffa_w3_330_50.dat",
+        "profile": "FFA-W3-330",
+        "sha256": "6146fd39c9ba262abb36c9ed5baeeb4a2eb0859e4b8a3a85df62a404f129f38f",
+        "thickness_ratio": 0.33
+      },
+      {
+        "aoa_deg": 60,
+        "bytes": 3088386,
+        "path": "ffa_w3_330/data_files/ffa_w3_330_60.dat",
+        "profile": "FFA-W3-330",
+        "sha256": "e3409c403f4e4c4c59b381451e031f5b390a274e6c6b48a18e19ef746f1f8719",
+        "thickness_ratio": 0.33
+      },
+      {
+        "aoa_deg": 70,
+        "bytes": 3088386,
+        "path": "ffa_w3_330/data_files/ffa_w3_330_70.dat",
+        "profile": "FFA-W3-330",
+        "sha256": "fec763b459b5d05cfbcc357f7faabb550c6a1457c585dabcdf0d35804b628890",
+        "thickness_ratio": 0.33
+      },
+      {
+        "aoa_deg": 80,
+        "bytes": 3088386,
+        "path": "ffa_w3_330/data_files/ffa_w3_330_80.dat",
+        "profile": "FFA-W3-330",
+        "sha256": "b4af04ecb0c1b0efa1dded92ab044bbd569dedd329d0264247d13a92a6f9615d",
+        "thickness_ratio": 0.33
+      },
+      {
+        "aoa_deg": 90,
+        "bytes": 3088386,
+        "path": "ffa_w3_330/data_files/ffa_w3_330_90.dat",
+        "profile": "FFA-W3-330",
+        "sha256": "f6b600ca0c7627727a3bcaf66327b04cf181c3fa00b671a1acaf8a96741ca914",
+        "thickness_ratio": 0.33
+      },
+      {
+        "aoa_deg": 100,
+        "bytes": 3088386,
+        "path": "ffa_w3_330/data_files/ffa_w3_330_100.dat",
+        "profile": "FFA-W3-330",
+        "sha256": "1ad4c8293cd4e315ee3454d5b12d9757d0d8d7d5eb85d5f1392cb48c5f92fb8b",
+        "thickness_ratio": 0.33
+      },
+      {
+        "aoa_deg": 110,
+        "bytes": 3088386,
+        "path": "ffa_w3_330/data_files/ffa_w3_330_110.dat",
+        "profile": "FFA-W3-330",
+        "sha256": "7bc7b60dc92f843e6a607a49342cee26c93433f0e2a60f790a7e7a0636b348ca",
+        "thickness_ratio": 0.33
+      },
+      {
+        "aoa_deg": 120,
+        "bytes": 3088386,
+        "path": "ffa_w3_330/data_files/ffa_w3_330_120.dat",
+        "profile": "FFA-W3-330",
+        "sha256": "75ac2bee970f96673f238316701fa56dc0a76d2afc92a240a464abe297f4d5c4",
+        "thickness_ratio": 0.33
+      },
+      {
+        "aoa_deg": 128,
+        "bytes": 3088386,
+        "path": "ffa_w3_330/data_files/ffa_w3_330_128.dat",
+        "profile": "FFA-W3-330",
+        "sha256": "6447e053279720620f116d893d35516018a35ed2a8fad83acaccf42962534520",
+        "thickness_ratio": 0.33
+      },
+      {
+        "aoa_deg": 136,
+        "bytes": 3030679,
+        "path": "ffa_w3_330/data_files/ffa_w3_330_136.dat",
+        "profile": "FFA-W3-330",
+        "sha256": "e0b623f7be01bdad19bdc1ee6f3b0405c6ad17c1a83bb3fbbaa475a3536c4173",
+        "thickness_ratio": 0.33
+      },
+      {
+        "aoa_deg": 144,
+        "bytes": 3088386,
+        "path": "ffa_w3_330/data_files/ffa_w3_330_144.dat",
+        "profile": "FFA-W3-330",
+        "sha256": "1f1e0d7ece84a95b1a3583e269a465038d46431d5cfe9f72c1f16ee4ac6f6111",
+        "thickness_ratio": 0.33
+      },
+      {
+        "aoa_deg": 152,
+        "bytes": 3088386,
+        "path": "ffa_w3_330/data_files/ffa_w3_330_152.dat",
+        "profile": "FFA-W3-330",
+        "sha256": "99f265b57e3f2b52e880f47fb156dec1656c5d5b66c9ac3ee281808bdf3cd59d",
+        "thickness_ratio": 0.33
+      },
+      {
+        "aoa_deg": 160,
+        "bytes": 3087807,
+        "path": "ffa_w3_330/data_files/ffa_w3_330_160.dat",
+        "profile": "FFA-W3-330",
+        "sha256": "0ff02ddb33593b84c0dc2e1bb7f4800b48ce75e30ca55cdd29671ae32a6550c2",
+        "thickness_ratio": 0.33
+      },
+      {
+        "aoa_deg": 165,
+        "bytes": 3088386,
+        "path": "ffa_w3_330/data_files/ffa_w3_330_165.dat",
+        "profile": "FFA-W3-330",
+        "sha256": "caea14da6fff256ea675f02d68811dde2324b954fe47859596046e509c906483",
+        "thickness_ratio": 0.33
+      },
+      {
+        "aoa_deg": 170,
+        "bytes": 3088386,
+        "path": "ffa_w3_330/data_files/ffa_w3_330_170.dat",
+        "profile": "FFA-W3-330",
+        "sha256": "10c8521208abba2e74bd3e10da5baea3a86dbcc450cfb735a1336ceabcc8b506",
+        "thickness_ratio": 0.33
+      },
+      {
+        "aoa_deg": 175,
+        "bytes": 3088386,
+        "path": "ffa_w3_330/data_files/ffa_w3_330_175.dat",
+        "profile": "FFA-W3-330",
+        "sha256": "776e0c4e29355eab1d39d43fed56c694d2db2d24205bac63fcd74be3082c6f87",
+        "thickness_ratio": 0.33
+      },
+      {
+        "aoa_deg": 180,
+        "bytes": 3088386,
+        "path": "ffa_w3_330/data_files/ffa_w3_330_180.dat",
+        "profile": "FFA-W3-330",
+        "sha256": "33dbac363542b0b83193b95b4c55ecaae0afa3c2244a59f3a16767509cb9dcdc",
+        "thickness_ratio": 0.33
+      },
+      {
+        "aoa_deg": -180,
+        "bytes": 3088386,
+        "path": "ffa_w3_360/data_files/ffa_w3_360_-180.dat",
+        "profile": "FFA-W3-360",
+        "sha256": "e0ff4ba811a9a9212efe892ec99dd497e5174080d141d229cde2e245ce35b5e5",
+        "thickness_ratio": 0.36
+      },
+      {
+        "aoa_deg": -175,
+        "bytes": 3088386,
+        "path": "ffa_w3_360/data_files/ffa_w3_360_-175.dat",
+        "profile": "FFA-W3-360",
+        "sha256": "34a6a9438d829504f3d37a47c0fa8e49e57ad1da0658b8fa9d33cfce51078085",
+        "thickness_ratio": 0.36
+      },
+      {
+        "aoa_deg": -170,
+        "bytes": 3088386,
+        "path": "ffa_w3_360/data_files/ffa_w3_360_-170.dat",
+        "profile": "FFA-W3-360",
+        "sha256": "75f10648363d98f23ad9a4bac5581be67b52efe91ea9de8c2d1128a9ffacb72b",
+        "thickness_ratio": 0.36
+      },
+      {
+        "aoa_deg": -165,
+        "bytes": 3088386,
+        "path": "ffa_w3_360/data_files/ffa_w3_360_-165.dat",
+        "profile": "FFA-W3-360",
+        "sha256": "92023b233a495cc2e9d3e3e05b13e3bfe7b03e97809afbed04a5e87aa172a5e9",
+        "thickness_ratio": 0.36
+      },
+      {
+        "aoa_deg": -160,
+        "bytes": 3088386,
+        "path": "ffa_w3_360/data_files/ffa_w3_360_-160.dat",
+        "profile": "FFA-W3-360",
+        "sha256": "99fe91673f75866a2379eac83869e9136eba1a508c8b23088102549da01134c5",
+        "thickness_ratio": 0.36
+      },
+      {
+        "aoa_deg": -152,
+        "bytes": 3088386,
+        "path": "ffa_w3_360/data_files/ffa_w3_360_-152.dat",
+        "profile": "FFA-W3-360",
+        "sha256": "8ddc3b669c6e149ff0559621caad85f32aa370d3064c5e0ebd43164e8c81d8ce",
+        "thickness_ratio": 0.36
+      },
+      {
+        "aoa_deg": -144,
+        "bytes": 3088386,
+        "path": "ffa_w3_360/data_files/ffa_w3_360_-144.dat",
+        "profile": "FFA-W3-360",
+        "sha256": "c7f7837b79e06c9bd9d8e6d3a69de3550f7c379319345491fafb485ec0297c1b",
+        "thickness_ratio": 0.36
+      },
+      {
+        "aoa_deg": -136,
+        "bytes": 3088386,
+        "path": "ffa_w3_360/data_files/ffa_w3_360_-136.dat",
+        "profile": "FFA-W3-360",
+        "sha256": "171345759cf0b1a9f67b5f509c5baa645acacb3dc5838ee9968d4fbfde1ebdce",
+        "thickness_ratio": 0.36
+      },
+      {
+        "aoa_deg": -128,
+        "bytes": 3088386,
+        "path": "ffa_w3_360/data_files/ffa_w3_360_-128.dat",
+        "profile": "FFA-W3-360",
+        "sha256": "22d934aa568dac3f2478ec00c55334f80057e1f7cb733fc3294423e24952c7d6",
+        "thickness_ratio": 0.36
+      },
+      {
+        "aoa_deg": -120,
+        "bytes": 3088386,
+        "path": "ffa_w3_360/data_files/ffa_w3_360_-120.dat",
+        "profile": "FFA-W3-360",
+        "sha256": "31844822576f4c2139b65b0e745ebe1ebd746b68b09bcfd972d06923c9ed5ed8",
+        "thickness_ratio": 0.36
+      },
+      {
+        "aoa_deg": -110,
+        "bytes": 3088386,
+        "path": "ffa_w3_360/data_files/ffa_w3_360_-110.dat",
+        "profile": "FFA-W3-360",
+        "sha256": "a29d60b5b1688f9cabd76bd548b1e2c876225f67b40d4cfc4aae62bdba99f45a",
+        "thickness_ratio": 0.36
+      },
+      {
+        "aoa_deg": -100,
+        "bytes": 3088386,
+        "path": "ffa_w3_360/data_files/ffa_w3_360_-100.dat",
+        "profile": "FFA-W3-360",
+        "sha256": "3154be277f18088741b373e769fd5cc7bfe2d2fd957ff70ff3766b3460d5b661",
+        "thickness_ratio": 0.36
+      },
+      {
+        "aoa_deg": -90,
+        "bytes": 3088386,
+        "path": "ffa_w3_360/data_files/ffa_w3_360_-90.dat",
+        "profile": "FFA-W3-360",
+        "sha256": "96b78a71956cd7adfcb61a2dcc6ea2623af4329bb9cc31369afc5fc4a893f821",
+        "thickness_ratio": 0.36
+      },
+      {
+        "aoa_deg": -80,
+        "bytes": 3088386,
+        "path": "ffa_w3_360/data_files/ffa_w3_360_-80.dat",
+        "profile": "FFA-W3-360",
+        "sha256": "263a585d4af81b7e659114902e9fa2bcb9ea9212e14f45dfb7e0ba1326a0d7f3",
+        "thickness_ratio": 0.36
+      },
+      {
+        "aoa_deg": -70,
+        "bytes": 3088386,
+        "path": "ffa_w3_360/data_files/ffa_w3_360_-70.dat",
+        "profile": "FFA-W3-360",
+        "sha256": "a224c063582b239f88ea0bc1450a64b0cca9a12e28bd10d668f09e6eb6899402",
+        "thickness_ratio": 0.36
+      },
+      {
+        "aoa_deg": -60,
+        "bytes": 3088386,
+        "path": "ffa_w3_360/data_files/ffa_w3_360_-60.dat",
+        "profile": "FFA-W3-360",
+        "sha256": "45cc7da84c46658b6f95973d29640e4edf56e5f6e9c6037d84de43dc6b56f2b1",
+        "thickness_ratio": 0.36
+      },
+      {
+        "aoa_deg": -50,
+        "bytes": 3088386,
+        "path": "ffa_w3_360/data_files/ffa_w3_360_-50.dat",
+        "profile": "FFA-W3-360",
+        "sha256": "bf42cf017aab5bc9f89a326f4cda597ef9065d3dfbe2d0edb780380793b8c84a",
+        "thickness_ratio": 0.36
+      },
+      {
+        "aoa_deg": -40,
+        "bytes": 3088386,
+        "path": "ffa_w3_360/data_files/ffa_w3_360_-40.dat",
+        "profile": "FFA-W3-360",
+        "sha256": "0b72a0adf018b75048e892d049af9e3e7c5772200dc64b6c89d0ec9cbf3ecfd6",
+        "thickness_ratio": 0.36
+      },
+      {
+        "aoa_deg": -33,
+        "bytes": 3088386,
+        "path": "ffa_w3_360/data_files/ffa_w3_360_-33.dat",
+        "profile": "FFA-W3-360",
+        "sha256": "6be5da69a130c9868ab810d2ee7cd410ba7c3a3b1e0a4214a70e6d45a7a93272",
+        "thickness_ratio": 0.36
+      },
+      {
+        "aoa_deg": -30,
+        "bytes": 3088386,
+        "path": "ffa_w3_360/data_files/ffa_w3_360_-30.dat",
+        "profile": "FFA-W3-360",
+        "sha256": "47a322756d4c39dc53669eaf5f8a511eaad2b673bdc0b08ac6ec0bc3bcc99e67",
+        "thickness_ratio": 0.36
+      },
+      {
+        "aoa_deg": -27,
+        "bytes": 3088386,
+        "path": "ffa_w3_360/data_files/ffa_w3_360_-27.dat",
+        "profile": "FFA-W3-360",
+        "sha256": "e5b959dd3e9cb95a29ddfec0e6c9bb8586644cd9e2e9469fea8fbbda2e6db2a1",
+        "thickness_ratio": 0.36
+      },
+      {
+        "aoa_deg": -24,
+        "bytes": 3088386,
+        "path": "ffa_w3_360/data_files/ffa_w3_360_-24.dat",
+        "profile": "FFA-W3-360",
+        "sha256": "de8e5524844018d7221c974df420ae5a403733196c1cedd28eff19d9e23923b0",
+        "thickness_ratio": 0.36
+      },
+      {
+        "aoa_deg": -21,
+        "bytes": 3088386,
+        "path": "ffa_w3_360/data_files/ffa_w3_360_-21.dat",
+        "profile": "FFA-W3-360",
+        "sha256": "0c93ef21eab8f5e1ac8eb64fca73262e906f0d399448f5a78e49ba8a9ab7ed11",
+        "thickness_ratio": 0.36
+      },
+      {
+        "aoa_deg": -18,
+        "bytes": 3088386,
+        "path": "ffa_w3_360/data_files/ffa_w3_360_-18.dat",
+        "profile": "FFA-W3-360",
+        "sha256": "0b23799f9b4cd0eb395c21a25acc8a69c495fa9e9ae50150cff813dec6c09d66",
+        "thickness_ratio": 0.36
+      },
+      {
+        "aoa_deg": -15,
+        "bytes": 3088386,
+        "path": "ffa_w3_360/data_files/ffa_w3_360_-15.dat",
+        "profile": "FFA-W3-360",
+        "sha256": "55890ce239a4d161bdd3bf0a989673b62c001489ef26676da23325454bc45b6f",
+        "thickness_ratio": 0.36
+      },
+      {
+        "aoa_deg": -12,
+        "bytes": 3088386,
+        "path": "ffa_w3_360/data_files/ffa_w3_360_-12.dat",
+        "profile": "FFA-W3-360",
+        "sha256": "2f5a1406efc04894fbced4c1b46773a4f02d5eac1e4cc2d5ea8ca9daa8385daf",
+        "thickness_ratio": 0.36
+      },
+      {
+        "aoa_deg": -9,
+        "bytes": 3088386,
+        "path": "ffa_w3_360/data_files/ffa_w3_360_-9.dat",
+        "profile": "FFA-W3-360",
+        "sha256": "664bbf95f847f1a4ca5f7d7ff6885374bea003b04b29509816f7348d16c6165f",
+        "thickness_ratio": 0.36
+      },
+      {
+        "aoa_deg": -6,
+        "bytes": 3088386,
+        "path": "ffa_w3_360/data_files/ffa_w3_360_-6.dat",
+        "profile": "FFA-W3-360",
+        "sha256": "34da21e719c0e302ffa6f0a83664bd14642a4e88da1fb46d990777d635727da4",
+        "thickness_ratio": 0.36
+      },
+      {
+        "aoa_deg": -3,
+        "bytes": 3088386,
+        "path": "ffa_w3_360/data_files/ffa_w3_360_-3.dat",
+        "profile": "FFA-W3-360",
+        "sha256": "7779b1076ca055b22b1f080c2fe70f3d344d5d690d1108f36207b1ed2c6a3b8c",
+        "thickness_ratio": 0.36
+      },
+      {
+        "aoa_deg": 0,
+        "bytes": 3088386,
+        "path": "ffa_w3_360/data_files/ffa_w3_360_0.dat",
+        "profile": "FFA-W3-360",
+        "sha256": "4577de84a78277d990da9da349694e96cf8de4b06a42af255c96dfa5c4e1c3f7",
+        "thickness_ratio": 0.36
+      },
+      {
+        "aoa_deg": 3,
+        "bytes": 3088386,
+        "path": "ffa_w3_360/data_files/ffa_w3_360_3.dat",
+        "profile": "FFA-W3-360",
+        "sha256": "4daf18b603a522f65c6f0d229dd3a6e6dda4c18972cdc6fd578623e1976bb954",
+        "thickness_ratio": 0.36
+      },
+      {
+        "aoa_deg": 6,
+        "bytes": 3088386,
+        "path": "ffa_w3_360/data_files/ffa_w3_360_6.dat",
+        "profile": "FFA-W3-360",
+        "sha256": "cc4b80792adce9137ea4273b7ea49c29b97ba5d63716a28edd39803773d639a0",
+        "thickness_ratio": 0.36
+      },
+      {
+        "aoa_deg": 9,
+        "bytes": 3088386,
+        "path": "ffa_w3_360/data_files/ffa_w3_360_9.dat",
+        "profile": "FFA-W3-360",
+        "sha256": "3a5646b7cf09e3f25c97ee59be231fc237eb0f6178005e7e6635193531eea737",
+        "thickness_ratio": 0.36
+      },
+      {
+        "aoa_deg": 12,
+        "bytes": 3088386,
+        "path": "ffa_w3_360/data_files/ffa_w3_360_12.dat",
+        "profile": "FFA-W3-360",
+        "sha256": "49f437eb2f98afbe721b7643353feeadeb2da410bc47fa9760ac957b2c7c8441",
+        "thickness_ratio": 0.36
+      },
+      {
+        "aoa_deg": 15,
+        "bytes": 3088386,
+        "path": "ffa_w3_360/data_files/ffa_w3_360_15.dat",
+        "profile": "FFA-W3-360",
+        "sha256": "22568b4edfa549152453e2f0402ae1fa94b496d72311f6f6acf902445c876943",
+        "thickness_ratio": 0.36
+      },
+      {
+        "aoa_deg": 18,
+        "bytes": 3088386,
+        "path": "ffa_w3_360/data_files/ffa_w3_360_18.dat",
+        "profile": "FFA-W3-360",
+        "sha256": "75b2c28d7962b771692dc6739ca4015418db1fc722c516f106bfbfb9d3e2f88e",
+        "thickness_ratio": 0.36
+      },
+      {
+        "aoa_deg": 21,
+        "bytes": 3088386,
+        "path": "ffa_w3_360/data_files/ffa_w3_360_21.dat",
+        "profile": "FFA-W3-360",
+        "sha256": "10680f543081341f5515bbf3ae1b388c0d403c2b736c28779e1f9607e191ff9b",
+        "thickness_ratio": 0.36
+      },
+      {
+        "aoa_deg": 24,
+        "bytes": 3088386,
+        "path": "ffa_w3_360/data_files/ffa_w3_360_24.dat",
+        "profile": "FFA-W3-360",
+        "sha256": "634e8e2ea9ee901e8973bcfa632b066d34259e450cec5385ca7b336a89a4938e",
+        "thickness_ratio": 0.36
+      },
+      {
+        "aoa_deg": 27,
+        "bytes": 3088386,
+        "path": "ffa_w3_360/data_files/ffa_w3_360_27.dat",
+        "profile": "FFA-W3-360",
+        "sha256": "776805d332c51adff46188401891f188498d663ee1b67df566d74343ec71b66a",
+        "thickness_ratio": 0.36
+      },
+      {
+        "aoa_deg": 30,
+        "bytes": 3088386,
+        "path": "ffa_w3_360/data_files/ffa_w3_360_30.dat",
+        "profile": "FFA-W3-360",
+        "sha256": "f031a59644c09ec140e69f0f7fb736e0152e4f6d4b8454e2c8cd84ddf14bb866",
+        "thickness_ratio": 0.36
+      },
+      {
+        "aoa_deg": 33,
+        "bytes": 3088386,
+        "path": "ffa_w3_360/data_files/ffa_w3_360_33.dat",
+        "profile": "FFA-W3-360",
+        "sha256": "9285704dfa3d79ca2aaf64e653f376968730c4a93fd45272ca5d29211e267fbc",
+        "thickness_ratio": 0.36
+      },
+      {
+        "aoa_deg": 40,
+        "bytes": 3088386,
+        "path": "ffa_w3_360/data_files/ffa_w3_360_40.dat",
+        "profile": "FFA-W3-360",
+        "sha256": "d30d498d9820cf0db46f2234754fb4a8d018944f7d3de90fd903a1c6f95a10fb",
+        "thickness_ratio": 0.36
+      },
+      {
+        "aoa_deg": 50,
+        "bytes": 3088386,
+        "path": "ffa_w3_360/data_files/ffa_w3_360_50.dat",
+        "profile": "FFA-W3-360",
+        "sha256": "cb99c685149416707f40726bd757f965445cfa4e5d0e7857da5963cfdee38145",
+        "thickness_ratio": 0.36
+      },
+      {
+        "aoa_deg": 60,
+        "bytes": 3088386,
+        "path": "ffa_w3_360/data_files/ffa_w3_360_60.dat",
+        "profile": "FFA-W3-360",
+        "sha256": "9bc92061cca90f58232d0b20b0d9d9567a3937033fcec486d2b0949f35cf11b9",
+        "thickness_ratio": 0.36
+      },
+      {
+        "aoa_deg": 70,
+        "bytes": 3088386,
+        "path": "ffa_w3_360/data_files/ffa_w3_360_70.dat",
+        "profile": "FFA-W3-360",
+        "sha256": "1fd1e6c6de595296acf842b90662b5d70c013a01f7001491a42fa3be38f17404",
+        "thickness_ratio": 0.36
+      },
+      {
+        "aoa_deg": 80,
+        "bytes": 3088386,
+        "path": "ffa_w3_360/data_files/ffa_w3_360_80.dat",
+        "profile": "FFA-W3-360",
+        "sha256": "c466b618b554bd180490fcb15cade76e89b8140ce19bc388758f77648eada486",
+        "thickness_ratio": 0.36
+      },
+      {
+        "aoa_deg": 90,
+        "bytes": 3088386,
+        "path": "ffa_w3_360/data_files/ffa_w3_360_90.dat",
+        "profile": "FFA-W3-360",
+        "sha256": "dfacda08f15157802c30679084bf8f6fd9a1d00edd8dc0a06a409268446d7b05",
+        "thickness_ratio": 0.36
+      },
+      {
+        "aoa_deg": 100,
+        "bytes": 3088386,
+        "path": "ffa_w3_360/data_files/ffa_w3_360_100.dat",
+        "profile": "FFA-W3-360",
+        "sha256": "0b25d9dfcb744e586c3285c2e35657be7fa8886bfe301fe99d8a74bc1d7861a7",
+        "thickness_ratio": 0.36
+      },
+      {
+        "aoa_deg": 110,
+        "bytes": 3088386,
+        "path": "ffa_w3_360/data_files/ffa_w3_360_110.dat",
+        "profile": "FFA-W3-360",
+        "sha256": "d829c456cd41ed219641c904fef0d472422c318f12f0567c839eda6b339f37af",
+        "thickness_ratio": 0.36
+      },
+      {
+        "aoa_deg": 120,
+        "bytes": 3088386,
+        "path": "ffa_w3_360/data_files/ffa_w3_360_120.dat",
+        "profile": "FFA-W3-360",
+        "sha256": "bccbf41ea5e36ca6693c9783d056de639176f0b178a2f182af357be122844883",
+        "thickness_ratio": 0.36
+      },
+      {
+        "aoa_deg": 128,
+        "bytes": 3088386,
+        "path": "ffa_w3_360/data_files/ffa_w3_360_128.dat",
+        "profile": "FFA-W3-360",
+        "sha256": "f335f8ee2e1bdf86b216d99384cffdf2b4b72914f858b8bd8adf20fbee7f8e43",
+        "thickness_ratio": 0.36
+      },
+      {
+        "aoa_deg": 136,
+        "bytes": 3088386,
+        "path": "ffa_w3_360/data_files/ffa_w3_360_136.dat",
+        "profile": "FFA-W3-360",
+        "sha256": "9e6f807f931f9e81c654ba1eea8355121fae5889787f73068b28abc61974fc46",
+        "thickness_ratio": 0.36
+      },
+      {
+        "aoa_deg": 144,
+        "bytes": 3088386,
+        "path": "ffa_w3_360/data_files/ffa_w3_360_144.dat",
+        "profile": "FFA-W3-360",
+        "sha256": "f527d2dce9f8c8a28602f6d111d3518332f62bd0d221f4047480b884cfddc77b",
+        "thickness_ratio": 0.36
+      },
+      {
+        "aoa_deg": 152,
+        "bytes": 3088386,
+        "path": "ffa_w3_360/data_files/ffa_w3_360_152.dat",
+        "profile": "FFA-W3-360",
+        "sha256": "7c36270b31f1dbcded7a40cac9b65474e4ac62221a176cde4b352854a8c3d419",
+        "thickness_ratio": 0.36
+      },
+      {
+        "aoa_deg": 160,
+        "bytes": 3088386,
+        "path": "ffa_w3_360/data_files/ffa_w3_360_160.dat",
+        "profile": "FFA-W3-360",
+        "sha256": "ba42c02a051242a1327b71fc7dc189a436629bfa1712d43c8b050c8855bae562",
+        "thickness_ratio": 0.36
+      },
+      {
+        "aoa_deg": 165,
+        "bytes": 3088386,
+        "path": "ffa_w3_360/data_files/ffa_w3_360_165.dat",
+        "profile": "FFA-W3-360",
+        "sha256": "85c5de51e083c1e4fedeef721799b7a431a59ebe0d6782b33496580457f08ae1",
+        "thickness_ratio": 0.36
+      },
+      {
+        "aoa_deg": 170,
+        "bytes": 3088386,
+        "path": "ffa_w3_360/data_files/ffa_w3_360_170.dat",
+        "profile": "FFA-W3-360",
+        "sha256": "e0f439e669a36c9b77ff3187fde47ab6b1b1111b212595e52b9d92731625e06b",
+        "thickness_ratio": 0.36
+      },
+      {
+        "aoa_deg": 175,
+        "bytes": 3088386,
+        "path": "ffa_w3_360/data_files/ffa_w3_360_175.dat",
+        "profile": "FFA-W3-360",
+        "sha256": "ace0d1ee14106eaecfb33fbfe64a92b1ab541feddff5863e6d0326652c93a134",
+        "thickness_ratio": 0.36
+      },
+      {
+        "aoa_deg": 180,
+        "bytes": 3088386,
+        "path": "ffa_w3_360/data_files/ffa_w3_360_180.dat",
+        "profile": "FFA-W3-360",
+        "sha256": "0fda6f660c88145442ba9a206990c9a3466a7d62db1b671cf0fe5ae6c8ff699a",
+        "thickness_ratio": 0.36
+      },
+      {
+        "aoa_deg": -180,
+        "bytes": 3088386,
+        "path": "ffa_w3_500/data_files/ffa_w3_500_-180.dat",
+        "profile": "FFA-W3-500",
+        "sha256": "0d7297886168efff746420cf047993eae6192c5832123398c677dc07d516b68c",
+        "thickness_ratio": 0.5
+      },
+      {
+        "aoa_deg": -175,
+        "bytes": 3088386,
+        "path": "ffa_w3_500/data_files/ffa_w3_500_-175.dat",
+        "profile": "FFA-W3-500",
+        "sha256": "0107460c7d3469c9e67feccf14bfab014f5e1742379c8cb6e5dd4c3449a9c1c5",
+        "thickness_ratio": 0.5
+      },
+      {
+        "aoa_deg": -170,
+        "bytes": 3088386,
+        "path": "ffa_w3_500/data_files/ffa_w3_500_-170.dat",
+        "profile": "FFA-W3-500",
+        "sha256": "b6d6535efcb750fbd5d01d8ecdcddb120f4b16720b9390bed2de1c47cad9d487",
+        "thickness_ratio": 0.5
+      },
+      {
+        "aoa_deg": -165,
+        "bytes": 3088386,
+        "path": "ffa_w3_500/data_files/ffa_w3_500_-165.dat",
+        "profile": "FFA-W3-500",
+        "sha256": "5cf7f868cd99f8e10218bbce887e63ee09def94356a401af46c0f1608cb52640",
+        "thickness_ratio": 0.5
+      },
+      {
+        "aoa_deg": -160,
+        "bytes": 3088386,
+        "path": "ffa_w3_500/data_files/ffa_w3_500_-160.dat",
+        "profile": "FFA-W3-500",
+        "sha256": "bb405cb1707aed203484964686793228da6421f75dabe1ce4010c2cd3c9df882",
+        "thickness_ratio": 0.5
+      },
+      {
+        "aoa_deg": -152,
+        "bytes": 3088386,
+        "path": "ffa_w3_500/data_files/ffa_w3_500_-152.dat",
+        "profile": "FFA-W3-500",
+        "sha256": "74c1bddb732b729b0696d1b00af68a8b0f980588e1c9f10d18adfd18451d92e8",
+        "thickness_ratio": 0.5
+      },
+      {
+        "aoa_deg": -144,
+        "bytes": 3088386,
+        "path": "ffa_w3_500/data_files/ffa_w3_500_-144.dat",
+        "profile": "FFA-W3-500",
+        "sha256": "6116f369f6e60fbfe82996be572fd8e423e6a21323594d369a85984a9fdfd1b8",
+        "thickness_ratio": 0.5
+      },
+      {
+        "aoa_deg": -136,
+        "bytes": 3088386,
+        "path": "ffa_w3_500/data_files/ffa_w3_500_-136.dat",
+        "profile": "FFA-W3-500",
+        "sha256": "2ece0be5c2b7e9ca36adc6960a78d9972f797e0afa0195191399ced87403bffb",
+        "thickness_ratio": 0.5
+      },
+      {
+        "aoa_deg": -128,
+        "bytes": 3088386,
+        "path": "ffa_w3_500/data_files/ffa_w3_500_-128.dat",
+        "profile": "FFA-W3-500",
+        "sha256": "a91c78d7de0695dd73010d7893284da572f10509f5a30df648e818a796a4d62b",
+        "thickness_ratio": 0.5
+      },
+      {
+        "aoa_deg": -120,
+        "bytes": 3088386,
+        "path": "ffa_w3_500/data_files/ffa_w3_500_-120.dat",
+        "profile": "FFA-W3-500",
+        "sha256": "7e706b48cfdac55e0ebd991f9b28b4afe48d3778aede0ba7436fb56bb4a61b42",
+        "thickness_ratio": 0.5
+      },
+      {
+        "aoa_deg": -110,
+        "bytes": 3088386,
+        "path": "ffa_w3_500/data_files/ffa_w3_500_-110.dat",
+        "profile": "FFA-W3-500",
+        "sha256": "7fa9867ab14d3ecf5c46e4f6fb025751f71f4ce7f20c71b7f0cb9b3252c07552",
+        "thickness_ratio": 0.5
+      },
+      {
+        "aoa_deg": -100,
+        "bytes": 3088386,
+        "path": "ffa_w3_500/data_files/ffa_w3_500_-100.dat",
+        "profile": "FFA-W3-500",
+        "sha256": "a7c90d45b2fb880e5347891c072fe29935a237ccd1db48135e910314dad48bfc",
+        "thickness_ratio": 0.5
+      },
+      {
+        "aoa_deg": -90,
+        "bytes": 3088386,
+        "path": "ffa_w3_500/data_files/ffa_w3_500_-90.dat",
+        "profile": "FFA-W3-500",
+        "sha256": "22d0ef52dd0a5d87b09639e65b4923c3180efd4e628c82d4b5719e9f03d07bf2",
+        "thickness_ratio": 0.5
+      },
+      {
+        "aoa_deg": -80,
+        "bytes": 3088386,
+        "path": "ffa_w3_500/data_files/ffa_w3_500_-80.dat",
+        "profile": "FFA-W3-500",
+        "sha256": "11720376b97e03714d6ace93586bce15209a7d7075b67935562ba8ac757190c6",
+        "thickness_ratio": 0.5
+      },
+      {
+        "aoa_deg": -70,
+        "bytes": 3088386,
+        "path": "ffa_w3_500/data_files/ffa_w3_500_-70.dat",
+        "profile": "FFA-W3-500",
+        "sha256": "456955ea5f97af660c1a464075e028fd6778efab134af23f63f230d8c31f4cc1",
+        "thickness_ratio": 0.5
+      },
+      {
+        "aoa_deg": -60,
+        "bytes": 3088386,
+        "path": "ffa_w3_500/data_files/ffa_w3_500_-60.dat",
+        "profile": "FFA-W3-500",
+        "sha256": "98ab72f3aa3a4eebf877090085b45320d83ea1c001e012e6a38ee296f06414da",
+        "thickness_ratio": 0.5
+      },
+      {
+        "aoa_deg": -50,
+        "bytes": 3088386,
+        "path": "ffa_w3_500/data_files/ffa_w3_500_-50.dat",
+        "profile": "FFA-W3-500",
+        "sha256": "5f8c421e2185afb96cc5e479b8693e9f978d365e3f3e956a0ec9e8f6c5c8e1c8",
+        "thickness_ratio": 0.5
+      },
+      {
+        "aoa_deg": -40,
+        "bytes": 3088386,
+        "path": "ffa_w3_500/data_files/ffa_w3_500_-40.dat",
+        "profile": "FFA-W3-500",
+        "sha256": "8bd1148e5346cea152940b5a2133a325a74614cc2ce8bc83877c133400b8080f",
+        "thickness_ratio": 0.5
+      },
+      {
+        "aoa_deg": -33,
+        "bytes": 3088386,
+        "path": "ffa_w3_500/data_files/ffa_w3_500_-33.dat",
+        "profile": "FFA-W3-500",
+        "sha256": "05bb89ff1d0ec7f1257faad19e6002ea5fb49bb3749ffcf20e085de255bcb496",
+        "thickness_ratio": 0.5
+      },
+      {
+        "aoa_deg": -30,
+        "bytes": 3088386,
+        "path": "ffa_w3_500/data_files/ffa_w3_500_-30.dat",
+        "profile": "FFA-W3-500",
+        "sha256": "e64c719ccd28efac826d45912fce01474e0145bfd9e127bfe9632cb26af4a531",
+        "thickness_ratio": 0.5
+      },
+      {
+        "aoa_deg": -27,
+        "bytes": 3088386,
+        "path": "ffa_w3_500/data_files/ffa_w3_500_-27.dat",
+        "profile": "FFA-W3-500",
+        "sha256": "2444906b44ebcb0bfa1062ff7cda2a3530707b269f88e793c65872aaa4a34dc1",
+        "thickness_ratio": 0.5
+      },
+      {
+        "aoa_deg": -24,
+        "bytes": 3088386,
+        "path": "ffa_w3_500/data_files/ffa_w3_500_-24.dat",
+        "profile": "FFA-W3-500",
+        "sha256": "7dd47b12e0558103a8d8403aa454ad6323c31cdb0f6444a388fbe16349070191",
+        "thickness_ratio": 0.5
+      },
+      {
+        "aoa_deg": -21,
+        "bytes": 3088386,
+        "path": "ffa_w3_500/data_files/ffa_w3_500_-21.dat",
+        "profile": "FFA-W3-500",
+        "sha256": "daf9d758fb8566636430a6e6dffd1fd78cdf046e1b84a005b376e0953d5f8b9c",
+        "thickness_ratio": 0.5
+      },
+      {
+        "aoa_deg": -18,
+        "bytes": 3088386,
+        "path": "ffa_w3_500/data_files/ffa_w3_500_-18.dat",
+        "profile": "FFA-W3-500",
+        "sha256": "10596678bed19409a070555d20161533cb11266a1813c1041d3ad6bb8e3d8b2f",
+        "thickness_ratio": 0.5
+      },
+      {
+        "aoa_deg": -15,
+        "bytes": 3088386,
+        "path": "ffa_w3_500/data_files/ffa_w3_500_-15.dat",
+        "profile": "FFA-W3-500",
+        "sha256": "2f48fff6e4735aa7ff1ed80f7eb6f3dc91f4de2982c990602d104cbb8b0b352d",
+        "thickness_ratio": 0.5
+      },
+      {
+        "aoa_deg": -12,
+        "bytes": 3088386,
+        "path": "ffa_w3_500/data_files/ffa_w3_500_-12.dat",
+        "profile": "FFA-W3-500",
+        "sha256": "a5e2dbc421e0f12e0c4a97930b18900b608a9ca436f403a519171c00a64f3aff",
+        "thickness_ratio": 0.5
+      },
+      {
+        "aoa_deg": -9,
+        "bytes": 3088386,
+        "path": "ffa_w3_500/data_files/ffa_w3_500_-9.dat",
+        "profile": "FFA-W3-500",
+        "sha256": "fc8206364dc89408de670b04c583f50312ac83d9debda63c950680a2e9d797b4",
+        "thickness_ratio": 0.5
+      },
+      {
+        "aoa_deg": -6,
+        "bytes": 3088386,
+        "path": "ffa_w3_500/data_files/ffa_w3_500_-6.dat",
+        "profile": "FFA-W3-500",
+        "sha256": "1466cfc7c756a15ef129bb13d3f85e0729e812aaa10b84c0a6b71fc44858f295",
+        "thickness_ratio": 0.5
+      },
+      {
+        "aoa_deg": -3,
+        "bytes": 3038399,
+        "path": "ffa_w3_500/data_files/ffa_w3_500_-3.dat",
+        "profile": "FFA-W3-500",
+        "sha256": "870fb2e8cf61ed58ef6bab100f32138e7bc4e6d8e524874685c340317e153f72",
+        "thickness_ratio": 0.5
+      },
+      {
+        "aoa_deg": 0,
+        "bytes": 2900597,
+        "path": "ffa_w3_500/data_files/ffa_w3_500_0.dat",
+        "profile": "FFA-W3-500",
+        "sha256": "fba1280815bf863b52640ad60d63b662e89c0f3561ba9ca64bf3f722623c8e86",
+        "thickness_ratio": 0.5
+      },
+      {
+        "aoa_deg": 3,
+        "bytes": 3088386,
+        "path": "ffa_w3_500/data_files/ffa_w3_500_3.dat",
+        "profile": "FFA-W3-500",
+        "sha256": "1cd911462ac6e75b82219ac3d2d638c3353009df97bb686c2aa33de8e2b334d2",
+        "thickness_ratio": 0.5
+      },
+      {
+        "aoa_deg": 6,
+        "bytes": 3088386,
+        "path": "ffa_w3_500/data_files/ffa_w3_500_6.dat",
+        "profile": "FFA-W3-500",
+        "sha256": "385a3aefa0bdeff5b1cccd4e97337dee11d879dfe0116c35b051484f7ff14d14",
+        "thickness_ratio": 0.5
+      },
+      {
+        "aoa_deg": 9,
+        "bytes": 3088386,
+        "path": "ffa_w3_500/data_files/ffa_w3_500_9.dat",
+        "profile": "FFA-W3-500",
+        "sha256": "e44dd80dcf9f0c1470c74a7bb16691833da74be80e8d8d40ef1243978059c861",
+        "thickness_ratio": 0.5
+      },
+      {
+        "aoa_deg": 12,
+        "bytes": 3088386,
+        "path": "ffa_w3_500/data_files/ffa_w3_500_12.dat",
+        "profile": "FFA-W3-500",
+        "sha256": "8078df171cf624f73a1aca1c1273720a427b19f8dd4ad2fc7a147a066f05a4cc",
+        "thickness_ratio": 0.5
+      },
+      {
+        "aoa_deg": 15,
+        "bytes": 3088386,
+        "path": "ffa_w3_500/data_files/ffa_w3_500_15.dat",
+        "profile": "FFA-W3-500",
+        "sha256": "45dfd57964534694bca7b237316118b725d6196e1823ee088966c36a7ee4b96b",
+        "thickness_ratio": 0.5
+      },
+      {
+        "aoa_deg": 18,
+        "bytes": 3088386,
+        "path": "ffa_w3_500/data_files/ffa_w3_500_18.dat",
+        "profile": "FFA-W3-500",
+        "sha256": "499f005a47dc6f99b348a0b719e9e1cc3ebfddfd54c385588551260aabd0469e",
+        "thickness_ratio": 0.5
+      },
+      {
+        "aoa_deg": 21,
+        "bytes": 3088386,
+        "path": "ffa_w3_500/data_files/ffa_w3_500_21.dat",
+        "profile": "FFA-W3-500",
+        "sha256": "247458714a0b74cfd0a8d7d4f45146d12b9fca923c7dd6eb5e66ee16dc44c3e4",
+        "thickness_ratio": 0.5
+      },
+      {
+        "aoa_deg": 24,
+        "bytes": 3088386,
+        "path": "ffa_w3_500/data_files/ffa_w3_500_24.dat",
+        "profile": "FFA-W3-500",
+        "sha256": "53f480c510d1b4dd16181b45d0ef2bb49469473419f4172818c55eacc3b5ab5c",
+        "thickness_ratio": 0.5
+      },
+      {
+        "aoa_deg": 27,
+        "bytes": 3088386,
+        "path": "ffa_w3_500/data_files/ffa_w3_500_27.dat",
+        "profile": "FFA-W3-500",
+        "sha256": "c2294f8eb1c8c63a72a4cfa48e7804424d34359f493d23d1b4591704a6d2df43",
+        "thickness_ratio": 0.5
+      },
+      {
+        "aoa_deg": 30,
+        "bytes": 3088386,
+        "path": "ffa_w3_500/data_files/ffa_w3_500_30.dat",
+        "profile": "FFA-W3-500",
+        "sha256": "3af7f76565c50b8c7bc72ba30b70b924cb1bfc344e59987b4b819479c41cb435",
+        "thickness_ratio": 0.5
+      },
+      {
+        "aoa_deg": 33,
+        "bytes": 3088386,
+        "path": "ffa_w3_500/data_files/ffa_w3_500_33.dat",
+        "profile": "FFA-W3-500",
+        "sha256": "f40507bf4d6f14aae189aae89ed1264a72f89f186899a426a8e8f44ff4c46fe0",
+        "thickness_ratio": 0.5
+      },
+      {
+        "aoa_deg": 40,
+        "bytes": 3088386,
+        "path": "ffa_w3_500/data_files/ffa_w3_500_40.dat",
+        "profile": "FFA-W3-500",
+        "sha256": "4ad8579b5cf7bbdd32bc88fd1e8979e91d378a0790fb8047ec820635c55b499e",
+        "thickness_ratio": 0.5
+      },
+      {
+        "aoa_deg": 50,
+        "bytes": 3088386,
+        "path": "ffa_w3_500/data_files/ffa_w3_500_50.dat",
+        "profile": "FFA-W3-500",
+        "sha256": "aba3ea1ef45506720fec4a912fb1ebbe0d3678000026cbc42fdf20edb6578b66",
+        "thickness_ratio": 0.5
+      },
+      {
+        "aoa_deg": 60,
+        "bytes": 3088386,
+        "path": "ffa_w3_500/data_files/ffa_w3_500_60.dat",
+        "profile": "FFA-W3-500",
+        "sha256": "7fca69803dc25e46f5c3fab1cd3ca49cb0b36fea60adec2ddc2219606b2a2e2a",
+        "thickness_ratio": 0.5
+      },
+      {
+        "aoa_deg": 70,
+        "bytes": 3088386,
+        "path": "ffa_w3_500/data_files/ffa_w3_500_70.dat",
+        "profile": "FFA-W3-500",
+        "sha256": "442c0a5943fdd967656490997ca436e5b9df0e1416ba01a093872069c102ac75",
+        "thickness_ratio": 0.5
+      },
+      {
+        "aoa_deg": 80,
+        "bytes": 3088386,
+        "path": "ffa_w3_500/data_files/ffa_w3_500_80.dat",
+        "profile": "FFA-W3-500",
+        "sha256": "bed76e7ec0f8f7c5f6fc45515997805b750886d1659a9b72b0a08f855bf0ad56",
+        "thickness_ratio": 0.5
+      },
+      {
+        "aoa_deg": 90,
+        "bytes": 3088386,
+        "path": "ffa_w3_500/data_files/ffa_w3_500_90.dat",
+        "profile": "FFA-W3-500",
+        "sha256": "2cace51387fec0b78f2f78678fed6af9d502495fa016425063e18e638a2e6306",
+        "thickness_ratio": 0.5
+      },
+      {
+        "aoa_deg": 100,
+        "bytes": 3088386,
+        "path": "ffa_w3_500/data_files/ffa_w3_500_100.dat",
+        "profile": "FFA-W3-500",
+        "sha256": "aad853293a3d7dab76f24d22cf7a0d9cb2804f66b4e52e3d071215e5d21bdb0f",
+        "thickness_ratio": 0.5
+      },
+      {
+        "aoa_deg": 110,
+        "bytes": 3088386,
+        "path": "ffa_w3_500/data_files/ffa_w3_500_110.dat",
+        "profile": "FFA-W3-500",
+        "sha256": "9b1af6fa492ca032cc8856ab715dcbeb351933ea0033a450daf76146c6cb995b",
+        "thickness_ratio": 0.5
+      },
+      {
+        "aoa_deg": 120,
+        "bytes": 3088386,
+        "path": "ffa_w3_500/data_files/ffa_w3_500_120.dat",
+        "profile": "FFA-W3-500",
+        "sha256": "86cc8d020eb45a0897e8a6a33c7e1f9079a2809987253de97ec28f2e7ca83a08",
+        "thickness_ratio": 0.5
+      },
+      {
+        "aoa_deg": 128,
+        "bytes": 3088386,
+        "path": "ffa_w3_500/data_files/ffa_w3_500_128.dat",
+        "profile": "FFA-W3-500",
+        "sha256": "80d0a123a5e76bd22eff7eed6fbebb2d1c5e2fb68558ed398a1d280dae29442f",
+        "thickness_ratio": 0.5
+      },
+      {
+        "aoa_deg": 136,
+        "bytes": 3088386,
+        "path": "ffa_w3_500/data_files/ffa_w3_500_136.dat",
+        "profile": "FFA-W3-500",
+        "sha256": "80e8e42cc1b1bd91b6a072184adf051ce8c36b833a92beeaaf013f163001d1d4",
+        "thickness_ratio": 0.5
+      },
+      {
+        "aoa_deg": 144,
+        "bytes": 3088386,
+        "path": "ffa_w3_500/data_files/ffa_w3_500_144.dat",
+        "profile": "FFA-W3-500",
+        "sha256": "9782a761ebc385354906a4704dbb653c716ae302b274c7d3dad870bf25785e22",
+        "thickness_ratio": 0.5
+      },
+      {
+        "aoa_deg": 152,
+        "bytes": 3088386,
+        "path": "ffa_w3_500/data_files/ffa_w3_500_152.dat",
+        "profile": "FFA-W3-500",
+        "sha256": "63f3930dcb987144d8ab81d0a539f6dc9fb1582209c8fa40656a43a4630ffaf1",
+        "thickness_ratio": 0.5
+      },
+      {
+        "aoa_deg": 160,
+        "bytes": 3088386,
+        "path": "ffa_w3_500/data_files/ffa_w3_500_160.dat",
+        "profile": "FFA-W3-500",
+        "sha256": "489b2bceb659b2fee35fdbe17102ee80cb3832d8b9decfeed918d6996ba428e6",
+        "thickness_ratio": 0.5
+      },
+      {
+        "aoa_deg": 165,
+        "bytes": 3088386,
+        "path": "ffa_w3_500/data_files/ffa_w3_500_165.dat",
+        "profile": "FFA-W3-500",
+        "sha256": "0ad93d414063891acd6323ba1ea00eff3ab86c4a3bdbb5ee0fbabec4af90cd2d",
+        "thickness_ratio": 0.5
+      },
+      {
+        "aoa_deg": 170,
+        "bytes": 3088386,
+        "path": "ffa_w3_500/data_files/ffa_w3_500_170.dat",
+        "profile": "FFA-W3-500",
+        "sha256": "92ce64dce716a777839c80abb352ed085987cb022616e6108adb0b670457ffc7",
+        "thickness_ratio": 0.5
+      },
+      {
+        "aoa_deg": 175,
+        "bytes": 3088386,
+        "path": "ffa_w3_500/data_files/ffa_w3_500_175.dat",
+        "profile": "FFA-W3-500",
+        "sha256": "ce52a07e3ff7fef23338a8d8cf4fde1220df92426537424d7f4d7a3980501c7a",
+        "thickness_ratio": 0.5
+      },
+      {
+        "aoa_deg": 180,
+        "bytes": 3088386,
+        "path": "ffa_w3_500/data_files/ffa_w3_500_180.dat",
+        "profile": "FFA-W3-500",
+        "sha256": "49bf9fd2a4c22dc332527d680f438b7b0e3cb7c046bf5b9f08c39ef7983bbcc1",
+        "thickness_ratio": 0.5
+      }
+    ],
+    "raw_history_count": 413,
+    "relative_file_inventory_sha256": "ffc2a1f101613d8bf59ee11c8ca5824c5274e5408c983257216ead785266795a",
+    "study": "Bidadi et al. (2024), Energies 17, 4328"
+  },
+  "status": "complete"
+}

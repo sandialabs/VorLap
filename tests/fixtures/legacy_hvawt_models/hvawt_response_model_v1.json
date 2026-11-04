@@ -1,0 +1,82 @@
+{
+  "enabled": true,
+  "force_sources": {
+    "coefficient_role": "incremental_viv_screening",
+    "external_viv_mode": "response_closure",
+    "include_mean_load": false,
+    "native_qblade_aerodynamics": "required_enabled"
+  },
+  "kinematics": {
+    "axis_origin_global_m": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "axis_unit_global": [
+      0.0,
+      0.0,
+      1.0
+    ],
+    "azimuth_sign": 1,
+    "body_to_global_at_reference": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "maximum_abs_basis_rpm_error_rpm": 0.01,
+    "maximum_azimuth_rate_error_radps": 1e-05,
+    "reference_azimuth_deg": 0.0,
+    "rpm_sign": 1
+  },
+  "max_abs_total_nodal_force_n": 100.0,
+  "modal_artifacts": {
+    "duals": "hvawt_response_mode_force_duals.csv",
+    "identification": "hvawt_response_mode_identification.json",
+    "review_marker": "hvawt_modal_evidence_review_marker.json",
+    "shapes": "hvawt_response_mode_shapes.csv"
+  },
+  "modes": [
+    {
+      "aerodynamic_damping_gain_h1": 3.920125762951649,
+      "bandpass_damping_ratio": 0.1,
+      "coefficient_source_sha256": "330242617d9d04d2cb771767fefbedac6414bea9a04a9b6ea9e813c0aba18c7d",
+      "max_abs_gain": 10.0,
+      "reduced_velocity_high": 6.982801851062782,
+      "reduced_velocity_low": 5.3625308212165494,
+      "reduced_velocity_peak": 6.245825,
+      "reference_length_m": 0.5,
+      "rms_time_constant_s": 0.7963194246776024,
+      "saturation_amplitude_ratio": 0.2968375879119047,
+      "tracked_mode": 6
+    },
+    {
+      "aerodynamic_damping_gain_h1": 3.920125762951649,
+      "bandpass_damping_ratio": 0.1,
+      "coefficient_source_sha256": "330242617d9d04d2cb771767fefbedac6414bea9a04a9b6ea9e813c0aba18c7d",
+      "max_abs_gain": 10.0,
+      "reduced_velocity_high": 6.982801851062782,
+      "reduced_velocity_low": 5.3625308212165494,
+      "reduced_velocity_peak": 6.245825,
+      "reference_length_m": 0.5,
+      "rms_time_constant_s": 0.4373889682481462,
+      "saturation_amplitude_ratio": 0.2968375879119047,
+      "tracked_mode": 12
+    }
+  ],
+  "position_block": "position_global_m",
+  "rpm_block": "lss_rpm",
+  "schema_version": 1,
+  "type": "hvawt_two_mode_negative_damping"
+}

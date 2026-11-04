@@ -1,0 +1,83 @@
+{
+  "schema": "vorlap-fu2026-p80-v6-local-screen-evidence-v1",
+  "status": "passed_training_reproduction_screen",
+  "model_type": "single_mode_airfoil_geometry_blended_fu_signed_work_shape_reproduction_v6",
+  "case_count": 5,
+  "active_case_count": 4,
+  "inactive_case_count": 1,
+  "maximum_active_amplitude_relative_error_percent": 3.541510285975797,
+  "qblade_library_sha256": "7d4d07401dddf65dcf25d7cb7d809a78fbf8ab9ecad629aaaf6d2a4308a0764d",
+  "protocol": {
+    "path": "examples/fu2026_iea10/training_reproduction_protocol.json",
+    "sha256": "dcf8dd875608ade84aff82323aee30bff56962bbd0aaf632011fd98a971eba70",
+    "schema": "fu2026-iea10-training-reproduction-protocol-v2",
+    "revision_timing": "The inactive-row stationarity policy was corrected after the local P80 U22 screen and before the 40-case production matrix."
+  },
+  "source_full_artifact_identities": [
+    {
+      "case_id": "P80A310_U06_complete",
+      "executed_duration_s": 300.0,
+      "result_sha256": "b2bda986a21df548dd94ea402a6822efb68ada8517d25d00242535e8963ba5ff",
+      "run_summary_sha256": "2b4be2fe3980e5594651078de3cbbd2e32c8d752ce1da368530368a162f6c3d5",
+      "compact_history_sha256": "a8b1aecf20fd8dde64b8db2a3b06e2d641410c1a4d638282f8937009d96d7083",
+      "qblade_library_sha256": "7d4d07401dddf65dcf25d7cb7d809a78fbf8ab9ecad629aaaf6d2a4308a0764d",
+      "vorlap_config_sha256": "b2653378e41c5a624818814e89a1837bea8e786834575203e0226b4a0bce178d"
+    },
+    {
+      "case_id": "P80A310_U10_complete",
+      "executed_duration_s": 300.0,
+      "result_sha256": "0bc8ba6e3cd946a8f992131d7d3a908636d674d0a63f7f7a0c7e7463dc49196f",
+      "run_summary_sha256": "b78cd76c694a8abe4645a3d91d81bd3ec9e435436e2d370a52f5b8a56f58f169",
+      "compact_history_sha256": "3b670e14313994de5f4e302859b34c54eeb6ae4ced37008d12c529090164e94c",
+      "qblade_library_sha256": "7d4d07401dddf65dcf25d7cb7d809a78fbf8ab9ecad629aaaf6d2a4308a0764d",
+      "vorlap_config_sha256": "6fb73befb4e6d18a89cfcc03d8375a506ec1b61d11d2fa3f103a4bb46281eb23"
+    },
+    {
+      "case_id": "P80A310_U14_complete",
+      "executed_duration_s": 300.0,
+      "result_sha256": "bad2f7c87e868861059e6208bf0bdcccd32d3ae7c2b1d4ff60062e2c51328145",
+      "run_summary_sha256": "df2357bc2946958be31a0799f2c61dcca94d67087e24ac78c4e964f5efeb8537",
+      "compact_history_sha256": "d9ff4f8b22fd032e0be447956ef460e2b594959e6d49cde6a60a46654651752f",
+      "qblade_library_sha256": "7d4d07401dddf65dcf25d7cb7d809a78fbf8ab9ecad629aaaf6d2a4308a0764d",
+      "vorlap_config_sha256": "4129c30b765dd3467400d2432993e6927c10636526c7f7fbe74a778040cea545"
+    },
+    {
+      "case_id": "P80A310_U18_complete",
+      "executed_duration_s": 300.0,
+      "result_sha256": "f43eae92792ec513690ff245b086e10f41de13eccad1c65aefbef8880e770769",
+      "run_summary_sha256": "7458e847c6607d93fa5c5f039c3650582fb1f17fd6ee6dc8e42cbe36a74abc56",
+      "compact_history_sha256": "0e01017ea777ebb588edcc919507ce9ab2c0815d3a230b9cd50ef533ef3313d3",
+      "qblade_library_sha256": "7d4d07401dddf65dcf25d7cb7d809a78fbf8ab9ecad629aaaf6d2a4308a0764d",
+      "vorlap_config_sha256": "4bbdd0ebb711ae49a79335c02c6d68f03ccbf9694b674a9380f3da484636762a"
+    },
+    {
+      "case_id": "P80A310_U22_complete",
+      "executed_duration_s": 600.0,
+      "result_sha256": "e89a2c749f4bfe756eca0b36db73bb5d6da199d7f8bebb640b380ce68f26ab21",
+      "run_summary_sha256": "a5a2e2045e7e89b0d40840f4b7cc72bd1db1313e60448f2d061af0adef160047",
+      "compact_history_sha256": "5e4b6f9503a02e5fa7c588a8884c6515f411e66f51f57d0bb165c026aedab048",
+      "qblade_library_sha256": "7d4d07401dddf65dcf25d7cb7d809a78fbf8ab9ecad629aaaf6d2a4308a0764d",
+      "vorlap_config_sha256": "9e005a728564aa40817bf78e338ac6f3810d3a9fb91c858829efc019783c6c00"
+    }
+  ],
+  "files": {
+    "p80_v6_training_reproduction.csv": {
+      "sha256": "6e150e4582dca27a6bd40ef87ae2ac122b7a1c3c23ceeda4b71ebeb8b8e8fc60",
+      "bytes": 1669
+    },
+    "u14_terminal_tip_history.csv": {
+      "sha256": "6e21ab4f086cd5198318bf23f01fcdc3b73a0b5b359a9b308e8934b86391e42f",
+      "bytes": 165671
+    },
+    "qblade_geometry_audit.csv": {
+      "sha256": "9c1c3c623d8f00b4b7861c2277edef5ea0d0dd713e2467a1a863f113d18dfabf",
+      "bytes": 12374
+    },
+    "analysis.json": {
+      "sha256": "7d4cf515dfbda3cd4c2d1f264acea4726dfc66997619f9993dc82d8496a8fbe3",
+      "bytes": 14909
+    }
+  },
+  "claim_boundary": "Stationary P80 Fu training reproduction using a proxy native-damping calibration; not the production 40-case reproduction, independent validation, turbulent-inflow validation, or fatigue validation. The inactive stationarity policy was amended after the local U22 screen, without changing any closure coefficient or response ceiling.",
+  "fingerprint": "a8aad8ebf981b56bf435b3fcc0dca0ee6f6d30bdfff13943276d8f596c28a90b"
+}

@@ -9,6 +9,7 @@ python -m PyInstaller \
   --onefile \
   --name vorlap_gui \
   --paths . \
+  --add-data "data:data" \
   --collect-submodules vorlap \
   --collect-data vorlap \
   scripts/launch_gui.py

@@ -25,5 +25,12 @@ nav:
   - Home: index.md
   - Quick Start: quickstart.md
   - Examples: examples.md
+  - Paper Reproducibility: reproducibility.md
+  - Third-Party Inputs: third_party_inputs.md
+  - Release Notes: release_notes_1.1.0.md
+  - 2025 Paper Contracts: paper_recreation.md
   - Theory Notes: theory.md
+  - Developer Architecture: developer_architecture.md
+  - Coordinate Frames: coordinate_frames.md
+  - QBlade Timing: qblade_timing.md
   - API Reference: api.md

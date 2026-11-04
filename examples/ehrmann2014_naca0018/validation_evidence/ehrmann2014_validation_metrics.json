@@ -1,0 +1,151 @@
+{
+  "campaign_fingerprint": "23903688f3c33cc23c2962dd834018f17cfe7652a8f4cf7dceec3f64df64cc94",
+  "claim_boundary": "This is a completed negative response validation. Structural checks, clean execution, stationarity, and timestep agreement pass, but the latest bridge does not supply enough response-dependent aerodynamic work to overcome the tested structural damping.",
+  "clean_completed_cases": 40,
+  "comparison_series": [
+    "Ehrmann NACA 0018 experiment (digitized publisher markers)",
+    "Raw QBlade (dashed)",
+    "Latest VorLap-QBlade spectral-lockin bridge (solid)"
+  ],
+  "comparisons": [
+    {
+      "experiment_figure6_peak_rms_acceleration_mps2": 1.851351,
+      "experimental_peak_amplitude_over_chord": 0.01236635,
+      "experimental_peak_mapping": "nearest_digitized_lower_boundary_no_extrapolation",
+      "lockin_detected": false,
+      "lockin_detection_reason": "numerical sampled maximum is below one percent of the mass-damping-mapped experimental peak",
+      "lockin_frequency_relative_error": null,
+      "lockin_peak_location_absolute_error_u_star": null,
+      "lockin_peak_location_status": "not_defined_because_no_numerical_lockin_peak_was_detected",
+      "mass_damping": 0.96,
+      "numerical_peak_derived_rms_acceleration_mps2": 3.4876765294669513e-07,
+      "numerical_sampled_maximum_amplitude_over_chord": 1.586956521735981e-09,
+      "numerical_sampled_maximum_reduced_velocity": 5.8,
+      "peak_amplitude_relative_error": 0.9999998716713888,
+      "residual_response_frequency_relative_error_from_nominal": null,
+      "scenario": "raw_qblade"
+    },
+    {
+      "experiment_figure6_peak_rms_acceleration_mps2": 1.851351,
+      "experimental_peak_amplitude_over_chord": 0.01236635,
+      "experimental_peak_mapping": "nearest_digitized_lower_boundary_no_extrapolation",
+      "lockin_detected": false,
+      "lockin_detection_reason": "numerical sampled maximum is below one percent of the mass-damping-mapped experimental peak",
+      "lockin_frequency_relative_error": null,
+      "lockin_peak_location_absolute_error_u_star": null,
+      "lockin_peak_location_status": "not_defined_because_no_numerical_lockin_peak_was_detected",
+      "mass_damping": 0.96,
+      "numerical_peak_derived_rms_acceleration_mps2": 9.215110260341386e-05,
+      "numerical_sampled_maximum_amplitude_over_chord": 4.193043478260873e-07,
+      "numerical_sampled_maximum_reduced_velocity": 3.0,
+      "peak_amplitude_relative_error": 0.9999660931198109,
+      "residual_response_frequency_relative_error_from_nominal": 0.02490249025021655,
+      "scenario": "latest_spectral_lockin_bridge"
+    },
+    {
+      "experiment_figure6_peak_rms_acceleration_mps2": 1.851351,
+      "experimental_peak_amplitude_over_chord": 0.0068166095271971,
+      "experimental_peak_mapping": "linear_interpolation_within_digitized_markers",
+      "lockin_detected": false,
+      "lockin_detection_reason": "numerical sampled maximum is below one percent of the mass-damping-mapped experimental peak",
+      "lockin_frequency_relative_error": null,
+      "lockin_peak_location_absolute_error_u_star": null,
+      "lockin_peak_location_status": "not_defined_because_no_numerical_lockin_peak_was_detected",
+      "mass_damping": 1.44,
+      "numerical_peak_derived_rms_acceleration_mps2": 3.141117082054754e-12,
+      "numerical_sampled_maximum_amplitude_over_chord": 2.1739130436303377e-11,
+      "numerical_sampled_maximum_reduced_velocity": 5.0,
+      "peak_amplitude_relative_error": 0.9999999968108588,
+      "residual_response_frequency_relative_error_from_nominal": null,
+      "scenario": "raw_qblade"
+    },
+    {
+      "experiment_figure6_peak_rms_acceleration_mps2": 1.851351,
+      "experimental_peak_amplitude_over_chord": 0.0068166095271971,
+      "experimental_peak_mapping": "linear_interpolation_within_digitized_markers",
+      "lockin_detected": false,
+      "lockin_detection_reason": "numerical sampled maximum is below one percent of the mass-damping-mapped experimental peak",
+      "lockin_frequency_relative_error": null,
+      "lockin_peak_location_absolute_error_u_star": null,
+      "lockin_peak_location_status": "not_defined_because_no_numerical_lockin_peak_was_detected",
+      "mass_damping": 1.44,
+      "numerical_peak_derived_rms_acceleration_mps2": 9.364172599682764e-07,
+      "numerical_sampled_maximum_amplitude_over_chord": 4.2608695652171585e-09,
+      "numerical_sampled_maximum_reduced_velocity": 3.0,
+      "peak_amplitude_relative_error": 0.9999993749283206,
+      "residual_response_frequency_relative_error_from_nominal": null,
+      "scenario": "latest_spectral_lockin_bridge"
+    }
+  ],
+  "completed_cases": 40,
+  "experiment_figure6_peak": {
+    "harmonic_displacement_amplitude_over_chord_at_nominal_6hz": 0.008009652772495516,
+    "reduced_velocity": 4.586149,
+    "rms_acceleration_mps2": 1.851351
+  },
+  "maximum_paired_timestep_amplitude_difference_over_chord": 4.1304347826028143e-10,
+  "maximum_paired_timestep_frequency_difference_over_fn": 7.313413812093383e-05,
+  "primary_acceptance": {
+    "pass": false,
+    "peak_amplitude_tolerance": "0.30*A_experiment/c + 0.01",
+    "reason": "Both raw QBlade and the latest bridge remain more than 99.99 percent below the digitized NACA 0018 peak response and exhibit no lock-in peak."
+  },
+  "representative_seed_decay": {
+    "amplitude_over_chord_near_10s": 8.111298556380784e-06,
+    "amplitude_over_chord_near_19.999s": 4.7341188600206085e-09,
+    "amplitude_over_chord_near_1s": 0.003383820326590157,
+    "amplitude_over_chord_near_2s": 0.003040327200100087,
+    "amplitude_over_chord_near_5s": 0.00035660065687046145,
+    "case_id": "md0p96_u5p80_dt1000us_hybrid",
+    "history_path_relative_to_campaign": "results/md0p96_u5p80_dt1000us_hybrid/md0p96_u5p80_dt1000us_hybrid_qblade_results_sil_vorlap_history.csv",
+    "history_sha256": "35d0b8ecd9103688107ea0f5154255d0c804c57a617d8ab3bffa414b3227f824",
+    "maximum_applied_gain": 0.09929659079410787,
+    "maximum_estimated_amplitude_over_chord": 0.003835813149421072,
+    "maximum_generated_abs_force_component_n": 0.11418945913890756,
+    "maximum_response_activation": 0.025330600734913705,
+    "maximum_spectral_energy_closure_error": 1.179069862577986e-18,
+    "startup_seed_target_amplitude_over_chord": 0.005,
+    "terminal_captured_energy_sum": 0.0010279613139725302,
+    "terminal_estimated_amplitude_over_chord": 4.7341188600206085e-09,
+    "terminal_residual_source_scale": 0.0,
+    "terminal_source_energy_sum": 0.050418112175075094
+  },
+  "schema": "vorlap-ehrmann2014-validation-evidence-v1",
+  "source_identities": {
+    "campaign_analysis_sha256": "69047771d3b8805c471c7fe6879e08d943688e6364910502c029903a273da9c2",
+    "campaign_manifest_sha256": "745aefc6eb22ec8add5f0cb085bc7a4cbd52ff4940904bbbfbf0c986ea9741dc",
+    "digitization_provenance_sha256": "5c26c08c9d17a452d639eecc52c43e94ae0b618d05a938510e56499ec27bf3b1",
+    "figure6_digitization_sha256": "03c0161de5d45ba2f740f87d8d354452a911534d3b87a26c6ee23cb088a6890a",
+    "figure7_digitization_sha256": "1afdfca3cfa4b98318f91f5a46954b34886fa470c8e21763eee1bd5c71f73f83",
+    "flight_scheduler_report_sha256": "9737b7b4694744ceee82305b48c927f3ea58cb43805f50040dd545d5aa51de1d",
+    "publisher_figure6_raster_sha256": "4927964bf9511b4ac37ab159a6b9dd20e102d280778105e2d091c9728d564a89",
+    "publisher_figure7_raster_sha256": "052e0cee4d7b701e14770c3265c3d9ea4ce4103bafcf60370e484ea2f3daad2a"
+  },
+  "status": "completed_validation_failed_no_sustained_lockin",
+  "timestep_pairs": [
+    {
+      "absolute_amplitude_over_chord_difference": 0.0,
+      "absolute_frequency_over_fn_difference": 7.313413812093383e-05,
+      "mass_damping": 0.96,
+      "scenario": "raw_qblade"
+    },
+    {
+      "absolute_amplitude_over_chord_difference": 4.1304347826028143e-10,
+      "absolute_frequency_over_fn_difference": 7.313413812093383e-05,
+      "mass_damping": 0.96,
+      "scenario": "latest_spectral_lockin_bridge"
+    },
+    {
+      "absolute_amplitude_over_chord_difference": 0.0,
+      "absolute_frequency_over_fn_difference": 1.875234310791396e-06,
+      "mass_damping": 1.44,
+      "scenario": "raw_qblade"
+    },
+    {
+      "absolute_amplitude_over_chord_difference": 0.0,
+      "absolute_frequency_over_fn_difference": 7.313413812093383e-05,
+      "mass_damping": 1.44,
+      "scenario": "latest_spectral_lockin_bridge"
+    }
+  ]
+}

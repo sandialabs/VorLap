@@ -1,0 +1,168 @@
+{
+  "schema": "fu2026-iea10-fig21-reference-v1",
+  "publication": {
+    "citation": "Fu, X., Vijayakumar, G., Lee, B., and Sprague, M. (2026), Numerical simulation of vortex-induced vibration response of a single IEA 10-MW wind turbine blade, Journal of Fluids and Structures 143, 104537",
+    "doi": "10.1016/j.jfluidstructs.2026.104537",
+    "doi_url": "https://doi.org/10.1016/j.jfluidstructs.2026.104537",
+    "license": "CC BY 4.0",
+    "license_url": "https://creativecommons.org/licenses/by/4.0/",
+    "vector_source": {
+      "url": "https://xuepengfu.github.io/assets/pdf/bladejfs.pdf",
+      "sha256": "304bc4e37021f4dd64e17d0a6e3a4b0ed06eddf232a10878031269b9014485e7",
+      "retrieved_date": "2026-08-09",
+      "pdf_page_1_based": 17,
+      "article_page": 16,
+      "figure": 21
+    }
+  },
+  "digitization": {
+    "method": "Circle centers were recovered from the PDF vector paths and calibrated against each panel's vector axis ticks; no raster point picking was used.",
+    "source_status": "vector-digitized estimates, not author-provided raw solver values",
+    "constants": {
+      "mean_chord_m": 3.72,
+      "first_edgewise_frequency_hz": 0.6739,
+      "wind_speeds_mps": [
+        6,
+        10,
+        14,
+        18,
+        22
+      ]
+    },
+    "formulas": {
+      "reduced_velocity": "Ur = U_mps * cos(gamma_deg*pi/180) / (first_edgewise_frequency_hz * mean_chord_m)",
+      "edge_amplitude_m": "Ay_m = Ay_over_cbar * mean_chord_m",
+      "flap_amplitude_m": "Ax_m = Ax_over_cbar * mean_chord_m",
+      "response_frequency_hz": "fy_hz = fy_over_fn2 * first_edgewise_frequency_hz"
+    },
+    "common_digitization_uncertainty": {
+      "reduced_velocity": 0.01,
+      "amplitude_over_mean_chord": 0.002,
+      "amplitude_m": 0.00744,
+      "response_frequency_over_fn2": 0.02,
+      "response_frequency_hz": 0.013478
+    },
+    "separate_numerical_uncertainty_note": "Fu et al. report approximately 5 to 10 percent mesh variation for strongly responding cases; this is separate from digitization uncertainty.",
+    "frequency_scoring_rule": {
+      "minimum_edge_amplitude_over_mean_chord": 0.01,
+      "reason": "Below this preregistered signal threshold, a dominant spectral peak is not treated as a robust comparison observable."
+    }
+  },
+  "configurations": {
+    "P80A310": {
+      "alpha_deg": 80,
+      "beta_deg": 90,
+      "gamma_deg": 310,
+      "dtu_pitch_deg": 100,
+      "dtu_inclination_deg": 50
+    },
+    "P90A310": {
+      "alpha_deg": 90,
+      "beta_deg": 90,
+      "gamma_deg": 310,
+      "dtu_pitch_deg": 90,
+      "dtu_inclination_deg": 50
+    },
+    "P95A310": {
+      "alpha_deg": 95,
+      "beta_deg": 90,
+      "gamma_deg": 310,
+      "dtu_pitch_deg": 85,
+      "dtu_inclination_deg": 50
+    },
+    "P95A320": {
+      "alpha_deg": 95,
+      "beta_deg": 90,
+      "gamma_deg": 320,
+      "dtu_pitch_deg": 85,
+      "dtu_inclination_deg": 40
+    }
+  },
+  "public_iea_model": {
+    "repository": "https://github.com/IEAWindSystems/IEA-10.0-198-RWT",
+    "commit": "350cf06f5db9cec12bcd73c2b174a5d9642958d8",
+    "license": "Apache-2.0",
+    "files": {
+      "yaml/IEA-10-198-RWT.yaml": "298ffdcd700e558aa69bee2a78e15c6f43f4e0ff5253a619aa314ffa9bb3b7f5",
+      "openfast/IEA-10.0-198-RWT_BeamDyn.dat": "3d1e6de05d2b7918de0627c74278556dcc304d0542c3fffd156018fa242714f9",
+      "openfast/IEA-10.0-198-RWT_BeamDyn_blade.dat": "0b5372174194eb974e06eedc8faab3386d2a2a2825ea442bdf6037ec56b604c4"
+    },
+    "published_structural_note": "Fu et al. report 73 BeamDyn quadrature nodes; the paper does not provide the exact node spacing or pin the complete ExaWind case revision."
+  },
+  "recreation_boundary": {
+    "exact_fu_recreations": 0,
+    "as_configured_qblade_input_matches": 1,
+    "as_configured_case_id": "P80A310_U18",
+    "documented_kinematic_analogue_targets": 20,
+    "exact_boundary_reason": "The current QBlade example uses a reduced HAWC2 set-1 Timoshenko structure and single-mode damping approximation, while raw Fu CFD force histories and the cited complete ExaWind case are unavailable.",
+    "one_case_boundary": "The existing P100-I50, U=18 m/s QBlade input maps to Fu P80A310, U=18 m/s; this is an input/configuration match, not an exact Fu aerodynamic or structural recreation.",
+    "analogue_boundary": "All four documented angle configurations and five wind speeds can be represented as QBlade kinematic/structural analogues after explicit parameterization and coordinate re-audit."
+  },
+  "preregistration": {
+    "debug_case_id": "P80A310_U18",
+    "debug_allowed_uses": [
+      "coordinate and sign audit",
+      "unit conversion audit",
+      "trigger implementation audit",
+      "sampling and steady-window audit",
+      "sqrt(2)-RMS postprocessing audit"
+    ],
+    "debug_prohibited_uses": [
+      "aerodynamic coefficient tuning",
+      "force-amplitude tuning",
+      "response-frequency tuning",
+      "structural-property tuning to the Fu target"
+    ],
+    "locked_holdout_case_ids": [
+      "P80A310_U06",
+      "P80A310_U10",
+      "P80A310_U14",
+      "P80A310_U22",
+      "P90A310_U06",
+      "P90A310_U10",
+      "P90A310_U14",
+      "P90A310_U18",
+      "P90A310_U22",
+      "P95A310_U06",
+      "P95A310_U10",
+      "P95A310_U14",
+      "P95A310_U18",
+      "P95A310_U22",
+      "P95A320_U06",
+      "P95A320_U10",
+      "P95A320_U14",
+      "P95A320_U18",
+      "P95A320_U22"
+    ],
+    "terminology": "locked holdout from fitting; not strictly blind because target values are public and included in this package",
+    "freeze_rule": "No response-model coefficient, structural property, force scale, or scoring rule may change after the debug audit if the 19 cases are to remain holdouts."
+  },
+  "table4_cross_checks": [
+    {
+      "case_id": "P80A310_U18",
+      "published_edge_amplitude_m": 1.19,
+      "published_flap_amplitude_m": 0.20
+    },
+    {
+      "case_id": "P95A310_U18",
+      "published_edge_amplitude_m": 1.23,
+      "published_flap_amplitude_m": 0.21
+    }
+  ],
+  "scope": {
+    "supports_tip_response_amplitude_comparison": true,
+    "supports_response_frequency_comparison_above_signal_threshold": true,
+    "supports_viv_response_classification": true,
+    "supports_time_history_comparison": false,
+    "supports_spanwise_load_comparison": false,
+    "supports_del_or_fatigue_claim": false,
+    "no_del_reason": "Figure 21 provides tip response summaries only; it does not provide load or response time histories needed for rainflow counting or DEL calculation."
+  },
+  "artifacts": {
+    "targets_csv": {
+      "path": "targets.csv",
+      "rows": 20,
+      "sha256": "64e958175ade5423bf51c15ed68756a8458199fc06601b60205f2bf14ff39ff1"
+    }
+  }
+}

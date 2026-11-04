@@ -1,0 +1,92 @@
+{
+  "claim": "passed_multi_condition_turbine_hfm_geometry_validation",
+  "claim_boundary": {
+    "does_not_support": "Experimental validation, arbitrary blade-profile extrapolation, H-VAWT validation, spanwise load validation, rainflow/DEL agreement, fatigue life, or certification.",
+    "h_vawt_promotion": "H-VAWT preparation may proceed only after a frozen model passes this protocol and the heldout discrepancy is propagated as a conservative engineering uncertainty factor.",
+    "supports": "Multi-condition high-fidelity numerical wind-turbine validation of edgewise response amplitude, lock-in frequency, and finite inclination interval for one completely held-out combined tip geometry."
+  },
+  "conservative_engineering_envelope": {
+    "additive_floor_m": 0.16117055897983212,
+    "additive_floor_over_signed_saturation": 0.10265640699352364,
+    "covers_all_11_heldout_rows": true,
+    "fatigue_use_boundary": "The bound may be scaled with the local model saturation for conservative H-VAWT screening; it is not itself a fatigue validation and must be applied to cycle-load amplitude before rainflow/DEL calculation.",
+    "formula": "A_design=1.30*A_model+delta_A",
+    "multiplicative_factor": 1.3,
+    "status": "post_validation_discrepancy_bound_not_independent_validation"
+  },
+  "frozen_evidence": {
+    "assessment_code_sha256": "a5ff75f6bb3c66d5902ad48f2d14d6e79384debe1d936de7872f018bdbefb208",
+    "assessment_sha256": "be956c38f5672ada0a09a6a7905df48245fe9d99830dfce722447ec86109e46b",
+    "model_fingerprint": "8b067d6f3a049f665c451f545a25dc8a0345b0a5bc829a3715f691038f899891",
+    "model_sha256": "656a2dac90eda862ec02d6e893679b1118ca5043d962c19c518b978ba202a0dc",
+    "predictions_sha256": "62b6f38008263a1f0c76d772a4a8b97666c7906189e3539a07f85f5dc35ddb69"
+  },
+  "gates": {
+    "all": true,
+    "curve_nrmse": true,
+    "finite_interval": true,
+    "peak_amplitude": true,
+    "peak_inclination": true,
+    "resolved_frequency": true
+  },
+  "metrics": {
+    "curve_nrmse_by_target_peak": 0.12922581236076258,
+    "curve_rmse_m": 0.10879358718729044,
+    "interval_collapse_error_deg": 0.0,
+    "interval_onset_error_deg": 2.5,
+    "maximum_resolved_frequency_ratio_error": 0.039160768999999984,
+    "peak_amplitude_absolute_error_m": 0.023882327307587325,
+    "peak_amplitude_relative_error": 0.028367601686628965,
+    "peak_amplitude_tolerance_m": 0.2625662293,
+    "peak_inclination_error_deg": 0.0,
+    "predicted_peak_amplitude_m": 0.8180051036924126,
+    "predicted_peak_inclination_deg": 55.0,
+    "predicted_resolved_interval": {
+      "collapse_deg": 57.5,
+      "inclinations_deg": [
+        52.5,
+        55.0,
+        57.5
+      ],
+      "indices": [
+        5,
+        6,
+        7
+      ],
+      "onset_deg": 52.5,
+      "point_count": 3,
+      "threshold_m": 0.4090025518462063
+    },
+    "target_peak_amplitude_m": 0.841887431,
+    "target_peak_inclination_deg": 55.0,
+    "target_resolved_interval": {
+      "collapse_deg": 57.5,
+      "inclinations_deg": [
+        55.0,
+        57.5
+      ],
+      "indices": [
+        6,
+        7
+      ],
+      "onset_deg": 55.0,
+      "point_count": 2,
+      "threshold_m": 0.4209437155
+    }
+  },
+  "prediction_parity": {
+    "all_11_rows_exact": true,
+    "comparison": "exact_binary64_after_decimal_parse",
+    "row_count": 11
+  },
+  "reproduction_code_sha256": "6d112b47c8f47a38c93fea1405e4508a9d9de9f77e9794109eed68d315924154",
+  "schema": "horcas2020-unified-gain-reproduction-v1",
+  "status": "passed",
+  "unified_model": {
+    "evaluator_path": "vorlap/unified_viv_gain.py",
+    "evaluator_sha256": "531d68c4a2eab5a19c767c83d3abf93b9e82ecd7d531398de7f6a5a6cb3d6301",
+    "model_fingerprint": "40cbbced0d0be36d23e3e016556b063e43e72a88020b4d6b76a9af4a12bce4c2",
+    "path": "run_headless/config/unified_viv_gain_model_v1.json",
+    "sha256": "2da5e305b4dec79dfd3e569ad5c069f55bea387ca7cf85d33e03592e68f42ff9"
+  }
+}

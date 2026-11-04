@@ -1,0 +1,32 @@
+{
+  "claim_boundary": {
+    "may_validate_model_fitted_only_to_mannini_3x2": true,
+    "reclassified_as_training_after_that_model_failed": true,
+    "response_frequency_and_amplitude_not_independent_after_reclassification": true,
+    "static_force_scale_is_an_engineering_input": true
+  },
+  "experiment": {
+    "crossflow_depth_m": 0.075,
+    "doi_original_experiment": "10.1016/j.jweia.2015.08.007",
+    "span_m": 0.986,
+    "streamwise_breadth_m": 0.300
+  },
+  "response_source": {
+    "arxiv_pdf_sha256": "3001f32f5f35aeaebea3f7345f1839635728da27715c4d61bad7d40c3f45ee30",
+    "arxiv_url": "https://arxiv.org/abs/2504.03564",
+    "figure": 15,
+    "table": 5,
+    "table_values_are_exact_transcription": true,
+    "target_quantity": "peak harmonic displacement amplitude Ay/D"
+  },
+  "static_source": {
+    "force_convention": "sinusoidal-equivalent lift coefficient sqrt(2)*CL_rms",
+    "reynolds_number_range": [10000, 20000],
+    "sinusoidal_equivalent_lift_coefficient": 0.9050966799187808,
+    "source_cl_rms": 0.64,
+    "source_table": 3,
+    "source_url": "https://www.tandfonline.com/doi/pdf/10.1080/19942060.2015.1004817",
+    "strouhal_number_depth_reference": 0.140
+  },
+  "status": "frozen_as_training_after_prior_model_failure"
+}

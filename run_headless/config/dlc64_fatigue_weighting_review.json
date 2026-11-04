@@ -1,0 +1,145 @@
+{
+  "annual_hours": 8760.0,
+  "annual_non_power_fraction": 0.010000000000000009,
+  "availability": 0.99,
+  "bins": [
+    {
+      "conditional_non_power_weight": 0.06824995474674746,
+      "downtime_probability": 0.0006824542890062364,
+      "expected_non_power_hours_per_year": 5.97829957169463,
+      "lower_edge_mps": 0.0,
+      "non_power_probability": 0.0006824542890062364,
+      "rayleigh_probability": 0.06824542890062357,
+      "representative_upper_speed_mps": 3.0,
+      "upper_edge_mps": 3.0
+    },
+    {
+      "conditional_non_power_weight": 0.251215183755684,
+      "downtime_probability": 0.002511985249715154,
+      "expected_non_power_hours_per_year": 22.00499078750475,
+      "lower_edge_mps": 3.0,
+      "non_power_probability": 0.002511985249715154,
+      "rayleigh_probability": 0.2511985249715152,
+      "representative_upper_speed_mps": 7.0,
+      "upper_edge_mps": 7.0
+    },
+    {
+      "conditional_non_power_weight": 0.0756384991648393,
+      "downtime_probability": 0.0007563348336359039,
+      "expected_non_power_hours_per_year": 6.625493142650519,
+      "lower_edge_mps": 7.0,
+      "non_power_probability": 0.0007563348336359039,
+      "rayleigh_probability": 0.07563348336359033,
+      "representative_upper_speed_mps": 8.0,
+      "upper_edge_mps": 8.0
+    },
+    {
+      "conditional_non_power_weight": 0.056838906234446755,
+      "downtime_probability": 0.0005683513708698844,
+      "expected_non_power_hours_per_year": 4.978758008820187,
+      "lower_edge_mps": 8.0,
+      "non_power_probability": 0.0005683513708698844,
+      "rayleigh_probability": 0.056835137086988397,
+      "representative_upper_speed_mps": 8.75,
+      "upper_edge_mps": 8.75
+    },
+    {
+      "conditional_non_power_weight": 0.17801311277246776,
+      "downtime_probability": 0.0017800130822315456,
+      "expected_non_power_hours_per_year": 15.592914600348339,
+      "lower_edge_mps": 8.75,
+      "non_power_probability": 0.0017800130822315456,
+      "rayleigh_probability": 0.1780013082231544,
+      "representative_upper_speed_mps": 11.25,
+      "upper_edge_mps": 11.25
+    },
+    {
+      "conditional_non_power_weight": 0.10490683113879531,
+      "downtime_probability": 0.0010489987447227687,
+      "expected_non_power_hours_per_year": 9.189229003771453,
+      "lower_edge_mps": 11.25,
+      "non_power_probability": 0.0010489987447227687,
+      "rayleigh_probability": 0.10489987447227678,
+      "representative_upper_speed_mps": 13.0,
+      "upper_edge_mps": 13.0
+    },
+    {
+      "conditional_non_power_weight": 0.08409652188573563,
+      "downtime_probability": 0.0008409094520925261,
+      "expected_non_power_hours_per_year": 7.366366800330528,
+      "lower_edge_mps": 13.0,
+      "non_power_probability": 0.0008409094520925261,
+      "rayleigh_probability": 0.08409094520925253,
+      "representative_upper_speed_mps": 14.75,
+      "upper_edge_mps": 14.75
+    },
+    {
+      "conditional_non_power_weight": 0.10260472326040343,
+      "downtime_probability": 0.00102597919253122,
+      "expected_non_power_hours_per_year": 8.987577726573486,
+      "lower_edge_mps": 14.75,
+      "non_power_probability": 0.00102597919253122,
+      "rayleigh_probability": 0.1025979192531219,
+      "representative_upper_speed_mps": 18.0,
+      "upper_edge_mps": 18.0
+    },
+    {
+      "conditional_non_power_weight": 0.024044542728601376,
+      "downtime_probability": 0.0002404294826746347,
+      "expected_non_power_hours_per_year": 2.1061622682298,
+      "lower_edge_mps": 18.0,
+      "non_power_probability": 0.0002404294826746347,
+      "rayleigh_probability": 0.02404294826746345,
+      "representative_upper_speed_mps": 19.25,
+      "upper_edge_mps": 19.25
+    },
+    {
+      "conditional_non_power_weight": 0.027953434073824706,
+      "downtime_probability": 0.00027951580403126755,
+      "expected_non_power_hours_per_year": 2.4485584433139036,
+      "lower_edge_mps": 19.25,
+      "non_power_probability": 0.00027951580403126755,
+      "rayleigh_probability": 0.02795158040312673,
+      "representative_upper_speed_mps": 21.5,
+      "upper_edge_mps": 21.5
+    },
+    {
+      "conditional_non_power_weight": 0.026438290238454176,
+      "downtime_probability": 0.00026436537041197997,
+      "expected_non_power_hours_per_year": 2.3158406448089446,
+      "lower_edge_mps": 21.5,
+      "non_power_probability": 0.00026436537041197997,
+      "rayleigh_probability": 0.02643653704119797,
+      "representative_upper_speed_mps": 35.0,
+      "upper_edge_mps": 35.0
+    }
+  ],
+  "dlc64_max_speed_mps": 35.0,
+  "expected_non_power_hours_per_year_through_dlc64_limit": 87.59419099804654,
+  "expected_total_non_power_days_per_year": 3.6500000000000035,
+  "expected_total_non_power_hours_per_year": 87.60000000000008,
+  "fatigue_weights_by_speed": {
+    "11.25": 0.0017800130822315456,
+    "13": 0.0010489987447227687,
+    "14.75": 0.0008409094520925261,
+    "18": 0.00102597919253122,
+    "19.25": 0.0002404294826746347,
+    "21.5": 0.00027951580403126755,
+    "3": 0.0006824542890062364,
+    "35": 0.00026436537041197997,
+    "7": 0.002511985249715154,
+    "8": 0.0007563348336359039,
+    "8.75": 0.0005683513708698844
+  },
+  "passed": true,
+  "review_sha256": "501872f1511ca443c3eb886c0cb9392a5210b1ba32721d735004ed02ed1d451d",
+  "schema_version": 2,
+  "standard_basis": "IEC 61400-1 DLC 6.4 NTM below 0.7 Vref",
+  "study_assumption": "Availability is a project input, not an IEC-prescribed value. The current candidate uses 0.99 availability: one 1-percent-of-year parked window that may occur at any wind speed, distributed according to the wind-speed probability.",
+  "total_non_power_probability_through_dlc64_limit": 0.009999336871923122,
+  "vave_mps": 10.0,
+  "vave_to_vref_ratio": 0.2,
+  "vref_mps": 50.0,
+  "weighting_formula": "The project-assumed non-power fraction is distributed over all wind speeds according to the IEC standard-class Rayleigh distribution.",
+  "wind_distribution": "IEC standard-class Rayleigh distribution"
+}

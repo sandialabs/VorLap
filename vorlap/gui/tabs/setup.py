@@ -9,20 +9,77 @@ import tkinter as tk
 from tkinter import ttk, messagebox, filedialog
 import os
 import numpy as np
-import time
 import threading
-import warnings
+import copy
 from collections import Counter
+from queue import Empty, Queue
 
 import vorlap
 
 from ..widgets import PathEntry, EditableTreeview, ScrollableFrame
+from .qblade_bridge import default_qblade_sim_path
+
+
+def _format_parameter_value(value):
+    if isinstance(value, (int, np.integer)):
+        return str(int(value))
+    return f"{float(value):.12g}"
+
+
+def _sweep_step(values, default_step):
+    arr = np.asarray(values, dtype=float).reshape(-1)
+    if arr.size >= 2:
+        return float(arr[1] - arr[0])
+    return float(default_step)
+
+
+def _sweep_start(values, default_start):
+    arr = np.asarray(values, dtype=float).reshape(-1)
+    return float(arr[0]) if arr.size else float(default_start)
+
+
+def _sweep_end(values, default_start, default_step):
+    arr = np.asarray(values, dtype=float).reshape(-1)
+    if arr.size:
+        return float(arr[-1] + _sweep_step(arr, default_step))
+    return float(default_start + default_step)
+
+
+GUI_PARAMETER_SCHEMA = (
+    ("fluid_density", "Fluid density (kg/m³)"),
+    ("fluid_dynamicviscosity", "Fluid dynamic viscosity (Pa·s)"),
+    ("rotation_axis_x", "X component of rotation axis vector"),
+    ("rotation_axis_y", "Y component of rotation axis vector"),
+    ("rotation_axis_z", "Z component of rotation axis vector"),
+    ("rotation_axis_offset_x", "X offset of rotation axis (m)"),
+    ("rotation_axis_offset_y", "Y offset of rotation axis (m)"),
+    ("rotation_axis_offset_z", "Z offset of rotation axis (m)"),
+    ("inflow_vec_x", "X component of inflow direction vector"),
+    ("inflow_vec_y", "Y component of inflow direction vector"),
+    ("inflow_vec_z", "Z component of inflow direction vector"),
+    ("azimuth_start", "Starting azimuth angle (degrees)"),
+    ("azimuth_end", "Ending azimuth angle (degrees)"),
+    ("azimuth_step", "Step size for azimuth angle (degrees)"),
+    ("inflow_speed_start", "Starting inflow speed (m/s)"),
+    ("inflow_speed_end", "Ending inflow speed (m/s)"),
+    ("inflow_speed_step", "Step size for inflow speed (m/s)"),
+    ("n_harmonic", "Number of harmonics to consider"),
+    ("output_time_start", "Output time series start (s)"),
+    ("output_time_end", "Output time series end (s)"),
+    ("output_time_step", "Output time series step size (s)"),
+    ("output_azimuth", "Output azimuth angle (degrees)"),
+    ("output_vinf", "Output inflow velocity (m/s)"),
+    ("amplitude_coeff_cutoff", "Amplitude coefficient cutoff threshold"),
+    ("n_freq_depth", "Number of frequency depth levels"),
+)
 
 
 class SimulationSetupTab(ttk.Frame):
     def __init__(self, master, app):
         super().__init__(master)
         self.app = app
+        self._worker_active = False
+        self._analysis_poll_id = None
         self.sim_save_var = tk.StringVar()
         self.qblade_loading_path_var = tk.StringVar()
         self.include_qblade_tower = tk.BooleanVar(value=True)
@@ -112,6 +169,7 @@ class SimulationSetupTab(ttk.Frame):
             on_select=lambda _path: self.load_qblade_inputs(),
             button_text="Load",
         )
+        self.qblade_sim_path.var.trace_add("write", lambda *_args: self._publish_qblade_sim_path())
         self.qblade_sim_path.grid(row=1, column=0, sticky="ew", pady=2)
         ttk.Button(self.qblade_frame, text="Save VorLap CSVs", command=self.save_qblade_components).grid(row=1, column=1, padx=6)
         ttk.Checkbutton(
@@ -196,14 +254,15 @@ class SimulationSetupTab(ttk.Frame):
         default_inflow_profile_path = os.path.join(vorlap.repo_dir, "data", "inflow_profile.csv")
         self.inflow_profile_path.set(default_inflow_profile_path)
 
-        # Optional default QBlade test path when present
-        default_qblade_sim_path = os.path.join(
-            os.path.dirname(vorlap.repo_dir),
-            "examples",
-            "QBladeExample.sim",
-        )
-        if os.path.isfile(default_qblade_sim_path):
-            self.qblade_sim_path.set(default_qblade_sim_path)
+        # Both tabs resolve the same packaged example. Installed builds without
+        # QBlade assets start with the packaged component CSV workflow.
+        default_sim = default_qblade_sim_path()
+        if default_sim is not None:
+            self.qblade_sim_path.set(str(default_sim))
+        else:
+            self.use_qblade_geometry.set(False)
+            if os.path.isdir(default_path):
+                self.load_components()
 
         # Initialize with default parameters
         self._populate_default_params()
@@ -241,68 +300,60 @@ class SimulationSetupTab(ttk.Frame):
 
     def _get_param_descriptions(self):
         """Get parameter descriptions mapping."""
+        return dict(GUI_PARAMETER_SCHEMA)
+
+    @staticmethod
+    def _default_viv_params():
+        return vorlap.VIV_Params(
+            azimuths=np.arange(0.0, 360.0, 10.0, dtype=float),
+            inflow_speeds=np.arange(2.0, 50.0, 4.0, dtype=float),
+            output_time=np.arange(0.0, 0.011, 0.001, dtype=float),
+            output_azimuth_vinf=(10.0, 6.0),
+            n_harmonic=2,
+            amplitude_coeff_cutoff=0.002,
+            n_freq_depth=10,
+        )
+
+    @classmethod
+    def _default_param_values(cls, viv_params=None):
+        viv = cls._default_viv_params() if viv_params is None else viv_params
         return {
-            "fluid_density": "Fluid density (kg/m³)",
-            "fluid_dynamicviscosity": "Fluid dynamic viscosity (Pa·s)",
-            "rotation_axis_x": "X component of rotation axis vector",
-            "rotation_axis_y": "Y component of rotation axis vector",
-            "rotation_axis_z": "Z component of rotation axis vector",
-            "rotation_axis_offset_x": "X offset of rotation axis (m)",
-            "rotation_axis_offset_y": "Y offset of rotation axis (m)",
-            "rotation_axis_offset_z": "Z offset of rotation axis (m)",
-            "inflow_vec_x": "X component of inflow direction vector",
-            "inflow_vec_y": "Y component of inflow direction vector",
-            "inflow_vec_z": "Z component of inflow direction vector",
-            "azimuth_start": "Starting azimuth angle (degrees)",
-            "azimuth_end": "Ending azimuth angle (degrees)",
-            "azimuth_step": "Step size for azimuth angle (degrees)",
-            "inflow_speed_start": "Starting inflow speed (m/s)",
-            "inflow_speed_end": "Ending inflow speed (m/s)",
-            "inflow_speed_step": "Step size for inflow speed (m/s)",
-            "n_harmonic": "Number of harmonics to consider",
-            "output_time_start": "Output time series start (s)",
-            "output_time_end": "Output time series end (s)",
-            "output_time_step": "Output time series step size (s)",
-            "output_azimuth": "Output azimuth angle (degrees)",
-            "output_vinf": "Output inflow velocity (m/s)",
-            "amplitude_coeff_cutoff": "Amplitude coefficient cutoff threshold",
-            "n_freq_depth": "Number of frequency depth levels",
+            "fluid_density": viv.fluid_density,
+            "fluid_dynamicviscosity": viv.fluid_dynamicviscosity,
+            "rotation_axis_x": viv.rotation_axis[0],
+            "rotation_axis_y": viv.rotation_axis[1],
+            "rotation_axis_z": viv.rotation_axis[2],
+            "rotation_axis_offset_x": viv.rotation_axis_offset[0],
+            "rotation_axis_offset_y": viv.rotation_axis_offset[1],
+            "rotation_axis_offset_z": viv.rotation_axis_offset[2],
+            "inflow_vec_x": viv.inflow_vec[0],
+            "inflow_vec_y": viv.inflow_vec[1],
+            "inflow_vec_z": viv.inflow_vec[2],
+            "azimuth_start": _sweep_start(viv.azimuths, 0.0),
+            "azimuth_end": _sweep_end(viv.azimuths, 0.0, 10.0),
+            "azimuth_step": _sweep_step(viv.azimuths, 10.0),
+            "inflow_speed_start": _sweep_start(viv.inflow_speeds, 2.0),
+            "inflow_speed_end": _sweep_end(viv.inflow_speeds, 2.0, 4.0),
+            "inflow_speed_step": _sweep_step(viv.inflow_speeds, 4.0),
+            "n_harmonic": viv.n_harmonic,
+            "output_time_start": _sweep_start(viv.output_time, 0.0),
+            "output_time_end": _sweep_end(viv.output_time, 0.0, 0.001),
+            "output_time_step": _sweep_step(viv.output_time, 0.001),
+            "output_azimuth": viv.output_azimuth_vinf[0],
+            "output_vinf": viv.output_azimuth_vinf[1],
+            "amplitude_coeff_cutoff": viv.amplitude_coeff_cutoff,
+            "n_freq_depth": viv.n_freq_depth,
         }
 
     def _populate_default_params(self):
         """Populate the parameters table with default VIV_Params values."""
         descriptions = self._get_param_descriptions()
-        default_params = [
-            ("fluid_density", "1.225"),
-            ("fluid_dynamicviscosity", "1.81e-5"),
-            ("rotation_axis_x", "0.0"),
-            ("rotation_axis_y", "0.0"),
-            ("rotation_axis_z", "1.0"),
-            ("rotation_axis_offset_x", "0.0"),
-            ("rotation_axis_offset_y", "0.0"),
-            ("rotation_axis_offset_z", "0.0"),
-            ("inflow_vec_x", "1.0"),
-            ("inflow_vec_y", "0.0"),
-            ("inflow_vec_z", "0.0"),
-            ("azimuth_start", "0"),
-            ("azimuth_end", "360"),
-            ("azimuth_step", "10"),
-            ("inflow_speed_start", "2.0"),
-            ("inflow_speed_end", "50.0"),
-            ("inflow_speed_step", "4.0"),
-            ("n_harmonic", "2"),
-            ("output_time_start", "0.0"),
-            ("output_time_end", "0.011"),
-            ("output_time_step", "0.001"),
-            ("output_azimuth", "10.0"),
-            ("output_vinf", "6.0"),
-            ("amplitude_coeff_cutoff", "0.002"),
-            ("n_freq_depth", "10"),
-        ]
+        default_params = self._default_param_values()
         
-        for param, value in default_params:
+        for param, _description in GUI_PARAMETER_SCHEMA:
+            value = default_params[param]
             description = descriptions.get(param, "")
-            self.param_table.append_row([description, param, value])
+            self.param_table.append_row([description, param, _format_parameter_value(value)])
 
     def _set_widget_state_recursive(self, widget, enabled):
         for child in widget.winfo_children():
@@ -326,8 +377,41 @@ class SimulationSetupTab(ttk.Frame):
     def _on_qblade_toggle(self):
         self._apply_geometry_source_state()
 
+    def _publish_qblade_sim_path(self):
+        state = getattr(self.app, "state", None)
+        if hasattr(state, "set_qblade_sim_path"):
+            state.set_qblade_sim_path(self.qblade_sim_path.get())
+
+    @staticmethod
+    def _validated_sweep_range(
+        params,
+        *,
+        label,
+        start_key,
+        end_key,
+        step_key,
+        default_start,
+        default_end,
+        default_step,
+    ):
+        start = float(params.get(start_key, default_start))
+        end = float(params.get(end_key, default_end))
+        step = float(params.get(step_key, default_step))
+        values = np.array([start, end, step], dtype=float)
+        if not np.all(np.isfinite(values)):
+            raise ValueError(f"{label} start, end, and step must be finite values.")
+        if step <= 0.0:
+            raise ValueError(f"{label} step must be positive.")
+        sweep = np.arange(start, end, step)
+        if sweep.size == 0:
+            raise ValueError(
+                f"{label} sweep is empty; set the end value greater than the start value."
+            )
+        return sweep
+
     def get_viv_params(self):
         """Create VIV_Params object from the current parameter table."""
+        defaults = self._default_param_values()
         params = {}
         for row in self.param_table.get_all():
             if len(row) >= 3:
@@ -343,244 +427,150 @@ class SimulationSetupTab(ttk.Frame):
                     except ValueError:
                         params[key] = value  # Keep as string if conversion fails
 
-        # Create arrays from start/end/step parameters
-        azimuths = np.arange(
-            params.get("azimuth_start", 0),
-            params.get("azimuth_end", 255),
-            params.get("azimuth_step", 5)
+        azimuths = self._validated_sweep_range(
+            params,
+            label="Azimuth",
+            start_key="azimuth_start",
+            end_key="azimuth_end",
+            step_key="azimuth_step",
+            default_start=defaults["azimuth_start"],
+            default_end=defaults["azimuth_end"],
+            default_step=defaults["azimuth_step"],
         )
-        
-        inflow_speeds = np.arange(
-            params.get("inflow_speed_start", 2.0),
-            params.get("inflow_speed_end", 50.0),
-            params.get("inflow_speed_step", 0.5)
+
+        inflow_speeds = self._validated_sweep_range(
+            params,
+            label="Inflow speed",
+            start_key="inflow_speed_start",
+            end_key="inflow_speed_end",
+            step_key="inflow_speed_step",
+            default_start=defaults["inflow_speed_start"],
+            default_end=defaults["inflow_speed_end"],
+            default_step=defaults["inflow_speed_step"],
         )
-        
-        output_time = np.arange(
-            params.get("output_time_start", 0.0),
-            params.get("output_time_end", 0.01),
-            params.get("output_time_step", 0.001)
+
+        output_time = self._validated_sweep_range(
+            params,
+            label="Output time",
+            start_key="output_time_start",
+            end_key="output_time_end",
+            step_key="output_time_step",
+            default_start=defaults["output_time_start"],
+            default_end=defaults["output_time_end"],
+            default_step=defaults["output_time_step"],
         )
 
         # Set airfoil folder to default location
         airfoil_folder = os.path.join(vorlap.repo_dir, "data", "airfoils")
 
         return vorlap.VIV_Params(
-            fluid_density=params.get("fluid_density", 1.225),
-            fluid_dynamicviscosity=params.get("fluid_dynamicviscosity", 1.81e-5),
+            fluid_density=params.get("fluid_density", defaults["fluid_density"]),
+            fluid_dynamicviscosity=params.get("fluid_dynamicviscosity", defaults["fluid_dynamicviscosity"]),
             rotation_axis=np.array([
-                params.get("rotation_axis_x", 0.0),
-                params.get("rotation_axis_y", 0.0),
-                params.get("rotation_axis_z", 1.0)
+                params.get("rotation_axis_x", defaults["rotation_axis_x"]),
+                params.get("rotation_axis_y", defaults["rotation_axis_y"]),
+                params.get("rotation_axis_z", defaults["rotation_axis_z"]),
             ]),
             rotation_axis_offset=np.array([
-                params.get("rotation_axis_offset_x", 0.0),
-                params.get("rotation_axis_offset_y", 0.0),
-                params.get("rotation_axis_offset_z", 0.0)
+                params.get("rotation_axis_offset_x", defaults["rotation_axis_offset_x"]),
+                params.get("rotation_axis_offset_y", defaults["rotation_axis_offset_y"]),
+                params.get("rotation_axis_offset_z", defaults["rotation_axis_offset_z"]),
             ]),
             inflow_vec=np.array([
-                params.get("inflow_vec_x", 1.0),
-                params.get("inflow_vec_y", 0.0),
-                params.get("inflow_vec_z", 0.0)
+                params.get("inflow_vec_x", defaults["inflow_vec_x"]),
+                params.get("inflow_vec_y", defaults["inflow_vec_y"]),
+                params.get("inflow_vec_z", defaults["inflow_vec_z"]),
             ]),
             azimuths=azimuths,
             inflow_speeds=inflow_speeds,
-            n_harmonic=params.get("n_harmonic", 2),
+            n_harmonic=params.get("n_harmonic", defaults["n_harmonic"]),
             output_time=output_time,
             output_azimuth_vinf=(
-                params.get("output_azimuth", 5.0),
-                params.get("output_vinf", 2.0)
+                params.get("output_azimuth", defaults["output_azimuth"]),
+                params.get("output_vinf", defaults["output_vinf"]),
             ),
-            amplitude_coeff_cutoff=params.get("amplitude_coeff_cutoff", 0.2),
-            n_freq_depth=params.get("n_freq_depth", 10),
+            amplitude_coeff_cutoff=params.get("amplitude_coeff_cutoff", defaults["amplitude_coeff_cutoff"]),
+            n_freq_depth=params.get("n_freq_depth", defaults["n_freq_depth"]),
             airfoil_folder=airfoil_folder
         )
 
     # ---- handlers ----
     def run_and_save(self):
-        """Run the complete VorLap analysis."""
-        def ui_log(message: str):
-            self.app.after(0, self.app.log, message)
+        """Snapshot inputs on the Tk thread, then run the numerical work once."""
+        if self._worker_active:
+            self.app.log("An offline analysis is already running.\n")
+            return
+        try:
+            natfreqs = self.get_natural_frequencies()
+            if natfreqs is None:
+                raise ValueError("No natural frequencies loaded.")
+            config = vorlap.VorLapOfflineAnalysisConfig(
+                viv_params=self.get_viv_params(),
+                natural_frequencies=natfreqs.copy(),
+                inflow_profile_path=self.inflow_profile_path.get().strip(),
+                # Frame preparation mutates components; keep displayed geometry
+                # and later user edits independent of the running calculation.
+                components=tuple(copy.deepcopy(self.app.components)),
+                use_qblade_geometry=bool(self.use_qblade_geometry.get()),
+                qblade_sim_path=self.qblade_sim_path.get().strip(),
+                include_qblade_tower=bool(self.include_qblade_tower.get()),
+                save_dir=self.sim_save_var.get().strip(),
+                qblade_loading_path=self.qblade_loading_path_var.get().strip(),
+            )
+        except Exception as exc:
+            self.app.log(f"Invalid analysis inputs: {exc}\n")
+            messagebox.showerror("Analysis Error", str(exc))
+            return
 
-        def ui_error(title: str, message: str):
-            self.app.after(0, lambda: messagebox.showerror(title, message))
-
-        def ui_populate_geometry_table(components):
-            self.app.after(0, lambda: self._populate_geometry_table(components))
-
-        def ui_update_plots():
-            self.app.after(0, self.app.tab_plots.update_plots)
+        self._analysis_events = Queue()
+        self._worker_active = True
+        self.app.analysis_results = None
+        self.app.tab_plots.run_button.configure(state="disabled")
 
         def run_analysis():
             try:
-                ui_log("Starting VorLap analysis...\n")
-                ui_log(f"  Save directory: {self.sim_save_var.get()}\n")
-                
-                # Get parameters
-                viv_params = self.get_viv_params()
-                qblade_node_ids = None
+                analysis_result = vorlap.run_offline_analysis(
+                    config,
+                    progress_callback=lambda message: self._analysis_events.put(("log", message)),
+                )
+                self._analysis_events.put(("result", analysis_result))
+            except Exception as exc:
+                self._analysis_events.put(("error", exc))
 
-                qblade_sim_path = self.qblade_sim_path.get().strip()
-                if self.use_qblade_geometry.get():
-                    if not qblade_sim_path:
-                        raise ValueError(
-                            "QBlade Geometry is enabled but no QBlade simulation file is set. "
-                            "Choose a `.sim` file or uncheck QBlade Geometry."
-                        )
-                    ui_log(f"Converting QBlade model from: {qblade_sim_path}\n")
-                    components_from_qblade, qblade_viv_params, qblade_node_ids = vorlap.convert_qblade_to_vorlap_inputs(
-                        qblade_sim_path,
-                        include_tower=bool(self.include_qblade_tower.get()),
-                    )
-                    self.app.components = components_from_qblade
-                    # Keep user sweep settings, but align key fluid/flow frame fields with QBlade.
-                    viv_params.fluid_density = qblade_viv_params.fluid_density
-                    viv_params.fluid_dynamicviscosity = qblade_viv_params.fluid_dynamicviscosity
-                    viv_params.rotation_axis = qblade_viv_params.rotation_axis
-                    viv_params.rotation_axis_offset = qblade_viv_params.rotation_axis_offset
-                    viv_params.inflow_vec = qblade_viv_params.inflow_vec
-                    ui_populate_geometry_table(self.app.components)
-                    ui_log(
-                        f"Imported {len(self.app.components)} components and {len(qblade_node_ids)} QBlade load targets\n"
-                    )
+        self._worker = threading.Thread(target=run_analysis, daemon=True)
+        self._worker.start()
+        self._analysis_poll_id = self.after(30, self._poll_analysis_events)
+
+    def _poll_analysis_events(self):
+        """Apply worker messages only on the Tk thread, including state listeners."""
+        self._analysis_poll_id = None
+        try:
+            while True:
+                kind, value = self._analysis_events.get_nowait()
+                if kind == "log":
+                    self.app.log(value)
+                    continue
+                self._worker_active = False
+                self.app.tab_plots.run_button.configure(state="normal")
+                if kind == "error":
+                    self.app.log(f"Error during analysis: {value}\n")
+                    messagebox.showerror("Analysis Error", str(value))
                 else:
-                    qblade_sim_path = ""
+                    self.app.components = list(value.components)
+                    self.app.analysis_results = value
+                    self._populate_geometry_table(self.app.components)
+                    self.app.tab_plots.update_plots()
+                    self.app.log("Analysis completed successfully!\n\n")
+                return
+        except Empty:
+            if self._worker_active:
+                self._analysis_poll_id = self.after(30, self._poll_analysis_events)
 
-                inflow_profile_path = self.inflow_profile_path.get().strip()
-                if not inflow_profile_path:
-                    raise ValueError(
-                        "Inflow profile CSV is required for force output. "
-                        "Provide a file with: time, inflow_speed, inflow_direction_deg."
-                    )
-                inflow_profile = vorlap.load_inflow_time_series(inflow_profile_path)
-                ui_log(
-                    f"Loaded inflow profile with {inflow_profile.time.size} samples: {inflow_profile_path}\n"
-                )
-                
-                # Get natural frequencies
-                natfreqs = self.get_natural_frequencies()
-                if natfreqs is None:
-                    ui_log("Error: No natural frequencies loaded\n")
-                    return
-                
-                # Get components
-                components = self.app.components
-                if not components:
-                    ui_log("Error: No components loaded\n")
-                    return
-                
-                # Load airfoils
-                affts = self.app.load_airfoils(viv_params.airfoil_folder)
-                if not affts:
-                    ui_log("Error: No airfoil data loaded\n")
-                    return
-                
-                # assemble each component into a full structure, and we need the rotation axis
-                # plot the full structure surface with a generic airfoil shape
-                vorlap.graphics.calc_structure_vectors_andplot(
-                    components,
-                    viv_params,
-                    show_plot=False,
-                    return_fig=False,
-                )
-            
-                # Run computation
-                ui_log("Running thrust/torque spectrum computation...\n")
-                start_time = time.time()
-                with warnings.catch_warnings(record=True) as captured_warnings:
-                    warnings.simplefilter("always")
-
-                    # percdiff_matrix, percdiff_info, total_global_force_vector, total_global_moment_vector, global_force_vector_nodes = vorlap.compute_thrust_torque_spectrum(
-                    #     components, affts, viv_params, natfreqs
-                    # )
-                    percdiff_matrix, percdiff_info, total_global_force_vector, total_global_moment_vector, global_force_vector_nodes = vorlap.compute_thrust_torque_spectrum_optimized(
-                        components, affts, viv_params, natfreqs
-                    ) 
-
-                    ui_log("Running time-varying force history reconstruction...\n")
-                    (
-                        inflow_time,
-                        tv_total_global_force_vector,
-                        tv_total_global_moment_vector,
-                        tv_global_force_vector_nodes,
-                    ) = vorlap.compute_time_varying_force_history_optimized(
-                        components=components,
-                        affts=affts,
-                        viv_params=viv_params,
-                        inflow_profile=inflow_profile,
-                        azimuth_deg=viv_params.output_azimuth_vinf[0],
-                        smoothing_cycles=0.25,
-                    )
-
-                seen_warning_messages = set()
-                for warning_record in captured_warnings:
-                    warning_message = str(warning_record.message).strip()
-                    if not warning_message or warning_message in seen_warning_messages:
-                        continue
-                    seen_warning_messages.add(warning_message)
-                    ui_log(f"Warning: {warning_message}\n")
-                end_time = time.time()
-                execution_time = end_time - start_time
-                ui_log(f"Computation completed in {execution_time:.4f} seconds\n")
-                
-                # Store results in app
-                self.app.analysis_results = {
-                    'percdiff_matrix': percdiff_matrix,
-                    'percdiff_info': percdiff_info,
-                    'total_global_force_vector': total_global_force_vector,
-                    'total_global_moment_vector': total_global_moment_vector,
-                    'global_force_vector_nodes_selected_case': global_force_vector_nodes,
-                    'global_force_vector_nodes': tv_global_force_vector_nodes,
-                    'inflow_time': inflow_time,
-                    'time_varying_total_global_force_vector': tv_total_global_force_vector,
-                    'time_varying_total_global_moment_vector': tv_total_global_moment_vector,
-                    'qblade_node_ids': qblade_node_ids,
-                    'qblade_sim_path': qblade_sim_path,
-                    'viv_params': viv_params,
-                }
-                
-                # Save force time series if save path is provided
-                if self.sim_save_var.get():
-                    from pathlib import Path
-                    save_dir = Path(self.sim_save_var.get())
-                    save_dir.mkdir(parents=True, exist_ok=True)
-                    
-                    force_file = save_dir / "forces_output.csv"
-                    vorlap.write_force_time_series(
-                        str(force_file),
-                        inflow_time,
-                        tv_global_force_vector_nodes,
-                    )
-                    ui_log(f"Force time series saved to: {force_file}\n")
-
-                    if qblade_node_ids:
-                        qblade_loading_target = self.qblade_loading_path_var.get().strip()
-                        if qblade_loading_target:
-                            qblade_loading_file = Path(qblade_loading_target)
-                            if not qblade_loading_file.is_absolute():
-                                qblade_loading_file = save_dir / qblade_loading_file
-                        else:
-                            qblade_loading_file = save_dir / "qblade_external_loading.txt"
-                        qblade_loading_file.parent.mkdir(parents=True, exist_ok=True)
-                        vorlap.write_qblade_loading_file(
-                            str(qblade_loading_file),
-                            inflow_time,
-                            tv_global_force_vector_nodes,
-                            qblade_node_ids,
-                            local=False,
-                        )
-                        ui_log(f"QBlade loading file saved to: {qblade_loading_file}\n")
-                
-                # Update plots
-                ui_update_plots()
-                ui_log("Analysis completed successfully!\n\n")
-                
-            except Exception as e:
-                ui_log(f"Error during analysis: {str(e)}\n")
-                ui_error("Analysis Error", str(e))
-
-        # Run analysis in separate thread to avoid GUI freezing
-        threading.Thread(target=run_analysis, daemon=True).start()
+    def destroy(self):
+        if self._analysis_poll_id is not None:
+            self.after_cancel(self._analysis_poll_id)
+            self._analysis_poll_id = None
+        super().destroy()
 
     def _populate_frequency_entries(self, frequencies):
         for widget in self.freq_inner_frame.winfo_children():
@@ -588,7 +578,7 @@ class SimulationSetupTab(ttk.Frame):
 
         for i, freq_val in enumerate(frequencies):
             entry = ttk.Entry(self.freq_inner_frame, width=8, justify="center")
-            entry.insert(0, f"{float(freq_val):.2f}")
+            entry.insert(0, _format_parameter_value(freq_val))
             entry.grid(row=0, column=i, padx=2)
 
             def validate_freq(val):
@@ -796,26 +786,6 @@ class SimulationSetupTab(ttk.Frame):
         except Exception as e:
             messagebox.showerror("Load failed", str(e))
             self.app.log(f"Error loading components: {str(e)}\n")
-
-    def load_geom(self):
-        path = filedialog.askopenfilename(title="Select geometry CSV")
-        if not path:
-            return
-        try:
-            self.geom_table.load_csv(path)
-            self.app.log(f"Loaded component geometry: {path}\n")
-        except Exception as e:
-            messagebox.showerror("Load failed", str(e))
-
-    def save_geom(self):
-        path = self.geom_path.get() or filedialog.asksaveasfilename(title="Save component geometry CSV", defaultextension=".csv")
-        if not path:
-            return
-        try:
-            self.geom_table.save_csv(path)
-            self.app.log(f"Saved component geometry: {path}\n")
-        except Exception as e:
-            messagebox.showerror("Save failed", str(e))
 
     def get_natural_frequencies(self):
         """Get natural frequencies from the frequency entry widgets."""

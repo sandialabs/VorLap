@@ -1,0 +1,136 @@
+{
+  "claim_boundary": {
+    "fatigue_validated": false,
+    "not_yet_validated": true,
+    "training": "Horcas U=18 orientation map plus Grinderslev signed-power saturation"
+  },
+  "equations": {
+    "equilibrium": "A=A_sat*sqrt(max(0,1-c_s/c_a0))",
+    "frequency": "f_response/f_n=1 when c_a0>c_s; otherwise 0",
+    "signed_feedback": "c_a(A)=c_a0*(1-(A/A_sat)^2)",
+    "structural_damping": "c_s=2*zeta*m_modal*omega_n",
+    "zero_amplitude_feedback": "c_a0=H*sum_i(0.5*rho*U_i*D_i*ds_i*Ccap_i*phi_i^2)"
+  },
+  "model_fingerprint": "66233f678c485e1c27aaa65fd843a7468f11643db16ee1a48589653848f0f101",
+  "model_type": "iea10_static_spectrum_modal_negative_damping_v1",
+  "parameters": {
+    "air_density_kgpm3": 1.225,
+    "air_kinematic_viscosity_m2ps": 1.48e-05,
+    "capture_frequency_ratio": [
+      0.8,
+      1.0,
+      1.2
+    ],
+    "mean_chord_m": 3.72,
+    "saturation_tip_amplitude_m": 1.57
+  },
+  "protected_validation": {
+    "case_count": 16,
+    "failure_policy": "preserve failed assessment before any retuning",
+    "fu_non18_response_values_used_for_fit": false,
+    "protocol": "examples/fu2026_iea10/validation_protocol.json"
+  },
+  "schema": "vorlap-iea10-turbine-spectral-negative-damping-v1",
+  "sources": {
+    "blade_simulation": {
+      "path": "examples/grinderslev2022_iea10/generated_case/grinderslev2022_p100_i50_iea10_single_blade.sim",
+      "sha256": "e7aeccf9b9fc6bbde49210205d3f8c4cbf1ef8a2502211c50743b7f0823da89f"
+    },
+    "grinderslev_power_curve": {
+      "path": "examples/grinderslev2022_iea10/reference_data/p100_i50_figure6_power_digitized.csv",
+      "role": "common signed-power zero crossing only",
+      "sha256": "016ce5265b77dc0c9e577d7548e453d09f67ef732dda817618f79909546f323d"
+    },
+    "model_code": {
+      "path": "examples/fu2026_iea10/turbine_spectral_model.py",
+      "sha256": "43ad21d69064b25dc89376f2d3eb9fda430ee3cdb42b0573df779a88be41bb67"
+    },
+    "stationary_spectrum": {
+      "path": "data/airfoils/ffa_w3_211.h5",
+      "provenance_boundary": "hash-bound legacy HDF5; full source histories are not tracked",
+      "role": "fixed-body shedding frequency and available fluctuating-lift scale only",
+      "sha256": "7f968617b10dab530bba5418b0802b885195f585d70d6218ea0083d939dc95dc"
+    },
+    "training_csv": {
+      "path": "examples/fu2026_iea10/horcas2022_figure4_training.csv",
+      "sha256": "a884f0f97be7959ccca31def61606361d76b1ea55b816a665ec746890a282c62"
+    },
+    "training_provenance": {
+      "path": "examples/fu2026_iea10/horcas2022_training_provenance.json",
+      "sha256": "f815292c6e8dffcd25dadee3a206f40b1f4c5073afa27fa3b320a928f7fb75af"
+    }
+  },
+  "status": "frozen_before_fu_non18_evaluation",
+  "structure": {
+    "modal_mass_kg": 1679.2069804136597,
+    "natural_frequency_hz": 0.66985,
+    "structural_damping_coefficient_kgps": 51.0719645505471,
+    "structural_damping_ratio": 0.0036131908955160446
+  },
+  "training": [
+    {
+      "amplitude_digitization_uncertainty_m": 0.05,
+      "coefficient_kgps_per_unit_gain": 1.7046192109917826,
+      "config": "P80A310",
+      "dtu_inclination_deg": 50.0,
+      "dtu_pitch_deg": 100.0,
+      "edgewise_peak_amplitude_m": 1.175074,
+      "maximum_captured_lift_coefficient": 0.05273802090849492,
+      "maximum_local_aoa_deg": 94.84318374206616,
+      "minimum_local_aoa_deg": 79.97012464821468,
+      "motion_correlated_gain": 68.12157919080946,
+      "reconstructed_amplitude_m": 1.175074,
+      "saturation_factor": 0.4398154466810015,
+      "source_role": "training",
+      "wind_speed_mps": 18.0
+    },
+    {
+      "amplitude_digitization_uncertainty_m": 0.05,
+      "coefficient_kgps_per_unit_gain": 2.822215024748406,
+      "config": "P90A310",
+      "dtu_inclination_deg": 50.0,
+      "dtu_pitch_deg": 90.0,
+      "edgewise_peak_amplitude_m": 0.224332,
+      "maximum_captured_lift_coefficient": 0.06816623870113707,
+      "maximum_local_aoa_deg": 103.47937959409646,
+      "minimum_local_aoa_deg": 89.93298491431185,
+      "motion_correlated_gain": 18.47357898239943,
+      "reconstructed_amplitude_m": 0.2243319999999997,
+      "saturation_factor": 0.9795834126236358,
+      "source_role": "training",
+      "wind_speed_mps": 18.0
+    },
+    {
+      "amplitude_digitization_uncertainty_m": 0.05,
+      "coefficient_kgps_per_unit_gain": 4.720512871663329,
+      "config": "P95A310",
+      "dtu_inclination_deg": 50.0,
+      "dtu_pitch_deg": 85.0,
+      "edgewise_peak_amplitude_m": 1.1181,
+      "maximum_captured_lift_coefficient": 0.14938356586891327,
+      "maximum_local_aoa_deg": 107.87770703565009,
+      "minimum_local_aoa_deg": 94.9148477277387,
+      "motion_correlated_gain": 21.953558211915958,
+      "reconstructed_amplitude_m": 1.1181,
+      "saturation_factor": 0.4928201509189014,
+      "source_role": "training",
+      "wind_speed_mps": 18.0
+    },
+    {
+      "amplitude_digitization_uncertainty_m": 0.02,
+      "coefficient_kgps_per_unit_gain": 3.9453982484768586,
+      "config": "P95A320",
+      "dtu_inclination_deg": 40.0,
+      "dtu_pitch_deg": 85.0,
+      "edgewise_peak_amplitude_m": 0.017804,
+      "maximum_captured_lift_coefficient": 0.13285113473305257,
+      "maximum_local_aoa_deg": 108.46617552052584,
+      "minimum_local_aoa_deg": 94.9333980740073,
+      "motion_correlated_gain": 12.946356731532031,
+      "reconstructed_amplitude_m": 0.017804000000001582,
+      "saturation_factor": 0.9998714015108118,
+      "source_role": "training",
+      "wind_speed_mps": 18.0
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+----------------------------------------QBlade Multi RE Polar File--------------------------------------------------
+Generated cylinder placeholder; QBlade native aerodynamics disabled
+CYLINDER_import_placeholder POLARNAME
+../Airfoils/CYLINDER.afl FOILNAME
+100.0 THICKNESS
+false ISDECOMPOSED
+REYNOLDS 2.0000E+04
+AOA CL CD CM
+-180.0 0.0 1.2 0.0
+-90.0 0.0 1.2 0.0
+0.0 0.0 1.2 0.0
+90.0 0.0 1.2 0.0
+180.0 0.0 1.2 0.0

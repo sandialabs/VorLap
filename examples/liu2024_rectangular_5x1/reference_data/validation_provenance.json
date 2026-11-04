@@ -1,0 +1,39 @@
+{
+  "fixed_body_spectrum": {
+    "conversion": {
+      "breadth_over_depth": 5.0,
+      "coefficient_rule": "CL_rms_depth=CL_rms_streamwise_width*(B/D)",
+      "sinusoidal_equivalent_rule": "Ceff=sqrt(2)*CL_rms_depth",
+      "strouhal_rule": "St_depth=St_streamwise_width*(D/B)"
+    },
+    "doi": "10.1016/j.jweia.2018.01.029",
+    "paper_title": "Vortex-induced vibration of a 5:1 rectangular cylinder: A comparison of wind tunnel sectional model tests and computational simulations",
+    "repository_url": "https://nottingham-repository.worktribe.com/output/962227/vortex-induced-vibration-of-a-51-rectangular-cylinder-a-comparison-of-wind-tunnel-sectional-model-tests-and-computational-simulations",
+    "source_role": "independent_fixed_body_spectral_input",
+    "table": 2
+  },
+  "response_experiment": {
+    "air_density_kgpm3": 1.25,
+    "crossflow_depth_m": 0.070,
+    "doi": "10.1063/5.0183812",
+    "inferred_mass_per_span_kgpm": 7.638546475819045,
+    "natural_frequency_hz": 11.72,
+    "paper_title": "Effects of a detached splitter on the vortex-induced vibration of a 5:1 rectangular cylinder",
+    "reduced_velocity_at_reported_onset": 8.35,
+    "reference_case": "bare rectangular cylinder without splitter",
+    "reynolds_number_range": [32320, 56507],
+    "scruton_number": 21.0,
+    "source_role": "untouched_independent_response_validation",
+    "streamwise_breadth_m": 0.350,
+    "structural_damping_ratio": 0.0067,
+    "target": {
+      "derivation": "median of three internally consistent bare-peak ratios reported for splitter configurations; the g/D=1.0 row is excluded from the median because the article text contains an apparent decimal transcription inconsistency",
+      "maximum_allowed_model_relative_error": 0.30,
+      "nominal_peak_hrms_over_depth": 0.02095808383233533,
+      "rounded_report_value": 0.0210,
+      "uncertainty_hrms_over_depth": 0.0015
+    },
+    "url": "https://doi.org/10.1063/5.0183812"
+  },
+  "status": "frozen_before_fitting_4x1_training_closure"
+}

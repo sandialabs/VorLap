@@ -1,0 +1,879 @@
+{
+  "airfoil_dir": "../VorLapAirfoils",
+  "airfoil_fallbacks": [],
+  "airfoil_source_manifest": [
+    {
+      "airfoil_id": "CYLINDER",
+      "aoa_max_deg": 180.0,
+      "aoa_min_deg": -180.0,
+      "bytes": 12832,
+      "file": "CYLINDER.h5",
+      "generator": "",
+      "processing_config": null,
+      "reynolds": [
+        1000.0,
+        1000000.0
+      ],
+      "reynolds_max": 1000000.0,
+      "reynolds_min": 1000.0,
+      "reynolds_model": "",
+      "reynolds_replication_justification": "",
+      "sha256": "a40a94fc329aa6d95e651c907198b5240479b3ad0e99f11eb3cb60bfa5521a66",
+      "source_data_sha256": "",
+      "thickness_ratio": 1.0
+    }
+  ],
+  "available_airfoil_ids": [
+    "CYLINDER",
+    "default"
+  ],
+  "debug": false,
+  "default_airfoil_id": "default",
+  "default_airfoil_source_id": "CYLINDER",
+  "external_input_rows": [
+    {
+      "index": 0,
+      "variable": "Time [s]"
+    },
+    {
+      "index": 1,
+      "variable": "Timestep [-]"
+    },
+    {
+      "index": 2,
+      "variable": "LSS Azimuthal Pos. [deg]"
+    },
+    {
+      "index": 3,
+      "variable": "X_g Vel. BLD_1 pos 0.000 [m/s]"
+    },
+    {
+      "index": 4,
+      "variable": "Y_g Vel. BLD_1 pos 0.000 [m/s]"
+    },
+    {
+      "index": 5,
+      "variable": "Z_g Vel. BLD_1 pos 0.000 [m/s]"
+    },
+    {
+      "index": 6,
+      "variable": "X_g Vel. BLD_1 pos 0.050 [m/s]"
+    },
+    {
+      "index": 7,
+      "variable": "Y_g Vel. BLD_1 pos 0.050 [m/s]"
+    },
+    {
+      "index": 8,
+      "variable": "Z_g Vel. BLD_1 pos 0.050 [m/s]"
+    },
+    {
+      "index": 9,
+      "variable": "X_g Vel. BLD_1 pos 0.100 [m/s]"
+    },
+    {
+      "index": 10,
+      "variable": "Y_g Vel. BLD_1 pos 0.100 [m/s]"
+    },
+    {
+      "index": 11,
+      "variable": "Z_g Vel. BLD_1 pos 0.100 [m/s]"
+    },
+    {
+      "index": 12,
+      "variable": "X_g Vel. BLD_1 pos 0.150 [m/s]"
+    },
+    {
+      "index": 13,
+      "variable": "Y_g Vel. BLD_1 pos 0.150 [m/s]"
+    },
+    {
+      "index": 14,
+      "variable": "Z_g Vel. BLD_1 pos 0.150 [m/s]"
+    },
+    {
+      "index": 15,
+      "variable": "X_g Vel. BLD_1 pos 0.200 [m/s]"
+    },
+    {
+      "index": 16,
+      "variable": "Y_g Vel. BLD_1 pos 0.200 [m/s]"
+    },
+    {
+      "index": 17,
+      "variable": "Z_g Vel. BLD_1 pos 0.200 [m/s]"
+    },
+    {
+      "index": 18,
+      "variable": "X_g Vel. BLD_1 pos 0.250 [m/s]"
+    },
+    {
+      "index": 19,
+      "variable": "Y_g Vel. BLD_1 pos 0.250 [m/s]"
+    },
+    {
+      "index": 20,
+      "variable": "Z_g Vel. BLD_1 pos 0.250 [m/s]"
+    },
+    {
+      "index": 21,
+      "variable": "X_g Vel. BLD_1 pos 0.300 [m/s]"
+    },
+    {
+      "index": 22,
+      "variable": "Y_g Vel. BLD_1 pos 0.300 [m/s]"
+    },
+    {
+      "index": 23,
+      "variable": "Z_g Vel. BLD_1 pos 0.300 [m/s]"
+    },
+    {
+      "index": 24,
+      "variable": "X_g Vel. BLD_1 pos 0.350 [m/s]"
+    },
+    {
+      "index": 25,
+      "variable": "Y_g Vel. BLD_1 pos 0.350 [m/s]"
+    },
+    {
+      "index": 26,
+      "variable": "Z_g Vel. BLD_1 pos 0.350 [m/s]"
+    },
+    {
+      "index": 27,
+      "variable": "X_g Vel. BLD_1 pos 0.400 [m/s]"
+    },
+    {
+      "index": 28,
+      "variable": "Y_g Vel. BLD_1 pos 0.400 [m/s]"
+    },
+    {
+      "index": 29,
+      "variable": "Z_g Vel. BLD_1 pos 0.400 [m/s]"
+    },
+    {
+      "index": 30,
+      "variable": "X_g Vel. BLD_1 pos 0.450 [m/s]"
+    },
+    {
+      "index": 31,
+      "variable": "Y_g Vel. BLD_1 pos 0.450 [m/s]"
+    },
+    {
+      "index": 32,
+      "variable": "Z_g Vel. BLD_1 pos 0.450 [m/s]"
+    },
+    {
+      "index": 33,
+      "variable": "X_g Vel. BLD_1 pos 0.500 [m/s]"
+    },
+    {
+      "index": 34,
+      "variable": "Y_g Vel. BLD_1 pos 0.500 [m/s]"
+    },
+    {
+      "index": 35,
+      "variable": "Z_g Vel. BLD_1 pos 0.500 [m/s]"
+    },
+    {
+      "index": 36,
+      "variable": "X_g Vel. BLD_1 pos 0.550 [m/s]"
+    },
+    {
+      "index": 37,
+      "variable": "Y_g Vel. BLD_1 pos 0.550 [m/s]"
+    },
+    {
+      "index": 38,
+      "variable": "Z_g Vel. BLD_1 pos 0.550 [m/s]"
+    },
+    {
+      "index": 39,
+      "variable": "X_g Vel. BLD_1 pos 0.600 [m/s]"
+    },
+    {
+      "index": 40,
+      "variable": "Y_g Vel. BLD_1 pos 0.600 [m/s]"
+    },
+    {
+      "index": 41,
+      "variable": "Z_g Vel. BLD_1 pos 0.600 [m/s]"
+    },
+    {
+      "index": 42,
+      "variable": "X_g Vel. BLD_1 pos 0.650 [m/s]"
+    },
+    {
+      "index": 43,
+      "variable": "Y_g Vel. BLD_1 pos 0.650 [m/s]"
+    },
+    {
+      "index": 44,
+      "variable": "Z_g Vel. BLD_1 pos 0.650 [m/s]"
+    },
+    {
+      "index": 45,
+      "variable": "X_g Vel. BLD_1 pos 0.700 [m/s]"
+    },
+    {
+      "index": 46,
+      "variable": "Y_g Vel. BLD_1 pos 0.700 [m/s]"
+    },
+    {
+      "index": 47,
+      "variable": "Z_g Vel. BLD_1 pos 0.700 [m/s]"
+    },
+    {
+      "index": 48,
+      "variable": "X_g Vel. BLD_1 pos 0.750 [m/s]"
+    },
+    {
+      "index": 49,
+      "variable": "Y_g Vel. BLD_1 pos 0.750 [m/s]"
+    },
+    {
+      "index": 50,
+      "variable": "Z_g Vel. BLD_1 pos 0.750 [m/s]"
+    },
+    {
+      "index": 51,
+      "variable": "X_g Vel. BLD_1 pos 0.800 [m/s]"
+    },
+    {
+      "index": 52,
+      "variable": "Y_g Vel. BLD_1 pos 0.800 [m/s]"
+    },
+    {
+      "index": 53,
+      "variable": "Z_g Vel. BLD_1 pos 0.800 [m/s]"
+    },
+    {
+      "index": 54,
+      "variable": "X_g Vel. BLD_1 pos 0.850 [m/s]"
+    },
+    {
+      "index": 55,
+      "variable": "Y_g Vel. BLD_1 pos 0.850 [m/s]"
+    },
+    {
+      "index": 56,
+      "variable": "Z_g Vel. BLD_1 pos 0.850 [m/s]"
+    },
+    {
+      "index": 57,
+      "variable": "X_g Vel. BLD_1 pos 0.900 [m/s]"
+    },
+    {
+      "index": 58,
+      "variable": "Y_g Vel. BLD_1 pos 0.900 [m/s]"
+    },
+    {
+      "index": 59,
+      "variable": "Z_g Vel. BLD_1 pos 0.900 [m/s]"
+    },
+    {
+      "index": 60,
+      "variable": "X_g Vel. BLD_1 pos 0.950 [m/s]"
+    },
+    {
+      "index": 61,
+      "variable": "Y_g Vel. BLD_1 pos 0.950 [m/s]"
+    },
+    {
+      "index": 62,
+      "variable": "Z_g Vel. BLD_1 pos 0.950 [m/s]"
+    },
+    {
+      "index": 63,
+      "variable": "X_g Vel. BLD_1 pos 1.000 [m/s]"
+    },
+    {
+      "index": 64,
+      "variable": "Y_g Vel. BLD_1 pos 1.000 [m/s]"
+    },
+    {
+      "index": 65,
+      "variable": "Z_g Vel. BLD_1 pos 1.000 [m/s]"
+    }
+  ],
+  "external_output_rows": [
+    {
+      "action": "ADDFORCE",
+      "direction": "X",
+      "id": "BLD_1",
+      "index": 66,
+      "local": false,
+      "position": 0.0
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Y",
+      "id": "BLD_1",
+      "index": 67,
+      "local": false,
+      "position": 0.0
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Z",
+      "id": "BLD_1",
+      "index": 68,
+      "local": false,
+      "position": 0.0
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "X",
+      "id": "BLD_1",
+      "index": 69,
+      "local": false,
+      "position": 0.05
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Y",
+      "id": "BLD_1",
+      "index": 70,
+      "local": false,
+      "position": 0.05
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Z",
+      "id": "BLD_1",
+      "index": 71,
+      "local": false,
+      "position": 0.05
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "X",
+      "id": "BLD_1",
+      "index": 72,
+      "local": false,
+      "position": 0.1
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Y",
+      "id": "BLD_1",
+      "index": 73,
+      "local": false,
+      "position": 0.1
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Z",
+      "id": "BLD_1",
+      "index": 74,
+      "local": false,
+      "position": 0.1
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "X",
+      "id": "BLD_1",
+      "index": 75,
+      "local": false,
+      "position": 0.15
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Y",
+      "id": "BLD_1",
+      "index": 76,
+      "local": false,
+      "position": 0.15
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Z",
+      "id": "BLD_1",
+      "index": 77,
+      "local": false,
+      "position": 0.15
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "X",
+      "id": "BLD_1",
+      "index": 78,
+      "local": false,
+      "position": 0.2
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Y",
+      "id": "BLD_1",
+      "index": 79,
+      "local": false,
+      "position": 0.2
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Z",
+      "id": "BLD_1",
+      "index": 80,
+      "local": false,
+      "position": 0.2
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "X",
+      "id": "BLD_1",
+      "index": 81,
+      "local": false,
+      "position": 0.25
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Y",
+      "id": "BLD_1",
+      "index": 82,
+      "local": false,
+      "position": 0.25
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Z",
+      "id": "BLD_1",
+      "index": 83,
+      "local": false,
+      "position": 0.25
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "X",
+      "id": "BLD_1",
+      "index": 84,
+      "local": false,
+      "position": 0.3
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Y",
+      "id": "BLD_1",
+      "index": 85,
+      "local": false,
+      "position": 0.3
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Z",
+      "id": "BLD_1",
+      "index": 86,
+      "local": false,
+      "position": 0.3
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "X",
+      "id": "BLD_1",
+      "index": 87,
+      "local": false,
+      "position": 0.35
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Y",
+      "id": "BLD_1",
+      "index": 88,
+      "local": false,
+      "position": 0.35
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Z",
+      "id": "BLD_1",
+      "index": 89,
+      "local": false,
+      "position": 0.35
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "X",
+      "id": "BLD_1",
+      "index": 90,
+      "local": false,
+      "position": 0.4
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Y",
+      "id": "BLD_1",
+      "index": 91,
+      "local": false,
+      "position": 0.4
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Z",
+      "id": "BLD_1",
+      "index": 92,
+      "local": false,
+      "position": 0.4
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "X",
+      "id": "BLD_1",
+      "index": 93,
+      "local": false,
+      "position": 0.45
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Y",
+      "id": "BLD_1",
+      "index": 94,
+      "local": false,
+      "position": 0.45
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Z",
+      "id": "BLD_1",
+      "index": 95,
+      "local": false,
+      "position": 0.45
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "X",
+      "id": "BLD_1",
+      "index": 96,
+      "local": false,
+      "position": 0.5
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Y",
+      "id": "BLD_1",
+      "index": 97,
+      "local": false,
+      "position": 0.5
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Z",
+      "id": "BLD_1",
+      "index": 98,
+      "local": false,
+      "position": 0.5
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "X",
+      "id": "BLD_1",
+      "index": 99,
+      "local": false,
+      "position": 0.55
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Y",
+      "id": "BLD_1",
+      "index": 100,
+      "local": false,
+      "position": 0.55
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Z",
+      "id": "BLD_1",
+      "index": 101,
+      "local": false,
+      "position": 0.55
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "X",
+      "id": "BLD_1",
+      "index": 102,
+      "local": false,
+      "position": 0.6
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Y",
+      "id": "BLD_1",
+      "index": 103,
+      "local": false,
+      "position": 0.6
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Z",
+      "id": "BLD_1",
+      "index": 104,
+      "local": false,
+      "position": 0.6
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "X",
+      "id": "BLD_1",
+      "index": 105,
+      "local": false,
+      "position": 0.65
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Y",
+      "id": "BLD_1",
+      "index": 106,
+      "local": false,
+      "position": 0.65
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Z",
+      "id": "BLD_1",
+      "index": 107,
+      "local": false,
+      "position": 0.65
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "X",
+      "id": "BLD_1",
+      "index": 108,
+      "local": false,
+      "position": 0.7
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Y",
+      "id": "BLD_1",
+      "index": 109,
+      "local": false,
+      "position": 0.7
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Z",
+      "id": "BLD_1",
+      "index": 110,
+      "local": false,
+      "position": 0.7
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "X",
+      "id": "BLD_1",
+      "index": 111,
+      "local": false,
+      "position": 0.75
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Y",
+      "id": "BLD_1",
+      "index": 112,
+      "local": false,
+      "position": 0.75
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Z",
+      "id": "BLD_1",
+      "index": 113,
+      "local": false,
+      "position": 0.75
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "X",
+      "id": "BLD_1",
+      "index": 114,
+      "local": false,
+      "position": 0.8
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Y",
+      "id": "BLD_1",
+      "index": 115,
+      "local": false,
+      "position": 0.8
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Z",
+      "id": "BLD_1",
+      "index": 116,
+      "local": false,
+      "position": 0.8
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "X",
+      "id": "BLD_1",
+      "index": 117,
+      "local": false,
+      "position": 0.85
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Y",
+      "id": "BLD_1",
+      "index": 118,
+      "local": false,
+      "position": 0.85
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Z",
+      "id": "BLD_1",
+      "index": 119,
+      "local": false,
+      "position": 0.85
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "X",
+      "id": "BLD_1",
+      "index": 120,
+      "local": false,
+      "position": 0.9
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Y",
+      "id": "BLD_1",
+      "index": 121,
+      "local": false,
+      "position": 0.9
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Z",
+      "id": "BLD_1",
+      "index": 122,
+      "local": false,
+      "position": 0.9
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "X",
+      "id": "BLD_1",
+      "index": 123,
+      "local": false,
+      "position": 0.95
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Y",
+      "id": "BLD_1",
+      "index": 124,
+      "local": false,
+      "position": 0.95
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Z",
+      "id": "BLD_1",
+      "index": 125,
+      "local": false,
+      "position": 0.95
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "X",
+      "id": "BLD_1",
+      "index": 126,
+      "local": false,
+      "position": 1.0
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Y",
+      "id": "BLD_1",
+      "index": 127,
+      "local": false,
+      "position": 1.0
+    },
+    {
+      "action": "ADDFORCE",
+      "direction": "Z",
+      "id": "BLD_1",
+      "index": 128,
+      "local": false,
+      "position": 1.0
+    }
+  ],
+  "force_scale": 1.0,
+  "function_name": "update",
+  "geometry_audit_file": "vorlap_qblade_geometry_audit.csv",
+  "include_mean_load": false,
+  "include_struts": false,
+  "include_tower": false,
+  "library_stem": "libvorlap_qblade_bridge",
+  "n_freq_depth": 2,
+  "node_ids": [
+    "BLD_1_0.0000000000",
+    "BLD_1_0.0500000000",
+    "BLD_1_0.1000000000",
+    "BLD_1_0.1500000000",
+    "BLD_1_0.2000000000",
+    "BLD_1_0.2500000000",
+    "BLD_1_0.3000000000",
+    "BLD_1_0.3500000000",
+    "BLD_1_0.4000000000",
+    "BLD_1_0.4500000000",
+    "BLD_1_0.5000000000",
+    "BLD_1_0.5500000000",
+    "BLD_1_0.6000000000",
+    "BLD_1_0.6500000000",
+    "BLD_1_0.7000000000",
+    "BLD_1_0.7500000000",
+    "BLD_1_0.8000000000",
+    "BLD_1_0.8500000000",
+    "BLD_1_0.9000000000",
+    "BLD_1_0.9500000000",
+    "BLD_1_1.0000000000"
+  ],
+  "parameter_file": "Control/vorlap_qblade_external.json",
+  "python_path_entries": [
+    "/Users/kevmoor/Documents/coderepos/VorLap_Bridge/VorLap"
+  ],
+  "sim_path": "../../vlastos2026_sc5p18_cantilever_u6p63.sim",
+  "source_bounds_policy": "raise",
+  "source_frequency_cap_hz": 1000.0,
+  "source_parameter_dir": ".",
+  "swap_layout": [
+    {
+      "name": "time",
+      "offset": 0,
+      "shape": []
+    },
+    {
+      "name": "timestep",
+      "offset": 1,
+      "shape": []
+    },
+    {
+      "name": "azimuth_deg",
+      "offset": 2,
+      "shape": []
+    },
+    {
+      "name": "velocity",
+      "offset": 3,
+      "shape": [
+        21,
+        3
+      ]
+    },
+    {
+      "name": "force",
+      "offset": 66,
+      "shape": [
+        21,
+        3
+      ]
+    }
+  ],
+  "swap_size": 129,
+  "tower_airfoil_id": "cylinder"
+}

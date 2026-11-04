@@ -1,15 +1,28 @@
-from vorlap.interpolation import resample_airfoil
-from vorlap.structs import Component, VIV_Params
-from vorlap.computations import rotationMatrix
-
+import copy
+from pathlib import Path
+import math
+import warnings
+from typing import List, Optional
 
 import numpy as np
 import plotly.graph_objects as go
 
+from vorlap.interpolation import resample_airfoil
+from vorlap.structs import Component, VIV_Params
+from vorlap.geometry_frames import prepare_component_frames, rotationMatrix
 
-import math
-import warnings
-from typing import List, Optional
+
+def _load_airfoil_coords_for_plot(path: Path, load_airfoil_coords, fallback_notes: List[str]) -> np.ndarray:
+    """Load plotting coordinates and expose generic-profile fallbacks in figure metadata."""
+    with warnings.catch_warnings(record=True) as caught:
+        warnings.simplefilter("always")
+        coords = load_airfoil_coords(str(path))
+    for warning in caught:
+        message = str(warning.message)
+        if "Falling back" in message:
+            fallback_notes.append(f"{path}: {message}")
+        warnings.warn(message, warning.category, stacklevel=3)
+    return coords
 
 
 def calc_structure_vectors_andplot(
@@ -35,17 +48,20 @@ def calc_structure_vectors_andplot(
     Returns:
         Optional[go.Figure]: Plotly figure object if return_fig=True, otherwise None.
     """
-    from .fileio import load_airfoil_coords
+    from .airfoil_io import load_airfoil_coords
 
     if not components:
         raise ValueError("At least one component is required to build the structure plot.")
+    plot_components = copy.deepcopy(components)
+    prepare_component_frames(plot_components)
+    airfoil_coordinate_warnings: List[str] = []
 
     # Create a new 3D figure
     fig = go.Figure()
     all_points = []
 
     # Draw rotation axis
-    axis_len = max([(np.max(comp.shape_xyz) + np.max(comp.translation)) for comp in components])
+    axis_len = max([(np.max(comp.shape_xyz) + np.max(comp.translation)) for comp in plot_components])
     origin = viv_params.rotation_axis_offset
     arrow = viv_params.rotation_axis * axis_len + origin
     axis_vec = arrow - origin
@@ -101,7 +117,7 @@ def calc_structure_vectors_andplot(
         colorscale=[[0, 'black'], [1, 'black']]
     ))
 
-    for cidx, comp in enumerate(components):
+    for cidx, comp in enumerate(plot_components):
         component_color = 'black' if components_black else 'rgba(0,0,0,0.15)'
         tangential_color = '#348ABD'
         normal_color = '#A60628'
@@ -121,7 +137,12 @@ def calc_structure_vectors_andplot(
 
             # Each component's direction is defined by the comp.rotation rx, ry, rz angles, where 0,0,0 is pointing straight update
             # Let's create a local point cloud of xyz airfoil points, based on the shape input, then rotate that into position
-            airfoil2d = load_airfoil_coords(f"{viv_params.airfoil_folder}{comp.airfoil_ids[ipt]}.csv")
+            airfoil_path = Path(viv_params.airfoil_folder) / f"{comp.airfoil_ids[ipt]}.csv"
+            airfoil2d = _load_airfoil_coords_for_plot(
+                airfoil_path,
+                load_airfoil_coords,
+                airfoil_coordinate_warnings,
+            )
             xy_scaled = resample_airfoil(airfoil2d, npoints=N_Af_coords)
             xy_scaled[:, 0] = xy_scaled[:, 0] * chord - chord * offset
             xy_scaled[:, 1] = xy_scaled[:, 1] * thickness * chord
@@ -226,21 +247,15 @@ def calc_structure_vectors_andplot(
         ))
 
         # Add chord and normal lines
-        halfIdx = int(chordline_global.shape[0] / 2)
-        for idx in range(halfIdx):
-            # Update component vectors
-            comp.chord_vector[idx, :] = chordline_global[halfIdx + idx, :] - chordline_global[idx, :]
-            comp.normal_vector[idx, :] = normalline_global[halfIdx + idx, :] - normalline_global[idx, :]
-            comp.shape_xyz_global[idx, :] = chordline_global[idx, :]
-
-            chord_start = chordline_global[idx, :]
-            chord_end = chordline_global[halfIdx + idx, :]
-            chord_vec = chord_end - chord_start
+        for idx in range(N_Airfoils):
+            chord_start = np.asarray(comp.shape_xyz_global[idx, :], dtype=float)
+            chord_vec = np.asarray(comp.chord_vector[idx, :], dtype=float) * (2.0 * float(comp.chord[idx]))
+            chord_end = chord_start + chord_vec
             chord_end_extended = chord_start + chord_vec * 1.3
 
-            normal_start = normalline_global[idx, :]
-            normal_end = normalline_global[halfIdx + idx, :]
-            normal_vec = normal_end - normal_start
+            normal_start = chord_start
+            normal_vec = np.asarray(comp.normal_vector[idx, :], dtype=float) * (2.0 * float(comp.chord[idx]))
+            normal_end = normal_start + normal_vec
             normal_end_extended = normal_start + normal_vec * 1.3
 
             # Add chord line
@@ -331,8 +346,10 @@ def calc_structure_vectors_andplot(
         plot_bgcolor='rgba(0,0,0,0)',
     )
 
-
-    fig.update_layout(scene_camera=dict(eye=dict(x=1.1/2, y=-2.0/2, z=1.45/2)))
+    fig.update_layout(
+        scene_camera=dict(eye=dict(x=1.1/2, y=-2.0/2, z=1.45/2)),
+        meta={"airfoil_coordinate_warnings": airfoil_coordinate_warnings},
+    )
 
     if save_path:
         try:

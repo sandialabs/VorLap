@@ -4,11 +4,15 @@ on:
   push:
   pull_request:
 
+permissions:
+  contents: read
+
 jobs:
   pytest:
     runs-on: ubuntu-latest
     env:
       MPLBACKEND: Agg
+      VORLAP_REQUIRE_GUI_TESTS: "1"
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -20,8 +24,31 @@ jobs:
 
       - name: Install dependencies
         run: |
+          sudo apt-get update
+          sudo apt-get install -y python3-tk xvfb
           python -m pip install --upgrade pip
-          python -m pip install -e ".[dev,gui]"
+          python -m pip install -c reproducibility/requirements-software-checks.txt -e ".[dev,gui]"
 
       - name: Run tests with coverage
-        run: pytest --cov=vorlap --cov-report=term-missing
+        run: xvfb-run -a python -m pytest --cov=vorlap --cov-report=term-missing
+
+  packaging:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Build source and wheel distributions
+        run: |
+          python -m pip install --upgrade pip build twine
+          python -m build
+          python -m twine check dist/*
+      - name: Install and exercise the wheel outside the checkout
+        run: |
+          python -m venv /tmp/vorlap-wheel
+          /tmp/vorlap-wheel/bin/python -m pip install dist/*.whl
+          cd /tmp
+          /tmp/vorlap-wheel/bin/python -c 'import vorlap; assert vorlap.__version__ == "1.1.0"'
+          /tmp/vorlap-wheel/bin/vorlap-qblade-prepare --help
+          /tmp/vorlap-wheel/bin/vorlap-qblade-run --help

@@ -1,0 +1,162 @@
+{
+  "claim_boundary": {
+    "fatigue_validated": false,
+    "flight_preflight_analysis_accepted": true,
+    "flight_preflight_analysis_artifact_bound": false,
+    "flight_preflight_cases_executed": true,
+    "full_campaign_executed": false,
+    "full_campaign_v4_failed_on_retired_uncalibrated_force_ceiling": true,
+    "hvawt_certification_validated": false,
+    "hvawt_experimentally_validated": false,
+    "role": "offline_shadow_parity_and_quasi_static_applicability_check"
+  },
+  "frozen_airfoil_anchor": {
+    "capture_bounds": [
+      0.8393925464162503,
+      0.9792913044320896,
+      1.023009665944805
+    ],
+    "feedback_gain": 143.1939823335363,
+    "limiting_amplitude_ratio": 0.020343253217205814,
+    "static_spectrum_sha256": "64399e25dc5008caaed88d42e5cf24160c1045f17a282a06234648202cece369"
+  },
+  "flight_preflight": {
+    "active_mode6_tail_l2_projection_leakage": 0.0005141630324276585,
+    "active_mode6_tail_l2_projection_limit": 0.1,
+    "active_mode6_tail_stationarity_criterion_passed": false,
+    "active_mode6_tail_stationarity_observed": 0.40304655161259356,
+    "analysis_artifact_sha256": null,
+    "analysis_schema": "vorlap-hvawt-response-pilot-analysis-v10",
+    "campaign_root": "/pscratch/kevmoor/vorlap_runs/hvawt_unified_preflight_v2",
+    "complete_case_count": 2,
+    "evidence_source": "operator-reported retained Flight analysis; artifact hash pending",
+    "failed_hard_gate_count": 0,
+    "passed_case_count": 2,
+    "role": "execution_and_integration_preflight_only",
+    "status": "preflight_passed_complete_hybrid_screen"
+  },
+  "force_ceiling_retirement": {
+    "active_limit": null,
+    "active_runtime_contract": "reject_nonfinite_force_record_every_finite_force_never_clip",
+    "effect_on_frozen_gain_model": "none",
+    "effect_on_protected_10mw_results": "none",
+    "exact_below_retired_limit_regression": "passed_binary64_force_and_scientific_history_equality",
+    "failed_campaign_root": "/pscratch/kevmoor/vorlap_runs/hvawt_unified_uniform_20case_v4",
+    "failed_complete_path_array_tasks": [
+      17,
+      19
+    ],
+    "legacy_finite_limit_configs_supported": true,
+    "next_campaign_version": "v5_fresh_generation_and_runtime_binding_required",
+    "retired_limit_n": 100.0,
+    "task_19_observed_combined_force_norm_n": 102.40845876111963
+  },
+  "inputs": {
+    "campaign_spec_sha256": "d111ca5d08b3f07ce521b926e2bb3d20c3fdf08fb8e4dfdddbc574b568973671",
+    "response_model_sha256": "688ad780de0107bc068350ccc314a07637522505e84ca87d9611868ace6ca0c6",
+    "rotor_geometry": {
+      "path": "examples/ReferenceHVAWTQBladeModel/10m_HVAWT_reference_turbine/Aero/10m_HVAWT_reference_rotor.bld",
+      "sha256": "fd817620a82154eb093d7c72515a6972438b4bf58f6fffcdf5bcde613d2f8400"
+    },
+    "unified_model_fingerprint": "40cbbced0d0be36d23e3e016556b063e43e72a88020b4d6b76a9af4a12bce4c2",
+    "unified_model_sha256": "2da5e305b4dec79dfd3e569ad5c069f55bea387ca7cf85d33e03592e68f42ff9"
+  },
+  "planned_conditions": [
+    {
+      "closure_only_target_mode": 6,
+      "closure_only_target_peak_amplitude_m": 0.006363532058,
+      "offline_shadow_steps": 6,
+      "rotation_tip_speed_over_inflow": 0.06689371024007357,
+      "wind_speed_mps": 8.25
+    },
+    {
+      "closure_only_target_mode": 12,
+      "closure_only_target_peak_amplitude_m": 0.00529808019,
+      "offline_shadow_steps": 6,
+      "rotation_tip_speed_over_inflow": 0.04523550077709893,
+      "wind_speed_mps": 12.2
+    }
+  ],
+  "quasi_static_check": {
+    "azimuth_increment_deg": 30.0,
+    "azimuth_sample_count_per_wind": 12,
+    "fixed_vs_rotating_gain_state": "exact",
+    "fixed_vs_rotating_instantaneous_response_velocity": "exact",
+    "maximum_rotation_tip_speed_over_inflow": 0.06689371024007357,
+    "maximum_rotation_tip_speed_over_inflow_gate": 0.07,
+    "rotation_matrix_absolute_tolerance": 2e-15,
+    "rotor_radius_m": 5.27,
+    "rotor_speed_rpm": 1.0,
+    "status": "passed",
+    "scope": "instantaneous_kinematic_consistency_and_compact_velocity_scale_check_only"
+  },
+  "schema": "vorlap-unified-viv-gain-hvawt-parity-receipt-v1",
+  "shadow_parity": {
+    "checkpoint_comparison": "exact_after_removing_expected_changed_top_level_config_fingerprint",
+    "compared_state": [
+      "gain_and_limiting_amplitude",
+      "captured_and_residual_spectral_state",
+      "raw_and_filtered_modal_velocity",
+      "modal_rms_and_phase_state",
+      "saturation",
+      "generalized_force_and_power",
+      "nodal_force_and_virtual_work",
+      "finite_total_force_state"
+    ],
+    "force_array_comparison": "exact_binary64",
+    "history_field_comparison": "exact",
+    "simultaneous_modes": [
+      6,
+      12
+    ],
+    "status": "passed"
+  },
+  "source_code_paths": {
+    "campaign_preparation_sha256": "run_headless/prepare_hvawt_response_pilot_native.sh",
+    "campaign_test_sha256": "tests/test_hvawt_response_pilot.py",
+    "campaign_validation_sha256": "vorlap/hvawt_response_pilot.py",
+    "complete_dlc_evaluator_sha256": "vorlap/hvawt_complete_dlc_campaign.py",
+    "complete_dlc_test_sha256": "tests/test_hvawt_complete_dlc_campaign.py",
+    "external_config_sha256": "vorlap/qblade_external_config.py",
+    "force_producing_integration_sha256": "vorlap/qblade_hvawt_sil.py",
+    "full_submission_sha256": "run_headless/submit_hvawt_response_pilot.sj",
+    "hvawt_test_sha256": "tests/test_qblade_hvawt_sil.py",
+    "response_core_sha256": "vorlap/qblade_hvawt_response.py",
+    "response_core_test_sha256": "tests/test_qblade_hvawt_response.py",
+    "two_speed_submission_sha256": "run_headless/submit_hvawt_two_speed_120s_test.sj",
+    "unified_evaluator_sha256": "vorlap/unified_viv_gain.py",
+    "unified_test_sha256": "tests/test_unified_viv_gain.py"
+  },
+  "source_code": {
+    "campaign_preparation_sha256": "2ab74011ed99ece8cac503fb71a9909990b12ca426ba2dba9058fe3f841a2ecd",
+    "campaign_test_sha256": "480af45254331cbef93c86671885e27b33d4fe631159ae167bb7dffe386544f6",
+    "campaign_validation_sha256": "f945dcf2a222f912caa8d1af19a6d582623794ee1b8b70892b17d04c236c6ef8",
+    "complete_dlc_evaluator_sha256": "45afaec7b4c2049e8d8077c9e4efbf1aa70ddc597be579a1b04849635743025f",
+    "complete_dlc_test_sha256": "45cf0cb63a07941351ae89df23c60201a06c39788e111a07ec67b3463259dce2",
+    "external_config_sha256": "64df7eac9e067f1731e2d5fc20d7d3a40dd6137fb5520fa2cd98c83a38235e94",
+    "force_producing_integration_sha256": "20e39155575df18dd0b5055e3e28725b3e84fc804b3dcae3fd1f5624a591b78a",
+    "full_submission_sha256": "b8ba2598a9a918daa7eae95657cfee4c87f8d350300f1fa8ffa5dff463324c5a",
+    "hvawt_test_sha256": "1e71494d2c527b80487f1af643f36b74f200e571f4d12075a2274bc72f5a0f92",
+    "response_core_sha256": "c3cf302b7c58bf9ea16c7e30b76c06038ca4e6ec274c4dd640bca0d1ebf4be15",
+    "response_core_test_sha256": "52e1592dbfabe47587a0cfc4122ae7391441460bc48690eb932bf1371257b2f8",
+    "unified_evaluator_sha256": "531d68c4a2eab5a19c767c83d3abf93b9e82ecd7d531398de7f6a5a6cb3d6301",
+    "two_speed_submission_sha256": "ad1f1fb2dd82c1d03b97281e7e11468c5d255c6c06aac45293073ffa5b53a1b6",
+    "unified_test_sha256": "5f134246c5ae1bdf11809d9463ea782e9f8b94b79c2d86d87e79fafe5ec0d873"
+  },
+  "status": "passed_offline_uniform_v5_complete_turbulent_checkpoint_prepared",
+  "timestep_s": 0.0075,
+  "uncertainty_envelope": {
+    "additive_floor_over_local_saturation": 0.10265640699352364,
+    "application": "postprocess_screening_only",
+    "formula": "A_design=1.30*A_model+0.10265640699352364*A_sat",
+    "multiplicative_factor": 1.3
+  },
+  "verification": {
+    "command": "PYTHONPATH=. .venv/bin/python -m pytest -q tests/test_qblade_engineering_lockin.py tests/test_qblade_single_mode_engineering_lockin_sil.py tests/test_qblade_hvawt_sil.py tests/test_horcas2020_reference.py tests/test_horcas2020_geometry_composition_fit.py tests/test_horcas2020_geometry_composition_assessment.py tests/test_unified_viv_gain.py tests/test_qblade_case_prep.py tests/test_hvawt_response_pilot.py tests/test_fu2026_signed_work_shape_transfer.py tests/test_hvawt_complete_dlc_campaign.py",
+    "passed": 137,
+    "runtime_s": 89.42,
+    "status": "passed",
+    "warnings": 63,
+    "warnings_scope": "expected legacy-HDF5 spectral-repair diagnostics"
+  }
+}

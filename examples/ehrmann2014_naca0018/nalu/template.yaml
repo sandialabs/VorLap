@@ -1,0 +1,236 @@
+Simulations:
+  - name: sim1
+    optimizer: opt1
+    time_integrator: ti_1
+
+hypre_config:
+  umpire_device_pool_mbs: 4096
+  use_vendor_spgemm: 1
+  use_vendor_spmv: 0
+  use_vendor_sptrans: 0
+
+Time_Integrators:
+  - StandardTimeIntegrator:
+      name: ti_1
+      realms: [realm_1]
+      second_order_accuracy: true
+      start_time: 0.0
+      termination_step_count: 1
+      time_step: 0.001
+      time_step_count: 0
+      time_stepping_type: fixed
+
+linear_solvers:
+  - name: solve_mom
+    type: hypre
+    method: hypre_gmres
+    preconditioner: boomerAMG
+    tolerance: 1.0e-5
+    max_iterations: 1000
+    kspace: 1000
+    sync_alg: 1
+    output_level: 0
+    write_matrix_files: false
+    recompute_preconditioner_frequency: 1
+    reuse_linear_system: true
+    simple_hypre_matrix_assemble: true
+    dump_hypre_matrix_stats: false
+    segregated_solver: true
+    hypre_cfg_file: HYPRE_FILE
+    hypre_cfg_node: hypre_simple_precon
+  - name: solve_scalar
+    type: hypre
+    method: hypre_gmres
+    preconditioner: boomerAMG
+    tolerance: 1.0e-5
+    max_iterations: 1000
+    kspace: 1000
+    sync_alg: 1
+    output_level: 0
+    write_matrix_files: false
+    recompute_preconditioner_frequency: 1
+    reuse_linear_system: true
+    simple_hypre_matrix_assemble: true
+    dump_hypre_matrix_stats: false
+    hypre_cfg_file: HYPRE_FILE
+    hypre_cfg_node: hypre_simple_precon
+  - name: solve_elliptic
+    type: hypre
+    method: hypre_gmres
+    preconditioner: boomerAMG
+    tolerance: 1.0e-5
+    max_iterations: 1000
+    kspace: 1000
+    sync_alg: 1
+    output_level: 0
+    write_matrix_files: false
+    recompute_preconditioner_frequency: 1
+    reuse_linear_system: true
+    simple_hypre_matrix_assemble: true
+    dump_hypre_matrix_stats: false
+    hypre_cfg_file: HYPRE_FILE
+    hypre_cfg_node: hypre_elliptic
+
+realms:
+  - name: realm_1
+    mesh: MESH_FILE
+    automatic_decomposition_type: rcb
+    rebalance_mesh: true
+    stk_rebalance_method: parmetis
+    check_jacobians: true
+    check_for_missing_bcs: true
+    use_edges: true
+    boundary_conditions:
+      - target_name: wing
+        wall_boundary_condition: bc_wing
+        wall_user_data:
+          turbulent_ke: 0.0
+          use_wall_function: false
+          velocity: [0.0, 0.0, 0.0]
+      - target_name: wing-pp
+        wall_boundary_condition: bc_wing_pp
+        wall_user_data:
+          turbulent_ke: 0.0
+          use_wall_function: false
+          velocity: [0.0, 0.0, 0.0]
+      - target_name: inlet
+        inflow_boundary_condition: bc_inflow
+        inflow_user_data:
+          specific_dissipation_rate: 1.0
+          turbulent_ke: 1.0e-4
+          velocity: [1.0, 0.0, 0.0]
+      - target_name: outlet
+        open_boundary_condition: bc_open
+        open_user_data:
+          pressure: 0.0
+          specific_dissipation_rate: 1.0
+          turbulent_ke: 1.0e-4
+          velocity: [0.0, 0.0, 0.0]
+      - target_name: [front, back]
+        periodic_boundary_condition: bc_front_back
+        periodic_user_data:
+          search_tolerance: 1.0e-4
+    initial_conditions:
+      - constant: ic_1
+        target_name: fluid-hex
+        value:
+          pressure: 0.0
+          specific_dissipation_rate: 1.0
+          turbulent_ke: 1.0e-4
+          velocity: [1.0, 0.0, 0.0]
+    material_properties:
+      target_name: fluid-hex
+      specifications:
+        - name: density
+          type: constant
+          value: 1.225
+        - name: viscosity
+          type: constant
+          value: 1.813e-5
+    equation_systems:
+      name: theEqSys
+      max_iterations: 4
+      solver_system_specification:
+        velocity: solve_mom
+        turbulent_ke: solve_scalar
+        specific_dissipation_rate: solve_scalar
+        pressure: solve_elliptic
+        ndtw: solve_elliptic
+      systems:
+        - WallDistance:
+            name: myNDTW
+            max_iterations: 1
+            convergence_tolerance: 1.0e-8
+        - LowMachEOM:
+            name: myLowMach
+            max_iterations: 1
+            convergence_tolerance: 1.0e-8
+        - ShearStressTransport:
+            name: mySST
+            max_iterations: 1
+            convergence_tolerance: 1.0e-8
+    solution_options:
+      name: myOptions
+      projected_timescale_type: momentum_diag_inv
+      turbulence_model: sst_iddes
+      options:
+        - hybrid_factor:
+            velocity: 1.0
+            turbulent_ke: 1.0
+            specific_dissipation_rate: 1.0
+        - alpha_upw:
+            velocity: 1.0
+            turbulent_ke: 1.0
+            specific_dissipation_rate: 1.0
+        - upw_factor:
+            velocity: 1.0
+            turbulent_ke: 0.0
+            specific_dissipation_rate: 0.0
+        - limiter:
+            pressure: true
+            velocity: true
+            turbulent_ke: true
+            specific_dissipation_rate: true
+        - noc_correction:
+            pressure: true
+        - projected_nodal_gradient:
+            ndtw: element
+            pressure: element
+            velocity: element
+            turbulent_ke: element
+            specific_dissipation_rate: element
+        - relaxation_factor:
+            pressure: 0.3
+            velocity: 0.7
+            turbulent_ke: 0.7
+            specific_dissipation_rate: 0.7
+        - turbulence_model_constants:
+            SDRWallFactor: 0.625
+        - source_terms:
+            continuity: gcl
+            momentum: gcl
+            turbulent_ke: gcl
+            specific_dissipation_rate: gcl
+    output:
+      output_data_base_name: OUTPUT_FILE
+      output_frequency: 1000
+      output_start: 0
+      output_node_set: false
+      output_variables:
+        - velocity
+        - density
+        - pressure
+        - pressure_force
+        - viscous_force
+        - tau_wall_vector
+        - tau_wall
+        - turbulent_ke
+        - specific_dissipation_rate
+        - minimum_distance_to_wall
+        - sst_f_one_blending
+        - turbulent_viscosity
+        - element_courant
+        - q_criterion
+        - vorticity
+        - assembled_area_force_moment
+        - mesh_displacement
+        - mesh_velocity
+        - current_coordinates
+    post_processing:
+      - type: surface
+        physics: surface_force_and_moment
+        output_file_name: FORCE_FILE
+        frequency: 1
+        parameters: [0.0, 0.0, 0.0]
+        target_name: [wing, wing-pp]
+    restart:
+      restart_data_base_name: RESTART_FILE
+      restart_frequency: 1000
+      restart_start: 0
+    turbulence_averaging:
+      time_filter_interval: 100000.0
+      specifications:
+        - name: one
+          target_name: [fluid-hex]
+          compute_q_criterion: true
+          compute_vorticity: true

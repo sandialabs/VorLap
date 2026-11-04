@@ -1,0 +1,46 @@
+{
+  "assessment": {
+    "best_possible_absolute_error_over_depth": 0.026375496782794182,
+    "best_possible_relative_error": 0.5645591284611464,
+    "maximum_allowed_relative_error": 0.3,
+    "pointwise_simulation_required_to_establish_this_failure": false,
+    "reason": "The experimental lower uncertainty bound exceeds the model's largest closure-supported amplitude by more than 30%."
+  },
+  "claim_boundary": {
+    "does_not_validate_hvawt_or_fatigue": true,
+    "failure_must_be_preserved_before_training": true,
+    "independent_experimental_assessment": true,
+    "next_action": "reclassify_3x2_response_as_training_then_freeze_one_physics_revision_and_test_an_untouched_study"
+  },
+  "experiment": {
+    "amplitude_digitization_uncertainty": 0.0025,
+    "peak_amplitude_over_depth": 0.04921875,
+    "peak_u_over_ur": 1.166666667,
+    "reynolds_at_resonance": 33600,
+    "series": "Sc=87.7 separated pure-VIV resonance",
+    "study": "Mannini et al. 3:2 rectangular cylinder",
+    "uncertainty_favorable_lower_amplitude": 0.046718749999999996
+  },
+  "model": {
+    "bound_basis": "signed negative-damping saturation changes sign at A/(lambda*D)=1",
+    "calibration_fingerprint": "7bc822add11596d9f0a31e2a23860cf015eafa7d91889449defc271f269582e6",
+    "calibration_role": "Ehrmann training and same-study qualification",
+    "calibration_sha256": "d96c0b73a708b918360a15e79224f6a3a3f4e80702edf721bc606501a46fa02d",
+    "limiting_amplitude_over_crossflow_depth": 0.020343253217205814,
+    "retuned_for_this_study": false,
+    "type": "single_mode_airfoil_engineering_lockin_v1"
+  },
+  "pass": false,
+  "schema": "vorlap-mannini2016-frozen-engineering-screen-v1",
+  "sources": {
+    "digitization_provenance": {
+      "path": "examples/mannini2016_rectangular_3x2/reference_data/digitization_provenance.json",
+      "sha256": "8efffe64a53ee9fb3c15dd9b014f4e4af0c96d011e661b2796720c4686ca63db"
+    },
+    "digitized_response": {
+      "path": "examples/mannini2016_rectangular_3x2/reference_data/mannini2015_figure4_sc87p7_digitized.csv",
+      "sha256": "b82be5a9970c2049ab742474b63ecebb434beddea1367a73a7522c67b0fc92e5"
+    }
+  },
+  "status": "failed_frozen_model_saturation_bound"
+}

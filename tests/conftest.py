@@ -1,6 +1,56 @@
 import numpy as np
+from pathlib import Path
+import pytest
 
 from vorlap.structs import AirfoilFFT, Component, VIV_Params
+
+
+def pytest_addoption(parser):
+    parser.addoption(
+        "--require-paper", action="store_true",
+        help="Fail if the separately versioned SIL manuscript checkout is absent.",
+    )
+    parser.addoption(
+        "--require-qblade", action="store_true",
+        help="Fail if the qualified QBlade and native bridge installation is absent.",
+    )
+
+
+def pytest_configure(config):
+    if config.getoption("--require-qblade") and _missing_qblade_files():
+        raise pytest.UsageError(
+            "Qualified QBlade test installation is incomplete: "
+            + ", ".join(str(path) for path in _missing_qblade_files())
+        )
+    if config.getoption("--require-paper"):
+        paper = Path(__file__).resolve().parents[1] / "paper_drafts/NAWEA_QBladeBridge"
+        required = [
+            paper / "NAWEA2026_QBladeBridge.tex",
+            paper / "analysis/verify_reproducibility_package.py",
+            paper / "analysis/reproducibility/run_all.sh",
+        ]
+        missing = [str(path) for path in required if not path.is_file()]
+        if missing:
+            raise pytest.UsageError("SIL manuscript checkout is incomplete: " + ", ".join(missing))
+
+
+def _missing_qblade_files():
+    root = Path(__file__).resolve().parents[1] / "run_headless/QBladeCE_2.0.9.7"
+    return [path for path in (
+        root / "libQBladeCE_2.0.9.7.so.1.0.0",
+        root / "ControllerFiles/libvorlap_qblade_bridge.so",
+        root / "SIL_Interface/QBladeLibrary.py",
+    ) if not path.is_file()]
+
+
+def pytest_collection_modifyitems(items):
+    if _missing_qblade_files():
+        skip = pytest.mark.skip(
+            reason="Qualified external QBlade/bridge installation is absent; see docs/reproducibility.md",
+        )
+        for item in items:
+            if item.get_closest_marker("requires_qblade"):
+                item.add_marker(skip)
 
 
 def make_constant_airfoil_fft(
@@ -8,13 +58,17 @@ def make_constant_airfoil_fft(
     cl_dc: float = 1.0,
     cd_dc: float = 2.0,
     cf_dc: float = 0.0,
+    cl_h1_amp: float = 0.0,
+    cd_h1_amp: float = 0.0,
     cf_h1_amp: float = 0.1,
     st_h1: float = 0.5,
     n_freq: int = 2,
+    re_grid=None,
+    reynolds_model: str = "",
 ) -> AirfoilFFT:
     """Create a small synthetic airfoil FFT dataset for deterministic tests."""
-    re_grid = np.array([1.0, 3.0], dtype=float)
-    aoa_grid = np.array([-10.0, 10.0], dtype=float)
+    re_grid = np.array([0.1, 1.0e7], dtype=float) if re_grid is None else np.asarray(re_grid, dtype=float)
+    aoa_grid = np.array([-180.0, 180.0], dtype=float)
     shape = (re_grid.size, aoa_grid.size, n_freq)
 
     def _zeros() -> np.ndarray:
@@ -38,6 +92,8 @@ def make_constant_airfoil_fft(
     cd_amp[:, :, 0] = cd_dc
     cf_amp[:, :, 0] = cf_dc
     if n_freq > 1:
+        cl_amp[:, :, 1] = cl_h1_amp
+        cd_amp[:, :, 1] = cd_h1_amp
         cf_amp[:, :, 1] = cf_h1_amp
 
     cl_pha = _zeros()
@@ -62,6 +118,7 @@ def make_constant_airfoil_fft(
         CD_Pha=cd_pha,
         CM_Pha=cm_pha,
         CF_Pha=cf_pha,
+        reynolds_model=reynolds_model,
     )
 
 
@@ -72,24 +129,27 @@ def make_linear_airfoil_fft() -> AirfoilFFT:
     n_freq = 2
     rr, aa = np.meshgrid(re_grid, aoa_grid, indexing="ij")
     base = rr + 2.0 * aa
-    base = base[:, :, None]
-    harmonic = (0.1 * rr - 0.05 * aa)[:, :, None]
-    data = np.concatenate([base, harmonic], axis=2)
+    harmonic = 0.1 * rr + 0.05 * aa
+    amp_data = np.stack([base, harmonic], axis=2)
+    zeros = np.zeros_like(amp_data)
 
-    zeros = np.zeros_like(data)
+    cl_st = np.stack([np.zeros_like(base), harmonic], axis=2)
+    cd_st = np.stack([np.zeros_like(base), harmonic + 0.1], axis=2)
+    cm_st = np.stack([np.zeros_like(base), harmonic + 0.2], axis=2)
+    cf_st = np.stack([np.zeros_like(base), harmonic + 0.3], axis=2)
     return AirfoilFFT(
         name="linear",
         Re=re_grid,
         AOA=aoa_grid,
         Thickness=0.12,
-        CL_ST=data,
-        CD_ST=data + 1.0,
-        CM_ST=data + 2.0,
-        CF_ST=data + 3.0,
-        CL_Amp=data + 4.0,
-        CD_Amp=data + 5.0,
-        CM_Amp=data + 6.0,
-        CF_Amp=data + 7.0,
+        CL_ST=cl_st,
+        CD_ST=cd_st,
+        CM_ST=cm_st,
+        CF_ST=cf_st,
+        CL_Amp=amp_data + 4.0,
+        CD_Amp=amp_data + 5.0,
+        CM_Amp=amp_data + 6.0,
+        CF_Amp=amp_data + 7.0,
         CL_Pha=zeros + 0.01,
         CD_Pha=zeros + 0.02,
         CM_Pha=zeros + 0.03,

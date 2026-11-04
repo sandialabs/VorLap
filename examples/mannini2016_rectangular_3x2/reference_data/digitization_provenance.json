@@ -1,0 +1,52 @@
+{
+  "axis_calibration": {
+    "amplitude_axis": {
+      "data_max": 0.25,
+      "data_min": 0.0,
+      "pixel_at_max": 46,
+      "pixel_at_min": 366
+    },
+    "reduced_velocity_axis": {
+      "data_max": 4.5,
+      "data_min": 0.0,
+      "pixel_at_max": 506,
+      "pixel_at_min": 74
+    }
+  },
+  "claim_boundary": {
+    "figure_reproduction_not_redistributed": true,
+    "first_use": "independent_no_retuning_validation",
+    "not_a_static_spectrum_source": true,
+    "sc_87p7_selected_as_decoupled_pure_viv_case": true
+  },
+  "digitization": {
+    "amplitude_uncertainty": 0.0025,
+    "method": "exact red-plus raster-template centers with affine axis calibration; overlapping peak-drop markers retained as distinct source points",
+    "series": "Sc=87.7 red plus markers",
+    "target_quantity": "sqrt(2)*rms_crossflow_displacement/D"
+  },
+  "experiment": {
+    "crossflow_depth_m": 0.077,
+    "doi_journal_experiment": "10.1016/j.jfluidstructs.2016.08.002",
+    "doi_original_experiment": "10.1007/s11012-014-0025-8",
+    "mass_kg": 5.526,
+    "natural_frequency_hz": 9.01,
+    "reynolds_at_resonance": 33600,
+    "scruton_number": 87.7,
+    "span_m": 0.986,
+    "streamwise_breadth_m": 0.116,
+    "structural_damping_ratio": 0.0135
+  },
+  "source": {
+    "conference_pdf_sha256": "09972db850423ce47e4112b99dfb625b80c0dfebf8f1025b2f899881ebbd5f93",
+    "conference_pdf_url": "https://flore.unifi.it/retrieve/handle/2158/1006474/56127/%282015%29%20Mannini_Massai_Marra_Bartoli_ICWE14_numeric.pdf",
+    "extracted_figure_png_sha256": "606d53976874120ce0cb4da1ede9c9741c419e0af2f71a24dfa357b42b319cc1",
+    "figure": 4,
+    "retrieved_utc_date": "2026-08-14",
+    "static_body_input_at_re_58200": {
+      "sinusoidal_equivalent_lift_coefficient": 0.656,
+      "strouhal_number": 0.106
+    }
+  },
+  "status": "digitized_before_model_evaluation"
+}

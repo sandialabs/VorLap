@@ -1,0 +1,55 @@
+{
+  "schema": "vorlap-hvawt-modal-evidence-review-marker-v2",
+  "marker": "HVAWT_MODAL_REREVIEW_LFONLY_da8ac3a8_303426c2_a4d76808",
+  "status": "ready_for_clean_checkout_read_only_review",
+  "base_commit": "ab51c79b8e13ee3ec7de20a7c5c9d97e24b44129",
+  "branch": "response-aware-viv-hvawt-modal",
+  "qblade_executed": false,
+  "damping_candidate_selected": false,
+  "tracked_evidence": {
+    "run_headless/config/hvawt_response_mode_identification.json": "da8ac3a8ffa64d99a9f1363b9bbf81dd06a5695c27c775193c54d5f4c85d3941",
+    "run_headless/config/hvawt_response_mode_shapes.csv": "d147983ee1f818c491a2c4d1ae30f70753dfe53acd60324273cc9dff3f7b6dd1",
+    "run_headless/config/hvawt_response_mode_force_duals.csv": "83610382ba2c2b5daf8052dc725b45c8e045e869c981475fa8fe2b385b733eb9",
+    "run_headless/config/hvawt_response_mode_shapes_repeat.csv": "c51a0ab03140a6de1618a9ace1a0008a09eb2957f34c1273187a8386dc6b868d",
+    "run_headless/config/hvawt_response_mode_force_duals_repeat.csv": "420876e8cb52a32efbeb054d959df228b177d39a3842e4cb8306bac75ee5be14",
+    "run_headless/config/hvawt_owens_request.json": "7524ee835eab7e9b3b1e7b0432553af7659fa34ade0cafcb5459c2451bb06039",
+    "run_headless/config/hvawt_owens_run_metadata.txt": "0fe0328d619d093f063689ed29d2338e393346095e4357c61e847c9fb1168078",
+    "run_headless/config/hvawt_campbell_mode_tracking.csv": "1a1ecaf05be200ae9260726ca97945eb4224e44fb0d8a6a50b79411c5a55f3fd",
+    "run_headless/config/hvawt_campbell_mode_properties.csv": "43545f5818114e791f9723bc7c21df48d1f1579facf75e045649839b9be8dbf9"
+  },
+  "implementation": {
+    "run_headless/qblade_to_owens.py": "3753fa93549682347a422e5406b131fed75909bd3fc4bf4011747198b5d5c75a",
+    "run_headless/run_owens_campbell.jl": "7c42a0d58cbdfa39aed459e9c0d3d3f042bac365d9ed23d7bfe497b841438d87",
+    "run_headless/identify_hvawt_response_modes.py": "303426c27cae8af1b19359ef159d653664a1c6b257dd182417bc402f1f06b504",
+    "run_headless/audit_hvawt_modal_evidence.py": "a4d76808021ed8115aed5ce1bc6aab5dad8c744b3a8d3a2b5fc58f64a3742eea"
+  },
+  "provenance_contract": {
+    "owens_git_commit": "883e721aa003efc0d952241d4af1bf609d51f238",
+    "owens_git_dirty": false,
+    "owens_project_toml_sha256": "a5424041322ca3e655f7546e8b75a58c0f4d5c12411e0f53cd211840bcab3f3c",
+    "owens_manifest_toml_sha256": "65a608d4afa9ddcec5f5180baf379e4a73c787f355577ae24b4521c8fda26405",
+    "julia_version": "1.12.6",
+    "structural_damping": false,
+    "source_substructure_sha256": "0093c6970a257e7bbd206ee15d81f84c70b5e138decb15e752c838c388e747dc"
+  },
+  "independent_regeneration": {
+    "interpretation": "Individual vectors rotate within zero-RPM clusters [1,2], [3,4], [7,8], and [9,10,11], so the full-basis condition number is not invariant. Selected nondegenerate target shapes, force columns, and cross-basis generalized-force action are recomputed from the two tracked CSV pairs.",
+    "original_zero_rpm_condition_number": 21.665096447578037,
+    "repeat_zero_rpm_condition_number": 2.447736061135837,
+    "summary": {
+      "minimum_selected_action_shape_mac": 0.9999999999984774,
+      "maximum_phase_aligned_selected_action_shape_relative_difference": 1.316140482223967e-6,
+      "minimum_selected_force_dual_mac": 0.9999999999993137,
+      "maximum_phase_aligned_selected_force_dual_relative_difference": 9.424626873050301e-7,
+      "maximum_cross_basis_target_generalized_force_error": 4.696878486828982e-7,
+      "maximum_cross_basis_off_target_generalized_force": 1.358646100936869e-7
+    }
+  },
+  "verification": {
+    "clean_checkout_audit": "passed in place and from a minimal temporary clean checkout",
+    "modal_targeted_tests": "15 passed",
+    "broader_modal_campaign_tests": "186 passed; 1 unrelated paper-preflight test deselected because eight ignored production-run evidence files are absent from the isolated worktree",
+    "git_diff_check": "passed"
+  },
+  "required_open_gate": "Run and archive the paired active-QBlade original-versus-swapped SUBELEMENTS decay discriminator before selecting or correcting any damping semantics."
+}
