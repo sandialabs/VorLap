@@ -97,6 +97,8 @@ private runtime store. Its public source checkout does not retain credentials.
 Only the verification-evidence directory is uploaded; the private checkout and
 vendor binaries are excluded. The Docker build context includes only the pinned
 dependency list, even when local paper files or archives exist beside the code.
+The runtime container uses the hosted runner's user and group, preserving readable
+ownership of atomic run receipts without relaxing their file permissions.
 
 Fork pull requests do not receive secrets. Their QBlade job fails with an access
 message rather than skipping tests or claiming success. A maintainer must review

@@ -47,9 +47,11 @@ jobs:
           QBLADE_CI_ARCHIVE_SHA256: 8be7e5ab6125908e0e898a0b3e91e52bd6354f88597d7acf6e30d03e6577e1b3
         run: |
           docker run --rm --platform linux/amd64 \
+            --user "$(id -u):$(id -g)" \
             --volume "$GITHUB_WORKSPACE:/work/VorLap" \
             --workdir /work/VorLap \
             --env QBLADE_CI_ARCHIVE_SHA256 \
+            --env GIT_CONFIG_GLOBAL=/dev/null \
             vorlap-qblade-ci bash -euo pipefail -c '
               python3 scripts/ci/install_qblade_runtime.py run_headless/QBladeCE_2.0.9.7 \
                 --archive .qblade-ci-runtime/QBladeCE_2.0.9.7-ci.tar.gz
