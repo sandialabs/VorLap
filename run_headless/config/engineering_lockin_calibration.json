@@ -1,0 +1,130 @@
+{
+  "amplitude_calibration": {
+    "calibration_points": [
+      {
+        "amplitude_over_chord": 0.01236635,
+        "mass_damping": 1.007724
+      },
+      {
+        "amplitude_over_chord": 0.00556788,
+        "mass_damping": 1.478621
+      }
+    ],
+    "critical_mass_damping": 1.5983534133928563,
+    "feedback_gain": 510.5219625924112,
+    "feedback_gain_definition": "H=C_structural_at_critical_mass_damping/sum(0.5*rho*U_effective*c*ds*Ceff*phi_squared)",
+    "intercept_amplitude_ratio_squared": 0.0004138479514593548,
+    "law": "A_over_c_squared=lambda_squared*(1-mass_damping/critical_mass_damping)",
+    "limiting_amplitude_ratio": 0.020343253217205814,
+    "reference_modal_structure": {
+      "basis": "tip_normalized_euler_bernoulli_first_cantilever_mode",
+      "generalized_modal_mass_kg": 2.2199144519878358,
+      "mass_ratio": 47.7,
+      "mode_shape_sha256": "384ce3bae31ab7e75ac86f4567b77978ffdbfdbfaf2fffb150d034d166f97063",
+      "span_m": 0.9144,
+      "station_count": 21,
+      "structural_damping_coefficient_at_onset_kgps": 5.608565378178459,
+      "tributary_length_sha256": "f7484f04346b63787727de4b3a945620454a1b0ea69e2d271135b1698c98c1cd",
+      "unit_gain_aerodynamic_feedback_coefficient_kgps": 0.010985943385664302
+    },
+    "slope_per_mass_damping": -0.00025892143001144633
+  },
+  "claim_boundary": {
+    "level": "engineering_calibration_and_internal_holdout",
+    "nalu_required": false,
+    "next_gate": "coupled_raw_qblade_vs_engineering_bridge_ehrmann_rerun",
+    "not_independent_validation": true,
+    "prescribed_motion_required": false,
+    "reynolds_transfer_unqualified_because_source_planes_are_replicated": true
+  },
+  "facility": {
+    "effective_velocity_scale": 1.3333333333333333,
+    "policy": "continuity_area_ratio_correction_applied_to_shedding_frequency_and_feedback_dynamic_scale",
+    "reported_tunnel_blockage_fraction": 0.25
+  },
+  "holdout_assessment": {
+    "maximum_allowed_absolute_relative_error": 0.3,
+    "maximum_observed_absolute_relative_error": 0.14643395776926113,
+    "points": [
+      {
+        "absolute_relative_error": 0.08760037239637868,
+        "amplitude_digitization_uncertainty": 0.0006,
+        "experimental_amplitude_over_chord": 0.01195601,
+        "mass_damping": 1.138759,
+        "predicted_amplitude_over_chord": 0.010908659071625172,
+        "signed_relative_error": -0.08760037239637868
+      },
+      {
+        "absolute_relative_error": 0.10222081537558944,
+        "amplitude_digitization_uncertainty": 0.0006,
+        "experimental_amplitude_over_chord": 0.01036376,
+        "mass_damping": 1.264,
+        "predicted_amplitude_over_chord": 0.00930436800244308,
+        "signed_relative_error": -0.10222081537558944
+      },
+      {
+        "absolute_relative_error": 0.14643395776926113,
+        "amplitude_digitization_uncertainty": 0.0006,
+        "experimental_amplitude_over_chord": 0.00889484,
+        "mass_damping": 1.375724,
+        "predicted_amplitude_over_chord": 0.007592333375075665,
+        "signed_relative_error": -0.14643395776926113
+      }
+    ],
+    "status": "passed"
+  },
+  "model_type": "single_mode_airfoil_engineering_lockin_v1",
+  "profile": "NACA0018",
+  "schema": "vorlap-ehrmann2014-engineering-lockin-calibration-v1",
+  "sources": {
+    "digitization_provenance": {
+      "path": "examples/ehrmann2014_naca0018/reference_data/ehrmann2014_digitization_provenance.json",
+      "sha256": "5c26c08c9d17a452d639eecc52c43e94ae0b618d05a938510e56499ec27bf3b1"
+    },
+    "figure6_digitization": {
+      "path": "examples/ehrmann2014_naca0018/reference_data/ehrmann2014_figure6_naca0018_digitized.csv",
+      "role": "unused_lockin_location_check",
+      "sha256": "03c0161de5d45ba2f740f87d8d354452a911534d3b87a26c6ee23cb088a6890a"
+    },
+    "figure7_digitization": {
+      "path": "examples/ehrmann2014_naca0018/reference_data/ehrmann2014_figure7_naca0018_peak_digitized.csv",
+      "role": "two_endpoint_calibration_three_point_holdout",
+      "sha256": "1afdfca3cfa4b98318f91f5a46954b34886fa470c8e21763eee1bd5c71f73f83"
+    },
+    "stationary_spectrum": {
+      "path": "examples/ReferenceHVAWTQBladeModel/10m_HVAWT_reference_turbine/VorLapAirfoils/NACA0018.h5",
+      "reynolds_model": "replicated_reynolds_independent",
+      "sha256": "64399e25dc5008caaed88d42e5cf24160c1045f17a282a06234648202cece369"
+    }
+  },
+  "spectral_capture": {
+    "channel": "CL",
+    "figure6_unused_check": {
+      "absolute_relative_error": 0.02765958977782891,
+      "experimental_peak_reduced_velocity": 4.586149,
+      "passes_10_percent": true,
+      "predicted_peak_reduced_velocity": 4.713,
+      "signed_relative_error": 0.02765958977782891
+    },
+    "frequency_ratio_definition": "St*U_effective/(D_St*f_n)",
+    "frequency_ratio_high": 1.1,
+    "frequency_ratio_low": 0.85,
+    "frequency_ratio_peak": 1.0,
+    "harmonics": "all_positive_frequency_entries",
+    "reference_peak": {
+      "captured_lift_coefficient": 0.03925587880977077,
+      "centroid_frequency_ratio": 0.9938800925831902,
+      "dominant_frequency_ratio": 0.98173171711405,
+      "effective_reduced_velocity": 6.284,
+      "nominal_reduced_velocity": 4.713,
+      "threshold_scale": 0.24668394244059952
+    },
+    "scan_nominal_reduced_velocity": [
+      3.0,
+      6.3
+    ],
+    "scan_points": 3301,
+    "window": "compact_sine_squared"
+  },
+  "status": "calibrated_holdout_passed"
+}

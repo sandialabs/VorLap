@@ -1,0 +1,6 @@
+source_figure,series,pixel_x,pixel_y,mass_damping,maximum_amplitude_over_chord,mass_damping_digitization_uncertainty,amplitude_over_chord_digitization_uncertainty
+7,NACA0018,122.3,161.3,1.007724,0.01236635,0.01,0.0006
+7,NACA0018,169.8,163.0,1.138759,0.01195601,0.01,0.0006
+7,NACA0018,215.2,170.2,1.264000,0.01036376,0.01,0.0006
+7,NACA0018,255.7,177.9,1.375724,0.00889484,0.01,0.0006
+7,NACA0018,293.0,201.5,1.478621,0.00556788,0.01,0.0006

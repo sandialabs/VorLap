@@ -1,0 +1,12 @@
+id,translation_x,translation_y,translation_z,rotation_x,rotation_y,rotation_z,pitch
+Blade2,0,0,0,0,0,120,0
+x,y,z,chord,twist,thickness,offset,airfoil_id
+0,0,0,3.0,0.0,.18,0.25,NACA0018
+0,10,10,2.5,0.0,.18,0.25,NACA0018
+0,30,20,2.5,0.0,.18,0.25,NACA0018
+0,35,30,2.5,0.0,.18,0.25,NACA0018
+0,40,40,2.5,0.0,.18,0.25,NACA0018
+0,35,50,2.5,0.0,.18,0.25,NACA0018
+0,30,60,2.5,0.0,.18,0.25,NACA0018
+0,10,70,2.5,0.0,.18,0.25,NACA0018
+0,0,80,2.0,0.0,.18,0.25,other

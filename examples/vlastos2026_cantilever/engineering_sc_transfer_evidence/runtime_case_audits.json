@@ -1,0 +1,1282 @@
+[
+  {
+    "artifacts_present": true,
+    "case_id": "ambientv2_sc2p94_u6p25_dt",
+    "evaluated": true,
+    "execution_pass": true,
+    "expected_response_config_fingerprint_sha256": "77ca5016ecc82600fef8f66ab757caaaf33bf982c29b36f3fe91e141e4640571",
+    "history": {
+      "activation_invariant_violations": 0,
+      "aerodynamic_speed_basis": "declared_ambient_crossflow",
+      "ambient_response_speed_max_mps": 6.25625,
+      "ambient_response_speed_min_mps": 6.25625,
+      "applied_power_sign_convention_pass": true,
+      "columns": 97,
+      "compact_lag_provenance_pass": true,
+      "configured_response_reduced_velocity": 6.25,
+      "file_identity": {
+        "path": "/results/ambientv2_sc2p94_u6p25_dt/result_sil_vorlap_history.csv",
+        "sha256": "1e37791f32b2f8d60713c538a705b7a41f6fd1c1b6a57180cd89024b7cfbbe4c",
+        "size_bytes": 35719784
+      },
+      "force_headroom_limit_n": 22.5,
+      "force_limited_node_samples": 0,
+      "force_vector_component_count": 63,
+      "gain_headroom_limit": 9.0,
+      "gain_limited_node_samples": 0,
+      "history_mode": "compact",
+      "history_schema": "vorlap-sil-force-history-compact-v1",
+      "limit_headroom_pass": true,
+      "maximum_absolute_raw_gain": 2.7536127328645867,
+      "maximum_absolute_response_nodal_force_n": 0.023400748549360893,
+      "path": "/results/ambientv2_sc2p94_u6p25_dt/result_sil_vorlap_history.csv",
+      "realized_response_reduced_velocity": 6.25,
+      "relative_crossflow_speed_max_mps": 6.752997663687884,
+      "relative_crossflow_speed_min_mps": 6.25625,
+      "response_enabled_values": [
+        true
+      ],
+      "response_estimator_early_mean_amplitude_ratio": 0.3987596936566962,
+      "response_estimator_final_mean_amplitude_ratio": 0.39900789544619997,
+      "response_estimator_stationarity_absolute_difference": 0.0002482017895037436,
+      "response_estimator_stationarity_evaluated": true,
+      "response_estimator_stationarity_pass": true,
+      "response_estimator_stationarity_tolerance": 0.01995039477231,
+      "response_model_schema_version": 2,
+      "response_model_types": [
+        "modal_negative_damping"
+      ],
+      "response_section_width_max_m": 0.05,
+      "response_section_width_min_m": 0.05,
+      "rows_retained_in_memory": 1,
+      "runtime_model_pass": true,
+      "samples": 23977,
+      "speed_basis_invariant_violations": 0,
+      "speed_basis_provenance_pass": true,
+      "startup_seed_active_samples": 500,
+      "startup_seed_inactive_samples": 23477,
+      "startup_seed_integrity_evaluated": true,
+      "startup_seed_integrity_pass": true,
+      "streaming_passes": 2,
+      "terminal_window_samples_processed": 3997
+    },
+    "history_path": "/results/ambientv2_sc2p94_u6p25_dt/result_sil_vorlap_history.csv",
+    "identity_mismatch": false,
+    "identity_mismatches": [],
+    "input_identities": {
+      "history": {
+        "path": "/results/ambientv2_sc2p94_u6p25_dt/result_sil_vorlap_history.csv",
+        "sha256": "1e37791f32b2f8d60713c538a705b7a41f6fd1c1b6a57180cd89024b7cfbbe4c",
+        "size_bytes": 35719784
+      },
+      "result": {
+        "path": "/results/ambientv2_sc2p94_u6p25_dt/result.txt",
+        "sha256": "0a8ba0f63c74c3e5a67a1dc8f70eee7583535b8a8b8dab13587495dce47ec716",
+        "size_bytes": 2661870
+      },
+      "sim": {
+        "path": "/work/VorLap/run_headless/runs/vlastos2026_belloli_sc_transfer_linux/cases/ambientv2_sc2p94_u6p25_dt/ambientv2_sc2p94_u6p25_dt.sim",
+        "sha256": "3396e78fadeceeb6b49570847d9eebead374d729dabd2b1bdfc74edad9afea03",
+        "size_bytes": 12242
+      },
+      "turbine": {
+        "path": "/work/VorLap/run_headless/runs/vlastos2026_belloli_sc_transfer_linux/cases/ambientv2_sc2p94_u6p25_dt/model/vlastos2026_sc5p18_cantilever.trb",
+        "sha256": "87991e961f4b42b50dce12d0244281948490bd275cca00210da4f67bd2ba2daf",
+        "size_bytes": 11338
+      },
+      "vorlap_config": {
+        "path": "/work/VorLap/run_headless/runs/vlastos2026_belloli_sc_transfer_linux/cases/ambientv2_sc2p94_u6p25_dt/model/Control/vorlap_qblade_external.json",
+        "sha256": "b9cbe1c4761230d62c5a00a621256092f2b960f0cd7c852166d899360251a498",
+        "size_bytes": 19926
+      }
+    },
+    "missing_identity_fields": [],
+    "pass": true,
+    "problems": [],
+    "provenance_evaluated": true,
+    "provenance_pass": true,
+    "response_limit_counts": {
+      "force_limited_node_samples": 0,
+      "force_limited_steps": 0,
+      "gain_limited_node_samples": 0,
+      "gain_limited_steps": 0
+    },
+    "response_speed_summary_pass": true,
+    "response_summary_limits_pass": true,
+    "source_coverage_complete": true,
+    "source_limit_counts": {
+      "aliased_frequency_count": 0,
+      "aoa_out_of_range_count": 0,
+      "force_coefficient_out_of_range_count": 0,
+      "frequency_truncated_count": 0,
+      "nonfinite_count": 0,
+      "re_out_of_range_count": 0,
+      "source_clip_count": 0
+    },
+    "source_limits_pass": true,
+    "source_sample_counts": [
+      23977
+    ],
+    "startup_seed_response": {
+      "evaluated": true,
+      "export_time_grid_audit": {
+        "acceptance_rule": "each parsed timestamp must match one of the at-most-two rendered tokens at its configured-grid repeated-addition bounds within floating-point parse slack",
+        "binary64_unit_roundoff": 1.1102230246251565e-16,
+        "configured_timestep_s": 0.0005,
+        "duplicate_exported_time_count": 0,
+        "expected_first_time_s": 0.0,
+        "expected_last_time_s": 11.988,
+        "expected_samples": 23977,
+        "export_format": "%.5E",
+        "exported_adjacent_time_difference_max_s": 0.0005000000000006111,
+        "exported_adjacent_time_difference_median_s": 0.0005000000000000004,
+        "exported_adjacent_time_difference_min_s": 0.0004999999999988347,
+        "exported_first_time_s": 0.0,
+        "exported_last_time_s": 11.988,
+        "floating_accumulation_model": "nonnegative sequential IEEE-754 binary64 additions from zero; Higham gamma_n summation bound plus one unit-roundoff centering term",
+        "maximum_export_time_absolute_error_s": 1.7763568394002505e-15,
+        "maximum_export_time_error_to_tolerance_ratio": 3.5527035403581557e-10,
+        "maximum_export_time_renderer_match_tolerance_s": 4.2589931581460404e-14,
+        "maximum_export_time_renderer_mismatch_s": 0.0,
+        "maximum_export_time_rounding_tolerance_s": 5.000003195442711e-05,
+        "maximum_repeated_addition_time_bound_s": 3.191183717285608e-11,
+        "nondecreasing_exported_time": true,
+        "pass": true,
+        "rounding_bound": "half of one unit in the final printed decimal at each expected scientific exponent, plus the binary64 repeated-addition bound and floating-point parse slack",
+        "schema": "qblade-result-time-grid-reconstruction-v1",
+        "source": "manifest timestep_s multiplied by zero-based sequential sample index, bounded for IEEE-754 binary64 repeated-addition error, then deterministically rendered with the declared export format",
+        "two_token_rounding_boundary_sample_count": 0
+      },
+      "maximum_amplitude_ratio": 0.01,
+      "minimum_amplitude_ratio": 0.001,
+      "observation_cycles": 1.0,
+      "observation_samples": 101,
+      "pass": true,
+      "realized_amplitude_m": 0.000266577,
+      "realized_amplitude_ratio": 0.005331539999999999,
+      "seed_end_s": 0.24975024975024976
+    },
+    "startup_seed_summary_pass": true,
+    "summary_path": "/results/ambientv2_sc2p94_u6p25_dt/ambientv2_sc2p94_u6p25_dt_run_summary.json"
+  },
+  {
+    "artifacts_present": true,
+    "case_id": "ambientv2_sc2p94_u6p25_dt_half",
+    "evaluated": true,
+    "execution_pass": true,
+    "expected_response_config_fingerprint_sha256": "77ca5016ecc82600fef8f66ab757caaaf33bf982c29b36f3fe91e141e4640571",
+    "history": {
+      "activation_invariant_violations": 0,
+      "aerodynamic_speed_basis": "declared_ambient_crossflow",
+      "ambient_response_speed_max_mps": 6.25625,
+      "ambient_response_speed_min_mps": 6.25625,
+      "applied_power_sign_convention_pass": true,
+      "columns": 97,
+      "compact_lag_provenance_pass": true,
+      "configured_response_reduced_velocity": 6.25,
+      "file_identity": {
+        "path": "/results/ambientv2_sc2p94_u6p25_dt_half/result_sil_vorlap_history.csv",
+        "sha256": "ccc1b2a6d1e73c35ceebfac98926769d647cf3487eea12dfb3ef2f300b60916a",
+        "size_bytes": 71724667
+      },
+      "force_headroom_limit_n": 22.5,
+      "force_limited_node_samples": 0,
+      "force_vector_component_count": 63,
+      "gain_headroom_limit": 9.0,
+      "gain_limited_node_samples": 0,
+      "history_mode": "compact",
+      "history_schema": "vorlap-sil-force-history-compact-v1",
+      "limit_headroom_pass": true,
+      "maximum_absolute_raw_gain": 2.7536127328645867,
+      "maximum_absolute_response_nodal_force_n": 0.02341568424483097,
+      "path": "/results/ambientv2_sc2p94_u6p25_dt_half/result_sil_vorlap_history.csv",
+      "realized_response_reduced_velocity": 6.25,
+      "relative_crossflow_speed_max_mps": 6.751638053802208,
+      "relative_crossflow_speed_min_mps": 6.25625,
+      "response_enabled_values": [
+        true
+      ],
+      "response_estimator_early_mean_amplitude_ratio": 0.39847523627815606,
+      "response_estimator_final_mean_amplitude_ratio": 0.3986213572319084,
+      "response_estimator_stationarity_absolute_difference": 0.0001461209537523267,
+      "response_estimator_stationarity_evaluated": true,
+      "response_estimator_stationarity_pass": true,
+      "response_estimator_stationarity_tolerance": 0.01993106786159542,
+      "response_model_schema_version": 2,
+      "response_model_types": [
+        "modal_negative_damping"
+      ],
+      "response_section_width_max_m": 0.05,
+      "response_section_width_min_m": 0.05,
+      "rows_retained_in_memory": 1,
+      "runtime_model_pass": true,
+      "samples": 47954,
+      "speed_basis_invariant_violations": 0,
+      "speed_basis_provenance_pass": true,
+      "startup_seed_active_samples": 1000,
+      "startup_seed_inactive_samples": 46954,
+      "startup_seed_integrity_evaluated": true,
+      "startup_seed_integrity_pass": true,
+      "streaming_passes": 2,
+      "terminal_window_samples_processed": 7993
+    },
+    "history_path": "/results/ambientv2_sc2p94_u6p25_dt_half/result_sil_vorlap_history.csv",
+    "identity_mismatch": false,
+    "identity_mismatches": [],
+    "input_identities": {
+      "history": {
+        "path": "/results/ambientv2_sc2p94_u6p25_dt_half/result_sil_vorlap_history.csv",
+        "sha256": "ccc1b2a6d1e73c35ceebfac98926769d647cf3487eea12dfb3ef2f300b60916a",
+        "size_bytes": 71724667
+      },
+      "result": {
+        "path": "/results/ambientv2_sc2p94_u6p25_dt_half/result.txt",
+        "sha256": "e26d673fd7c707fa2d01740d185e172909731f3adb7d861cb4e471ab2134adbc",
+        "size_bytes": 5323447
+      },
+      "sim": {
+        "path": "/work/VorLap/run_headless/runs/vlastos2026_belloli_sc_transfer_linux/cases/ambientv2_sc2p94_u6p25_dt_half/ambientv2_sc2p94_u6p25_dt_half.sim",
+        "sha256": "dfc212305e75cdd9db8824d41a3428ae80022c21f19f47102e3ffc8586f70b46",
+        "size_bytes": 12242
+      },
+      "turbine": {
+        "path": "/work/VorLap/run_headless/runs/vlastos2026_belloli_sc_transfer_linux/cases/ambientv2_sc2p94_u6p25_dt_half/model/vlastos2026_sc5p18_cantilever.trb",
+        "sha256": "4651ada4baf76f7ceb7a80a9bfd15066af180da537ea36f1e69acc921f228898",
+        "size_bytes": 11338
+      },
+      "vorlap_config": {
+        "path": "/work/VorLap/run_headless/runs/vlastos2026_belloli_sc_transfer_linux/cases/ambientv2_sc2p94_u6p25_dt_half/model/Control/vorlap_qblade_external.json",
+        "sha256": "35e53017ceef854fa2bf6d740829ca4212129a571122a18ebd823f2a584a3d6b",
+        "size_bytes": 19931
+      }
+    },
+    "missing_identity_fields": [],
+    "pass": true,
+    "problems": [],
+    "provenance_evaluated": true,
+    "provenance_pass": true,
+    "response_limit_counts": {
+      "force_limited_node_samples": 0,
+      "force_limited_steps": 0,
+      "gain_limited_node_samples": 0,
+      "gain_limited_steps": 0
+    },
+    "response_speed_summary_pass": true,
+    "response_summary_limits_pass": true,
+    "source_coverage_complete": true,
+    "source_limit_counts": {
+      "aliased_frequency_count": 0,
+      "aoa_out_of_range_count": 0,
+      "force_coefficient_out_of_range_count": 0,
+      "frequency_truncated_count": 0,
+      "nonfinite_count": 0,
+      "re_out_of_range_count": 0,
+      "source_clip_count": 0
+    },
+    "source_limits_pass": true,
+    "source_sample_counts": [
+      47954
+    ],
+    "startup_seed_response": {
+      "evaluated": true,
+      "export_time_grid_audit": {
+        "acceptance_rule": "each parsed timestamp must match one of the at-most-two rendered tokens at its configured-grid repeated-addition bounds within floating-point parse slack",
+        "binary64_unit_roundoff": 1.1102230246251565e-16,
+        "configured_timestep_s": 0.00025,
+        "duplicate_exported_time_count": 0,
+        "expected_first_time_s": 0.0,
+        "expected_last_time_s": 11.98825,
+        "expected_samples": 47954,
+        "export_format": "%.5E",
+        "exported_adjacent_time_difference_max_s": 0.0003000000000010772,
+        "exported_adjacent_time_difference_median_s": 0.0002500000000000002,
+        "exported_adjacent_time_difference_min_s": 0.00019999999999953388,
+        "exported_first_time_s": 0.0,
+        "exported_last_time_s": 11.9882,
+        "floating_accumulation_model": "nonnegative sequential IEEE-754 binary64 additions from zero; Higham gamma_n summation bound plus one unit-roundoff centering term",
+        "maximum_export_time_absolute_error_s": 5.000000000165983e-05,
+        "maximum_export_time_error_to_tolerance_ratio": 0.9999991110428614,
+        "maximum_export_time_renderer_match_tolerance_s": 4.259099739556405e-14,
+        "maximum_export_time_renderer_mismatch_s": 0.0,
+        "maximum_export_time_rounding_tolerance_s": 5.000006386759634e-05,
+        "maximum_repeated_addition_time_bound_s": 6.382500533675513e-11,
+        "nondecreasing_exported_time": true,
+        "pass": true,
+        "rounding_bound": "half of one unit in the final printed decimal at each expected scientific exponent, plus the binary64 repeated-addition bound and floating-point parse slack",
+        "schema": "qblade-result-time-grid-reconstruction-v1",
+        "source": "manifest timestep_s multiplied by zero-based sequential sample index, bounded for IEEE-754 binary64 repeated-addition error, then deterministically rendered with the declared export format",
+        "two_token_rounding_boundary_sample_count": 3977
+      },
+      "maximum_amplitude_ratio": 0.01,
+      "minimum_amplitude_ratio": 0.001,
+      "observation_cycles": 1.0,
+      "observation_samples": 201,
+      "pass": true,
+      "realized_amplitude_m": 0.00026682400000000003,
+      "realized_amplitude_ratio": 0.00533648,
+      "seed_end_s": 0.24975024975024976
+    },
+    "startup_seed_summary_pass": true,
+    "summary_path": "/results/ambientv2_sc2p94_u6p25_dt_half/ambientv2_sc2p94_u6p25_dt_half_run_summary.json"
+  },
+  {
+    "artifacts_present": true,
+    "case_id": "ambientv2_sc2p94_u6p8_dt",
+    "evaluated": true,
+    "execution_pass": true,
+    "expected_response_config_fingerprint_sha256": "77ca5016ecc82600fef8f66ab757caaaf33bf982c29b36f3fe91e141e4640571",
+    "history": {
+      "activation_invariant_violations": 0,
+      "aerodynamic_speed_basis": "declared_ambient_crossflow",
+      "ambient_response_speed_max_mps": 6.8068,
+      "ambient_response_speed_min_mps": 6.8068,
+      "applied_power_sign_convention_pass": true,
+      "columns": 97,
+      "compact_lag_provenance_pass": true,
+      "configured_response_reduced_velocity": 6.8,
+      "file_identity": {
+        "path": "/results/ambientv2_sc2p94_u6p8_dt/result_sil_vorlap_history.csv",
+        "sha256": "e228baaa8606b7b104d6ddb70e09ff263f73e2da6d671c05c360ffa384ee1da5",
+        "size_bytes": 89067121
+      },
+      "force_headroom_limit_n": 22.5,
+      "force_limited_node_samples": 0,
+      "force_vector_component_count": 63,
+      "gain_headroom_limit": 9.0,
+      "gain_limited_node_samples": 0,
+      "history_mode": "compact",
+      "history_schema": "vorlap-sil-force-history-compact-v1",
+      "limit_headroom_pass": true,
+      "maximum_absolute_raw_gain": 3.0083133460128626,
+      "maximum_absolute_response_nodal_force_n": 0.028191162751066534,
+      "path": "/results/ambientv2_sc2p94_u6p8_dt/result_sil_vorlap_history.csv",
+      "realized_response_reduced_velocity": 6.8,
+      "relative_crossflow_speed_max_mps": 7.301346832416148,
+      "relative_crossflow_speed_min_mps": 6.8068,
+      "response_enabled_values": [
+        true
+      ],
+      "response_estimator_early_mean_amplitude_ratio": 0.4146131532156617,
+      "response_estimator_final_mean_amplitude_ratio": 0.4145114440340699,
+      "response_estimator_stationarity_absolute_difference": 0.00010170918159180253,
+      "response_estimator_stationarity_evaluated": true,
+      "response_estimator_stationarity_pass": true,
+      "response_estimator_stationarity_tolerance": 0.0207255722017035,
+      "response_model_schema_version": 2,
+      "response_model_types": [
+        "modal_negative_damping"
+      ],
+      "response_section_width_max_m": 0.05,
+      "response_section_width_min_m": 0.05,
+      "rows_retained_in_memory": 1,
+      "runtime_model_pass": true,
+      "samples": 59941,
+      "speed_basis_invariant_violations": 0,
+      "speed_basis_provenance_pass": true,
+      "startup_seed_active_samples": 500,
+      "startup_seed_inactive_samples": 59441,
+      "startup_seed_integrity_evaluated": true,
+      "startup_seed_integrity_pass": true,
+      "streaming_passes": 2,
+      "terminal_window_samples_processed": 3997
+    },
+    "history_path": "/results/ambientv2_sc2p94_u6p8_dt/result_sil_vorlap_history.csv",
+    "identity_mismatch": false,
+    "identity_mismatches": [],
+    "input_identities": {
+      "history": {
+        "path": "/results/ambientv2_sc2p94_u6p8_dt/result_sil_vorlap_history.csv",
+        "sha256": "e228baaa8606b7b104d6ddb70e09ff263f73e2da6d671c05c360ffa384ee1da5",
+        "size_bytes": 89067121
+      },
+      "result": {
+        "path": "/results/ambientv2_sc2p94_u6p8_dt/result.txt",
+        "sha256": "b965c58caf4b41395a26260dc947ebfc8120d75a6eea289fcfae6667e9947f0a",
+        "size_bytes": 6653827
+      },
+      "sim": {
+        "path": "/work/VorLap/run_headless/runs/vlastos2026_belloli_sc_transfer_linux/cases/ambientv2_sc2p94_u6p8_dt/ambientv2_sc2p94_u6p8_dt.sim",
+        "sha256": "3ad3a996fc5fd31e423a6bf8fa6d7525d3c188b168d9739825eab9799ecc5aee",
+        "size_bytes": 12242
+      },
+      "turbine": {
+        "path": "/work/VorLap/run_headless/runs/vlastos2026_belloli_sc_transfer_linux/cases/ambientv2_sc2p94_u6p8_dt/model/vlastos2026_sc5p18_cantilever.trb",
+        "sha256": "3a38d74ef2890d4630b843d33b0f9deab29cec14ab6a02529241c0e88c0a7b74",
+        "size_bytes": 11338
+      },
+      "vorlap_config": {
+        "path": "/work/VorLap/run_headless/runs/vlastos2026_belloli_sc_transfer_linux/cases/ambientv2_sc2p94_u6p8_dt/model/Control/vorlap_qblade_external.json",
+        "sha256": "08d85457c6ff035713cf83e765a8c8af16d1301fc090e7019527a7a2c2d2eed3",
+        "size_bytes": 19925
+      }
+    },
+    "missing_identity_fields": [],
+    "pass": true,
+    "problems": [],
+    "provenance_evaluated": true,
+    "provenance_pass": true,
+    "response_limit_counts": {
+      "force_limited_node_samples": 0,
+      "force_limited_steps": 0,
+      "gain_limited_node_samples": 0,
+      "gain_limited_steps": 0
+    },
+    "response_speed_summary_pass": true,
+    "response_summary_limits_pass": true,
+    "source_coverage_complete": true,
+    "source_limit_counts": {
+      "aliased_frequency_count": 0,
+      "aoa_out_of_range_count": 0,
+      "force_coefficient_out_of_range_count": 0,
+      "frequency_truncated_count": 0,
+      "nonfinite_count": 0,
+      "re_out_of_range_count": 0,
+      "source_clip_count": 0
+    },
+    "source_limits_pass": true,
+    "source_sample_counts": [
+      59941
+    ],
+    "startup_seed_response": {
+      "evaluated": true,
+      "export_time_grid_audit": {
+        "acceptance_rule": "each parsed timestamp must match one of the at-most-two rendered tokens at its configured-grid repeated-addition bounds within floating-point parse slack",
+        "binary64_unit_roundoff": 1.1102230246251565e-16,
+        "configured_timestep_s": 0.0005,
+        "duplicate_exported_time_count": 0,
+        "expected_first_time_s": 0.0,
+        "expected_last_time_s": 29.97,
+        "expected_samples": 59941,
+        "export_format": "%.5E",
+        "exported_adjacent_time_difference_max_s": 0.0005000000000023874,
+        "exported_adjacent_time_difference_median_s": 0.0004999999999997229,
+        "exported_adjacent_time_difference_min_s": 0.0004999999999988347,
+        "exported_first_time_s": 0.0,
+        "exported_last_time_s": 29.97,
+        "floating_accumulation_model": "nonnegative sequential IEEE-754 binary64 additions from zero; Higham gamma_n summation bound plus one unit-roundoff centering term",
+        "maximum_export_time_absolute_error_s": 3.552713678800501e-15,
+        "maximum_export_time_error_to_tolerance_ratio": 3.5527035403581557e-10,
+        "maximum_export_time_renderer_match_tolerance_s": 1.0647482895365101e-13,
+        "maximum_export_time_renderer_mismatch_s": 0.0,
+        "maximum_export_time_rounding_tolerance_s": 5.000019955046615e-05,
+        "maximum_repeated_addition_time_bound_s": 1.994439913235396e-10,
+        "nondecreasing_exported_time": true,
+        "pass": true,
+        "rounding_bound": "half of one unit in the final printed decimal at each expected scientific exponent, plus the binary64 repeated-addition bound and floating-point parse slack",
+        "schema": "qblade-result-time-grid-reconstruction-v1",
+        "source": "manifest timestep_s multiplied by zero-based sequential sample index, bounded for IEEE-754 binary64 repeated-addition error, then deterministically rendered with the declared export format",
+        "two_token_rounding_boundary_sample_count": 0
+      },
+      "maximum_amplitude_ratio": 0.01,
+      "minimum_amplitude_ratio": 0.001,
+      "observation_cycles": 1.0,
+      "observation_samples": 101,
+      "pass": true,
+      "realized_amplitude_m": 0.0002706955,
+      "realized_amplitude_ratio": 0.00541391,
+      "seed_end_s": 0.24975024975024976
+    },
+    "startup_seed_summary_pass": true,
+    "summary_path": "/results/ambientv2_sc2p94_u6p8_dt/ambientv2_sc2p94_u6p8_dt_run_summary.json"
+  },
+  {
+    "artifacts_present": true,
+    "case_id": "ambientv2_sc2p94_u6p8_dt_half",
+    "evaluated": true,
+    "execution_pass": true,
+    "expected_response_config_fingerprint_sha256": "77ca5016ecc82600fef8f66ab757caaaf33bf982c29b36f3fe91e141e4640571",
+    "history": {
+      "activation_invariant_violations": 0,
+      "aerodynamic_speed_basis": "declared_ambient_crossflow",
+      "ambient_response_speed_max_mps": 6.8068,
+      "ambient_response_speed_min_mps": 6.8068,
+      "applied_power_sign_convention_pass": true,
+      "columns": 97,
+      "compact_lag_provenance_pass": true,
+      "configured_response_reduced_velocity": 6.8,
+      "file_identity": {
+        "path": "/results/ambientv2_sc2p94_u6p8_dt_half/result_sil_vorlap_history.csv",
+        "sha256": "cb9c77fa9de6c2faf8078f7667fb8291e60c6f4e1372a3b4d39770f14a44b11f",
+        "size_bytes": 178482003
+      },
+      "force_headroom_limit_n": 22.5,
+      "force_limited_node_samples": 0,
+      "force_vector_component_count": 63,
+      "gain_headroom_limit": 9.0,
+      "gain_limited_node_samples": 0,
+      "history_mode": "compact",
+      "history_schema": "vorlap-sil-force-history-compact-v1",
+      "limit_headroom_pass": true,
+      "maximum_absolute_raw_gain": 3.0083133460128626,
+      "maximum_absolute_response_nodal_force_n": 0.02821434088711896,
+      "path": "/results/ambientv2_sc2p94_u6p8_dt_half/result_sil_vorlap_history.csv",
+      "realized_response_reduced_velocity": 6.8,
+      "relative_crossflow_speed_max_mps": 7.30013529661765,
+      "relative_crossflow_speed_min_mps": 6.8068,
+      "response_enabled_values": [
+        true
+      ],
+      "response_estimator_early_mean_amplitude_ratio": 0.414252042265293,
+      "response_estimator_final_mean_amplitude_ratio": 0.4142476413961278,
+      "response_estimator_stationarity_absolute_difference": 4.400869165199772e-06,
+      "response_estimator_stationarity_evaluated": true,
+      "response_estimator_stationarity_pass": true,
+      "response_estimator_stationarity_tolerance": 0.02071238206980639,
+      "response_model_schema_version": 2,
+      "response_model_types": [
+        "modal_negative_damping"
+      ],
+      "response_section_width_max_m": 0.05,
+      "response_section_width_min_m": 0.05,
+      "rows_retained_in_memory": 1,
+      "runtime_model_pass": true,
+      "samples": 119882,
+      "speed_basis_invariant_violations": 0,
+      "speed_basis_provenance_pass": true,
+      "startup_seed_active_samples": 1000,
+      "startup_seed_inactive_samples": 118882,
+      "startup_seed_integrity_evaluated": true,
+      "startup_seed_integrity_pass": true,
+      "streaming_passes": 2,
+      "terminal_window_samples_processed": 7993
+    },
+    "history_path": "/results/ambientv2_sc2p94_u6p8_dt_half/result_sil_vorlap_history.csv",
+    "identity_mismatch": false,
+    "identity_mismatches": [],
+    "input_identities": {
+      "history": {
+        "path": "/results/ambientv2_sc2p94_u6p8_dt_half/result_sil_vorlap_history.csv",
+        "sha256": "cb9c77fa9de6c2faf8078f7667fb8291e60c6f4e1372a3b4d39770f14a44b11f",
+        "size_bytes": 178482003
+      },
+      "result": {
+        "path": "/results/ambientv2_sc2p94_u6p8_dt_half/result.txt",
+        "sha256": "0af5c36083c52dd4cb503b9e218adfae3ace57697a655306ac5b23569e96613f",
+        "size_bytes": 13307492
+      },
+      "sim": {
+        "path": "/work/VorLap/run_headless/runs/vlastos2026_belloli_sc_transfer_linux/cases/ambientv2_sc2p94_u6p8_dt_half/ambientv2_sc2p94_u6p8_dt_half.sim",
+        "sha256": "590020a98a2826b854b0612b3ba0a492a2a3a0acdfab779cc123f269f000175f",
+        "size_bytes": 12242
+      },
+      "turbine": {
+        "path": "/work/VorLap/run_headless/runs/vlastos2026_belloli_sc_transfer_linux/cases/ambientv2_sc2p94_u6p8_dt_half/model/vlastos2026_sc5p18_cantilever.trb",
+        "sha256": "51c39f2dc1f78e732de4cb327cbe465e5bbefa95867a65ad44ed83b1e1569687",
+        "size_bytes": 11338
+      },
+      "vorlap_config": {
+        "path": "/work/VorLap/run_headless/runs/vlastos2026_belloli_sc_transfer_linux/cases/ambientv2_sc2p94_u6p8_dt_half/model/Control/vorlap_qblade_external.json",
+        "sha256": "24a07ef3a6f4bc0b4c47d9d9623f3dbec8c8b7ac17ce779f3851cf1784bc8469",
+        "size_bytes": 19930
+      }
+    },
+    "missing_identity_fields": [],
+    "pass": true,
+    "problems": [],
+    "provenance_evaluated": true,
+    "provenance_pass": true,
+    "response_limit_counts": {
+      "force_limited_node_samples": 0,
+      "force_limited_steps": 0,
+      "gain_limited_node_samples": 0,
+      "gain_limited_steps": 0
+    },
+    "response_speed_summary_pass": true,
+    "response_summary_limits_pass": true,
+    "source_coverage_complete": true,
+    "source_limit_counts": {
+      "aliased_frequency_count": 0,
+      "aoa_out_of_range_count": 0,
+      "force_coefficient_out_of_range_count": 0,
+      "frequency_truncated_count": 0,
+      "nonfinite_count": 0,
+      "re_out_of_range_count": 0,
+      "source_clip_count": 0
+    },
+    "source_limits_pass": true,
+    "source_sample_counts": [
+      119882
+    ],
+    "startup_seed_response": {
+      "evaluated": true,
+      "export_time_grid_audit": {
+        "acceptance_rule": "each parsed timestamp must match one of the at-most-two rendered tokens at its configured-grid repeated-addition bounds within floating-point parse slack",
+        "binary64_unit_roundoff": 1.1102230246251565e-16,
+        "configured_timestep_s": 0.00025,
+        "duplicate_exported_time_count": 0,
+        "expected_first_time_s": 0.0,
+        "expected_last_time_s": 29.97025,
+        "expected_samples": 119882,
+        "export_format": "%.5E",
+        "exported_adjacent_time_difference_max_s": 0.00030000000000285354,
+        "exported_adjacent_time_difference_median_s": 0.0002500000000000002,
+        "exported_adjacent_time_difference_min_s": 0.00019999999999953388,
+        "exported_first_time_s": 0.0,
+        "exported_last_time_s": 29.9702,
+        "floating_accumulation_model": "nonnegative sequential IEEE-754 binary64 additions from zero; Higham gamma_n summation bound plus one unit-roundoff centering term",
+        "maximum_export_time_absolute_error_s": 5.000000000165983e-05,
+        "maximum_export_time_error_to_tolerance_ratio": 0.9999991110428614,
+        "maximum_export_time_renderer_match_tolerance_s": 1.0647589476775466e-13,
+        "maximum_export_time_renderer_mismatch_s": 0.0,
+        "maximum_export_time_rounding_tolerance_s": 5.0000398997785944e-05,
+        "maximum_repeated_addition_time_bound_s": 3.988913100436497e-10,
+        "nondecreasing_exported_time": true,
+        "pass": true,
+        "rounding_bound": "half of one unit in the final printed decimal at each expected scientific exponent, plus the binary64 repeated-addition bound and floating-point parse slack",
+        "schema": "qblade-result-time-grid-reconstruction-v1",
+        "source": "manifest timestep_s multiplied by zero-based sequential sample index, bounded for IEEE-754 binary64 repeated-addition error, then deterministically rendered with the declared export format",
+        "two_token_rounding_boundary_sample_count": 39941
+      },
+      "maximum_amplitude_ratio": 0.01,
+      "minimum_amplitude_ratio": 0.001,
+      "observation_cycles": 1.0,
+      "observation_samples": 201,
+      "pass": true,
+      "realized_amplitude_m": 0.0002709735,
+      "realized_amplitude_ratio": 0.005419469999999999,
+      "seed_end_s": 0.24975024975024976
+    },
+    "startup_seed_summary_pass": true,
+    "summary_path": "/results/ambientv2_sc2p94_u6p8_dt_half/ambientv2_sc2p94_u6p8_dt_half_run_summary.json"
+  },
+  {
+    "artifacts_present": true,
+    "case_id": "ambientv2_sc7p02_u6p2_dt",
+    "evaluated": true,
+    "execution_pass": true,
+    "expected_response_config_fingerprint_sha256": "f338549f649c9ae5643ca344181698e1480f6ccecce08905720aa2675b3e0c49",
+    "history": {
+      "activation_invariant_violations": 0,
+      "aerodynamic_speed_basis": "declared_ambient_crossflow",
+      "ambient_response_speed_max_mps": 4.0858,
+      "ambient_response_speed_min_mps": 4.0858,
+      "applied_power_sign_convention_pass": true,
+      "columns": 97,
+      "compact_lag_provenance_pass": true,
+      "configured_response_reduced_velocity": 6.2,
+      "file_identity": {
+        "path": "/results/ambientv2_sc7p02_u6p2_dt/result_sil_vorlap_history.csv",
+        "sha256": "509074ee9c4ec52b3f4eead2673e7af1081b84805c2c5eff77e3feb961ea4daa",
+        "size_bytes": 119233141
+      },
+      "force_headroom_limit_n": 22.5,
+      "force_limited_node_samples": 0,
+      "force_vector_component_count": 63,
+      "gain_headroom_limit": 9.0,
+      "gain_limited_node_samples": 0,
+      "history_mode": "compact",
+      "history_schema": "vorlap-sil-force-history-compact-v1",
+      "limit_headroom_pass": true,
+      "maximum_absolute_raw_gain": 3.081368389646332,
+      "maximum_absolute_response_nodal_force_n": 0.004896640793313278,
+      "path": "/results/ambientv2_sc7p02_u6p2_dt/result_sil_vorlap_history.csv",
+      "realized_response_reduced_velocity": 6.2,
+      "relative_crossflow_speed_max_mps": 4.102388531944019,
+      "relative_crossflow_speed_min_mps": 4.0858,
+      "response_enabled_values": [
+        true
+      ],
+      "response_estimator_early_mean_amplitude_ratio": 0.08134248899242172,
+      "response_estimator_final_mean_amplitude_ratio": 0.08562170211539305,
+      "response_estimator_stationarity_absolute_difference": 0.0042792131229713315,
+      "response_estimator_stationarity_evaluated": true,
+      "response_estimator_stationarity_pass": true,
+      "response_estimator_stationarity_tolerance": 0.005,
+      "response_model_schema_version": 2,
+      "response_model_types": [
+        "modal_negative_damping"
+      ],
+      "response_section_width_max_m": 0.05,
+      "response_section_width_min_m": 0.05,
+      "rows_retained_in_memory": 1,
+      "runtime_model_pass": true,
+      "samples": 78908,
+      "speed_basis_invariant_violations": 0,
+      "speed_basis_provenance_pass": true,
+      "startup_seed_active_samples": 759,
+      "startup_seed_inactive_samples": 78149,
+      "startup_seed_integrity_evaluated": true,
+      "startup_seed_integrity_pass": true,
+      "streaming_passes": 2,
+      "terminal_window_samples_processed": 6070
+    },
+    "history_path": "/results/ambientv2_sc7p02_u6p2_dt/result_sil_vorlap_history.csv",
+    "identity_mismatch": false,
+    "identity_mismatches": [],
+    "input_identities": {
+      "history": {
+        "path": "/results/ambientv2_sc7p02_u6p2_dt/result_sil_vorlap_history.csv",
+        "sha256": "509074ee9c4ec52b3f4eead2673e7af1081b84805c2c5eff77e3feb961ea4daa",
+        "size_bytes": 119233141
+      },
+      "result": {
+        "path": "/results/ambientv2_sc7p02_u6p2_dt/result.txt",
+        "sha256": "e09ba827e87892d1907b7168d69e99f7f6233cab00cdee47a1b593aea3740741",
+        "size_bytes": 8759016
+      },
+      "sim": {
+        "path": "/work/VorLap/run_headless/runs/vlastos2026_belloli_sc_transfer_linux/cases/ambientv2_sc7p02_u6p2_dt/ambientv2_sc7p02_u6p2_dt.sim",
+        "sha256": "6274d221ae9b5bdcfe5cc02cc065e1834ed0909015cb35eddbf1351b44977f44",
+        "size_bytes": 12242
+      },
+      "turbine": {
+        "path": "/work/VorLap/run_headless/runs/vlastos2026_belloli_sc_transfer_linux/cases/ambientv2_sc7p02_u6p2_dt/model/vlastos2026_sc5p18_cantilever.trb",
+        "sha256": "a48955e1880b658b3213eb2aa7c0ddc13c11f3212e5400a1f3d882430f19310b",
+        "size_bytes": 11338
+      },
+      "vorlap_config": {
+        "path": "/work/VorLap/run_headless/runs/vlastos2026_belloli_sc_transfer_linux/cases/ambientv2_sc7p02_u6p2_dt/model/Control/vorlap_qblade_external.json",
+        "sha256": "359bc4d3ec506391349481d2826dc2272afa4939956fcdf660ce52b9ac95ff37",
+        "size_bytes": 19928
+      }
+    },
+    "missing_identity_fields": [],
+    "pass": true,
+    "problems": [],
+    "provenance_evaluated": true,
+    "provenance_pass": true,
+    "response_limit_counts": {
+      "force_limited_node_samples": 0,
+      "force_limited_steps": 0,
+      "gain_limited_node_samples": 0,
+      "gain_limited_steps": 0
+    },
+    "response_speed_summary_pass": true,
+    "response_summary_limits_pass": true,
+    "source_coverage_complete": true,
+    "source_limit_counts": {
+      "aliased_frequency_count": 0,
+      "aoa_out_of_range_count": 0,
+      "force_coefficient_out_of_range_count": 0,
+      "frequency_truncated_count": 0,
+      "nonfinite_count": 0,
+      "re_out_of_range_count": 0,
+      "source_clip_count": 0
+    },
+    "source_limits_pass": true,
+    "source_sample_counts": [
+      78908
+    ],
+    "startup_seed_response": {
+      "evaluated": true,
+      "export_time_grid_audit": {
+        "acceptance_rule": "each parsed timestamp must match one of the at-most-two rendered tokens at its configured-grid repeated-addition bounds within floating-point parse slack",
+        "binary64_unit_roundoff": 1.1102230246251565e-16,
+        "configured_timestep_s": 0.0005,
+        "duplicate_exported_time_count": 0,
+        "expected_first_time_s": 0.0,
+        "expected_last_time_s": 39.4535,
+        "expected_samples": 78908,
+        "export_format": "%.5E",
+        "exported_adjacent_time_difference_max_s": 0.0005000000000023874,
+        "exported_adjacent_time_difference_median_s": 0.0004999999999999449,
+        "exported_adjacent_time_difference_min_s": 0.000499999999995282,
+        "exported_first_time_s": 0.0,
+        "exported_last_time_s": 39.4535,
+        "floating_accumulation_model": "nonnegative sequential IEEE-754 binary64 additions from zero; Higham gamma_n summation bound plus one unit-roundoff centering term",
+        "maximum_export_time_absolute_error_s": 7.105427357601002e-15,
+        "maximum_export_time_error_to_tolerance_ratio": 3.5527035403581557e-10,
+        "maximum_export_time_renderer_match_tolerance_s": 1.4016698912655556e-13,
+        "maximum_export_time_renderer_mismatch_s": 0.0,
+        "maximum_export_time_rounding_tolerance_s": 5.000034577444131e-05,
+        "maximum_repeated_addition_time_bound_s": 3.456342743154731e-10,
+        "nondecreasing_exported_time": true,
+        "pass": true,
+        "rounding_bound": "half of one unit in the final printed decimal at each expected scientific exponent, plus the binary64 repeated-addition bound and floating-point parse slack",
+        "schema": "qblade-result-time-grid-reconstruction-v1",
+        "source": "manifest timestep_s multiplied by zero-based sequential sample index, bounded for IEEE-754 binary64 repeated-addition error, then deterministically rendered with the declared export format",
+        "two_token_rounding_boundary_sample_count": 0
+      },
+      "maximum_amplitude_ratio": 0.01,
+      "minimum_amplitude_ratio": 0.001,
+      "observation_cycles": 1.0,
+      "observation_samples": 152,
+      "pass": true,
+      "realized_amplitude_m": 0.0002557045,
+      "realized_amplitude_ratio": 0.00511409,
+      "seed_end_s": 0.37936267071320184
+    },
+    "startup_seed_summary_pass": true,
+    "summary_path": "/results/ambientv2_sc7p02_u6p2_dt/ambientv2_sc7p02_u6p2_dt_run_summary.json"
+  },
+  {
+    "artifacts_present": true,
+    "case_id": "ambientv2_sc7p02_u6p2_dt_half",
+    "evaluated": true,
+    "execution_pass": true,
+    "expected_response_config_fingerprint_sha256": "f338549f649c9ae5643ca344181698e1480f6ccecce08905720aa2675b3e0c49",
+    "history": {
+      "activation_invariant_violations": 0,
+      "aerodynamic_speed_basis": "declared_ambient_crossflow",
+      "ambient_response_speed_max_mps": 4.0858,
+      "ambient_response_speed_min_mps": 4.0858,
+      "applied_power_sign_convention_pass": true,
+      "columns": 97,
+      "compact_lag_provenance_pass": true,
+      "configured_response_reduced_velocity": 6.2,
+      "file_identity": {
+        "path": "/results/ambientv2_sc7p02_u6p2_dt_half/result_sil_vorlap_history.csv",
+        "sha256": "5196f45c0f94d97df9cf9268dd9b574c48a2c0e3d3d0d5eb3539d3fc87b5224f",
+        "size_bytes": 238962363
+      },
+      "force_headroom_limit_n": 22.5,
+      "force_limited_node_samples": 0,
+      "force_vector_component_count": 63,
+      "gain_headroom_limit": 9.0,
+      "gain_limited_node_samples": 0,
+      "history_mode": "compact",
+      "history_schema": "vorlap-sil-force-history-compact-v1",
+      "limit_headroom_pass": true,
+      "maximum_absolute_raw_gain": 3.081368389646332,
+      "maximum_absolute_response_nodal_force_n": 0.004897843664668889,
+      "path": "/results/ambientv2_sc7p02_u6p2_dt_half/result_sil_vorlap_history.csv",
+      "realized_response_reduced_velocity": 6.2,
+      "relative_crossflow_speed_max_mps": 4.102095223159726,
+      "relative_crossflow_speed_min_mps": 4.0858,
+      "response_enabled_values": [
+        true
+      ],
+      "response_estimator_early_mean_amplitude_ratio": 0.08054650948173907,
+      "response_estimator_final_mean_amplitude_ratio": 0.0848457862300462,
+      "response_estimator_stationarity_absolute_difference": 0.004299276748307129,
+      "response_estimator_stationarity_evaluated": true,
+      "response_estimator_stationarity_pass": true,
+      "response_estimator_stationarity_tolerance": 0.005,
+      "response_model_schema_version": 2,
+      "response_model_types": [
+        "modal_negative_damping"
+      ],
+      "response_section_width_max_m": 0.05,
+      "response_section_width_min_m": 0.05,
+      "rows_retained_in_memory": 1,
+      "runtime_model_pass": true,
+      "samples": 157816,
+      "speed_basis_invariant_violations": 0,
+      "speed_basis_provenance_pass": true,
+      "startup_seed_active_samples": 1518,
+      "startup_seed_inactive_samples": 156298,
+      "startup_seed_integrity_evaluated": true,
+      "startup_seed_integrity_pass": true,
+      "streaming_passes": 2,
+      "terminal_window_samples_processed": 12140
+    },
+    "history_path": "/results/ambientv2_sc7p02_u6p2_dt_half/result_sil_vorlap_history.csv",
+    "identity_mismatch": false,
+    "identity_mismatches": [],
+    "input_identities": {
+      "history": {
+        "path": "/results/ambientv2_sc7p02_u6p2_dt_half/result_sil_vorlap_history.csv",
+        "sha256": "5196f45c0f94d97df9cf9268dd9b574c48a2c0e3d3d0d5eb3539d3fc87b5224f",
+        "size_bytes": 238962363
+      },
+      "result": {
+        "path": "/results/ambientv2_sc7p02_u6p2_dt_half/result.txt",
+        "sha256": "67f9582a85972235b71e205365fc6aaf18cc920642dac9a5b4c041fce1d03b55",
+        "size_bytes": 17517876
+      },
+      "sim": {
+        "path": "/work/VorLap/run_headless/runs/vlastos2026_belloli_sc_transfer_linux/cases/ambientv2_sc7p02_u6p2_dt_half/ambientv2_sc7p02_u6p2_dt_half.sim",
+        "sha256": "a4555ae1601ea050db7b029ea0163afa1b7665cb88bb97c18dd92ad07e1270bd",
+        "size_bytes": 12242
+      },
+      "turbine": {
+        "path": "/work/VorLap/run_headless/runs/vlastos2026_belloli_sc_transfer_linux/cases/ambientv2_sc7p02_u6p2_dt_half/model/vlastos2026_sc5p18_cantilever.trb",
+        "sha256": "149e9cae2fe0a87cdda38ec948782411cacdd0f8a2b1d94ac08bce580ff56920",
+        "size_bytes": 11338
+      },
+      "vorlap_config": {
+        "path": "/work/VorLap/run_headless/runs/vlastos2026_belloli_sc_transfer_linux/cases/ambientv2_sc7p02_u6p2_dt_half/model/Control/vorlap_qblade_external.json",
+        "sha256": "ffdde8b351ac184fba679119bf183b1ebd4143a6079678e39b1542edfb39a5f2",
+        "size_bytes": 19933
+      }
+    },
+    "missing_identity_fields": [],
+    "pass": true,
+    "problems": [],
+    "provenance_evaluated": true,
+    "provenance_pass": true,
+    "response_limit_counts": {
+      "force_limited_node_samples": 0,
+      "force_limited_steps": 0,
+      "gain_limited_node_samples": 0,
+      "gain_limited_steps": 0
+    },
+    "response_speed_summary_pass": true,
+    "response_summary_limits_pass": true,
+    "source_coverage_complete": true,
+    "source_limit_counts": {
+      "aliased_frequency_count": 0,
+      "aoa_out_of_range_count": 0,
+      "force_coefficient_out_of_range_count": 0,
+      "frequency_truncated_count": 0,
+      "nonfinite_count": 0,
+      "re_out_of_range_count": 0,
+      "source_clip_count": 0
+    },
+    "source_limits_pass": true,
+    "source_sample_counts": [
+      157816
+    ],
+    "startup_seed_response": {
+      "evaluated": true,
+      "export_time_grid_audit": {
+        "acceptance_rule": "each parsed timestamp must match one of the at-most-two rendered tokens at its configured-grid repeated-addition bounds within floating-point parse slack",
+        "binary64_unit_roundoff": 1.1102230246251565e-16,
+        "configured_timestep_s": 0.00025,
+        "duplicate_exported_time_count": 0,
+        "expected_first_time_s": 0.0,
+        "expected_last_time_s": 39.45375,
+        "expected_samples": 157816,
+        "export_format": "%.5E",
+        "exported_adjacent_time_difference_max_s": 0.00030000000000285354,
+        "exported_adjacent_time_difference_median_s": 0.0002500000000000002,
+        "exported_adjacent_time_difference_min_s": 0.00019999999999953388,
+        "exported_first_time_s": 0.0,
+        "exported_last_time_s": 39.4538,
+        "floating_accumulation_model": "nonnegative sequential IEEE-754 binary64 additions from zero; Higham gamma_n summation bound plus one unit-roundoff centering term",
+        "maximum_export_time_absolute_error_s": 5.000000000165983e-05,
+        "maximum_export_time_error_to_tolerance_ratio": 0.9999991110428614,
+        "maximum_export_time_renderer_match_tolerance_s": 1.401680549406592e-13,
+        "maximum_export_time_renderer_mismatch_s": 0.0,
+        "maximum_export_time_rounding_tolerance_s": 5.000069141309697e-05,
+        "maximum_repeated_addition_time_bound_s": 6.912729289109235e-10,
+        "nondecreasing_exported_time": true,
+        "pass": true,
+        "rounding_bound": "half of one unit in the final printed decimal at each expected scientific exponent, plus the binary64 repeated-addition bound and floating-point parse slack",
+        "schema": "qblade-result-time-grid-reconstruction-v1",
+        "source": "manifest timestep_s multiplied by zero-based sequential sample index, bounded for IEEE-754 binary64 repeated-addition error, then deterministically rendered with the declared export format",
+        "two_token_rounding_boundary_sample_count": 58908
+      },
+      "maximum_amplitude_ratio": 0.01,
+      "minimum_amplitude_ratio": 0.001,
+      "observation_cycles": 1.0,
+      "observation_samples": 305,
+      "pass": true,
+      "realized_amplitude_m": 0.00025578199999999997,
+      "realized_amplitude_ratio": 0.005115639999999999,
+      "seed_end_s": 0.37936267071320184
+    },
+    "startup_seed_summary_pass": true,
+    "summary_path": "/results/ambientv2_sc7p02_u6p2_dt_half/ambientv2_sc7p02_u6p2_dt_half_run_summary.json"
+  },
+  {
+    "artifacts_present": true,
+    "case_id": "ambientv2_sc7p02_u6p25_dt",
+    "evaluated": true,
+    "execution_pass": true,
+    "expected_response_config_fingerprint_sha256": "f338549f649c9ae5643ca344181698e1480f6ccecce08905720aa2675b3e0c49",
+    "history": {
+      "activation_invariant_violations": 0,
+      "aerodynamic_speed_basis": "declared_ambient_crossflow",
+      "ambient_response_speed_max_mps": 4.11875,
+      "ambient_response_speed_min_mps": 4.11875,
+      "applied_power_sign_convention_pass": true,
+      "columns": 97,
+      "compact_lag_provenance_pass": true,
+      "configured_response_reduced_velocity": 6.25,
+      "file_identity": {
+        "path": "/results/ambientv2_sc7p02_u6p25_dt/result_sil_vorlap_history.csv",
+        "sha256": "3beb96ae4b2f8bef944c3caaee333eaa7f0ac88a6a17e0fde8a1d17111753078",
+        "size_bytes": 113201547
+      },
+      "force_headroom_limit_n": 22.5,
+      "force_limited_node_samples": 0,
+      "force_vector_component_count": 63,
+      "gain_headroom_limit": 9.0,
+      "gain_limited_node_samples": 0,
+      "history_mode": "compact",
+      "history_schema": "vorlap-sil-force-history-compact-v1",
+      "limit_headroom_pass": true,
+      "maximum_absolute_raw_gain": 2.7279174182739627,
+      "maximum_absolute_response_nodal_force_n": 0.0048897410310505905,
+      "path": "/results/ambientv2_sc7p02_u6p25_dt/result_sil_vorlap_history.csv",
+      "realized_response_reduced_velocity": 6.25,
+      "relative_crossflow_speed_max_mps": 4.122176989565036,
+      "relative_crossflow_speed_min_mps": 4.11875,
+      "response_enabled_values": [
+        true
+      ],
+      "response_estimator_early_mean_amplitude_ratio": 0.03575820960850639,
+      "response_estimator_final_mean_amplitude_ratio": 0.03840478056529599,
+      "response_estimator_stationarity_absolute_difference": 0.0026465709567896,
+      "response_estimator_stationarity_evaluated": true,
+      "response_estimator_stationarity_pass": true,
+      "response_estimator_stationarity_tolerance": 0.005,
+      "response_model_schema_version": 2,
+      "response_model_types": [
+        "modal_negative_damping"
+      ],
+      "response_section_width_max_m": 0.05,
+      "response_section_width_min_m": 0.05,
+      "rows_retained_in_memory": 1,
+      "runtime_model_pass": true,
+      "samples": 78908,
+      "speed_basis_invariant_violations": 0,
+      "speed_basis_provenance_pass": true,
+      "startup_seed_active_samples": 759,
+      "startup_seed_inactive_samples": 78149,
+      "startup_seed_integrity_evaluated": true,
+      "startup_seed_integrity_pass": true,
+      "streaming_passes": 2,
+      "terminal_window_samples_processed": 6070
+    },
+    "history_path": "/results/ambientv2_sc7p02_u6p25_dt/result_sil_vorlap_history.csv",
+    "identity_mismatch": false,
+    "identity_mismatches": [],
+    "input_identities": {
+      "history": {
+        "path": "/results/ambientv2_sc7p02_u6p25_dt/result_sil_vorlap_history.csv",
+        "sha256": "3beb96ae4b2f8bef944c3caaee333eaa7f0ac88a6a17e0fde8a1d17111753078",
+        "size_bytes": 113201547
+      },
+      "result": {
+        "path": "/results/ambientv2_sc7p02_u6p25_dt/result.txt",
+        "sha256": "86d21adac497eea3161537e74081d5a373fb55f6127aec32ea0620b2f0efd9bf",
+        "size_bytes": 8758757
+      },
+      "sim": {
+        "path": "/work/VorLap/run_headless/runs/vlastos2026_belloli_sc_transfer_linux/cases/ambientv2_sc7p02_u6p25_dt/ambientv2_sc7p02_u6p25_dt.sim",
+        "sha256": "4590244f762713ef4a7eec1441156198538ea9a226ee577b51f08a2f9ea54249",
+        "size_bytes": 12242
+      },
+      "turbine": {
+        "path": "/work/VorLap/run_headless/runs/vlastos2026_belloli_sc_transfer_linux/cases/ambientv2_sc7p02_u6p25_dt/model/vlastos2026_sc5p18_cantilever.trb",
+        "sha256": "b1f684093c73200c9a155825495a4bcc56bb214b1d5f1619205d9e507aaaf4bb",
+        "size_bytes": 11338
+      },
+      "vorlap_config": {
+        "path": "/work/VorLap/run_headless/runs/vlastos2026_belloli_sc_transfer_linux/cases/ambientv2_sc7p02_u6p25_dt/model/Control/vorlap_qblade_external.json",
+        "sha256": "28574b0167bbd02d193f2296a8d93adf24cbf80b146cb166b1fa25b7878da431",
+        "size_bytes": 19929
+      }
+    },
+    "missing_identity_fields": [],
+    "pass": true,
+    "problems": [],
+    "provenance_evaluated": true,
+    "provenance_pass": true,
+    "response_limit_counts": {
+      "force_limited_node_samples": 0,
+      "force_limited_steps": 0,
+      "gain_limited_node_samples": 0,
+      "gain_limited_steps": 0
+    },
+    "response_speed_summary_pass": true,
+    "response_summary_limits_pass": true,
+    "source_coverage_complete": true,
+    "source_limit_counts": {
+      "aliased_frequency_count": 0,
+      "aoa_out_of_range_count": 0,
+      "force_coefficient_out_of_range_count": 0,
+      "frequency_truncated_count": 0,
+      "nonfinite_count": 0,
+      "re_out_of_range_count": 0,
+      "source_clip_count": 0
+    },
+    "source_limits_pass": true,
+    "source_sample_counts": [
+      78908
+    ],
+    "startup_seed_response": {
+      "evaluated": true,
+      "export_time_grid_audit": {
+        "acceptance_rule": "each parsed timestamp must match one of the at-most-two rendered tokens at its configured-grid repeated-addition bounds within floating-point parse slack",
+        "binary64_unit_roundoff": 1.1102230246251565e-16,
+        "configured_timestep_s": 0.0005,
+        "duplicate_exported_time_count": 0,
+        "expected_first_time_s": 0.0,
+        "expected_last_time_s": 39.4535,
+        "expected_samples": 78908,
+        "export_format": "%.5E",
+        "exported_adjacent_time_difference_max_s": 0.0005000000000023874,
+        "exported_adjacent_time_difference_median_s": 0.0004999999999999449,
+        "exported_adjacent_time_difference_min_s": 0.000499999999995282,
+        "exported_first_time_s": 0.0,
+        "exported_last_time_s": 39.4535,
+        "floating_accumulation_model": "nonnegative sequential IEEE-754 binary64 additions from zero; Higham gamma_n summation bound plus one unit-roundoff centering term",
+        "maximum_export_time_absolute_error_s": 7.105427357601002e-15,
+        "maximum_export_time_error_to_tolerance_ratio": 3.5527035403581557e-10,
+        "maximum_export_time_renderer_match_tolerance_s": 1.4016698912655556e-13,
+        "maximum_export_time_renderer_mismatch_s": 0.0,
+        "maximum_export_time_rounding_tolerance_s": 5.000034577444131e-05,
+        "maximum_repeated_addition_time_bound_s": 3.456342743154731e-10,
+        "nondecreasing_exported_time": true,
+        "pass": true,
+        "rounding_bound": "half of one unit in the final printed decimal at each expected scientific exponent, plus the binary64 repeated-addition bound and floating-point parse slack",
+        "schema": "qblade-result-time-grid-reconstruction-v1",
+        "source": "manifest timestep_s multiplied by zero-based sequential sample index, bounded for IEEE-754 binary64 repeated-addition error, then deterministically rendered with the declared export format",
+        "two_token_rounding_boundary_sample_count": 0
+      },
+      "maximum_amplitude_ratio": 0.01,
+      "minimum_amplitude_ratio": 0.001,
+      "observation_cycles": 1.0,
+      "observation_samples": 152,
+      "pass": true,
+      "realized_amplitude_m": 0.00025472950000000004,
+      "realized_amplitude_ratio": 0.00509459,
+      "seed_end_s": 0.37936267071320184
+    },
+    "startup_seed_summary_pass": true,
+    "summary_path": "/results/ambientv2_sc7p02_u6p25_dt/ambientv2_sc7p02_u6p25_dt_run_summary.json"
+  },
+  {
+    "artifacts_present": true,
+    "case_id": "ambientv2_sc7p02_u6p25_dt_half",
+    "evaluated": true,
+    "execution_pass": true,
+    "expected_response_config_fingerprint_sha256": "f338549f649c9ae5643ca344181698e1480f6ccecce08905720aa2675b3e0c49",
+    "history": {
+      "activation_invariant_violations": 0,
+      "aerodynamic_speed_basis": "declared_ambient_crossflow",
+      "ambient_response_speed_max_mps": 4.11875,
+      "ambient_response_speed_min_mps": 4.11875,
+      "applied_power_sign_convention_pass": true,
+      "columns": 97,
+      "compact_lag_provenance_pass": true,
+      "configured_response_reduced_velocity": 6.25,
+      "file_identity": {
+        "path": "/results/ambientv2_sc7p02_u6p25_dt_half/result_sil_vorlap_history.csv",
+        "sha256": "b7fb841c7a83bf12f443c0d0b5f87251a2732d85bf0cf634c72379800ce2a475",
+        "size_bytes": 227768545
+      },
+      "force_headroom_limit_n": 22.5,
+      "force_limited_node_samples": 0,
+      "force_vector_component_count": 63,
+      "gain_headroom_limit": 9.0,
+      "gain_limited_node_samples": 0,
+      "history_mode": "compact",
+      "history_schema": "vorlap-sil-force-history-compact-v1",
+      "limit_headroom_pass": true,
+      "maximum_absolute_raw_gain": 2.7279174182739627,
+      "maximum_absolute_response_nodal_force_n": 0.004890904680965734,
+      "path": "/results/ambientv2_sc7p02_u6p25_dt_half/result_sil_vorlap_history.csv",
+      "realized_response_reduced_velocity": 6.25,
+      "relative_crossflow_speed_max_mps": 4.122061873947914,
+      "relative_crossflow_speed_min_mps": 4.11875,
+      "response_enabled_values": [
+        true
+      ],
+      "response_estimator_early_mean_amplitude_ratio": 0.03518340002317552,
+      "response_estimator_final_mean_amplitude_ratio": 0.03777385693745418,
+      "response_estimator_stationarity_absolute_difference": 0.0025904569142786577,
+      "response_estimator_stationarity_evaluated": true,
+      "response_estimator_stationarity_pass": true,
+      "response_estimator_stationarity_tolerance": 0.005,
+      "response_model_schema_version": 2,
+      "response_model_types": [
+        "modal_negative_damping"
+      ],
+      "response_section_width_max_m": 0.05,
+      "response_section_width_min_m": 0.05,
+      "rows_retained_in_memory": 1,
+      "runtime_model_pass": true,
+      "samples": 157816,
+      "speed_basis_invariant_violations": 0,
+      "speed_basis_provenance_pass": true,
+      "startup_seed_active_samples": 1518,
+      "startup_seed_inactive_samples": 156298,
+      "startup_seed_integrity_evaluated": true,
+      "startup_seed_integrity_pass": true,
+      "streaming_passes": 2,
+      "terminal_window_samples_processed": 12140
+    },
+    "history_path": "/results/ambientv2_sc7p02_u6p25_dt_half/result_sil_vorlap_history.csv",
+    "identity_mismatch": false,
+    "identity_mismatches": [],
+    "input_identities": {
+      "history": {
+        "path": "/results/ambientv2_sc7p02_u6p25_dt_half/result_sil_vorlap_history.csv",
+        "sha256": "b7fb841c7a83bf12f443c0d0b5f87251a2732d85bf0cf634c72379800ce2a475",
+        "size_bytes": 227768545
+      },
+      "result": {
+        "path": "/results/ambientv2_sc7p02_u6p25_dt_half/result.txt",
+        "sha256": "69899dcd48111a78f5dd9e80fff57aa26d5cf47da39c4fd739226f655fac4ac2",
+        "size_bytes": 17517781
+      },
+      "sim": {
+        "path": "/work/VorLap/run_headless/runs/vlastos2026_belloli_sc_transfer_linux/cases/ambientv2_sc7p02_u6p25_dt_half/ambientv2_sc7p02_u6p25_dt_half.sim",
+        "sha256": "669b194fbf2869c62034f3d1f62688e6dead7398811ce99ca435feceb7e54b4b",
+        "size_bytes": 12242
+      },
+      "turbine": {
+        "path": "/work/VorLap/run_headless/runs/vlastos2026_belloli_sc_transfer_linux/cases/ambientv2_sc7p02_u6p25_dt_half/model/vlastos2026_sc5p18_cantilever.trb",
+        "sha256": "70f5f8787fc931273a06f590b16b28bfafc18185bd4ad11ccc6759d905a5eebe",
+        "size_bytes": 11338
+      },
+      "vorlap_config": {
+        "path": "/work/VorLap/run_headless/runs/vlastos2026_belloli_sc_transfer_linux/cases/ambientv2_sc7p02_u6p25_dt_half/model/Control/vorlap_qblade_external.json",
+        "sha256": "6db5d791bbaa5e91b68ec88b5c614cb795b2ab8fd4319a0f4c83a283e3a89795",
+        "size_bytes": 19934
+      }
+    },
+    "missing_identity_fields": [],
+    "pass": true,
+    "problems": [],
+    "provenance_evaluated": true,
+    "provenance_pass": true,
+    "response_limit_counts": {
+      "force_limited_node_samples": 0,
+      "force_limited_steps": 0,
+      "gain_limited_node_samples": 0,
+      "gain_limited_steps": 0
+    },
+    "response_speed_summary_pass": true,
+    "response_summary_limits_pass": true,
+    "source_coverage_complete": true,
+    "source_limit_counts": {
+      "aliased_frequency_count": 0,
+      "aoa_out_of_range_count": 0,
+      "force_coefficient_out_of_range_count": 0,
+      "frequency_truncated_count": 0,
+      "nonfinite_count": 0,
+      "re_out_of_range_count": 0,
+      "source_clip_count": 0
+    },
+    "source_limits_pass": true,
+    "source_sample_counts": [
+      157816
+    ],
+    "startup_seed_response": {
+      "evaluated": true,
+      "export_time_grid_audit": {
+        "acceptance_rule": "each parsed timestamp must match one of the at-most-two rendered tokens at its configured-grid repeated-addition bounds within floating-point parse slack",
+        "binary64_unit_roundoff": 1.1102230246251565e-16,
+        "configured_timestep_s": 0.00025,
+        "duplicate_exported_time_count": 0,
+        "expected_first_time_s": 0.0,
+        "expected_last_time_s": 39.45375,
+        "expected_samples": 157816,
+        "export_format": "%.5E",
+        "exported_adjacent_time_difference_max_s": 0.00030000000000285354,
+        "exported_adjacent_time_difference_median_s": 0.0002500000000000002,
+        "exported_adjacent_time_difference_min_s": 0.00019999999999953388,
+        "exported_first_time_s": 0.0,
+        "exported_last_time_s": 39.4538,
+        "floating_accumulation_model": "nonnegative sequential IEEE-754 binary64 additions from zero; Higham gamma_n summation bound plus one unit-roundoff centering term",
+        "maximum_export_time_absolute_error_s": 5.000000000165983e-05,
+        "maximum_export_time_error_to_tolerance_ratio": 0.9999991110428614,
+        "maximum_export_time_renderer_match_tolerance_s": 1.401680549406592e-13,
+        "maximum_export_time_renderer_mismatch_s": 0.0,
+        "maximum_export_time_rounding_tolerance_s": 5.000069141309697e-05,
+        "maximum_repeated_addition_time_bound_s": 6.912729289109235e-10,
+        "nondecreasing_exported_time": true,
+        "pass": true,
+        "rounding_bound": "half of one unit in the final printed decimal at each expected scientific exponent, plus the binary64 repeated-addition bound and floating-point parse slack",
+        "schema": "qblade-result-time-grid-reconstruction-v1",
+        "source": "manifest timestep_s multiplied by zero-based sequential sample index, bounded for IEEE-754 binary64 repeated-addition error, then deterministically rendered with the declared export format",
+        "two_token_rounding_boundary_sample_count": 58908
+      },
+      "maximum_amplitude_ratio": 0.01,
+      "minimum_amplitude_ratio": 0.001,
+      "observation_cycles": 1.0,
+      "observation_samples": 305,
+      "pass": true,
+      "realized_amplitude_m": 0.00025480100000000003,
+      "realized_amplitude_ratio": 0.005096020000000001,
+      "seed_end_s": 0.37936267071320184
+    },
+    "startup_seed_summary_pass": true,
+    "summary_path": "/results/ambientv2_sc7p02_u6p25_dt_half/ambientv2_sc7p02_u6p25_dt_half_run_summary.json"
+  }
+]

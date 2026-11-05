@@ -1,0 +1,112 @@
+{
+  "scope": "Fresh preparation, 16 focused physical/export tests and 11 isolated Git/Slurm launcher checks completed. Native Docker runs were intentionally stopped before completion at user request; native runtime/export acceptance has not been established for this new campaign.",
+  "fresh_prepare": {
+    "passed": true,
+    "exported_channel_count": 75,
+    "model_storage_channel_counts": {
+      "raw_qblade": 75,
+      "one_way_spectral_vorlap": 192,
+      "complete_hybrid_v8": 309
+    }
+  },
+  "tests": {
+    "command": ".venv/bin/python -m pytest -q examples/slow_azimuth_20260924/test_campaign.py",
+    "passed": 16
+  },
+  "isolated_git_launcher_checks": {
+    "passed": true,
+    "count": 11,
+    "checks": [
+      {
+        "label": "default",
+        "returncode": 0
+      },
+      {
+        "label": "ordinary",
+        "returncode": 0
+      },
+      {
+        "label": "existing",
+        "returncode": 2
+      },
+      {
+        "label": "bad_validate",
+        "returncode": 7
+      },
+      {
+        "label": "bad_hash",
+        "returncode": 2
+      },
+      {
+        "label": "bad_reply",
+        "returncode": 2
+      },
+      {
+        "label": "job_good",
+        "returncode": 0
+      },
+      {
+        "label": "job_bad_commit",
+        "returncode": 2
+      },
+      {
+        "label": "job_dirty",
+        "returncode": 2
+      },
+      {
+        "label": "launcher_dirty",
+        "returncode": 2
+      },
+      {
+        "label": "wrong_branch",
+        "returncode": 2
+      }
+    ],
+    "flight_jobs_submitted": false
+  },
+  "modal_basis_transfer": {
+    "actual_rpm_tolerance": 1e-05,
+    "basis_rpm": 1.0,
+    "frequency_shift_fraction_limit": 0.001,
+    "identification_sha256": "da8ac3a8ffa64d99a9f1363b9bbf81dd06a5695c27c775193c54d5f4c85d3941",
+    "maximum_abs_basis_rpm_error_rpm": 0.9666766666666666,
+    "minimum_action_translation_mac": 0.999,
+    "mode_comparisons": [
+      {
+        "action_translation_mac": 0.9999555766700108,
+        "comparison_rpm": 0.0,
+        "frequency_hz": 2.511557314896635,
+        "frequency_shift_fraction": -1.1200728867732934e-06,
+        "frequency_shift_hz": -2.8131272520326434e-06,
+        "tracked_mode": 6
+      },
+      {
+        "action_translation_mac": 0.9997425403662328,
+        "comparison_rpm": 0.0,
+        "frequency_hz": 4.572512385909129,
+        "frequency_shift_fraction": 1.7778016740965796e-05,
+        "frequency_shift_hz": 8.129020174507673e-05,
+        "tracked_mode": 12
+      }
+    ],
+    "policy": "Retain the reviewed 1 RPM shapes, duals, frequencies, masses and damping. Use them at prescribed 1/30 RPM only; do not relabel as a slow-RPM basis. The close archived 0/1-RPM eigensolutions motivate this engineering approximation; no new eigensolution was computed at 1/30 RPM. The full QBlade structural solver itself runs at the prescribed 1/30 RPM.",
+    "simulation_rpm": 0.03333333333333333
+  },
+  "scripts": {
+    "examples/slow_azimuth_20260924/campaign.py": "32aa81bbc011a6f6a5e01f59ee76a2b74b1621dc574182990b9bdf71760ffbf9",
+    "examples/slow_azimuth_20260924/submit_flight.sj": "993607ce247bebe78f88a33693c25f9053a41a066ed699de2992e551f51238cb",
+    "run_headless/submit_slow_azimuth_chain.sh": "475bb00b8fc0490e5f74927112096f3ee5d7227281d9dd23485158da5e76305b",
+    "examples/slow_azimuth_20260924/smoke_docker.sh": "ab6cf6bc36b530d143be73a07ce4d42a496c3b5c2ed6c40093f8503f737d0986"
+  },
+  "timestamp_utc": "2026-09-24T23:31:32.401816+00:00",
+  "driver_sha256": "32aa81bbc011a6f6a5e01f59ee76a2b74b1621dc574182990b9bdf71760ffbf9",
+  "native_smoke": {
+    "status": "intentionally_stopped_at_user_request_before_completion",
+    "passed": null,
+    "requested_steps_per_model": 160,
+    "model_count": 3,
+    "completed_acceptance_receipts": 0,
+    "scope": "Uniform-inflow runtime check only; no production Flight simulation was executed."
+  },
+  "flight_jobs_submitted": false
+}

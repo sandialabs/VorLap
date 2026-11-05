@@ -1,0 +1,20 @@
+include LICENSE NOTICE README.md CHANGELOG.md CONTRIBUTING.md CITATION.cff
+include pyproject.toml setup.py pytest.ini mkdocs.yml default_parameters.csv
+include .gitignore .gitattributes
+recursive-include .github *.yml
+recursive-include vorlap *.py
+recursive-include scripts *.py *.sh *.ps1
+recursive-include qblade_external_bridge *.txt *.cpp
+recursive-include run_headless *.py *.sh *.sj *.jl
+recursive-include run_headless/config *
+recursive-include data *.csv *.h5 *.json *.dat
+recursive-include docs *.md *.json *.png
+recursive-include examples *
+recursive-include tests *.py *.json *.csv *.npz
+prune run_headless/QBladeCE_2.0.9.7
+prune run_headless/runs
+prune paper_drafts
+prune test
+recursive-include reproducibility *.json *.txt
+global-exclude .DS_Store *.py[cod] *.so *.dylib *.dll
+global-exclude __pycache__

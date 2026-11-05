@@ -1,0 +1,171 @@
+{
+  "applicability": {
+    "intended_section_classes": [
+      "thin airfoil or plate at separated incidence",
+      "rectangular bluff section",
+      "continuous declared interpolation between anchors"
+    ],
+    "protected_validation_breadth_depth_ratio": 5.0,
+    "runtime_requires_local_static_spectrum": true,
+    "silent_extrapolation_beyond_geometry_anchors": false,
+    "trained_breadth_depth_ratio": [
+      0.18,
+      4.0
+    ],
+    "trained_reynolds_number_approximate_range": [
+      10000.0,
+      135000.0
+    ]
+  },
+  "claim_boundary": {
+    "high_reynolds_wind_turbine_response_is_external_screen_only": true,
+    "protected_experimental_validation_pending": true,
+    "trained_semi_empirical_closure": true,
+    "validates_fatigue": false,
+    "validates_hvawt_or_hawt": false
+  },
+  "method": {
+    "airfoil_fraction": "clip((1.5-B/D)/(1.5-0.18),0,1)",
+    "force_per_span": "Fs*w*((1-b)*(Gc*sign(v)-Gv*v/U)+b*Ha*(1-(A/(lambda*D))^2)*v/U)",
+    "geometry_coordinate": "body-fixed streamwise breadth divided by cross-flow depth",
+    "name": "static-spectrum geometry-blended Gao--Scanlan--Griffin work closure",
+    "positive_power_sign": "aerodynamic force does work on the structure",
+    "static_spectrum_role": "sinusoidal-equivalent force scale and shedding-frequency capture only",
+    "stationary_spectrum_phase_used": false
+  },
+  "model_type": "static_spectrum_geometry_blended_work_v2",
+  "parameters": {
+    "airfoil_breadth_depth_ratio": 0.18,
+    "airfoil_frequency_scale": 0.8393925464162503,
+    "airfoil_limiting_amplitude_ratio": 0.020343253217205814,
+    "airfoil_velocity_feedback_gain": 143.1939823335363,
+    "frequency_ratio_high": 1.21875,
+    "frequency_ratio_low": 1.0,
+    "frequency_ratio_peak": 1.166666667,
+    "reciprocal_breadth_depth_ratio": 1.5,
+    "reciprocal_coulomb_gain": 0.88747662,
+    "reciprocal_velocity_damping_gain": 18.93742326,
+    "regularization_velocity_over_wind": 1e-05
+  },
+  "protected_validation": {
+    "liu_5x1_used_for_fitting": false,
+    "status_before_assessment": "frozen_target_fields_not_read_for_parameter_fitting",
+    "study": "Liu et al. 5:1 rectangular cylinder"
+  },
+  "schema": "vorlap-geometry-blended-viv-calibration-v1",
+  "sources": {
+    "ehrmann_figure6": {
+      "path": "examples/ehrmann2014_naca0018/reference_data/ehrmann2014_figure6_naca0018_digitized.csv",
+      "sha256": "03c0161de5d45ba2f740f87d8d354452a911534d3b87a26c6ee23cb088a6890a"
+    },
+    "ehrmann_figure7": {
+      "path": "examples/ehrmann2014_naca0018/reference_data/ehrmann2014_figure7_naca0018_peak_digitized.csv",
+      "sha256": "1afdfca3cfa4b98318f91f5a46954b34886fa470c8e21763eee1bd5c71f73f83"
+    },
+    "ehrmann_provenance": {
+      "path": "examples/ehrmann2014_naca0018/reference_data/ehrmann2014_digitization_provenance.json",
+      "sha256": "5c26c08c9d17a452d639eecc52c43e94ae0b618d05a938510e56499ec27bf3b1"
+    },
+    "liu_validation_freeze": {
+      "path": "examples/liu2024_rectangular_5x1/reference_data/validation_provenance.json",
+      "sha256": "61682ca212ddfca2a2ef71aa033996241b5db607059c95612071a4c7be636c2c"
+    },
+    "mannini_provenance": {
+      "path": "examples/mannini2016_rectangular_3x2/reference_data/digitization_provenance.json",
+      "sha256": "8efffe64a53ee9fb3c15dd9b014f4e4af0c96d011e661b2796720c4686ca63db"
+    },
+    "mannini_response": {
+      "path": "examples/mannini2016_rectangular_3x2/reference_data/mannini2015_figure4_sc87p7_digitized.csv",
+      "sha256": "b82be5a9970c2049ab742474b63ecebb434beddea1367a73a7522c67b0fc92e5"
+    },
+    "marra_provenance": {
+      "path": "examples/marra2015_rectangular_4x1/reference_data/training_provenance.json",
+      "sha256": "d509eccc2fe7bf76720e097a80997fdccca55e7d4e1e81f6d4c214b433d82b7f"
+    },
+    "marra_response": {
+      "path": "examples/marra2015_rectangular_4x1/reference_data/gao2025_table5_training.csv",
+      "sha256": "817c3999cfd4a47628dfcfd744660caba63c9a1477fd0a88d860ec3cecc98e9d"
+    },
+    "naca0018_static_spectrum": {
+      "path": "examples/ReferenceHVAWTQBladeModel/10m_HVAWT_reference_turbine/VorLapAirfoils/NACA0018.h5",
+      "sha256": "64399e25dc5008caaed88d42e5cf24160c1045f17a282a06234648202cece369"
+    }
+  },
+  "status": "trained_ready_for_protected_validation",
+  "training": {
+    "airfoil_peak_location_relative_error": 3.2489131949160535e-05,
+    "airfoil_peak_predicted_reduced_velocity": 4.586,
+    "airfoil_peak_rows": [
+      {
+        "absolute_relative_error": 0.0,
+        "mass_damping": 1.007724,
+        "predicted_peak_amplitude_over_chord": 0.01236635,
+        "target_peak_amplitude_over_chord": 0.01236635
+      },
+      {
+        "absolute_relative_error": 0.08760037239637868,
+        "mass_damping": 1.138759,
+        "predicted_peak_amplitude_over_chord": 0.010908659071625172,
+        "target_peak_amplitude_over_chord": 0.01195601
+      },
+      {
+        "absolute_relative_error": 0.10222081537558944,
+        "mass_damping": 1.264,
+        "predicted_peak_amplitude_over_chord": 0.00930436800244308,
+        "target_peak_amplitude_over_chord": 0.01036376
+      },
+      {
+        "absolute_relative_error": 0.14643395776926113,
+        "mass_damping": 1.375724,
+        "predicted_peak_amplitude_over_chord": 0.007592333375075665,
+        "target_peak_amplitude_over_chord": 0.00889484
+      },
+      {
+        "absolute_relative_error": 0.0,
+        "mass_damping": 1.478621,
+        "predicted_peak_amplitude_over_chord": 0.00556788,
+        "target_peak_amplitude_over_chord": 0.00556788
+      }
+    ],
+    "airfoil_peak_target_reduced_velocity": 4.586149,
+    "ehrmann_all_five_rows_role": "airfoil-branch training after preserved no-retuning failure",
+    "mannini_full_curve_role": "capture onset, peak, collapse, and peak-amplitude training",
+    "maximum_airfoil_peak_relative_error": 0.14643395776926113,
+    "maximum_reciprocal_peak_relative_error": 0.2714368169183704,
+    "reciprocal_peak_rows": [
+      {
+        "absolute_relative_error": 0.2714368093211622,
+        "predicted_peak_amplitude_over_depth": 0.08329182537862934,
+        "scruton_number": 1.9,
+        "study": "Marra 4:1",
+        "target_peak_amplitude_over_depth": 0.06551
+      },
+      {
+        "absolute_relative_error": 0.26884613086632597,
+        "predicted_peak_amplitude_over_depth": 0.03705030702129672,
+        "scruton_number": 21.7,
+        "study": "Marra 4:1",
+        "target_peak_amplitude_over_depth": 0.0292
+      },
+      {
+        "absolute_relative_error": 0.2714368091930232,
+        "predicted_peak_amplitude_over_depth": 0.014062091109674837,
+        "scruton_number": 78.1,
+        "study": "Marra 4:1",
+        "target_peak_amplitude_over_depth": 0.01106
+      },
+      {
+        "absolute_relative_error": 0.2714368169183704,
+        "predicted_peak_amplitude_over_depth": 0.03585896916729896,
+        "scruton_number": 87.7,
+        "study": "Mannini 3:2",
+        "target_peak_amplitude_over_depth": 0.04921875
+      }
+    ],
+    "studies": [
+      "Mannini et al. 3:2 rectangular response curve",
+      "Marra et al. 4:1 rectangular peaks",
+      "Ehrmann and White NACA0018 peaks and lock-in location"
+    ]
+  }
+}

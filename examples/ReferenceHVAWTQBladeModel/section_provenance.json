@@ -1,0 +1,70 @@
+{
+  "schema": "vorlap-public-sections-v1",
+  "source": "https://doi.org/10.1088/1742-6596/2767/7/072025",
+  "published_targets": "Table 1 OWENS blade EI values; 0.5 m NACA0018 chord",
+  "assumptions": "Uniform equivalent orthotropic shell and four ideal longitudinal caps; no local inserts. Closed-tail NACA four-digit analytic outline. Bredt skin-only torsion; centroid approximates shear center. Tube: nominal steel annuli, E=200 GPa, nu=0.3, rho=7850 kg/m^3; 1000 kg equipment lump. Section damping/tuners are retained example integration choices, not inferred material data.",
+  "blade": {
+    "chord_m": 0.5,
+    "E_pa": 30000000000.0,
+    "G_pa": 4000000000.0,
+    "density_kg_m3": 2000.0,
+    "skin_thickness_m": 0.00272174383425,
+    "total_cap_area_m2": 0.00109886222064,
+    "cap_offset_from_centroid_m": 0.175,
+    "centroid_from_le_m": 0.243716401773,
+    "enclosed_area_m2": 0.0306397469959,
+    "material_area_m2": 0.00392485309934,
+    "EI_flap_nm2": 121000.0,
+    "EI_lag_nm2": 2870000.0,
+    "mass_kg_m": 7.84970619867,
+    "GJ_nm2": 39374.4111658,
+    "quadrature_points": 4097
+  },
+  "tube_profile_fraction_outer_inner_m": [
+    [
+      0,
+      0.1,
+      0
+    ],
+    [
+      0.2,
+      0.14,
+      0
+    ],
+    [
+      0.26,
+      0.15,
+      0
+    ],
+    [
+      0.28,
+      0.65,
+      0.59
+    ],
+    [
+      0.45,
+      0.65,
+      0.59
+    ],
+    [
+      0.47,
+      0.65,
+      0.61
+    ],
+    [
+      0.7,
+      0.65,
+      0.61
+    ],
+    [
+      1,
+      0.65,
+      0.61
+    ]
+  ],
+  "applicability": "Illustrative public replacement. Neither exact paper inputs nor a qualified manufacturer structural design.",
+  "files": {
+    "10m_HVAWT_reference_blade.str": "b354c2e100e1e5e13615a38e8e0ee0ddafbf49003d51fca3c20635ad50d0ddac",
+    "10m_HVAWT_reference_torque_tube.str": "aae4ab7f3768f0cc2c0a6793c8b64009a23945cec63ab30c5fa97bdd67e73ce7"
+  }
+}

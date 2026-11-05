@@ -1,0 +1,53 @@
+{
+  "schema": "vorlap-hvawt-reciprocal-griffin-active-smoke-evidence-v1",
+  "status": "pass",
+  "scope": "Short active-QBlade schema-v4 import, identity, force-path, and simultaneous-mode virtual-work verification only",
+  "claim_boundary": "This smoke does not establish H-VAWT response amplitude, stationarity, timestep convergence, fatigue loads, or validation. The 24-case matched pilot remains required.",
+  "runtime": {
+    "qblade_version": "2.0.9.7b_beta",
+    "qblade_library_sha256": "7d4d07401dddf65dcf25d7cb7d809a78fbf8ab9ecad629aaaf6d2a4308a0764d",
+    "container_image": "vorlap-qblade-headless@sha256:99864db6be24387033888d0fe4b8859879f2987b2e4042df08c501e71a71cc61",
+    "threads": 4
+  },
+  "source_identity": {
+    "adapter_sha256": "3cd4a1aed038e5a8f119f472f0ee1d369d659ede6a1d06e1af7824a651e4874e",
+    "campaign_module_sha256": "5f2740819a2554c1a84394061743b1324b1625b06ce12aa810d3a40cb765213d",
+    "model_config_sha256": "1328fcb13149e9d7adef7e466abb9b43a4c20da5c3d72ce9e96973479064c01e",
+    "calibration_sha256": "1e50141d607621af4bdadc57df4153782da9789be79ac343b397c7815f413a35",
+    "calibration_fingerprint": "388a723782aa00899df352119c06b86188796453125ef67c68046dbc94a74354",
+    "static_spectrum_sha256": "64399e25dc5008caaed88d42e5cf24160c1045f17a282a06234648202cece369",
+    "modal_basis_fingerprint": "7b0ba1f6fe00d539b16c03c4e169a8f424e2ee475c660e45952effd094b6917c",
+    "prepass_fingerprint": "b77abcf5565f681c332a828aeb919e41234f798b2fa442954e74b319333dbe6e",
+    "campaign_fingerprint": "50c6e2b10575de7ef0448e8f575b8d6dc8a15cbfec39f5e0024ad3c737812190"
+  },
+  "case": {
+    "case_id": "U03p000000000ms_dt007500us_response",
+    "wind_speed_mps": 3.0,
+    "timestep_s": 0.0075,
+    "completed_steps": 20,
+    "physical_end_time_s": 0.135,
+    "summary_sha256": "e175c2a8ff915c78d162af965aab18dc892423da09ba9475805517164b47e3be",
+    "compact_history_sha256": "574485307cd5bb7b72a4dbe89e50ce7a94e32ceeb6471cb1a40e577361405a15",
+    "result_sha256": "8a965e3618027dcb9f33d37c63134db34500e3681c32a4ce55c32500411edc3d",
+    "failed": false,
+    "stopped": false,
+    "exported_results": true,
+    "sil_updates": 20,
+    "native_callback_count": 0,
+    "maximum_generated_nodal_force_n": 0.00008691353279525612,
+    "maximum_applied_nodal_force_n": 0.00008522815912687521,
+    "maximum_simultaneous_mode_power_closure_error_w": 6.617444900424222e-24,
+    "mode6_generalized_power_w": 1.9236536984481073e-08,
+    "mode12_generalized_power_w": -1.5656359930671146e-11
+  },
+  "checks": {
+    "run_completed": true,
+    "schema_v4_model_loaded": true,
+    "calibration_identity_exact": true,
+    "static_spectrum_identity_exact": true,
+    "response_force_nonzero": true,
+    "native_callbacks_exactly_zero": true,
+    "residual_source_scale_exactly_zero": true,
+    "simultaneous_mode_virtual_work_exact_within_tolerance": true
+  }
+}

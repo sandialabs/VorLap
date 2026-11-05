@@ -1,0 +1,5 @@
+config,dtu_pitch_deg,dtu_inclination_deg,wind_speed_mps,edgewise_peak_amplitude_m,amplitude_digitization_uncertainty_m,source_role
+P80A310,100,50,18,1.175074,0.05,training
+P90A310,90,50,18,0.224332,0.05,training
+P95A310,85,50,18,1.118100,0.05,training
+P95A320,85,40,18,0.017804,0.02,training

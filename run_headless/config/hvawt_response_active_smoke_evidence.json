@@ -1,0 +1,68 @@
+{
+  "schema": "vorlap-hvawt-response-active-smoke-evidence-v1",
+  "status": "pass",
+  "scope": "Short active-QBlade import, startup-timing, rigid-flexible kinematics, activation, force-path, and bounded-force verification only",
+  "claim_boundary": "This evidence does not measure Rayleigh decay, establish stationarity or lock-in amplitude, validate the cylinder-to-airfoil transfer, or replace the 24-case H-VAWT pilot.",
+  "runtime": {
+    "vorlap_commit": "dac456c0e2b59be7ac71ccf101bb3565cabb49b7",
+    "qblade_version": "2.0.9.7b_beta",
+    "qblade_library_sha256": "7d4d07401dddf65dcf25d7cb7d809a78fbf8ab9ecad629aaaf6d2a4308a0764d",
+    "container_image": "vorlap-qblade-headless@sha256:99864db6be24387033888d0fe4b8859879f2987b2e4042df08c501e71a71cc61",
+    "threads": 4
+  },
+  "model_identity": {
+    "damping_selection_fingerprint": "844fbe73540ddb6dc786a722214f63ca8eb5bbe3fa764c690adc88631fa36202",
+    "response_config_fingerprint": "a912bf4a1403525a8a81a3e518467e82555dc9d3039a90040ca8dfba41959d6b",
+    "modal_basis_fingerprint": "7b0ba1f6fe00d539b16c03c4e169a8f424e2ee475c660e45952effd094b6917c",
+    "sealed_follow_on_pilot_fingerprint": "c2be40c9ae837560bda22475eba66ca1501e7fcf9075dccc42de7b89869fb304"
+  },
+  "cases": [
+    {
+      "role": "off_response",
+      "wind_speed_mps": 3.0,
+      "timestep_s": 0.0075,
+      "completed_steps": 20,
+      "physical_end_time_s": 0.135,
+      "summary_sha256": "11c0b88ef7fd4744e8f7ad8c50fefbbcd9b0ec5d993ecdcffc34177a29ccabf4",
+      "compact_history_sha256": "f4106ae7f48add48bbac74c6a6354adcda68ca355fbf0b07b3381a35f2573195",
+      "failed": false,
+      "native_callback_count": 0,
+      "maximum_response_nodal_force_n": 0.0,
+      "maximum_rigid_body_speed_mps": 0.5592804441638303,
+      "maximum_flexible_speed_mps": 0.00010225770722736035,
+      "mode6_activation_max": 0.0,
+      "mode12_activation_max": 0.0
+    },
+    {
+      "role": "mode6_active_band",
+      "wind_speed_mps": 7.843364948,
+      "timestep_s": 0.0075,
+      "completed_steps": 100,
+      "physical_end_time_s": 0.735,
+      "summary_sha256": "3168fd4a02a9197a0a46b689381735ba98cd5915c778462250e3b42cf89e7859",
+      "compact_history_sha256": "0758fca84c3d76c410184dc398566ec2c18e68b225ffb1529a8284c3c0184db5",
+      "failed": false,
+      "native_callback_count": 0,
+      "maximum_response_nodal_force_n": 0.0001461529514418905,
+      "maximum_rigid_body_speed_mps": 0.5603827829073563,
+      "maximum_flexible_speed_mps": 0.0005799247839215453,
+      "mode6_activation_max": 0.9997420017983495,
+      "mode12_activation_max": 0.0,
+      "mode6_complex_projection_leakage_ratio": 0.0014693922598333772
+    }
+  ],
+  "checks": {
+    "both_runs_completed": true,
+    "qblade_startup_hold_mapped": true,
+    "azimuth_rpm_rate_consistent_after_startup": true,
+    "native_callbacks_exactly_zero": true,
+    "legacy_vorlap_force_scale_exactly_zero": true,
+    "off_response_force_exactly_zero": true,
+    "mode6_active_band_force_nonzero_and_bounded": true,
+    "mode12_remains_inactive_in_mode6_smoke": true,
+    "maximum_flexible_to_rigid_speed_ratio_below_0p002": true,
+    "base_flow_uses_total_velocity": true,
+    "response_flow_excludes_flexible_velocity": true,
+    "modal_feedback_uses_flexible_velocity_only": true
+  }
+}

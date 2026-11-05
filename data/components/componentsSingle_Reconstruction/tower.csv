@@ -1,0 +1,5 @@
+id,translation_x,translation_y,translation_z,rotation_x,rotation_y,rotation_z,pitch
+Tower,0,0,0,0,0,0,0.0
+x,y,z,chord,twist,thickness,offset,airfoil_id
+0,0,0,1.0,0,0.18,0.5,ffa_w2_211
+0,0,1,1.0,0,0.18,0.5,ffa_w2_211

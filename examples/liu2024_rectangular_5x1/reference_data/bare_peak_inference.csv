@@ -1,0 +1,5 @@
+reported_configuration,reported_peak_hrms_over_depth,reported_ratio_to_bare_peak,inferred_bare_peak_hrms_over_depth,use_in_robust_target
+splitter_gap_0p5,0.0035,0.167,0.02095808383233533,true
+splitter_gap_1p0,0.0190,0.905,0.02099447513812155,false
+splitter_gap_1p5,0.0240,1.190,0.02016806722689076,true
+splitter_gap_2p0,0.0270,1.286,0.02099533437013997,true

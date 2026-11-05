@@ -1,0 +1,108 @@
+{
+  "amplitude_calibration": {
+    "calibration_points": [
+      {
+        "amplitude_over_chord": 0.01236635,
+        "mass_damping": 1.007724
+      },
+      {
+        "amplitude_over_chord": 0.00556788,
+        "mass_damping": 1.478621
+      }
+    ],
+    "critical_mass_damping": 1.5983534133928563,
+    "feedback_gain": 143.1939823335363,
+    "feedback_gain_definition": "rigid_section_critical_structural_damping_divided_by_unit_gain_aerodynamic_feedback",
+    "intercept_amplitude_ratio_squared": 0.0004138479514593548,
+    "law": "A_over_c_squared=lambda_squared*(1-mass_damping/critical_mass_damping)",
+    "limiting_amplitude_ratio": 0.020343253217205814,
+    "reference_modal_structure": {
+      "basis": "rigid_section_translation_per_unit_span",
+      "mass_per_span_kgpm": 2.4277279658659623,
+      "mass_ratio": 47.7,
+      "structural_damping_coefficient_at_onset_kgps": 6.133601682172417,
+      "unit_gain_aerodynamic_feedback_coefficient_kgps": 0.04283421399570864
+    },
+    "slope_per_mass_damping": -0.00025892143001144633
+  },
+  "claim_boundary": {
+    "facility_velocity_scale_transferred_to_turbine": false,
+    "level": "airfoil_branch_training_view_of_geometry_blended_closure",
+    "nalu_required": false,
+    "not_independent_validation": true,
+    "prescribed_motion_required": false,
+    "validates_hvawt_or_fatigue": false
+  },
+  "facility": {
+    "effective_velocity_scale": 1.3333333333333333,
+    "policy": "calibration_only_not_transferred_to_turbine_local_velocity",
+    "reported_tunnel_blockage_fraction": 0.25
+  },
+  "holdout_assessment": {
+    "maximum_allowed_absolute_relative_error": 0.3,
+    "maximum_observed_absolute_relative_error": 0.14643395776926113,
+    "points": [
+      {
+        "absolute_relative_error": 0.08760037239637868,
+        "amplitude_digitization_uncertainty": 0.0006,
+        "experimental_amplitude_over_chord": 0.01195601,
+        "mass_damping": 1.138759,
+        "predicted_amplitude_over_chord": 0.010908659071625172,
+        "signed_relative_error": -0.08760037239637868
+      },
+      {
+        "absolute_relative_error": 0.10222081537558944,
+        "amplitude_digitization_uncertainty": 0.0006,
+        "experimental_amplitude_over_chord": 0.01036376,
+        "mass_damping": 1.264,
+        "predicted_amplitude_over_chord": 0.00930436800244308,
+        "signed_relative_error": -0.10222081537558944
+      },
+      {
+        "absolute_relative_error": 0.14643395776926113,
+        "amplitude_digitization_uncertainty": 0.0006,
+        "experimental_amplitude_over_chord": 0.00889484,
+        "mass_damping": 1.375724,
+        "predicted_amplitude_over_chord": 0.007592333375075665,
+        "signed_relative_error": -0.14643395776926113
+      }
+    ],
+    "status": "passed"
+  },
+  "model_type": "single_mode_airfoil_engineering_lockin_v1",
+  "profile": "NACA0018",
+  "schema": "vorlap-ehrmann2014-engineering-lockin-calibration-v1",
+  "sources": {
+    "figure6_digitization": {
+      "path": "examples/ehrmann2014_naca0018/reference_data/ehrmann2014_figure6_naca0018_digitized.csv",
+      "role": "airfoil_capture_location_training",
+      "sha256": "03c0161de5d45ba2f740f87d8d354452a911534d3b87a26c6ee23cb088a6890a"
+    },
+    "figure7_digitization": {
+      "path": "examples/ehrmann2014_naca0018/reference_data/ehrmann2014_figure7_naca0018_peak_digitized.csv",
+      "role": "airfoil_amplitude_training",
+      "sha256": "1afdfca3cfa4b98318f91f5a46954b34886fa470c8e21763eee1bd5c71f73f83"
+    },
+    "geometry_blended_parent": {
+      "path": "examples/viv_geometry_blended/geometry_blended_calibration.json",
+      "sha256": "f2dee270b43683b99b08bd3fcab10d816920be770ebe9355cd238f1d9ceadd0c"
+    },
+    "stationary_spectrum": {
+      "path": "examples/ReferenceHVAWTQBladeModel/10m_HVAWT_reference_turbine/VorLapAirfoils/NACA0018.h5",
+      "reynolds_model": "replicated_reynolds_independent",
+      "sha256": "64399e25dc5008caaed88d42e5cf24160c1045f17a282a06234648202cece369"
+    }
+  },
+  "spectral_capture": {
+    "airfoil_frequency_scale": 0.8393925464162503,
+    "channel": "CL",
+    "figure6_peak_reduced_velocity": 4.586149,
+    "frequency_ratio_definition": "St*U_effective/(D_St*f_n)",
+    "frequency_ratio_high": 1.023009665944805,
+    "frequency_ratio_low": 0.8393925464162503,
+    "frequency_ratio_peak": 0.9792913044320896,
+    "harmonics": "all_positive_frequency_entries",
+    "window": "compact_sine_squared"
+  },
+  "status": "calibrated_holdout_passed"
+}

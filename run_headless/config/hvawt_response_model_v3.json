@@ -1,0 +1,65 @@
+{
+  "enabled": true,
+  "engineering_lockin": {
+    "calibration_path": "engineering_lockin_calibration.json",
+    "calibration_sha256": "d96c0b73a708b918360a15e79224f6a3a3f4e80702edf721bc606501a46fa02d",
+    "maximum_power_closure_relative_error": 1e-10,
+    "maximum_spectral_gain": 10.0,
+    "minimum_modal_participation": 1e-12,
+    "n_frequency_entries": 200,
+    "residual_source_scale": 0.0,
+    "response_force_scale": 1.0,
+    "schema_version": 1,
+    "source_bounds_policy": "raise",
+    "source_channel": "CL",
+    "static_spectrum_sha256": "64399e25dc5008caaed88d42e5cf24160c1045f17a282a06234648202cece369",
+    "velocity_basis": "local_rigid_body_relative_unscaled"
+  },
+  "force_sources": {
+    "coefficient_role": "incremental_viv_screening",
+    "external_viv_mode": "response_closure",
+    "include_mean_load": false,
+    "native_qblade_aerodynamics": "required_enabled"
+  },
+  "kinematics": {
+    "axis_origin_global_m": [0.0, 0.0, 0.0],
+    "axis_unit_global": [0.0, 0.0, 1.0],
+    "azimuth_sign": 1,
+    "body_to_global_at_reference": [
+      [1.0, 0.0, 0.0],
+      [0.0, 1.0, 0.0],
+      [0.0, 0.0, 1.0]
+    ],
+    "maximum_abs_basis_rpm_error_rpm": 0.01,
+    "maximum_azimuth_rate_error_radps": 1e-05,
+    "reference_azimuth_deg": 0.0,
+    "rpm_sign": 1
+  },
+  "max_abs_total_nodal_force_n": 100.0,
+  "modal_artifacts": {
+    "duals": "hvawt_response_mode_force_duals.csv",
+    "identification": "hvawt_response_mode_identification.json",
+    "review_marker": "hvawt_modal_evidence_review_marker.json",
+    "shapes": "hvawt_response_mode_shapes.csv"
+  },
+  "modes": [
+    {
+      "bandpass_damping_ratio": 0.1,
+      "reference_length_m": 0.5,
+      "rms_time_constant_s": 0.7963194246776024,
+      "structural_damping_ratio": 0.007448479057063753,
+      "tracked_mode": 6
+    },
+    {
+      "bandpass_damping_ratio": 0.1,
+      "reference_length_m": 0.5,
+      "rms_time_constant_s": 0.4373889682481462,
+      "structural_damping_ratio": 0.009503978382703563,
+      "tracked_mode": 12
+    }
+  ],
+  "position_block": "position_global_m",
+  "rpm_block": "lss_rpm",
+  "schema_version": 3,
+  "type": "hvawt_airfoil_engineering_lockin_hybrid"
+}

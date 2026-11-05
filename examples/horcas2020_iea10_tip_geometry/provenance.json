@@ -1,0 +1,110 @@
+{
+  "schema": "horcas2020-iea10-tip-geometry-reference-v1",
+  "publication": {
+    "citation": "Horcas, S. G., Barlas, T., Zahle, F., and Sørensen, N. N. (2020), Vortex-induced vibrations of wind turbine blades: Influence of the tip geometry, Physics of Fluids 32, 065104",
+    "doi": "10.1063/5.0004005",
+    "doi_url": "https://doi.org/10.1063/5.0004005",
+    "license": "CC BY 4.0",
+    "source": {
+      "url": "https://backend.orbit.dtu.dk/ws/portalfiles/portal/215203290/5.0004005.pdf",
+      "retrieved_date": "2026-08-15",
+      "sha256": "cbd11afc906ed268a8cbb7589fe370df2ea2fa218833c8e823ccfbbd4942a89d",
+      "pdf_page_1_based": 19,
+      "article_page": 16,
+      "figure": 19,
+      "tables": [
+        1,
+        2
+      ]
+    }
+  },
+  "study": {
+    "system": "standstill IEA 10-MW blade with high-fidelity EllipSys3D-HAWC2 fluid-structure interaction",
+    "wind_speed_mps": 18.0,
+    "inclination_angles_deg": [
+      40.0,
+      42.5,
+      45.0,
+      47.5,
+      50.0,
+      52.5,
+      55.0,
+      57.5,
+      60.0,
+      65.0,
+      70.0
+    ],
+    "geometry_count": 5,
+    "fsi_duration_s": 45.3,
+    "reported_response_window_s": 30.0,
+    "cfd_cells": 12600000,
+    "fsi_aerodynamic_sections": 101,
+    "structural_beam_elements": 19,
+    "reynolds_number_range": [
+      1000000,
+      5600000
+    ],
+    "paper_caveat": "Some 55-degree responses were still increasing at the end of the finite simulation, so the digitized maxima may change for a longer integration."
+  },
+  "digitization": {
+    "method": "Curve vertices were recovered from the vector Figure 19 paths and mapped through the vector tick coordinates; no raster point picking was used.",
+    "source_status": "vector-digitized estimates, not author-provided raw solver values",
+    "amplitude_conversion": "peak_edge_amplitude_m = 0.5*peak_to_peak_edge_amplitude_m, consistent with the paper's near-harmonic peak-to-peak response derived from RMS",
+    "common_uncertainty": {
+      "peak_to_peak_amplitude_m": 0.02,
+      "peak_amplitude_m": 0.01,
+      "response_frequency_over_fn": 0.01,
+      "inclination_deg": 0.05
+    },
+    "missing_value": "BASE at 42.5 degrees has no recoverable frequency marker in Figure 19(b) and is recorded as NA rather than inferred."
+  },
+  "geometries": {
+    "BASE": {
+      "extension_percent": 0,
+      "sweep_deg": 0,
+      "dihedral_deg": 0,
+      "first_edgewise_frequency_hz": 0.67,
+      "first_edgewise_log_decrement_percent": 2.25,
+      "role": "training"
+    },
+    "EXT": {
+      "extension_percent": 5,
+      "sweep_deg": 0,
+      "dihedral_deg": 0,
+      "first_edgewise_frequency_hz": 0.64,
+      "first_edgewise_log_decrement_percent": 2.15,
+      "role": "training"
+    },
+    "SWEEP": {
+      "extension_percent": 5,
+      "sweep_deg": 20,
+      "dihedral_deg": 0,
+      "first_edgewise_frequency_hz": 0.64,
+      "first_edgewise_log_decrement_percent": 2.13,
+      "role": "training"
+    },
+    "DIHE": {
+      "extension_percent": 5,
+      "sweep_deg": 0,
+      "dihedral_deg": 20,
+      "first_edgewise_frequency_hz": 0.62,
+      "first_edgewise_log_decrement_percent": 2.08,
+      "role": "training"
+    },
+    "COMB": {
+      "extension_percent": 5,
+      "sweep_deg": 20,
+      "dihedral_deg": 20,
+      "first_edgewise_frequency_hz": 0.62,
+      "first_edgewise_log_decrement_percent": 2.06,
+      "role": "locked_holdout"
+    }
+  },
+  "scope": {
+    "supports_multi_condition_turbine_hfm_response_validation": true,
+    "supports_cross_geometry_transfer_to_combined_tip": true,
+    "supports_experimental_validation": false,
+    "supports_time_history_or_spanwise_load_validation": false,
+    "supports_del_or_fatigue_validation": false
+  }
+}

@@ -1,0 +1,119 @@
+{
+  "driver_sha256": "649112c1e0dc7eac4670faa037f4fd034894d4a921beb7bddc6882c9ef19b0d0",
+  "modal_basis_transfer": {
+    "actual_rpm_tolerance": 0.001,
+    "basis_rpm": 1.0,
+    "frequency_shift_fraction_limit": 0.001,
+    "identification_sha256": "da8ac3a8ffa64d99a9f1363b9bbf81dd06a5695c27c775193c54d5f4c85d3941",
+    "maximum_abs_basis_rpm_error_rpm": 1.001,
+    "minimum_action_translation_mac": 0.999,
+    "mode_comparisons": [
+      {
+        "action_translation_mac": 0.9999555766700108,
+        "comparison_rpm": 0.0,
+        "frequency_hz": 2.511557314896635,
+        "frequency_shift_fraction": -1.1200728867732934e-06,
+        "frequency_shift_hz": -2.8131272520326434e-06,
+        "tracked_mode": 6
+      },
+      {
+        "action_translation_mac": 0.9997425403662328,
+        "comparison_rpm": 0.0,
+        "frequency_hz": 4.572512385909129,
+        "frequency_shift_fraction": 1.7778016740965796e-05,
+        "frequency_shift_hz": 8.129020174507673e-05,
+        "tracked_mode": 12
+      }
+    ],
+    "policy": "Retain the reviewed 1 RPM shapes, duals, frequencies, masses and damping. Use them at prescribed 0 RPM only; do not relabel as a zero-RPM basis. The archived zero-RPM eigenmodes bound this engineering approximation. The full QBlade structural solver itself runs at actual zero RPM.",
+    "simulation_rpm": 0.0
+  },
+  "native_cases": [
+    {
+      "campaign_fingerprint": "ec347ec4c7c47c9cf46783c8505364a4e75c1f469a376eac3ffe6c910eef5606",
+      "completed_steps": 160,
+      "evidence_directory": "run_headless/runs/fixed_azimuth_20260922_native_smoke_v2/smoke/raw_qblade",
+      "load_channels": {
+        "all_required_channels_finite_and_complete": true,
+        "required_channel_count": 27,
+        "samples_per_channel": 160
+      },
+      "maximum_abs_supplemental_force_n": null,
+      "passed": true,
+      "results_sha256": "3f35106200f48f704a6880014f9a0034d6ec957a6dd256ea25dba60773d0dd21",
+      "rotor_state": {
+        "first_time_s": 0.0,
+        "last_time_s": 1.1925,
+        "maximum_abs_rpm": 3.09702e-16,
+        "maximum_azimuth_error_deg": 0.0,
+        "samples": 160
+      },
+      "scenario": "raw_qblade",
+      "scope": "short runtime verification only",
+      "sil_updates": 0,
+      "summary_sha256": "65662ba4a2445e6f69931f8fe87368e24e83c6722d8408cd9638ccf19b7a9971"
+    },
+    {
+      "campaign_fingerprint": "646d99761d20e8b8e737820ce387d6789f2a10bbd0ad71213d65f0408f9f640a",
+      "completed_steps": 160,
+      "evidence_directory": "run_headless/runs/fixed_azimuth_20260922_native_smoke_v3/smoke/one_way_spectral_vorlap",
+      "load_channels": {
+        "all_required_channels_finite_and_complete": true,
+        "required_channel_count": 27,
+        "samples_per_channel": 160
+      },
+      "maximum_abs_supplemental_force_n": 76.09545863632388,
+      "passed": true,
+      "results_sha256": "8d7e7a5463ae600f402ebf4b353cc7cec3c763834768cc67c932bc09502bf4f8",
+      "rotor_state": {
+        "first_time_s": 0.0,
+        "last_time_s": 1.1925,
+        "maximum_abs_rpm": 3.3079e-16,
+        "maximum_azimuth_error_deg": 0.0,
+        "samples": 160
+      },
+      "scenario": "one_way_spectral_vorlap",
+      "scope": "short runtime verification only",
+      "sil_updates": 160,
+      "summary_sha256": "bf1c20dc6b30b08c36773ce6f6d6de14f41c494a9fa167f3af7f9842226a5e61"
+    },
+    {
+      "campaign_fingerprint": "646d99761d20e8b8e737820ce387d6789f2a10bbd0ad71213d65f0408f9f640a",
+      "completed_steps": 160,
+      "evidence_directory": "run_headless/runs/fixed_azimuth_20260922_native_smoke_v3/smoke/complete_hybrid_v8",
+      "load_channels": {
+        "all_required_channels_finite_and_complete": true,
+        "required_channel_count": 27,
+        "samples_per_channel": 160
+      },
+      "maximum_abs_supplemental_force_n": 74.88956380669296,
+      "passed": true,
+      "results_sha256": "d9a82969fc9581793344814992bec7124db710f217db00ebc14dc11a84f11573",
+      "rotor_state": {
+        "first_time_s": 0.0,
+        "last_time_s": 1.1925,
+        "maximum_abs_rpm": 4.9075e-16,
+        "maximum_azimuth_error_deg": 0.0,
+        "samples": 160
+      },
+      "scenario": "complete_hybrid_v8",
+      "scope": "short runtime verification only",
+      "sil_updates": 160,
+      "summary_sha256": "fcc12f7fc45df9a1335f850fe4cbe97bc9dcc77ebb0267b75b99d0018bbeead8"
+    }
+  ],
+  "passed": true,
+  "scope": "Short native QBlade runtime and fixed-rotor checks only; steady U11.25 inflow, original 10 s structural startup, 160 physical steps. The 660 s turbulent Flight cases are prepared, not executed.",
+  "standalone_bundle": {
+    "both_coupled_adapters_initialized": true,
+    "native_sim_hashes_equal_final_bundle_sim_hashes": true,
+    "prepare_all_three_cases": true,
+    "prepared_input_hashes_revalidated_after_adapters": true,
+    "source_package": "committed core and config plus new submission files"
+  },
+  "tests": {
+    "command": ".venv/bin/python -m pytest -q examples/fixed_azimuth_20260922/test_campaign.py",
+    "passed": 10
+  },
+  "timestamp_utc": "2026-09-23T01:04:11.833764+00:00"
+}

@@ -1,0 +1,4 @@
+scruton_number,natural_frequency_hz,mass_per_span_kgpm,structural_damping_ratio,air_density_kgpm3,reduced_frequency_omega_d_over_u,peak_amplitude_over_depth,evidence_role
+1.9,7.97,7.089,0.00058,1.19,0.6549,0.06551,training
+21.7,7.87,7.292,0.00650,1.22,0.7364,0.02920,training
+78.1,7.88,7.292,0.02340,1.22,0.7733,0.01106,training

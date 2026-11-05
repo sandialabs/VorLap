@@ -1,0 +1,26 @@
+{
+  "conversion_manifest_sha256": "90f0b70f5148a5b12b3304ccdbe683a859a6e993e7588a71735a2380a1bd77d8",
+  "execution_provenance": {
+    "julia_version_output": "julia version 1.12.6",
+    "owens_git_commit": "883e721aa003efc0d952241d4af1bf609d51f238",
+    "owens_git_dirty": false,
+    "owens_git_status_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "python_implementation": "CPython",
+    "python_version": "3.11.5"
+  },
+  "gravity": true,
+  "julia_executable": "julia",
+  "mode_scaling": 3.0,
+  "modes": 12,
+  "owens_manifest_toml_sha256": "65a608d4afa9ddcec5f5180baf379e4a73c787f355577ae24b4521c8fda26405",
+  "owens_project": "OWENS.jl",
+  "owens_project_toml_sha256": "a5424041322ca3e655f7546e8b75a58c0f4d5c12411e0f53cd211840bcab3f3c",
+  "rpms": "0,0.25,0.5,0.75,1",
+  "runner_sha256": "7c42a0d58cbdfa39aed459e9c0d3d3f042bac365d9ed23d7bfe497b841438d87",
+  "save_modes": "1,2,3,4,5,6,7,8,9,10,11,12",
+  "save_rpms": "0,1",
+  "schema": "vorlap-owens-campbell-request-v1",
+  "structural_damping": false,
+  "vtk_modes": "6,12",
+  "vtk_steps": 4
+}

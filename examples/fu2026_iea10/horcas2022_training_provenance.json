@@ -1,0 +1,53 @@
+{
+  "schema": "horcas2022-iea10-figure4-training-digitization-v1",
+  "status": "figure_digitized_training_evidence",
+  "publication": {
+    "citation": "Horcas, S. G., et al. (2022), Vibrations of wind turbine blades in standstill: Mapping the influence of inflow angles, Physics of Fluids 34, 054105",
+    "doi": "10.1063/5.0088036",
+    "source_pdf_sha256": "5f348d75dd137e7dd14010d089be7b7a6f2c238a4d63e412431c208fbbc2c8e3",
+    "figure": "Figure 4(a), peak-to-peak edgewise tip displacement",
+    "pdf_page_one_based": 7
+  },
+  "digitization": {
+    "source_figure_raster_sha256": "e5c0c0990ac6a21e656c54c7524b4f31df91c93997893078020a0379b5ac4134",
+    "method": "Map the published P-I axes to the Figure 4(a) color field, then map the nearest colorbar value to peak-to-peak displacement.",
+    "conversion": "For a near-harmonic response, the Fu peak amplitude sqrt(2)*RMS equals one half of the Horcas peak-to-peak displacement.",
+    "common_peak_amplitude_uncertainty_m": 0.05,
+    "small_response_uncertainty_m": 0.02,
+    "author_provided_raw_values": false,
+    "points": [
+      {
+        "config": "P80A310",
+        "dtu_pitch_deg": 100,
+        "dtu_inclination_deg": 50,
+        "peak_to_peak_m": 2.350148,
+        "peak_amplitude_m": 1.175074
+      },
+      {
+        "config": "P90A310",
+        "dtu_pitch_deg": 90,
+        "dtu_inclination_deg": 50,
+        "peak_to_peak_m": 0.448664,
+        "peak_amplitude_m": 0.224332
+      },
+      {
+        "config": "P95A310",
+        "dtu_pitch_deg": 85,
+        "dtu_inclination_deg": 50,
+        "peak_to_peak_m": 2.2362,
+        "peak_amplitude_m": 1.1181
+      },
+      {
+        "config": "P95A320",
+        "dtu_pitch_deg": 85,
+        "dtu_inclination_deg": 40,
+        "peak_to_peak_m": 0.035608,
+        "peak_amplitude_m": 0.017804
+      }
+    ]
+  },
+  "evidence_role": {
+    "allowed": "Training-only angular/configuration response at U=18 m/s.",
+    "prohibited": "The four points are not independent validation and are not author-provided raw histories."
+  }
+}

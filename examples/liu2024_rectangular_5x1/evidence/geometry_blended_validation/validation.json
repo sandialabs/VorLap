@@ -1,0 +1,106 @@
+{
+  "claim_boundary": {
+    "fatigue_use_requires_matched_native_hybrid_histories_and_conservative_discrepancy_factor": true,
+    "protected_cross_geometry_experimental_validation": true,
+    "supports_engineering_hvawt_pilot": true,
+    "validated_quantity": "one 5:1 rectangular peak RMS response and onset",
+    "validates_fatigue": false,
+    "validates_hvawt_or_hawt_response": false
+  },
+  "experiment": {
+    "breadth_depth_ratio": 4.999999999999999,
+    "reported_onset_reduced_velocity": 8.35,
+    "scruton_number": 21.0,
+    "study": "Liu et al. bare 5:1 rectangular cylinder",
+    "target_peak_hrms_over_depth": 0.02095808383233533
+  },
+  "gates": {
+    "dynamic_sdof_within_0p001D_of_analytic": true,
+    "finite_compact_lock_in_interval": true,
+    "onset_reduced_velocity_within_10_percent": true,
+    "paired_timestep_amplitude_within_0p01D": true,
+    "paired_timestep_frequency_within_10_percent": true,
+    "peak_amplitude_within_30_percent": true,
+    "terminal_stationarity": true
+  },
+  "model": {
+    "calibration_fingerprint": "c870396cd01f9cb960a5a8e8fea044bcadca436c001d08abee5469fb9d95c7dc",
+    "calibration_sha256": "f2dee270b43683b99b08bd3fcab10d816920be770ebe9355cd238f1d9ceadd0c",
+    "liu_response_used_for_fitting": false,
+    "model_type": "static_spectrum_geometry_blended_work_v2",
+    "trained_on": [
+      "Mannini et al. 3:2 rectangular response curve",
+      "Marra et al. 4:1 rectangular peaks",
+      "Ehrmann and White NACA0018 peaks and lock-in location"
+    ]
+  },
+  "numerical_verification": {
+    "simulations": [
+      {
+        "dominant_frequency_hz": 11.700000000000001,
+        "dt_s": 0.001,
+        "early_rms_over_depth": 0.021999593153295496,
+        "frequency_ratio_to_natural": 0.9982935153583619,
+        "late_rms_over_depth": 0.022020776192859935,
+        "stationarity_delta_over_depth": 2.1183039564439538e-05,
+        "terminal_rms_over_depth": 0.0220101872214499
+      },
+      {
+        "dominant_frequency_hz": 11.700000000000001,
+        "dt_s": 0.0005,
+        "early_rms_over_depth": 0.022002576425221246,
+        "frequency_ratio_to_natural": 0.9982935153583619,
+        "late_rms_over_depth": 0.022018783626231782,
+        "stationarity_delta_over_depth": 1.6207201010535327e-05,
+        "terminal_rms_over_depth": 0.022010681517464593
+      }
+    ]
+  },
+  "pass": true,
+  "prediction": {
+    "onset_absolute_relative_error": 0.03585375571191718,
+    "peak_absolute_relative_error": 0.04999714756956947,
+    "peak_hrms_over_depth": 0.02200592824247601,
+    "predicted_high_edge_reduced_velocity": 9.801159617022627,
+    "predicted_onset_reduced_velocity": 8.050621139805491,
+    "predicted_peak_reduced_velocity": 9.384703843566223,
+    "static_queries": {
+      "high": {
+        "frequency_ratio": 1.21875,
+        "reduced_velocity": 9.801159617022627,
+        "reynolds_number": 38871.615641324286,
+        "sinusoidal_equivalent_coefficient": 0.6434410428674927,
+        "strouhal": 0.12434753107002547,
+        "wind_speed_mps": 8.040871349805364
+      },
+      "low": {
+        "frequency_ratio": 1.0,
+        "reduced_velocity": 8.050621139805491,
+        "reynolds_number": 31928.94135474792,
+        "sinusoidal_equivalent_coefficient": 0.6037897146291233,
+        "strouhal": 0.12421401810297593,
+        "wind_speed_mps": 6.604729583096426
+      },
+      "peak": {
+        "frequency_ratio": 1.166666667,
+        "reduced_velocity": 9.384703843566223,
+        "reynolds_number": 37219.94284035368,
+        "sinusoidal_equivalent_coefficient": 0.6340079314077921,
+        "strouhal": 0.12431576813154527,
+        "wind_speed_mps": 7.69921103326173
+      }
+    }
+  },
+  "schema": "vorlap-liu2024-protected-geometry-blended-validation-v1",
+  "sources": {
+    "liu_response_provenance": {
+      "path": "examples/liu2024_rectangular_5x1/reference_data/validation_provenance.json",
+      "sha256": "61682ca212ddfca2a2ef71aa033996241b5db607059c95612071a4c7be636c2c"
+    },
+    "nguyen_fixed_body_spectrum": {
+      "path": "examples/liu2024_rectangular_5x1/reference_data/nguyen2018_fixed_body_spectrum.csv",
+      "sha256": "145e48c1a443371055d4ae7c8a9037720a9e6c945bf1c58e6fdbc0a582d9e66c"
+    }
+  },
+  "status": "passed_protected_liu_5x1_validation"
+}

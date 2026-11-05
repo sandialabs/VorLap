@@ -1,0 +1,84 @@
+{
+  "schema": "vlastos2026-belloli-sc-transfer-definition-v1",
+  "status": "frozen_engineering_transfer",
+  "selected_form_id": "shift_1__h1_none__asat_1",
+  "scientific_scope": "Belloli-informed Scruton-number transfer of the schema-v2 modal negative-damping closure; transfer tuning and engineering screening, not independent validation",
+  "response_model_schema_version": 2,
+  "aerodynamic_speed_basis": "declared_ambient_crossflow",
+  "application_scruton_domain": {
+    "minimum": 2.94,
+    "maximum": 7.02,
+    "outside_domain_policy": "raise"
+  },
+  "calibration_scruton_number": 5.18,
+  "base_coefficient_fingerprint_sha256": "330242617d9d04d2cb771767fefbedac6414bea9a04a9b6ea9e813c0aba18c7d",
+  "base_frozen_parameters": {
+    "aerodynamic_damping_gain_h1": 3.920125762951649,
+    "saturation_amplitude_ratio": 0.2968375879119047,
+    "reduced_velocity_low": 5.3625308212165494,
+    "reduced_velocity_peak": 6.245825,
+    "reduced_velocity_high": 6.982801851062782,
+    "rms_time_constant_cycles": 2.0,
+    "bandpass_damping_ratio": 0.1,
+    "max_abs_gain": 10.0,
+    "max_abs_nodal_force_n": 25.0
+  },
+  "transfer_equations": {
+    "activation_shift": {
+      "equation": "delta_Umax(Sc)=Umax_Belloli(Sc)-Umax_Belloli(5.18); add delta to reduced_velocity_low, reduced_velocity_peak, and reduced_velocity_high",
+      "belloli_umax_intercept": 7.270105337680198,
+      "belloli_umax_slope_per_scruton": -0.14441526712070993,
+      "digitized_endpoint_markers": [
+        [1.0, 7.125690070559488],
+        [6.67, 6.306855505985062]
+      ]
+    },
+    "saturation_amplitude_scaling": {
+      "equation": "a_sat(Sc)=a_sat(5.18)*Apeak_Belloli(Sc)/Apeak_Belloli(5.18)",
+      "belloli_log_intercept": 1.11879493,
+      "belloli_log_slope": -0.44460268,
+      "digitized_regression_rmse_over_diameter": 0.001826
+    },
+    "aerodynamic_damping_gain": {
+      "equation": "H1(Sc)=H1(5.18)",
+      "scaling": "none"
+    }
+  },
+  "engineering_acceptance": {
+    "peak_amplitude_equation": "absolute_error <= 0.30*target + digitization_uncertainty",
+    "peak_relative_fraction": 0.3,
+    "digitization_uncertainty_over_diameter": 0.01,
+    "peak_location_tolerance_u_star": 0.25,
+    "dense_grid_low_u_star": 3.5,
+    "dense_grid_high_u_star": 10.0,
+    "dense_grid_step_u_star": 0.0005
+  },
+  "source_identities": {
+    "sc5p18_figure9_digitized.csv": {
+      "sha256": "674d8bb8f3b932f97bd2a177717e3042a1a0ba0b7c81cc915d51086f2ab550a1",
+      "bytes": 1766
+    },
+    "all_sc_figure10_peak_digitized.csv": {
+      "sha256": "116e1d63eb6983cede7956280061b523b868926700dd999c5d1446f631ddfa7d",
+      "bytes": 506
+    },
+    "vlastos2026_model_parameters.csv": {
+      "sha256": "b9bb5d03ca43e8d1dfa75059da54c0f11e3e68217d64dcad79f04b22cbdfd488",
+      "bytes": 269
+    },
+    "vlastos_doi": "10.5194/wes-11-2585-2026",
+    "lupi_doi": "10.1016/j.jweia.2020.104438",
+    "belloli_doi": "10.1016/j.jweia.2012.03.005",
+    "vlastos_figure3_sha256": "1536cb80598070e0d73f35dad588d14429b2c0e4c8e5019654d7cba7e52791ca",
+    "vlastos_figure4_sha256": "4b2b11f65a06609e3078a2b1db62818e995bed4183b822116edf24a5e9249dc7"
+  },
+  "selection_disclosure": {
+    "candidate_menu_count": 20,
+    "menu_fingerprint_sha256": "61a64dfe3f049a5366dc487b92ee0420a61ed0b287508d6a505657d4ad5cd9d4",
+    "targets_available_before_selection": true,
+    "sc2p94_and_sc7p02_role": "transfer_tuning_and_engineering_screen",
+    "independent_validation_claim_allowed": false,
+    "note": "The candidate menu was frozen before its evaluation command, but the Sc=2.94 and Sc=7.02 targets were already accessible. Selecting this passing form uses those cases for model selection."
+  },
+  "closure_fingerprint_sha256": "49240a27fbc91648bd89c091d0348ef13a9dbec01fc0162d2bec58be0c31c6fa"
+}

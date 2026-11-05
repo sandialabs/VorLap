@@ -1,0 +1,149 @@
+{
+  "assessment_fingerprint_sha256": "61fe39542424d3fc1316d491517611524e1f4727865daf909dc6ff0e35c00b08",
+  "by_scruton_number": [
+    {
+      "digitization_uncertainty_over_diameter": 0.01,
+      "evidence_role": "transfer_tuning_engineering_screen",
+      "lock_in_frequency_pass": true,
+      "pass": true,
+      "peak_amplitude_absolute_error": 0.07552399999999998,
+      "peak_amplitude_pass": true,
+      "peak_amplitude_tolerance": 0.11499999999999999,
+      "scruton_number": 2.94,
+      "selected_peak_amplitude_over_diameter": 0.42552399999999996,
+      "selected_peak_case_id": "ambientv2_sc2p94_u6p8_dt_half",
+      "selected_peak_frequency_over_fn": 0.9856526117733955,
+      "selected_peak_reduced_velocity": 6.8,
+      "target_peak_amplitude_over_diameter": 0.35,
+      "target_series": "experiment_lupi2021",
+      "timestep_pairs": [
+        {
+          "active": true,
+          "amplitude_difference_over_diameter": 0.0006419999999999759,
+          "amplitude_pass": true,
+          "amplitude_tolerance_over_diameter": 0.0410134,
+          "coarse_amplitude_over_diameter": 0.41013399999999994,
+          "coarse_frequency_over_fn": 0.9854052150404053,
+          "frequency_difference_over_fn": 0.0002172343069517524,
+          "frequency_pass": true,
+          "frequency_tolerance_over_fn": 0.05,
+          "half_dt_amplitude_over_diameter": 0.40949199999999997,
+          "half_dt_frequency_over_fn": 0.9856224493473571,
+          "reduced_velocity": 6.25
+        },
+        {
+          "active": true,
+          "amplitude_difference_over_diameter": 0.0006020000000000469,
+          "amplitude_pass": true,
+          "amplitude_tolerance_over_diameter": 0.0426126,
+          "coarse_amplitude_over_diameter": 0.426126,
+          "coarse_frequency_over_fn": 0.9854354009021334,
+          "frequency_difference_over_fn": 0.0002172108712620302,
+          "frequency_pass": true,
+          "frequency_tolerance_over_fn": 0.05,
+          "half_dt_amplitude_over_diameter": 0.42552399999999996,
+          "half_dt_frequency_over_fn": 0.9856526117733955,
+          "reduced_velocity": 6.8
+        }
+      ],
+      "timestep_pass": true
+    },
+    {
+      "digitization_uncertainty_over_diameter": 0.01,
+      "evidence_role": "transfer_tuning_engineering_screen",
+      "lock_in_frequency_pass": true,
+      "pass": false,
+      "peak_amplitude_absolute_error": 0.060668499999999986,
+      "peak_amplitude_pass": false,
+      "peak_amplitude_tolerance": 0.055,
+      "scruton_number": 7.02,
+      "selected_peak_amplitude_over_diameter": 0.08933150000000001,
+      "selected_peak_case_id": "ambientv2_sc7p02_u6p2_dt_half",
+      "selected_peak_frequency_over_fn": 0.9874851778208923,
+      "selected_peak_reduced_velocity": 6.2,
+      "target_peak_amplitude_over_diameter": 0.15,
+      "target_series": "experiment_lupi2021",
+      "timestep_pairs": [
+        {
+          "active": true,
+          "amplitude_difference_over_diameter": 0.0007170999999999844,
+          "amplitude_pass": true,
+          "amplitude_tolerance_over_diameter": 0.01,
+          "coarse_amplitude_over_diameter": 0.09004859999999999,
+          "coarse_frequency_over_fn": 0.9873740402071791,
+          "frequency_difference_over_fn": 0.00011113761371317477,
+          "frequency_pass": true,
+          "frequency_tolerance_over_fn": 0.05,
+          "half_dt_amplitude_over_diameter": 0.08933150000000001,
+          "half_dt_frequency_over_fn": 0.9874851778208923,
+          "reduced_velocity": 6.2
+        },
+        {
+          "active": true,
+          "amplitude_difference_over_diameter": 0.0006360000000000046,
+          "amplitude_pass": true,
+          "amplitude_tolerance_over_diameter": 0.01,
+          "coarse_amplitude_over_diameter": 0.0410391,
+          "coarse_frequency_over_fn": 0.9873722438744863,
+          "frequency_difference_over_fn": 0.00011487158693368471,
+          "frequency_pass": true,
+          "frequency_tolerance_over_fn": 0.05,
+          "half_dt_amplitude_over_diameter": 0.0404031,
+          "half_dt_frequency_over_fn": 0.98748711546142,
+          "reduced_velocity": 6.25
+        }
+      ],
+      "timestep_pass": true
+    }
+  ],
+  "calibration_readiness_fingerprint_sha256": "47b879ab5a2f81fd04d726ef10124a8bfe55892613a9d8c1edf06b206029aa7f",
+  "campaign_manifest_fingerprint_sha256": "b740f87c854e501f6e3eebe4e8c2545b9c624aa773d62e8bda535f70615f0043",
+  "campaign_manifest_sha256": "23639a4bae03689feaa9d4cfe00d0f82166e0c1de2d052a3c010dbbda64d3662",
+  "checks": {
+    "all_results_present": true,
+    "all_timestep_pairs_pass": true,
+    "both_peak_amplitudes_pass": false,
+    "both_selected_peaks_lock_in_frequency_pass": true,
+    "case_semantics_pass": true,
+    "exact_result_directory_set": true,
+    "runtime_provenance_execution_limits_pass": true,
+    "stationarity_pass": true,
+    "transfer_definition_and_effective_parameters_bound": true
+  },
+  "claim_boundary": {
+    "allowed": "engineering transfer-screen adequacy if every declared gate passes",
+    "forbidden": [
+      "blind independent validation",
+      "full lock-in curve validation",
+      "fatigue validation",
+      "H-VAWT aerodynamic validation",
+      "certification qualification"
+    ]
+  },
+  "completed_case_count": 8,
+  "effective_parameter_fingerprints_by_case": {
+    "ambientv2_sc2p94_u6p25_dt": "72a5e26559d29b4bed82f028cf8cf4a0c1de0590c359ba2d947b218acba3f98d",
+    "ambientv2_sc2p94_u6p25_dt_half": "72a5e26559d29b4bed82f028cf8cf4a0c1de0590c359ba2d947b218acba3f98d",
+    "ambientv2_sc2p94_u6p8_dt": "72a5e26559d29b4bed82f028cf8cf4a0c1de0590c359ba2d947b218acba3f98d",
+    "ambientv2_sc2p94_u6p8_dt_half": "72a5e26559d29b4bed82f028cf8cf4a0c1de0590c359ba2d947b218acba3f98d",
+    "ambientv2_sc7p02_u6p25_dt": "7d5f09262f68312ad49cdaca9b2536c2c1d8c5c6c6762cf035d76b1f42d93b66",
+    "ambientv2_sc7p02_u6p25_dt_half": "7d5f09262f68312ad49cdaca9b2536c2c1d8c5c6c6762cf035d76b1f42d93b66",
+    "ambientv2_sc7p02_u6p2_dt": "7d5f09262f68312ad49cdaca9b2536c2c1d8c5c6c6762cf035d76b1f42d93b66",
+    "ambientv2_sc7p02_u6p2_dt_half": "7d5f09262f68312ad49cdaca9b2536c2c1d8c5c6c6762cf035d76b1f42d93b66"
+  },
+  "evaluated": true,
+  "evidence_content_sha256": {
+    "response_rows": "bb66feacb50624981d8a6be9940c106eddebe60b0c58ba578b8aa18c64528235",
+    "runtime_audits": "7f983d17110c0d918aa580f08e49eaa91760cf0e77768e2fa8d130b211db4601"
+  },
+  "expected_case_count": 8,
+  "independent_validation": false,
+  "missing_case_ids": [],
+  "pass": false,
+  "results_root": "/results",
+  "schema": "vlastos2026-belloli-sc-transfer-live-screen-v1",
+  "scientific_scope": "Eight-case live-QBlade Belloli Scruton transfer tuning and engineering screen; targets informed transfer-form selection, so this is not independent validation, full-curve validation, fatigue validation, or H-VAWT validation.",
+  "status": "fail",
+  "transfer_definition_fingerprint_sha256": "49240a27fbc91648bd89c091d0348ef13a9dbec01fc0162d2bec58be0c31c6fa",
+  "unexpected_nonempty_result_directories": []
+}

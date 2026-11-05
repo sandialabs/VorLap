@@ -1,0 +1,55 @@
+{
+  "schema": "vorlap-iea10-complete-hybrid-visual-spec-v1",
+  "status": "software_configuration_visual_not_executed_response",
+  "purpose": "Render the real 30-section IEA-10-MW QBlade blade and document the complete three-path QBlade-VorLap load composition without promoting a schematic or smoke run to response evidence.",
+  "geometry": {
+    "blade_geometry": {
+      "path": "examples/grinderslev2022_iea10/generated_case/iea10_blade_geometry.csv",
+      "sha256": "06d72b8f80e290ce0bac88011ad2a9698f5b42e1ae71da2c7f2b97f613c2c1b7"
+    },
+    "qblade_action_mapping": {
+      "path": "examples/grinderslev2022_iea10/generated_case/grinderslev2022_p100_i50_iea10_single_blade/Control/vorlap_qblade_geometry_audit.csv",
+      "sha256": "17a61f1d3d628989d8457f882248971488a9f03a5f887152c03e982ab0cdeed8"
+    },
+    "public_surface_repository_commit": "350cf06f5db9cec12bcd73c2b174a5d9642958d8",
+    "public_surface_station_count": 30,
+    "public_surface_license": "Apache-2.0"
+  },
+  "structure": {
+    "mode_shape": {
+      "path": "examples/grinderslev2022_iea10/reference_data/qblade_first_edge_mode.csv",
+      "sha256": "0e08e5c98fe423b8c171ad5d3ea503fc37ab2f54447f57e2f7586cabdadcec18"
+    },
+    "mode_identification": {
+      "path": "examples/grinderslev2022_iea10/reference_data/qblade_first_edge_mode_identification.json",
+      "sha256": "7a9ef98a21dd83e3e7faa0c8698c3311a475c09077db7fb147607cb8e6f5cf86"
+    }
+  },
+  "force_composition": {
+    "runtime_contract": "single_mode_airfoil_engineering_lockin_transfer_v2",
+    "native_qblade_aerodynamics": "required_enabled",
+    "native_inflow": "TurbSim_or_other_QBlade_resolved_inflow",
+    "off_resonant_source": "uncaptured_zero_mean_CL_and_CD_static_spectrum",
+    "motion_correlated_source": "geometry_blended_negative_damping_with_signed_saturation",
+    "external_mean_load": false,
+    "spectral_partition": "source_energy_equals_residual_plus_captured_energy"
+  },
+  "available_proxy_source": {
+    "profile": "NACA0018",
+    "calibration": {
+      "path": "run_headless/config/geometry_blended_airfoil_calibration.json",
+      "sha256": "3916cef057d73b861a1c6c4853c8f6b102c6b4dcb98467819b07ed63c1018d97"
+    },
+    "static_spectrum": {
+      "path": "examples/ReferenceHVAWTQBladeModel/10m_HVAWT_reference_turbine/VorLapAirfoils/NACA0018.h5",
+      "sha256": "64399e25dc5008caaed88d42e5cf24160c1045f17a282a06234648202cece369"
+    },
+    "qualification": "airfoil_endpoint_proxy_only_not_profile_specific_IEA10_spectra"
+  },
+  "execution_boundary": {
+    "native_IEA10_aero_case_executed": false,
+    "turbulent_three_path_case_executed": false,
+    "response_result_shown": false,
+    "required_before_quantitative_IEA10_response_claim": "stage the public IEA-10-MW sections and polars in QBlade, bind an appropriate profile-specific static spectrum or declare the NACA0018 proxy sensitivity, attach a TurbSim field, and complete matched native-versus-hybrid runs"
+  }
+}

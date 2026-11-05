@@ -1,0 +1,533 @@
+{
+  "claim_boundary": {
+    "fatigue_validated": false,
+    "trained_semi_empirical_turbine_closure": true,
+    "validated_before_holdout_evaluation": false
+  },
+  "method": {
+    "amplitude_prediction": "A_COMB=A_sat*sqrt(mu_COMB)=rms(A_EXT,A_SWEEP,A_DIHE)",
+    "frequency_prediction": "f_response/f_n=1 inside the resolved work-positive branch",
+    "generalized_force": "Q=c_a0*(1-(A/A_sat)^2)*qdot_filtered",
+    "geometry_composition": "mu_COMB=(mu_EXT+mu_SWEEP+mu_DIHE)/3",
+    "name": "static-spectrum work-equivalent negative damping with quadratic saturation and geometry-composed work margin",
+    "positive_power_sign": "positive supplemental force-velocity work supplies negative aerodynamic damping",
+    "stable_equilibrium": "mu=1-c_s/c_a0=(A/A_sat)^2",
+    "static_spectrum_role": "Fixed-body FFA-W3 shedding frequency and available force scale remain the exogenous input; the trained work-margin surface stretches that scale into motion-correlated negative damping.",
+    "stationary_spectrum_phase_used": false
+  },
+  "model_fingerprint": "8b067d6f3a049f665c451f545a25dc8a0345b0a5bc829a3715f691038f899891",
+  "model_type": "static_spectrum_geometry_composed_negative_damping",
+  "parameters": {
+    "geometry_margin_weights": {
+      "DIHE": 0.3333333333333333,
+      "EXT": 0.3333333333333333,
+      "SWEEP": 0.3333333333333333
+    },
+    "grinderslev_signed_power_saturation_tip_amplitude_m": 1.57,
+    "resolved_viv_frequency_ratio": 1.0
+  },
+  "protected_validation": {
+    "case_count": 11,
+    "comb_rows_used_for_fitting": false,
+    "geometry": "COMB",
+    "protocol_path": "examples/horcas2020_iea10_tip_geometry/validation_protocol.json",
+    "protocol_sha256": "1b9be3e7ca7d15d73ff268a6e82429125b5c0ee60c3cd9951328f0c4d04a1947",
+    "study": "Horcas et al. 2020 IEA-10-MW combined sweep-plus-dihedral tip"
+  },
+  "schema": "vorlap-turbine-geometry-composed-negative-damping-v1",
+  "sources": {
+    "ffa_w3_static_spectrum": {
+      "path": "data/airfoils/ffa_w3_211.h5",
+      "sha256": "7f968617b10dab530bba5418b0802b885195f585d70d6218ea0083d939dc95dc"
+    },
+    "fit_code": {
+      "path": "examples/horcas2020_iea10_tip_geometry/fit_geometry_composition.py",
+      "sha256": "99be8e8d0fa415519e27b3b64d89b18509aad7f5714a2fa6297f3529c88941b1"
+    },
+    "fu_targets_reclassified_as_training_after_failure": {
+      "path": "examples/fu2026_iea10/targets.csv",
+      "sha256": "64e958175ade5423bf51c15ed68756a8458199fc06601b60205f2bf14ff39ff1"
+    },
+    "fu_v1_failed_assessment": {
+      "path": "examples/fu2026_iea10/evidence/turbine_spectral_v1/assessment.json",
+      "sha256": "ac1522d91d3f44564d479fc79551230e3dd9d74a592520a77ec70845f3e28dd9"
+    },
+    "fu_v1_frozen_model": {
+      "path": "examples/fu2026_iea10/evidence/turbine_spectral_v1/model.json",
+      "sha256": "71c5ee621c50b92201163762bd61832adb7f9409465e69687b4f15bb9fe50eb8"
+    },
+    "fu_v1_frozen_predictions": {
+      "path": "examples/fu2026_iea10/evidence/turbine_spectral_v1/predictions.csv",
+      "sha256": "bf2273c04f1e491671ff3af7c6715d03329cf4a45b9c1334ab07afa958c3fde9"
+    },
+    "grinderslev_signed_power_curve": {
+      "path": "examples/grinderslev2022_iea10/reference_data/p100_i50_figure6_power_digitized.csv",
+      "sha256": "016ce5265b77dc0c9e577d7548e453d09f67ef732dda817618f79909546f323d"
+    },
+    "horcas_training_snapshot": {
+      "path": "examples/horcas2020_iea10_tip_geometry/training_targets.csv",
+      "sha256": "95517f2aa93b56f61d91147859f977288ba32572e9de91407e27eec8770de28b"
+    }
+  },
+  "status": "frozen_before_horcas_combined_geometry_evaluation",
+  "training": {
+    "fu2026_speed_orientation_rows_after_preserved_failure": [
+      {
+        "case_id": "P80A310_U06",
+        "config": "P80A310",
+        "configuration_saturation_amplitude_m": 1.9153575,
+        "normalized_positive_work_margin": 0.0010916963937254132,
+        "stable_peak_amplitude_m": 0.063285,
+        "wind_speed_mps": 6.0,
+        "zero_amplitude_feedback_over_structural_damping": 1.0010928894972484
+      },
+      {
+        "case_id": "P80A310_U10",
+        "config": "P80A310",
+        "configuration_saturation_amplitude_m": 1.9153575,
+        "normalized_positive_work_margin": 0.166073619160144,
+        "stable_peak_amplitude_m": 0.780549,
+        "wind_speed_mps": 10.0,
+        "zero_amplitude_feedback_over_structural_damping": 1.1991466189052438
+      },
+      {
+        "case_id": "P80A310_U14",
+        "config": "P80A310",
+        "configuration_saturation_amplitude_m": 1.9153575,
+        "normalized_positive_work_margin": 0.9070294784580498,
+        "stable_peak_amplitude_m": 1.82415,
+        "wind_speed_mps": 14.0,
+        "zero_amplitude_feedback_over_structural_damping": 10.756097560975602
+      },
+      {
+        "case_id": "P80A310_U18",
+        "config": "P80A310",
+        "configuration_saturation_amplitude_m": 1.9153575,
+        "normalized_positive_work_margin": 0.3841827313281141,
+        "stable_peak_amplitude_m": 1.187186,
+        "wind_speed_mps": 18.0,
+        "zero_amplitude_feedback_over_structural_damping": 1.6238583275793306
+      },
+      {
+        "case_id": "P80A310_U22",
+        "config": "P80A310",
+        "configuration_saturation_amplitude_m": 1.9153575,
+        "normalized_positive_work_margin": 2.3779025864026127e-07,
+        "stable_peak_amplitude_m": 0.000934,
+        "wind_speed_mps": 22.0,
+        "zero_amplitude_feedback_over_structural_damping": 1.0000002377903152
+      },
+      {
+        "case_id": "P90A310_U06",
+        "config": "P90A310",
+        "configuration_saturation_amplitude_m": 1.57,
+        "normalized_positive_work_margin": 3.687661000446266e-05,
+        "stable_peak_amplitude_m": 0.009534,
+        "wind_speed_mps": 6.0,
+        "zero_amplitude_feedback_over_structural_damping": 1.0000368779699391
+      },
+      {
+        "case_id": "P90A310_U10",
+        "config": "P90A310",
+        "configuration_saturation_amplitude_m": 1.57,
+        "normalized_positive_work_margin": 0.0009112322808227512,
+        "stable_peak_amplitude_m": 0.047393,
+        "wind_speed_mps": 10.0,
+        "zero_amplitude_feedback_over_structural_damping": 1.0009120633824191
+      },
+      {
+        "case_id": "P90A310_U14",
+        "config": "P90A310",
+        "configuration_saturation_amplitude_m": 1.57,
+        "normalized_positive_work_margin": 0.0049572362367641684,
+        "stable_peak_amplitude_m": 0.11054,
+        "wind_speed_mps": 14.0,
+        "zero_amplitude_feedback_over_structural_damping": 1.0049819328548413
+      },
+      {
+        "case_id": "P90A310_U18",
+        "config": "P90A310",
+        "configuration_saturation_amplitude_m": 1.57,
+        "normalized_positive_work_margin": 0.0002759619298957361,
+        "stable_peak_amplitude_m": 0.026081,
+        "wind_speed_mps": 18.0,
+        "zero_amplitude_feedback_over_structural_damping": 1.0002760381059042
+      },
+      {
+        "case_id": "P90A310_U22",
+        "config": "P90A310",
+        "configuration_saturation_amplitude_m": 1.57,
+        "normalized_positive_work_margin": 0.04547379675280943,
+        "stable_peak_amplitude_m": 0.334796,
+        "wind_speed_mps": 22.0,
+        "zero_amplitude_feedback_over_structural_damping": 1.0476401764541536
+      },
+      {
+        "case_id": "P95A310_U06",
+        "config": "P95A310",
+        "configuration_saturation_amplitude_m": 1.5715287,
+        "normalized_positive_work_margin": 2.2370909050137836e-05,
+        "stable_peak_amplitude_m": 0.007433,
+        "wind_speed_mps": 6.0,
+        "zero_amplitude_feedback_over_structural_damping": 1.0000223714095189
+      },
+      {
+        "case_id": "P95A310_U10",
+        "config": "P95A310",
+        "configuration_saturation_amplitude_m": 1.5715287,
+        "normalized_positive_work_margin": 5.106400560463334e-07,
+        "stable_peak_amplitude_m": 0.001123,
+        "wind_speed_mps": 10.0,
+        "zero_amplitude_feedback_over_structural_damping": 1.0000005106403167
+      },
+      {
+        "case_id": "P95A310_U14",
+        "config": "P95A310",
+        "configuration_saturation_amplitude_m": 1.5715287,
+        "normalized_positive_work_margin": 0.9070294784580498,
+        "stable_peak_amplitude_m": 1.496694,
+        "wind_speed_mps": 14.0,
+        "zero_amplitude_feedback_over_structural_damping": 10.756097560975602
+      },
+      {
+        "case_id": "P95A310_U18",
+        "config": "P95A310",
+        "configuration_saturation_amplitude_m": 1.5715287,
+        "normalized_positive_work_margin": 0.6075650730352306,
+        "stable_peak_amplitude_m": 1.224951,
+        "wind_speed_mps": 18.0,
+        "zero_amplitude_feedback_over_structural_damping": 2.548193168570274
+      },
+      {
+        "case_id": "P95A310_U22",
+        "config": "P95A310",
+        "configuration_saturation_amplitude_m": 1.5715287,
+        "normalized_positive_work_margin": 0.2421353100426332,
+        "stable_peak_amplitude_m": 0.773306,
+        "wind_speed_mps": 22.0,
+        "zero_amplitude_feedback_over_structural_damping": 1.31949675615083
+      },
+      {
+        "case_id": "P95A320_U06",
+        "config": "P95A320",
+        "configuration_saturation_amplitude_m": 1.57,
+        "normalized_positive_work_margin": 1.78654290234898e-05,
+        "stable_peak_amplitude_m": 0.006636,
+        "wind_speed_mps": 6.0,
+        "zero_amplitude_feedback_over_structural_damping": 1.0000178657482028
+      },
+      {
+        "case_id": "P95A320_U10",
+        "config": "P95A320",
+        "configuration_saturation_amplitude_m": 1.57,
+        "normalized_positive_work_margin": 0.3140460183476003,
+        "stable_peak_amplitude_m": 0.879825,
+        "wind_speed_mps": 10.0,
+        "zero_amplitude_feedback_over_structural_damping": 1.4578237414572515
+      },
+      {
+        "case_id": "P95A320_U14",
+        "config": "P95A320",
+        "configuration_saturation_amplitude_m": 1.57,
+        "normalized_positive_work_margin": 0.3242047544987627,
+        "stable_peak_amplitude_m": 0.893942,
+        "wind_speed_mps": 14.0,
+        "zero_amplitude_feedback_over_structural_damping": 1.4797381405936056
+      },
+      {
+        "case_id": "P95A320_U18",
+        "config": "P95A320",
+        "configuration_saturation_amplitude_m": 1.57,
+        "normalized_positive_work_margin": 6.948337417339446e-05,
+        "stable_peak_amplitude_m": 0.013087,
+        "wind_speed_mps": 18.0,
+        "zero_amplitude_feedback_over_structural_damping": 1.0000694882024481
+      },
+      {
+        "case_id": "P95A320_U22",
+        "config": "P95A320",
+        "configuration_saturation_amplitude_m": 1.57,
+        "normalized_positive_work_margin": 4.935733701164347e-05,
+        "stable_peak_amplitude_m": 0.01103,
+        "wind_speed_mps": 22.0,
+        "zero_amplitude_feedback_over_structural_damping": 1.0000493597732785
+      }
+    ],
+    "fu_row_count": 20,
+    "horcas2020_primitive_geometry_rows": {
+      "BASE": [
+        {
+          "inclination_deg": 40.0,
+          "normalized_positive_work_margin": 2.9815962729343985e-06,
+          "stable_peak_amplitude_m": 0.002710966,
+          "zero_amplitude_feedback_over_structural_damping": 1.000002981605163
+        },
+        {
+          "inclination_deg": 42.5,
+          "normalized_positive_work_margin": 2.6433001995066737e-06,
+          "stable_peak_amplitude_m": 0.002552542,
+          "zero_amplitude_feedback_over_structural_damping": 1.0000026433071865
+        },
+        {
+          "inclination_deg": 45.0,
+          "normalized_positive_work_margin": 0.0016464229408800748,
+          "stable_peak_amplitude_m": 0.063704536,
+          "zero_amplitude_feedback_over_structural_damping": 1.001649138119713
+        },
+        {
+          "inclination_deg": 47.5,
+          "normalized_positive_work_margin": 0.2588130584420688,
+          "stable_peak_amplitude_m": 0.798716663,
+          "zero_amplitude_feedback_over_structural_damping": 1.3491872885645544
+        },
+        {
+          "inclination_deg": 50.0,
+          "normalized_positive_work_margin": 0.5141032177059435,
+          "stable_peak_amplitude_m": 1.125705566,
+          "zero_amplitude_feedback_over_structural_damping": 2.0580502617834107
+        },
+        {
+          "inclination_deg": 52.5,
+          "normalized_positive_work_margin": 0.5754494212427411,
+          "stable_peak_amplitude_m": 1.190976607,
+          "zero_amplitude_feedback_over_structural_damping": 2.355431955662838
+        },
+        {
+          "inclination_deg": 55.0,
+          "normalized_positive_work_margin": 0.15984565507479032,
+          "stable_peak_amplitude_m": 0.627697025,
+          "zero_amplitude_feedback_over_structural_damping": 1.1902574878536392
+        },
+        {
+          "inclination_deg": 57.5,
+          "normalized_positive_work_margin": 0.1484767315084104,
+          "stable_peak_amplitude_m": 0.604963053,
+          "zero_amplitude_feedback_over_structural_damping": 1.1743660296816385
+        },
+        {
+          "inclination_deg": 60.0,
+          "normalized_positive_work_margin": 0.07335818987653998,
+          "stable_peak_amplitude_m": 0.425230058,
+          "zero_amplitude_feedback_over_structural_damping": 1.0791656377632757
+        },
+        {
+          "inclination_deg": 65.0,
+          "normalized_positive_work_margin": 0.0016138303703519693,
+          "stable_peak_amplitude_m": 0.063070837,
+          "zero_amplitude_feedback_over_structural_damping": 1.0016164390287485
+        },
+        {
+          "inclination_deg": 70.0,
+          "normalized_positive_work_margin": 0.004551930594267525,
+          "stable_peak_amplitude_m": 0.105924755,
+          "zero_amplitude_feedback_over_structural_damping": 1.0045727454140174
+        }
+      ],
+      "DIHE": [
+        {
+          "inclination_deg": 40.0,
+          "normalized_positive_work_margin": 0.005465065341835739,
+          "stable_peak_amplitude_m": 0.116063946,
+          "zero_amplitude_feedback_over_structural_damping": 1.0054950964027365
+        },
+        {
+          "inclination_deg": 42.5,
+          "normalized_positive_work_margin": 0.08098042529682904,
+          "stable_peak_amplitude_m": 0.446775839,
+          "zero_amplitude_feedback_over_structural_damping": 1.088116104951284
+        },
+        {
+          "inclination_deg": 45.0,
+          "normalized_positive_work_margin": 0.0690239614225002,
+          "stable_peak_amplitude_m": 0.412476863,
+          "zero_amplitude_feedback_over_structural_damping": 1.0741415015664275
+        },
+        {
+          "inclination_deg": 47.5,
+          "normalized_positive_work_margin": 0.0046202663845478905,
+          "stable_peak_amplitude_m": 0.10671689,
+          "zero_amplitude_feedback_over_structural_damping": 1.0046417123320022
+        },
+        {
+          "inclination_deg": 50.0,
+          "normalized_positive_work_margin": 0.0008897982722635546,
+          "stable_peak_amplitude_m": 0.046832294,
+          "zero_amplitude_feedback_over_structural_damping": 1.000890590718346
+        },
+        {
+          "inclination_deg": 52.5,
+          "normalized_positive_work_margin": 0.20634001874689337,
+          "stable_peak_amplitude_m": 0.71316724,
+          "zero_amplitude_feedback_over_structural_damping": 1.2599854139314217
+        },
+        {
+          "inclination_deg": 55.0,
+          "normalized_positive_work_margin": 0.32551885841476,
+          "stable_peak_amplitude_m": 0.895751882,
+          "zero_amplitude_feedback_over_structural_damping": 1.482621141414999
+        },
+        {
+          "inclination_deg": 57.5,
+          "normalized_positive_work_margin": 0.15932162198706576,
+          "stable_peak_amplitude_m": 0.626667269,
+          "zero_amplitude_feedback_over_structural_damping": 1.1895155461993034
+        },
+        {
+          "inclination_deg": 60.0,
+          "normalized_positive_work_margin": 0.0790962990923366,
+          "stable_peak_amplitude_m": 0.441547809,
+          "zero_amplitude_feedback_over_structural_damping": 1.085889869933607
+        },
+        {
+          "inclination_deg": 65.0,
+          "normalized_positive_work_margin": 0.020404963884662942,
+          "stable_peak_amplitude_m": 0.224268133,
+          "zero_amplitude_feedback_over_structural_damping": 1.0208299992674326
+        },
+        {
+          "inclination_deg": 70.0,
+          "normalized_positive_work_margin": 0.005149004616028742,
+          "stable_peak_amplitude_m": 0.112657807,
+          "zero_amplitude_feedback_over_structural_damping": 1.005175654082792
+        }
+      ],
+      "EXT": [
+        {
+          "inclination_deg": 40.0,
+          "normalized_positive_work_margin": 0.04038841479553492,
+          "stable_peak_amplitude_m": 0.315520845,
+          "zero_amplitude_feedback_over_structural_damping": 1.0420882942830763
+        },
+        {
+          "inclination_deg": 42.5,
+          "normalized_positive_work_margin": 0.026135636891040002,
+          "stable_peak_amplitude_m": 0.253814364,
+          "zero_amplitude_feedback_over_structural_damping": 1.0268370400243467
+        },
+        {
+          "inclination_deg": 45.0,
+          "normalized_positive_work_margin": 0.017557021377899672,
+          "stable_peak_amplitude_m": 0.20802957,
+          "zero_amplitude_feedback_over_structural_damping": 1.017870779027322
+        },
+        {
+          "inclination_deg": 47.5,
+          "normalized_positive_work_margin": 0.0014175083513091908,
+          "stable_peak_amplitude_m": 0.059110205,
+          "zero_amplitude_feedback_over_structural_damping": 1.0014195205335203
+        },
+        {
+          "inclination_deg": 50.0,
+          "normalized_positive_work_margin": 0.07365913549513571,
+          "stable_peak_amplitude_m": 0.4261014,
+          "zero_amplitude_feedback_over_structural_damping": 1.0795162324340588
+        },
+        {
+          "inclination_deg": 52.5,
+          "normalized_positive_work_margin": 0.2611798653095297,
+          "stable_peak_amplitude_m": 0.802360424,
+          "zero_amplitude_feedback_over_structural_damping": 1.3535094037724773
+        },
+        {
+          "inclination_deg": 55.0,
+          "normalized_positive_work_margin": 0.48465614354834236,
+          "stable_peak_amplitude_m": 1.092990818,
+          "zero_amplitude_feedback_over_structural_damping": 1.9404519671300398
+        },
+        {
+          "inclination_deg": 57.5,
+          "normalized_positive_work_margin": 0.0772624010863678,
+          "stable_peak_amplitude_m": 0.436399006,
+          "zero_amplitude_feedback_over_structural_damping": 1.0837317143869842
+        },
+        {
+          "inclination_deg": 60.0,
+          "normalized_positive_work_margin": 0.04256661723140904,
+          "stable_peak_amplitude_m": 0.323917358,
+          "zero_amplitude_feedback_over_structural_damping": 1.04445909031114
+        },
+        {
+          "inclination_deg": 65.0,
+          "normalized_positive_work_margin": 2.506232542043937e-05,
+          "stable_peak_amplitude_m": 0.007859779,
+          "zero_amplitude_feedback_over_structural_damping": 1.0000250629535563
+        },
+        {
+          "inclination_deg": 70.0,
+          "normalized_positive_work_margin": 0.0038338496089554966,
+          "stable_peak_amplitude_m": 0.097211398,
+          "zero_amplitude_feedback_over_structural_damping": 1.00384860458012
+        }
+      ],
+      "SWEEP": [
+        {
+          "inclination_deg": 40.0,
+          "normalized_positive_work_margin": 0.011813239738253238,
+          "stable_peak_amplitude_m": 0.170641304,
+          "zero_amplitude_feedback_over_structural_damping": 1.0119544606478275
+        },
+        {
+          "inclination_deg": 42.5,
+          "normalized_positive_work_margin": 0.005324249549595937,
+          "stable_peak_amplitude_m": 0.114558905,
+          "zero_amplitude_feedback_over_structural_damping": 1.0053527489206258
+        },
+        {
+          "inclination_deg": 45.0,
+          "normalized_positive_work_margin": 0.0007932392037633821,
+          "stable_peak_amplitude_m": 0.044218269,
+          "zero_amplitude_feedback_over_structural_damping": 1.0007938689317226
+        },
+        {
+          "inclination_deg": 47.5,
+          "normalized_positive_work_margin": 0.00039963995366879994,
+          "stable_peak_amplitude_m": 0.031385865,
+          "zero_amplitude_feedback_over_structural_damping": 1.0003997997296141
+        },
+        {
+          "inclination_deg": 50.0,
+          "normalized_positive_work_margin": 0.0022791617867424564,
+          "stable_peak_amplitude_m": 0.074952691,
+          "zero_amplitude_feedback_over_structural_damping": 1.0022843682315226
+        },
+        {
+          "inclination_deg": 52.5,
+          "normalized_positive_work_margin": 0.0010174880115542228,
+          "stable_peak_amplitude_m": 0.050079998,
+          "zero_amplitude_feedback_over_structural_damping": 1.0010185243478678
+        },
+        {
+          "inclination_deg": 55.0,
+          "normalized_positive_work_margin": 0.004217893894946139,
+          "stable_peak_amplitude_m": 0.101964144,
+          "zero_amplitude_feedback_over_structural_damping": 1.0042357598806873
+        },
+        {
+          "inclination_deg": 57.5,
+          "normalized_positive_work_margin": 0.002221719753575465,
+          "stable_peak_amplitude_m": 0.074002142,
+          "zero_amplitude_feedback_over_structural_damping": 1.002226666783152
+        },
+        {
+          "inclination_deg": 60.0,
+          "normalized_positive_work_margin": 0.07346755280472247,
+          "stable_peak_amplitude_m": 0.425546908,
+          "zero_amplitude_feedback_over_structural_damping": 1.0792930166958723
+        },
+        {
+          "inclination_deg": 65.0,
+          "normalized_positive_work_margin": 0.006324456705486616,
+          "stable_peak_amplitude_m": 0.124856531,
+          "zero_amplitude_feedback_over_structural_damping": 1.0063647100385686
+        },
+        {
+          "inclination_deg": 70.0,
+          "normalized_positive_work_margin": 0.004772394270339489,
+          "stable_peak_amplitude_m": 0.108459553,
+          "zero_amplitude_feedback_over_structural_damping": 1.004795279233478
+        }
+      ]
+    },
+    "horcas_row_count": 44
+  }
+}

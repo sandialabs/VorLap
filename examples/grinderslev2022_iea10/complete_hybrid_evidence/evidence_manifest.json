@@ -1,0 +1,277 @@
+{
+  "campaign_fingerprint": "db51fc0ed302e5f0e5aa2e4fb428dc8546f6303ca58a432d0c9d20e59480ba71",
+  "claim_boundary": "Compact evidence for an executed 12 s training-space integration screen; not an independent validation, stationary LCO, or fatigue result.",
+  "files": {
+    "analysis.json": {
+      "sha256": "53919244be77ce815807db847a891546ef88edfbd980bb15e7ec08b5e9dabb20",
+      "size_bytes": 15891
+    },
+    "campaign_manifest.json": {
+      "sha256": "06c187bdb282045be0eedbe88bb8d81016bd27e6435a364b13702c4cd9dc36ad",
+      "size_bytes": 20729
+    },
+    "iea10_blade_geometry.csv": {
+      "sha256": "06d72b8f80e290ce0bac88011ad2a9698f5b42e1ae71da2c7f2b97f613c2c1b7",
+      "size_bytes": 6899
+    },
+    "qblade_aero/Airfoils/IEA10_AF00.afl": {
+      "sha256": "62ed47643c7d94ad888072486a032ba4a8501f555e6d9b1bd7e5f0e98624a34f",
+      "size_bytes": 7404
+    },
+    "qblade_aero/Airfoils/IEA10_AF01.afl": {
+      "sha256": "add1161c1dbc2e99995fe92962386f3478100946237935d2d42f8871ceba924f",
+      "size_bytes": 7408
+    },
+    "qblade_aero/Airfoils/IEA10_AF02.afl": {
+      "sha256": "27e44941ca77badd88556b316949950d30cdab99a349907ff13a67fafbaa8dba",
+      "size_bytes": 7437
+    },
+    "qblade_aero/Airfoils/IEA10_AF03.afl": {
+      "sha256": "68f23d6a56ae1c3df225474b5fa71c18272e6ea7fd0064e51c8abd3ee8c64035",
+      "size_bytes": 7482
+    },
+    "qblade_aero/Airfoils/IEA10_AF04.afl": {
+      "sha256": "df7ceaf1beef1995a1a70038f5248fe6ad9b37985633b79a564e46652c4aa667",
+      "size_bytes": 7507
+    },
+    "qblade_aero/Airfoils/IEA10_AF05.afl": {
+      "sha256": "28f9368e9606cc0742f9c8a26b4ff3381aa66c6817e74a2a87396ac1d6ff8294",
+      "size_bytes": 7524
+    },
+    "qblade_aero/Airfoils/IEA10_AF06.afl": {
+      "sha256": "2ad67e8b4b374a6c82e460765b0c4f2ea71e6be20ca3f6d9b8d4542cd151a6f4",
+      "size_bytes": 7505
+    },
+    "qblade_aero/Airfoils/IEA10_AF07.afl": {
+      "sha256": "4b58c4ff8e976a8f6f9b6d1442755dc5eca4e88ffc9e4c7c69f7479f424a3c25",
+      "size_bytes": 7466
+    },
+    "qblade_aero/Airfoils/IEA10_AF08.afl": {
+      "sha256": "e09843ee7cc599ba2b6e104c11aeebb44ccf12da44009112c9c1b168c3538bba",
+      "size_bytes": 7469
+    },
+    "qblade_aero/Airfoils/IEA10_AF09.afl": {
+      "sha256": "d7ac396bc20ca2da8ef53bc7db77b8dffc543837892d80362b0085a13da0a542",
+      "size_bytes": 7463
+    },
+    "qblade_aero/Airfoils/IEA10_AF10.afl": {
+      "sha256": "141f89f232dade592f24288e544e7490bbf0071b82b2fb5dbcd42295014ec259",
+      "size_bytes": 7458
+    },
+    "qblade_aero/Airfoils/IEA10_AF11.afl": {
+      "sha256": "ee88a5bb32e56526425ee386fb301cc45933050de63dad5cd680a8a523d62cb2",
+      "size_bytes": 7455
+    },
+    "qblade_aero/Airfoils/IEA10_AF12.afl": {
+      "sha256": "f3b2beee4242ffead4099beff88254660675b67828f3e8f781d575a896409d02",
+      "size_bytes": 7464
+    },
+    "qblade_aero/Airfoils/IEA10_AF13.afl": {
+      "sha256": "0f102e3760d5f3fb263e2a1ce5fa9ba171b86c2a99abb7208c3e86a6783e14a6",
+      "size_bytes": 7465
+    },
+    "qblade_aero/Airfoils/IEA10_AF14.afl": {
+      "sha256": "29591a6bda46ef67517079603c3a898ad30abe003cc14f820a054532affcbb33",
+      "size_bytes": 7464
+    },
+    "qblade_aero/Airfoils/IEA10_AF15.afl": {
+      "sha256": "098b4c5b24f1f038264336f7a3f1c2cec01eaa00cc53e7a99f38c8c6d9c6dff1",
+      "size_bytes": 7458
+    },
+    "qblade_aero/Airfoils/IEA10_AF16.afl": {
+      "sha256": "ad2e40ea8e1594eb8d94b171da3837835ad8a24df8f33ca140f1c13212d8eebe",
+      "size_bytes": 7490
+    },
+    "qblade_aero/Airfoils/IEA10_AF17.afl": {
+      "sha256": "2e9e74cbe4ab90666915aa4ad0e87b773744af87038ba2fb09a3f2d0a52c3c9d",
+      "size_bytes": 7510
+    },
+    "qblade_aero/Airfoils/IEA10_AF18.afl": {
+      "sha256": "8defbd956959464e87c6c2c9c655b68fb7c4c58f87c941a8e1590e6ad4956117",
+      "size_bytes": 7532
+    },
+    "qblade_aero/Airfoils/IEA10_AF19.afl": {
+      "sha256": "6f38f723cf0b4ae7b17245c9aef0f68bfa3e158762ed7f8fddfdc8176d91efce",
+      "size_bytes": 7570
+    },
+    "qblade_aero/Airfoils/IEA10_AF20.afl": {
+      "sha256": "de6f26228b3fae542b708eb896e7c1f52fc0199bf5097103d8df20b0d3ab7375",
+      "size_bytes": 7576
+    },
+    "qblade_aero/Airfoils/IEA10_AF21.afl": {
+      "sha256": "3a0c94cd5571e59b8962c000ce2633ae735a4280ea5e81f7b6b723e0979d8b22",
+      "size_bytes": 7579
+    },
+    "qblade_aero/Airfoils/IEA10_AF22.afl": {
+      "sha256": "323713c327f9a4d44147c5cc02d1622005b0138a98bb0918e943feab589c1cb1",
+      "size_bytes": 7583
+    },
+    "qblade_aero/Airfoils/IEA10_AF23.afl": {
+      "sha256": "f9d35e21e3cfeeb7000798d5aa50146413969828163d1a7bb6504d56e71ead66",
+      "size_bytes": 7595
+    },
+    "qblade_aero/Airfoils/IEA10_AF24.afl": {
+      "sha256": "ef8c039edfad31e8e063a61fc7807aff99329b500763aa162da8c9ab59f776d1",
+      "size_bytes": 7587
+    },
+    "qblade_aero/Airfoils/IEA10_AF25.afl": {
+      "sha256": "b71d4f1e9117931b49135bab733e1cdabe1bfefb5a625ae8a80c50d9eb5f435b",
+      "size_bytes": 7605
+    },
+    "qblade_aero/Airfoils/IEA10_AF26.afl": {
+      "sha256": "ad06b72f31b9cf12da8a6c9cdf07fc8891e377243c20e49923e6a3abad48b1f6",
+      "size_bytes": 7594
+    },
+    "qblade_aero/Airfoils/IEA10_AF27.afl": {
+      "sha256": "9312c5b614b471c083e98065d66224545337286cda367e877de23d14a01fa4b9",
+      "size_bytes": 7586
+    },
+    "qblade_aero/Airfoils/IEA10_AF28.afl": {
+      "sha256": "72715f1ee8474dee0df6c586df00c3294973ef39b53a65d484264a980da27f5b",
+      "size_bytes": 7591
+    },
+    "qblade_aero/Airfoils/IEA10_AF29.afl": {
+      "sha256": "5530951305d1cf0c8546316a11574bd269339fe33dd6afa54190492a4475cb4c",
+      "size_bytes": 7589
+    },
+    "qblade_aero/Polars/FFA_W3_211_STATION_24.plr": {
+      "sha256": "2a4b2a346b8405c517f0269efb0c74144f0b548e8f02d635718282df83702d22",
+      "size_bytes": 13769
+    },
+    "qblade_aero/Polars/FFA_W3_211_STATION_25.plr": {
+      "sha256": "83aa530af3d292fd6c928afb75e93d3755b9c21195cac4b33051038cde884955",
+      "size_bytes": 13766
+    },
+    "qblade_aero/Polars/FFA_W3_211_STATION_26.plr": {
+      "sha256": "a3fb69fca78faf17614264a255cf2ef82688886f8b28ce9f9a50ce615e3c9492",
+      "size_bytes": 13753
+    },
+    "qblade_aero/Polars/FFA_W3_211_STATION_27.plr": {
+      "sha256": "f092b535edc3c6af8f22fc858cb84a739dcc2877f84f7ac457b5f007f297e2aa",
+      "size_bytes": 13765
+    },
+    "qblade_aero/Polars/FFA_W3_211_STATION_28.plr": {
+      "sha256": "95e53dc461ea3a64774e1c09352a861911df5e6764980fbc6fa79942b7ba1cb3",
+      "size_bytes": 13764
+    },
+    "qblade_aero/Polars/FFA_W3_211_STATION_29.plr": {
+      "sha256": "37f4bcfad5d6f752f25b5fe0e402692d8d91d05149e4bce368c349aac1dacdb2",
+      "size_bytes": 13761
+    },
+    "qblade_aero/Polars/FFA_W3_241_STATION_19.plr": {
+      "sha256": "653715b0b465f394edbae87c77b424e9a2c1cba3d990bda14d6bc9d8602a1324",
+      "size_bytes": 13745
+    },
+    "qblade_aero/Polars/FFA_W3_241_STATION_20.plr": {
+      "sha256": "b9826c66566752b0181ffde68732f82998ca2064e03151ea31fbc426cf12432a",
+      "size_bytes": 13749
+    },
+    "qblade_aero/Polars/FFA_W3_241_STATION_21.plr": {
+      "sha256": "1c6399ffe368d9772e5465c7d921c0ee3373c26779d2d7c87bc7086a24304afe",
+      "size_bytes": 13763
+    },
+    "qblade_aero/Polars/FFA_W3_241_STATION_22.plr": {
+      "sha256": "e8bc5323a90aa04334f509b9e4fd7e8e10084c66ff2d3ef9cd5bcd78c9695862",
+      "size_bytes": 13762
+    },
+    "qblade_aero/Polars/FFA_W3_241_STATION_23.plr": {
+      "sha256": "ca7b7578733d8a0a90222c04dae9039c07f506847f004bed2ebda9d40f84d6a7",
+      "size_bytes": 13757
+    },
+    "qblade_aero/Polars/FFA_W3_270_STATION_16.plr": {
+      "sha256": "3335edf6acef2c2b24c166a6b47624ccb9ace78cccdd7100ade5ce074aed2779",
+      "size_bytes": 13699
+    },
+    "qblade_aero/Polars/FFA_W3_270_STATION_17.plr": {
+      "sha256": "36d43acaaaea79c6bb1763a6e18640bb2ebce12b6621d921fb0cc7bb94f06b8e",
+      "size_bytes": 13707
+    },
+    "qblade_aero/Polars/FFA_W3_270_STATION_18.plr": {
+      "sha256": "97d7901a058010fbb3ca48c33f01491b185c553ed02ecd355296c4ab18d350b9",
+      "size_bytes": 13726
+    },
+    "qblade_aero/Polars/FFA_W3_301_STATION_12.plr": {
+      "sha256": "e7777fc005ec3bd025125aafa627f92cc157156e07f7abe196fb0c2f8ba74712",
+      "size_bytes": 13718
+    },
+    "qblade_aero/Polars/FFA_W3_301_STATION_13.plr": {
+      "sha256": "0558bf846534090d27f1e591ccf2369dcb9f1d0725a9882e7fe9a4ecff38aa39",
+      "size_bytes": 13717
+    },
+    "qblade_aero/Polars/FFA_W3_301_STATION_14.plr": {
+      "sha256": "51efc44b53840d021b31f10c9abb7c58b84b9f31f495afc8b54be895c96f34c7",
+      "size_bytes": 13703
+    },
+    "qblade_aero/Polars/FFA_W3_301_STATION_15.plr": {
+      "sha256": "2dd0b9085eaf4bd3f465b293f0a12dfac342a05dd23fd91a4c0e372797572b64",
+      "size_bytes": 13721
+    },
+    "qblade_aero/Polars/FFA_W3_330_STATION_07.plr": {
+      "sha256": "5e8567e7268aa1da2f7271fb10fc9a1974b1fc4c60e1256ec30c35f5089790a1",
+      "size_bytes": 13722
+    },
+    "qblade_aero/Polars/FFA_W3_330_STATION_08.plr": {
+      "sha256": "09fc8a6e8a644f97f997f5db07d6e237b8535571721ecd41d86fe5cdcc2da574",
+      "size_bytes": 13706
+    },
+    "qblade_aero/Polars/FFA_W3_330_STATION_09.plr": {
+      "sha256": "3075d972b7f9539b9378fa8c70b1e31a112570f74c2fed111fa99ebe12c0d870",
+      "size_bytes": 13701
+    },
+    "qblade_aero/Polars/FFA_W3_330_STATION_10.plr": {
+      "sha256": "0b7cd8924a109fb00cd614c5f6b8f2a4be0a66e3231286559b8d7d0cd97bf9e4",
+      "size_bytes": 13712
+    },
+    "qblade_aero/Polars/FFA_W3_330_STATION_11.plr": {
+      "sha256": "f937959241706f9f76817094634c6f18ac327292afcc20be783b2b14341eb1f9",
+      "size_bytes": 13727
+    },
+    "qblade_aero/Polars/FFA_W3_360_STATION_05.plr": {
+      "sha256": "2c3ee7379ceda7edfb3f85ff63b257662af17166becc1b975afed8b7227c3a8e",
+      "size_bytes": 13684
+    },
+    "qblade_aero/Polars/FFA_W3_360_STATION_06.plr": {
+      "sha256": "55e7acbe225ffe7e8813342408be40c4180eec91e49ee084370508513b2de7c8",
+      "size_bytes": 13713
+    },
+    "qblade_aero/Polars/FFA_W3_500_STATION_00.plr": {
+      "sha256": "915a2ad88fb743e8aef4c82e55ae5a7c2972a80dcbbfb17809018ecd71163123",
+      "size_bytes": 10729
+    },
+    "qblade_aero/Polars/FFA_W3_500_STATION_01.plr": {
+      "sha256": "70396b049e720f4c3ef08384f2d7d5c65754c88aa86ddca2dc90e1a09bc17f5c",
+      "size_bytes": 14177
+    },
+    "qblade_aero/Polars/FFA_W3_500_STATION_02.plr": {
+      "sha256": "a22d94eefeaef95f136eb3cc6f3c49a6c95470b5a68d7958c4f27cafcc1f623e",
+      "size_bytes": 13926
+    },
+    "qblade_aero/Polars/FFA_W3_500_STATION_03.plr": {
+      "sha256": "cc9a44ece8652a49215ff149175a4004644cfeb9775443334bc44204bc3941af",
+      "size_bytes": 13718
+    },
+    "qblade_aero/Polars/FFA_W3_500_STATION_04.plr": {
+      "sha256": "f9b5ef5395a9956b6b8aa28ad60d31d6010983d3e9db131dc6c8974c99d869b1",
+      "size_bytes": 13688
+    },
+    "qblade_aero/grinderslev2022_p100_i50_iea10_single_blade.bld": {
+      "sha256": "0e6636dfbf92da28682bd6a825ec284580e2938a4a41cef6cb9f1e399bc3823e",
+      "size_bytes": 4822
+    },
+    "qblade_geometry_audit.csv": {
+      "sha256": "a400489d9b61675977dbc8e30a200d9cc6bd1b517d88fb3e6060b43aacce2e65",
+      "size_bytes": 13270
+    },
+    "u14_complete_bridge_history.csv": {
+      "sha256": "7e494355dc5c3ac8b8fe8951a43eb3a9307d9d0d52e19827e621d6338f845fa3",
+      "size_bytes": 333566
+    },
+    "u14_paired_tip_history.csv": {
+      "sha256": "2ebbc45b0c0a9fd34ea57e3486284169373532efd84bfabf53446f23ec5a4837",
+      "size_bytes": 138247
+    }
+  },
+  "schema": "vorlap-iea10-actual-aero-complete-evidence-v1",
+  "selected_visual_case": "U14_complete",
+  "status": "complete_integration_screen"
+}

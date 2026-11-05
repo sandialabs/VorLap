@@ -1,0 +1,40 @@
+{
+  "schema": "vorlap-reference-acquisition-v1",
+  "record": {
+    "title": "Unsteady Fluid Mechanics Benchmark Dataset - Imposed Cylinder Motion at Re=100",
+    "version": 1,
+    "doi": "10.4121/77985fa6-c546-4450-9d84-14b85f2d7e86.v1",
+    "doi_url": "https://doi.org/10.4121/77985fa6-c546-4450-9d84-14b85f2d7e86.v1",
+    "repository": "4TU.ResearchData"
+  },
+  "asset": {
+    "file_id": "0516b70d-47b7-4008-b2ab-a8f77e2507d3",
+    "url": "https://data.4tu.nl/file/77985fa6-c546-4450-9d84-14b85f2d7e86/0516b70d-47b7-4008-b2ab-a8f77e2507d3",
+    "filename": "Oscillating_cylinder_dataset.zip",
+    "bytes": 6261659558,
+    "md5": "bed51060b5ce4ea0c36d00e41c8a8b99",
+    "sha256": null,
+    "sha256_policy": "Compute locally only after the pinned byte count and repository MD5 pass; record the observed value in the acquisition receipt."
+  },
+  "license": {
+    "spdx": "CC-BY-NC-4.0",
+    "name": "Creative Commons Attribution-NonCommercial 4.0 International",
+    "url": "https://creativecommons.org/licenses/by-nc/4.0/",
+    "commercial_use_permitted": false,
+    "repository_mit_license_applies_to_data": false
+  },
+  "acquisition": {
+    "minimum_free_bytes": 21474836480,
+    "partial_suffix": ".part",
+    "resume_header": "Range",
+    "receipt_filename": "acquisition_receipt.json",
+    "automatic_extraction": false
+  },
+  "zip_audit": {
+    "principal_mat_basename": "oscillating_cylinder_benchmark_dataset_v4.mat",
+    "reject_absolute_paths": true,
+    "reject_parent_traversal": true,
+    "reject_symlinks_and_special_files": true,
+    "require_unique_normalized_members": true
+  }
+}

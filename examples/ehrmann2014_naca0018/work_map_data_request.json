@@ -1,0 +1,131 @@
+{
+  "schema": "vorlap-naca0018-prescribed-motion-data-request-v1",
+  "status": "awaiting_high_fidelity_and_exact_runtime_base_histories",
+  "purpose": "populate_signed_incremental_airfoil_work_map_without_using_Ehrmann_free_response_for_tuning",
+  "profile": "NACA0018",
+  "motion": "prescribed_crossflow_translation",
+  "force_motion_convention": {
+    "displacement": "y=A*sin(2*pi*f*t)",
+    "velocity": "ydot=2*pi*f*A*cos(2*pi*f*t)",
+    "positive_force": "same_global_crossflow_direction_as_positive_y",
+    "positive_power": "flow_to_structure",
+    "power_coefficient": "mean((F_high_fidelity-F_exact_runtime_base)*ydot)/(0.5*rho*U^3*c*span)",
+    "reduced_frequency": "k=pi*f*c/U",
+    "amplitude_ratio": "A/c"
+  },
+  "frozen_axes": {
+    "incidence_deg": [-90.0],
+    "reynolds_number": [64000.0, 100000.0, 140000.0],
+    "reduced_frequency_k": [0.45, 0.65, 0.8, 1.05],
+    "amplitude_ratio": [0.0, 0.005, 0.0125, 0.025, 0.05],
+    "direction_deg_mod_180": [0.0]
+  },
+  "nonzero_motion_record_count_per_fidelity": 48,
+  "analytical_zero_amplitude_vertex_count": 12,
+  "zero_amplitude_policy": "set entrainment, signed power, and uncertainty exactly to zero without pretending that a zero-motion history identifies phase",
+  "frozen_fluid_and_section": {
+    "fluid_density_kgpm3": 1.225,
+    "fluid_dynamic_viscosity_pas": 1.813e-05,
+    "reference_chord_m": 0.23,
+    "section_span_m": 4.0,
+    "speed_definition": "U=Re*mu/(rho*c)",
+    "frequency_definition": "f=k*U/(pi*c)"
+  },
+  "minimum_accepted_history": {
+    "discard_cycles": 5,
+    "complete_cycles_after_discard": 8,
+    "samples_per_cycle": 100,
+    "required_synchronized_columns": [
+      "time_s",
+      "displacement_m",
+      "velocity_mps",
+      "crossflow_force_n"
+    ],
+    "section_span_m": "must_be_declared_positive",
+    "fluid_density_kgpm3": "must_be_declared_positive",
+    "fluid_dynamic_viscosity_pas": "must_be_declared_positive",
+    "reference_chord_m": 0.23,
+    "force_history_units": "total force in N over declared section span"
+  },
+  "pairing": {
+    "high_fidelity": "prescribed-motion NACA0018 CFD or synchronized experiment",
+    "exact_runtime_base": "native QBlade prescribed-motion force at the identical axis point and motion history",
+    "required_identity_match": [
+      "incidence_deg",
+      "reynolds_number",
+      "reduced_frequency_k",
+      "amplitude_ratio",
+      "direction_deg_mod_180",
+      "time_grid",
+      "displacement_history",
+      "velocity_history",
+      "chord_m",
+      "span_m",
+      "fluid_properties"
+    ]
+  },
+  "high_fidelity_initialization": {
+    "solver": "official Nalu-Wind v2.2.1 release at git commit ffa9de729df2a11b5241fdeb7628e7fab9f48f9b",
+    "mesh": "the original periodic NACA0018 span-4m IDDES mesh with exact file identity bound at campaign generation",
+    "mesh_transformation": "apply the one-time [0.23,0.23,1.0] x/y/z scaling only in the precursor initialized from the original chord-1m mesh; motion cases restart from the already-scaled precursor mesh without applying the scaling again",
+    "precursor_count": 3,
+    "precursor_policy": "one stationary developed-wake precursor per Reynolds number using the same all-block mesh_motion schema with zero oscillation amplitude, branched to all k and A/c cases at that Reynolds number",
+    "precursor_restart_time_policy": "the selected precursor restart timestamp must equal 20*pi*c/U on an exact precursor step endpoint computed from the same unrounded U and c used by every child case",
+    "motion": "native all-block ALE oscillation with start_time equal to the precursor restart time",
+    "phase_policy": "the precursor time is 20*pi*c/U, making f*t0=20*k exactly 9,13,16,21 cycles for the frozen k grid; displacement starts at zero and velocity at positive maximum",
+    "wall_policy": "Nalu copies mesh_velocity to the no-slip wall when mesh motion is active",
+    "force_surface": "the full [wing,wing-pp] surface over the original 4m periodic span; wing-pp alone is forbidden",
+    "force_channel": "crossflow_force_n=Fpy+Fvy from surface_force_and_moment",
+    "force_sign": "positive fluid-on-body force in the positive prescribed-motion direction",
+    "runtime_base_geometry": "native QBlade uses the same 0.23m chord, 4m span, incidence, fluid properties, and total-force normalization",
+    "runtime_base_force_channel": "total native aerodynamic force in global crossflow Y over the complete 4m section"
+  },
+  "identification_manifest_format": {
+    "schema": "vorlap-airfoil-work-map-identification-manifest-v2",
+    "status_required_for_build": "complete",
+    "top_level_keys": [
+      "schema",
+      "status",
+      "profile",
+      "request",
+      "static_spectrum",
+      "producer_provenance",
+      "fluid_and_section",
+      "cases"
+    ],
+    "file_identity": {
+      "path": "canonical path relative to the manifest directory",
+      "sha256": "SHA-256 of the exact bytes parsed"
+    },
+    "case_keys": [
+      "case_id",
+      "incidence_deg",
+      "reynolds_number",
+      "reduced_frequency_k",
+      "amplitude_ratio",
+      "direction_deg_mod_180",
+      "discard_cycles",
+      "high_fidelity_history",
+      "exact_runtime_base_history"
+    ],
+    "builder": "python -m examples.ehrmann2014_naca0018.build_airfoil_work_map --manifest MANIFEST.json --output-map NACA0018_work_map.json --output-report NACA0018_work_map_report.json"
+  },
+  "frozen_nonleakage_policy": {
+    "ehrmann_free_response_used_for_fit": false,
+    "ehrmann_acceptance_tolerance_used_for_fit": false,
+    "static_fft_phase_used_for_work": false,
+    "grinderslev_power_used_for_naca_magnitude": false,
+    "static_naca_spectrum_role": "source_frequency_and_available_lift_energy_only",
+    "minimum_map_condition_for_free_response": "positive lower-confidence work exists and highest-amplitude plane is nonpositive"
+  },
+  "flight_parallel_plan": {
+    "high_fidelity_cases": 48,
+    "runtime_base_cases": 48,
+    "preferred_execution": "one_independent_case_per_physical_core_or_solver_scaling_equivalent",
+    "preferred_target_walltime": "02:00:00",
+    "maximum_requested_walltime": "08:00:00",
+    "node_selection_policy": "smallest_2h_passing_size_among_2_4_8_else_smallest_8h_passing_size",
+    "submission_status": "requires_executed_one_case_nalu_and_qblade_motion_force_preflight_before_full_matrix",
+    "scope_boundary": "this_minus_90_degree_slice can qualify Ehrmann only; H-VAWT requires a separately frozen incidence/Re extension after Ehrmann passes"
+  }
+}

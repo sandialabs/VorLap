@@ -1,0 +1,56 @@
+0             WATERDEPTH  //design depth
+1025            WATERDENSITY // design density, used for flooded member mass calcs
+false            ISFLOATING //if the structure is fixed the joint coordinates are assigned in a coordinate system with O(0,0,0) at the mudline, for floaters O(0,0,0) is at the MSL and marks the floaters's NP
+5             ADVANCEDBUOYANCY //using an advanced discretization technique (N must be a square int number) to calculate buoyancy of partially submerged members, especially usefull if "lying" cylinders are used to generate the draft
+0               WAVEKINEVALTYPE // 0 - local evaluation, 1 - eval at fixed ref pos, 2 - eval at lagged position
+30              WAVEKINTAU // time constant for the lagged waveKin position evaluation
+// potential flow model options, specify RADiation and EXCitation files separately (only RAD if BEMuse), don't forget the file endings, as this identifies the format!
+false            STATICBUOYANCY // static buoyancy, based on the MSL should be used when using Morison member buoyancy combined with potential flow diffraction forces
+
+TP_INTERFACE_POS //the interface position between substructure and tower or RNA
+X[m]            Y[m]            Z[m]
+0.00000         0               15.82420
+
+
+SUBJOINTS //defined either from MSL (if isFLoating) or from seabed using the designDepth variable (if !isFLoating)
+JointID JointX   JointY  JointZ
+1   0.00000        0.00000        0.00000
+18  0.00000        0.00000       15.82420
+19  0.00000        0.00000        9.64565
+
+JNT_18
+
+NLSPRINGDAMPERS
+ElemID  Type    Coefficient & Displacement/Velocity Sets (for NL springs, dampers)
+
+SUBCONSTRAINTS
+CstID   JntID   JntCon  TpCon   GrdCon  Spring  DoF_X   DoF_Y   DoF_Z   DoF_rX  DoF_rY  DoF_rZ
+1       1        0       0       1       0       1       1       1       1       1       1
+2       18       0       1       0       0       1       1       1       1       1       1
+
+
+1.00    STIFFTUNER
+1.00    MASSTUNER
+1.00    BUOYANCYTUNER
+
+SUBELEMENTS
+ElemID    MASS_[kg/m]     Eix_[N.m^2]     Eiy_[N.m^2]     EA_[N]          GJ_[N.m^2]      GA_[N]          STRPIT_[deg]    KSX_[-]         KSY_[-]         RGX_[-]         RGY_[-]         XCM_[-]         YCM_[-]         XCE_[-]         YCE_[-]         XCS_[-]         YCS_[-]         DIA_[m]     Drag[-]     DAMP[-]
+1         180.04305       1.42E+08        1.42E+08        4.68E+09        1.12E+08        1.85E+09        0               0.85            0.85            0.34321         0.34321         0               0               0               0               0               0               1.000       1.0         0.02
+
+SUBMEMBERS
+MemID   Jnt1ID  Jnt2ID  ElmID   ElmRot  HyCoID  IsBuoy  MaGrID  FldArea ElmDsc  Name (optional)
+ 1      1       19       1       0       0       0       0       0       10       Bottom tower
+ 2      19      18       1       0       0       0       0       0       10       Upper tower
+
+
+RGBCOLOR
+R       G       B
+255     15     15
+
+
+MOORELEMENTS
+MooID   MASS_[kg/m]     EIy_[N.m^2]     EA_[N]          DAMP_[-]        DIA_[m]
+
+
+MOORMEMBERS
+ID      CONN_1                          CONN_2                  Len.[m]  MoorID  HyCoID  IsBuoy  MaGrID  ElmDsc  Name

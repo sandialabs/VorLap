@@ -1,0 +1,15 @@
+OWENS module: OWENS
+GXBeam module: GXBeam
+Julia version: 1.12.6
+RPM values: 0.0,0.25,0.5,0.75,1.0
+Modes: 12
+Gravity: true
+Point-mass nodes: 29
+Mode tracking: positive-frequency left/right mass-matrix correlation
+Degenerate zero-RPM mode clusters (frequency ordered): 1-2;3-4;7-8;9-10-11
+Maximum nondegenerate mode-tracking corruption index: 0.0320824433090705
+Structural damping: false (matches OWENS AutoCampbellDiagram GX default)
+elements.csv beta storage: qblade_2_0_9_7_documented candidate, unselected and unused by the eigensolve
+Saved mode state: GXBeam first-order mixed right eigenvector postprocessed into point u/theta/V/Omega and element Fi/Mi
+Modal mass energy: exact converted element and point mass matrices projected with saved eigenvector velocity states
+Damping projection basis: per-element undamped modal strain energy; candidate QBlade beta semantics are resolved only in postprocessing and numerical eigenvalue real parts are not used

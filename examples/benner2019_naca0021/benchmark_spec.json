@@ -1,0 +1,41 @@
+{
+  "schema": "vorlap-benner2019-naca0021-benchmark-v1",
+  "status": "reference_digitization_required",
+  "reference": {
+    "citation_key": "BENNER2019102577",
+    "doi": "10.1016/j.jfluidstructs.2019.01.018",
+    "profile": "NACA0021",
+    "application": "vertical-axis wind turbine airfoil",
+    "incidence_range_deg": [0.0, 180.0],
+    "reported_viv_incidence_range_deg": [60.0, 130.0],
+    "reported_peak": {"incidence_deg": 90.0, "reduced_velocity": 5.7, "amplitude_over_chord": 1.93},
+    "reported_largest_lockin_reduced_velocity_range": [1.7, 12.0],
+    "reported_reynolds_range": [600.0, 13300.0],
+    "response_data_state": "figure_digitization_pending",
+    "structural_parameter_state": "full_paper_extraction_pending"
+  },
+  "spectral_transfer": {
+    "vorlap_source_profile": "NACA0018",
+    "experiment_profile": "NACA0021",
+    "current_vorlap_reynolds_planes": [40000.0, 267000.0, 500000.0],
+    "experiment_reynolds_range_bracketed": false,
+    "required_source_action": "add and provenance-bind lower-Re airfoil spectral data before launching; clipping or extrapolation is forbidden",
+    "relative_thickness_difference": 0.03,
+    "permitted_incidence_deg": [30.0, 150.0],
+    "basis_citation_key": "Bidadi2024",
+    "scope": "high-incidence slender-airfoil transfer; frequency and deep-stall behavior are expected to be less thickness-sensitive, but amplitude identity is not assumed"
+  },
+  "comparison_series": [
+    "Benner et al. experiment",
+    "Raw QBlade native aerodynamics",
+    "Raw QBlade plus latest VorLap spectral-lockin bridge"
+  ],
+  "primary_acceptance": {
+    "peak_amplitude_absolute_error_over_chord": "<= 0.30*(A_experiment/c) + 0.01",
+    "paired_timestep_required": true,
+    "stationarity_required": true,
+    "lockin_interval_and_frequency_reported": true,
+    "no_airfoil_thickness_retuning": true
+  },
+  "claim_boundary": "Pending recreation. NACA0018-to-NACA0021 is a declared high-incidence transfer approximation, not an exact-profile validation. The present spectral Reynolds planes do not bracket the experiment, so lower-Re source data are required before launch."
+}

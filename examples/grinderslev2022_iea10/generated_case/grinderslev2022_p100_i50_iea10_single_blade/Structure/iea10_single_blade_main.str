@@ -1,0 +1,264 @@
+---------------------- QBLADE STRUCTURAL MODEL INPUT FILE -----------------
+0.2 GLBGEOEPS
+------------------------------- HAWT TURBINE CONFIGURATION ----------------
+0.0 PRECONE
+0.0 SHFTTILT
+0.0 OVERHANG
+0.0 TWR2SHFT
+------------------------------- MASS AND INERTIA --------------------------
+0.0 YAWBRMASS
+0.0 NACMASS
+0.0 NACCMX
+0.0 NACCMY
+0.0 NACCMZ
+0 0 0 0 0 0 NACINER
+0.0 NACYINER
+0.0 HUBMASS
+0.0 HUBCM
+1.0 HUBINER
+------------------------------- DRIVETRAIN MODEL --------------------------
+1.0 GBRATIO
+1.0 GBOXEFF
+1.0 GENEFF
+false DRTRDOF
+1.0 GENINER
+1.0e12 DTTORSPR
+1.0e9 DTTORDMP
+------------------------------- BLADES ------------------------------------
+1 NUMBLD
+iea10_blade_hawc2.str BLDFILE_1
+------------------------------- TOWER -------------------------------------
+1.0 TWRHEIGHT
+rigid_tower.str TWRFILE
+------------------------------- DATA OUTPUT TYPES -------------------------
+true FOR_OUT
+true ROT_OUT
+true MOM_OUT
+true DEF_OUT
+true POS_OUT
+true VEL_OUT
+true ACC_OUT
+true LVE_OUT
+true LAC_OUT
+------------------------------- DATA OUTPUT LOCATIONS ---------------------
+BLD_1_0.0000000000
+BLD_1_0.0344827586
+BLD_1_0.0689655172
+BLD_1_0.1034482759
+BLD_1_0.1379310345
+BLD_1_0.1724137931
+BLD_1_0.2068965517
+BLD_1_0.2413793103
+BLD_1_0.2758620690
+BLD_1_0.3103448276
+BLD_1_0.3448275862
+BLD_1_0.3793103448
+BLD_1_0.4137931034
+BLD_1_0.4482758621
+BLD_1_0.4827586207
+BLD_1_0.5172413793
+BLD_1_0.5517241379
+BLD_1_0.5862068966
+BLD_1_0.6206896552
+BLD_1_0.6551724138
+BLD_1_0.6896551724
+BLD_1_0.7241379310
+BLD_1_0.7586206897
+BLD_1_0.7931034483
+BLD_1_0.8275862069
+BLD_1_0.8620689655
+BLD_1_0.8965517241
+BLD_1_0.9310344828
+BLD_1_0.9655172414
+BLD_1_1.0000000000
+TWR_0.0
+TWR_1.0
+
+EXTERNAL_1_IN
+SWAP DATA
+0    "Time [s]"
+1    "Timestep [-]"
+2    "LSS Azimuthal Pos. [deg]"
+3    "X_g Vel. BLD_1 pos 0.000 [m/s]"
+4    "Y_g Vel. BLD_1 pos 0.000 [m/s]"
+5    "Z_g Vel. BLD_1 pos 0.000 [m/s]"
+6    "X_g Vel. BLD_1 pos 0.034 [m/s]"
+7    "Y_g Vel. BLD_1 pos 0.034 [m/s]"
+8    "Z_g Vel. BLD_1 pos 0.034 [m/s]"
+9    "X_g Vel. BLD_1 pos 0.069 [m/s]"
+10    "Y_g Vel. BLD_1 pos 0.069 [m/s]"
+11    "Z_g Vel. BLD_1 pos 0.069 [m/s]"
+12    "X_g Vel. BLD_1 pos 0.103 [m/s]"
+13    "Y_g Vel. BLD_1 pos 0.103 [m/s]"
+14    "Z_g Vel. BLD_1 pos 0.103 [m/s]"
+15    "X_g Vel. BLD_1 pos 0.138 [m/s]"
+16    "Y_g Vel. BLD_1 pos 0.138 [m/s]"
+17    "Z_g Vel. BLD_1 pos 0.138 [m/s]"
+18    "X_g Vel. BLD_1 pos 0.172 [m/s]"
+19    "Y_g Vel. BLD_1 pos 0.172 [m/s]"
+20    "Z_g Vel. BLD_1 pos 0.172 [m/s]"
+21    "X_g Vel. BLD_1 pos 0.207 [m/s]"
+22    "Y_g Vel. BLD_1 pos 0.207 [m/s]"
+23    "Z_g Vel. BLD_1 pos 0.207 [m/s]"
+24    "X_g Vel. BLD_1 pos 0.241 [m/s]"
+25    "Y_g Vel. BLD_1 pos 0.241 [m/s]"
+26    "Z_g Vel. BLD_1 pos 0.241 [m/s]"
+27    "X_g Vel. BLD_1 pos 0.276 [m/s]"
+28    "Y_g Vel. BLD_1 pos 0.276 [m/s]"
+29    "Z_g Vel. BLD_1 pos 0.276 [m/s]"
+30    "X_g Vel. BLD_1 pos 0.310 [m/s]"
+31    "Y_g Vel. BLD_1 pos 0.310 [m/s]"
+32    "Z_g Vel. BLD_1 pos 0.310 [m/s]"
+33    "X_g Vel. BLD_1 pos 0.345 [m/s]"
+34    "Y_g Vel. BLD_1 pos 0.345 [m/s]"
+35    "Z_g Vel. BLD_1 pos 0.345 [m/s]"
+36    "X_g Vel. BLD_1 pos 0.379 [m/s]"
+37    "Y_g Vel. BLD_1 pos 0.379 [m/s]"
+38    "Z_g Vel. BLD_1 pos 0.379 [m/s]"
+39    "X_g Vel. BLD_1 pos 0.414 [m/s]"
+40    "Y_g Vel. BLD_1 pos 0.414 [m/s]"
+41    "Z_g Vel. BLD_1 pos 0.414 [m/s]"
+42    "X_g Vel. BLD_1 pos 0.448 [m/s]"
+43    "Y_g Vel. BLD_1 pos 0.448 [m/s]"
+44    "Z_g Vel. BLD_1 pos 0.448 [m/s]"
+45    "X_g Vel. BLD_1 pos 0.483 [m/s]"
+46    "Y_g Vel. BLD_1 pos 0.483 [m/s]"
+47    "Z_g Vel. BLD_1 pos 0.483 [m/s]"
+48    "X_g Vel. BLD_1 pos 0.517 [m/s]"
+49    "Y_g Vel. BLD_1 pos 0.517 [m/s]"
+50    "Z_g Vel. BLD_1 pos 0.517 [m/s]"
+51    "X_g Vel. BLD_1 pos 0.552 [m/s]"
+52    "Y_g Vel. BLD_1 pos 0.552 [m/s]"
+53    "Z_g Vel. BLD_1 pos 0.552 [m/s]"
+54    "X_g Vel. BLD_1 pos 0.586 [m/s]"
+55    "Y_g Vel. BLD_1 pos 0.586 [m/s]"
+56    "Z_g Vel. BLD_1 pos 0.586 [m/s]"
+57    "X_g Vel. BLD_1 pos 0.621 [m/s]"
+58    "Y_g Vel. BLD_1 pos 0.621 [m/s]"
+59    "Z_g Vel. BLD_1 pos 0.621 [m/s]"
+60    "X_g Vel. BLD_1 pos 0.655 [m/s]"
+61    "Y_g Vel. BLD_1 pos 0.655 [m/s]"
+62    "Z_g Vel. BLD_1 pos 0.655 [m/s]"
+63    "X_g Vel. BLD_1 pos 0.690 [m/s]"
+64    "Y_g Vel. BLD_1 pos 0.690 [m/s]"
+65    "Z_g Vel. BLD_1 pos 0.690 [m/s]"
+66    "X_g Vel. BLD_1 pos 0.724 [m/s]"
+67    "Y_g Vel. BLD_1 pos 0.724 [m/s]"
+68    "Z_g Vel. BLD_1 pos 0.724 [m/s]"
+69    "X_g Vel. BLD_1 pos 0.759 [m/s]"
+70    "Y_g Vel. BLD_1 pos 0.759 [m/s]"
+71    "Z_g Vel. BLD_1 pos 0.759 [m/s]"
+72    "X_g Vel. BLD_1 pos 0.793 [m/s]"
+73    "Y_g Vel. BLD_1 pos 0.793 [m/s]"
+74    "Z_g Vel. BLD_1 pos 0.793 [m/s]"
+75    "X_g Vel. BLD_1 pos 0.828 [m/s]"
+76    "Y_g Vel. BLD_1 pos 0.828 [m/s]"
+77    "Z_g Vel. BLD_1 pos 0.828 [m/s]"
+78    "X_g Vel. BLD_1 pos 0.862 [m/s]"
+79    "Y_g Vel. BLD_1 pos 0.862 [m/s]"
+80    "Z_g Vel. BLD_1 pos 0.862 [m/s]"
+81    "X_g Vel. BLD_1 pos 0.897 [m/s]"
+82    "Y_g Vel. BLD_1 pos 0.897 [m/s]"
+83    "Z_g Vel. BLD_1 pos 0.897 [m/s]"
+84    "X_g Vel. BLD_1 pos 0.931 [m/s]"
+85    "Y_g Vel. BLD_1 pos 0.931 [m/s]"
+86    "Z_g Vel. BLD_1 pos 0.931 [m/s]"
+87    "X_g Vel. BLD_1 pos 0.966 [m/s]"
+88    "Y_g Vel. BLD_1 pos 0.966 [m/s]"
+89    "Z_g Vel. BLD_1 pos 0.966 [m/s]"
+90    "X_g Vel. BLD_1 pos 1.000 [m/s]"
+91    "Y_g Vel. BLD_1 pos 1.000 [m/s]"
+92    "Z_g Vel. BLD_1 pos 1.000 [m/s]"
+
+EXTERNAL_1_OUT
+SWAP  ACTION     ID     POS  DIR  LOCAL
+93    ADDFORCE  BLD_1    0.000000 X    false
+94    ADDFORCE  BLD_1    0.000000 Y    false
+95    ADDFORCE  BLD_1    0.000000 Z    false
+96    ADDFORCE  BLD_1    0.034483 X    false
+97    ADDFORCE  BLD_1    0.034483 Y    false
+98    ADDFORCE  BLD_1    0.034483 Z    false
+99    ADDFORCE  BLD_1    0.068966 X    false
+100    ADDFORCE  BLD_1    0.068966 Y    false
+101    ADDFORCE  BLD_1    0.068966 Z    false
+102    ADDFORCE  BLD_1    0.103448 X    false
+103    ADDFORCE  BLD_1    0.103448 Y    false
+104    ADDFORCE  BLD_1    0.103448 Z    false
+105    ADDFORCE  BLD_1    0.137931 X    false
+106    ADDFORCE  BLD_1    0.137931 Y    false
+107    ADDFORCE  BLD_1    0.137931 Z    false
+108    ADDFORCE  BLD_1    0.172414 X    false
+109    ADDFORCE  BLD_1    0.172414 Y    false
+110    ADDFORCE  BLD_1    0.172414 Z    false
+111    ADDFORCE  BLD_1    0.206897 X    false
+112    ADDFORCE  BLD_1    0.206897 Y    false
+113    ADDFORCE  BLD_1    0.206897 Z    false
+114    ADDFORCE  BLD_1    0.241379 X    false
+115    ADDFORCE  BLD_1    0.241379 Y    false
+116    ADDFORCE  BLD_1    0.241379 Z    false
+117    ADDFORCE  BLD_1    0.275862 X    false
+118    ADDFORCE  BLD_1    0.275862 Y    false
+119    ADDFORCE  BLD_1    0.275862 Z    false
+120    ADDFORCE  BLD_1    0.310345 X    false
+121    ADDFORCE  BLD_1    0.310345 Y    false
+122    ADDFORCE  BLD_1    0.310345 Z    false
+123    ADDFORCE  BLD_1    0.344828 X    false
+124    ADDFORCE  BLD_1    0.344828 Y    false
+125    ADDFORCE  BLD_1    0.344828 Z    false
+126    ADDFORCE  BLD_1    0.379310 X    false
+127    ADDFORCE  BLD_1    0.379310 Y    false
+128    ADDFORCE  BLD_1    0.379310 Z    false
+129    ADDFORCE  BLD_1    0.413793 X    false
+130    ADDFORCE  BLD_1    0.413793 Y    false
+131    ADDFORCE  BLD_1    0.413793 Z    false
+132    ADDFORCE  BLD_1    0.448276 X    false
+133    ADDFORCE  BLD_1    0.448276 Y    false
+134    ADDFORCE  BLD_1    0.448276 Z    false
+135    ADDFORCE  BLD_1    0.482759 X    false
+136    ADDFORCE  BLD_1    0.482759 Y    false
+137    ADDFORCE  BLD_1    0.482759 Z    false
+138    ADDFORCE  BLD_1    0.517241 X    false
+139    ADDFORCE  BLD_1    0.517241 Y    false
+140    ADDFORCE  BLD_1    0.517241 Z    false
+141    ADDFORCE  BLD_1    0.551724 X    false
+142    ADDFORCE  BLD_1    0.551724 Y    false
+143    ADDFORCE  BLD_1    0.551724 Z    false
+144    ADDFORCE  BLD_1    0.586207 X    false
+145    ADDFORCE  BLD_1    0.586207 Y    false
+146    ADDFORCE  BLD_1    0.586207 Z    false
+147    ADDFORCE  BLD_1    0.620690 X    false
+148    ADDFORCE  BLD_1    0.620690 Y    false
+149    ADDFORCE  BLD_1    0.620690 Z    false
+150    ADDFORCE  BLD_1    0.655172 X    false
+151    ADDFORCE  BLD_1    0.655172 Y    false
+152    ADDFORCE  BLD_1    0.655172 Z    false
+153    ADDFORCE  BLD_1    0.689655 X    false
+154    ADDFORCE  BLD_1    0.689655 Y    false
+155    ADDFORCE  BLD_1    0.689655 Z    false
+156    ADDFORCE  BLD_1    0.724138 X    false
+157    ADDFORCE  BLD_1    0.724138 Y    false
+158    ADDFORCE  BLD_1    0.724138 Z    false
+159    ADDFORCE  BLD_1    0.758621 X    false
+160    ADDFORCE  BLD_1    0.758621 Y    false
+161    ADDFORCE  BLD_1    0.758621 Z    false
+162    ADDFORCE  BLD_1    0.793103 X    false
+163    ADDFORCE  BLD_1    0.793103 Y    false
+164    ADDFORCE  BLD_1    0.793103 Z    false
+165    ADDFORCE  BLD_1    0.827586 X    false
+166    ADDFORCE  BLD_1    0.827586 Y    false
+167    ADDFORCE  BLD_1    0.827586 Z    false
+168    ADDFORCE  BLD_1    0.862069 X    false
+169    ADDFORCE  BLD_1    0.862069 Y    false
+170    ADDFORCE  BLD_1    0.862069 Z    false
+171    ADDFORCE  BLD_1    0.896552 X    false
+172    ADDFORCE  BLD_1    0.896552 Y    false
+173    ADDFORCE  BLD_1    0.896552 Z    false
+174    ADDFORCE  BLD_1    0.931034 X    false
+175    ADDFORCE  BLD_1    0.931034 Y    false
+176    ADDFORCE  BLD_1    0.931034 Z    false
+177    ADDFORCE  BLD_1    0.965517 X    false
+178    ADDFORCE  BLD_1    0.965517 Y    false
+179    ADDFORCE  BLD_1    0.965517 Z    false
+180    ADDFORCE  BLD_1    1.000000 X    false
+181    ADDFORCE  BLD_1    1.000000 Y    false
+182    ADDFORCE  BLD_1    1.000000 Z    false

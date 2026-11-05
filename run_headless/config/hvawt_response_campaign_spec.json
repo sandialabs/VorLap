@@ -1,0 +1,209 @@
+{
+  "acceptance": {
+    "amplitude_accuracy_context": "The static-spectrum work-balance amplitudes identify the expected lock-in bands and are retained as closure-only diagnostics. They are not total-response acceptance targets after uncaptured residual forcing is enabled. Complete-composition acceptance instead requires exact source composition, spectral-energy closure, finite unclipped force application, stationary active-branch response with active-mode frequency capture, and an absolute-plus-relative stationarity screen for inactive response. This is an engineering H-VAWT application screen, not independent H-VAWT validation or certification evidence.",
+    "amplitude_target_policy": "azimuth_mean_static_spectrum_geometry_blended_airfoil_work_balance_using_HVAWT_mass_stiffness_and_damping",
+    "maximum_peak_amplitude_error_fraction_of_target": 0.3,
+    "peak_amplitude_absolute_allowance_fraction_of_reference_length": 0.0,
+    "maximum_tail_half_peak_amplitude_relative_difference": 0.1,
+    "maximum_active_case_dt_pair_peak_amplitude_relative_difference": 0.2,
+    "maximum_active_case_dt_pair_peak_frequency_relative_difference": 0.05,
+    "maximum_complex_modal_projection_leakage_ratio": 0.1,
+    "maximum_modal_peak_frequency_relative_error": 0.1,
+    "inactive_closure_only_amplitude_reference_m": 0.0005,
+    "maximum_inactive_tail_half_peak_amplitude_absolute_difference_m": 0.0005,
+    "stationarity_tail_split_fraction": 0.5,
+    "native_qblade_aerodynamics_required": true,
+    "required_external_viv_mode": "response_closure",
+    "closure_only_amplitude_targets_are_diagnostic": true,
+    "required_active_branch_stationarity_and_frequency": true,
+    "required_hybrid_residual_source_scale": 1.0,
+    "required_hybrid_response_shape_against_all_selected_wind_targets": false,
+    "required_legacy_vorlap_force_scale": 0.0,
+    "required_observed_modal_peak_wind_agreement": false,
+    "required_rpm": 1.0,
+    "required_rpm_tolerance": 0.001
+  },
+  "cross_profile_turbine_validation": {
+    "artifact": "examples/horcas2020_iea10_tip_geometry/evidence/combined_tip_v1/assessment.json",
+    "artifact_sha256": "be956c38f5672ada0a09a6a7905df48245fe9d99830dfce722447ec86109e46b",
+    "claim": "multi_condition_high_fidelity_numerical_wind_turbine_validation",
+    "evidence_role": "primary_heldout_cross_profile_validation",
+    "heldout_geometry": "COMB",
+    "model_fingerprint": "8b067d6f3a049f665c451f545a25dc8a0345b0a5bc829a3715f691038f899891",
+    "operating_condition_count": 11,
+    "operating_condition_variable": "inclination_deg",
+    "resolved_half_peak_viv_point_count": 2,
+    "source_fidelity": "ellipsys3d_hawc2_high_fidelity_wind_turbine_fsi",
+    "status": "passed",
+    "training_geometry_count": 4,
+    "metrics": {
+      "curve_nrmse_by_target_peak": 0.12922581236076258,
+      "maximum_resolved_frequency_ratio_error": 0.039160768999999984,
+      "peak_amplitude_relative_error": 0.028367601686628965,
+      "peak_inclination_error_deg": 0.0,
+      "resolved_interval_onset_error_deg": 2.5
+    }
+  },
+  "conservative_response_envelope": {
+    "additive_floor_over_signed_saturation": 0.10265640699352364,
+    "application": "postprocess_screening_only_does_not_modify_runtime_force_or_validation_predictions",
+    "covers_all_11_heldout_conditions": true,
+    "fatigue_validated": false,
+    "formula": "A_design=1.30*A_model+0.10265640699352364*A_sat",
+    "multiplicative_factor": 1.3
+  },
+  "calibration_fingerprint_sha256": "67222e1e4e4d22b51185a124d57e1f80540890d2194b40bc3d9998f046d84a1a",
+  "static_spectrum_sha256": "64399e25dc5008caaed88d42e5cf24160c1045f17a282a06234648202cece369",
+  "full_rerun": {
+    "execution_authorized": false,
+    "execution_status": "prepared_waiting_for_pilot_pass",
+    "control_policy": "Rerun all three matched scenarios from one corrected structural and aerodynamic source. Historical raw and one-way controls are context only and are not reused because their damping, startup, and NACA0018 source bytes differ.",
+    "expand_only_after_pilot_pass": true,
+    "expected_new_runs_if_controls_are_rerun": 102,
+    "input_manifest": "run_headless/config/parked_dlc_matrix_approved.json",
+    "reuse_existing_turbsim_bts": true,
+    "row_count": 34,
+    "scenarios": [
+      "raw_qblade",
+      "one_way_spectral_vorlap",
+      "complete_hybrid_v8"
+    ],
+    "execution_entrypoint": "run_headless/submit_hvawt_complete_dlc_flight.sj",
+    "analysis_entrypoint": "run_headless/submit_hvawt_complete_dlc_analysis.sj"
+  },
+  "model": {
+    "modal_basis_rpm": 1.0,
+    "body_thickness_over_depth": 0.18,
+    "geometry_blended_branch": "airfoil_endpoint",
+    "parent_calibration": "examples/viv_geometry_blended/geometry_blended_calibration.json",
+    "parent_calibration_sha256": "f2dee270b43683b99b08bd3fcab10d816920be770ebe9355cd238f1d9ceadd0c",
+    "load_composition": "native_qblade_aerodynamics_plus_uncaptured_static_spectral_residual_plus_motion_correlated_geometry_blended_lockin",
+    "response_config": "run_headless/config/hvawt_response_model_v8_complete.json",
+    "response_model_type": "hvawt_airfoil_engineering_lockin_hybrid",
+    "spectral_source": "NACA0018_static_CL_compact_sine_squared_capture",
+    "structural_damping_source": "documented_parser_and_source_defined_engineering_projection",
+    "unified_gain_model": "run_headless/config/unified_viv_gain_model_v1.json",
+    "unified_gain_model_fingerprint": "40cbbced0d0be36d23e3e016556b063e43e72a88020b4d6b76a9af4a12bce4c2",
+    "unified_gain_model_sha256": "2da5e305b4dec79dfd3e569ad5c069f55bea387ca7cf85d33e03592e68f42ff9",
+    "tracked_modes": [6, 12]
+  },
+  "pilot": {
+    "assessment_tail_duration_s": 600.0,
+    "campaign_kind": "full_660s_resonance_sweep",
+    "duration_s": 660.0,
+    "expected_runs": 20,
+    "initial_azimuth_deg": 0.0,
+    "lock_in_peak_wind_speed_by_mode_mps": {"6": 8.25, "12": 12.2},
+    "predicted_peak_amplitude_target_by_mode_m": {
+      "6": 0.006363532058,
+      "12": 0.00529808019
+    },
+    "predicted_amplitude_target_by_selected_wind_and_mode_m": [
+      {
+        "wind_speed_mps": 3.0,
+        "mode6_equilibrium_amplitude_m": 0.0,
+        "mode12_equilibrium_amplitude_m": 0.0
+      },
+      {
+        "wind_speed_mps": 6.5,
+        "mode6_equilibrium_amplitude_m": 0.005767517328,
+        "mode12_equilibrium_amplitude_m": 0.0
+      },
+      {
+        "wind_speed_mps": 7.25,
+        "mode6_equilibrium_amplitude_m": 0.00305600367,
+        "mode12_equilibrium_amplitude_m": 0.0
+      },
+      {
+        "wind_speed_mps": 8.25,
+        "mode6_equilibrium_amplitude_m": 0.006363532058,
+        "mode12_equilibrium_amplitude_m": 0.0
+      },
+      {
+        "wind_speed_mps": 8.5,
+        "mode6_equilibrium_amplitude_m": 0.005762175579,
+        "mode12_equilibrium_amplitude_m": 0.0
+      },
+      {
+        "wind_speed_mps": 9.25,
+        "mode6_equilibrium_amplitude_m": 0.0,
+        "mode12_equilibrium_amplitude_m": 0.0
+      },
+      {
+        "wind_speed_mps": 11.2,
+        "mode6_equilibrium_amplitude_m": 0.0,
+        "mode12_equilibrium_amplitude_m": 0.004033547219
+      },
+      {
+        "wind_speed_mps": 12.2,
+        "mode6_equilibrium_amplitude_m": 0.0,
+        "mode12_equilibrium_amplitude_m": 0.00529808019
+      },
+      {
+        "wind_speed_mps": 13.2,
+        "mode6_equilibrium_amplitude_m": 0.0,
+        "mode12_equilibrium_amplitude_m": 0.00300406047
+      },
+      {
+        "wind_speed_mps": 16.0,
+        "mode6_equilibrium_amplitude_m": 0.0,
+        "mode12_equilibrium_amplitude_m": 0.0
+      }
+    ],
+    "predicted_amplitude_target_role": "closure_only_reference_not_total_complete_composition_acceptance_target",
+    "native_control_external_force_policy": "same_geometry_blended_airfoil_observer_with_zero_response_force_scale_and_zero_residual_scale",
+    "scenarios": [
+      "native_qblade_aero_only",
+      "native_qblade_aero_plus_geometry_blended_airfoil_hybrid"
+    ],
+    "static_spectrum_prepass": {
+      "azimuth_increment_deg": 30.0,
+      "facility_velocity_scale_applied": 1.0,
+      "closure": "static-spectrum-scaled geometry-blended airfoil negative-damping branch used to select the complete-composition wind grid",
+      "feedback_gain": 143.1939823335363,
+      "limiting_amplitude_ratio": 0.020343253217205814,
+      "fingerprint": "0329e93102d0ed64c9a274433b43639624a513fedde6916e7818854e73932417",
+      "peak_aerodynamic_to_structural_damping_ratio": {
+        "6": 1.643102774,
+        "12": 1.372314427
+      },
+      "scan_wind_max_mps": 20.0,
+      "scan_wind_min_mps": 2.0,
+      "selected_wind_roles": [
+        "below_onset_reference",
+        "mode6_lower_lockin_shoulder",
+        "mode6_minus_1mps",
+        "mode6_peak",
+        "mode6_upper_lockin_shoulder",
+        "mode6_plus_1mps_post_lockin",
+        "mode12_minus_1mps",
+        "mode12_peak",
+        "mode12_plus_1mps",
+        "above_lockin_reference"
+      ],
+      "scan_fingerprint": "915d54169086250ca60b5c5daebca07534a41256027d241423944ad1d1aa707e",
+      "velocity_basis": "local_rigid_body_relative_unscaled",
+      "wind_scan_step_mps": 0.05
+    },
+    "time_steps_s": [0.0075],
+    "wind_basis": "uniform_mean_inflow_selected_by_static_spectrum_structure_prepass",
+    "wind_speeds_mps": [3.0, 6.5, 7.25, 8.25, 8.5, 9.25, 11.2, 12.2, 13.2, 16.0]
+  },
+  "execution": {
+    "allocated_physical_cores_per_array_task": 112,
+    "architecture": "native_linux_x86_64",
+    "array_pair_count": 10,
+    "maximum_concurrent_cases_per_node": 1,
+    "numa_domains": 8,
+    "node_physical_cores": 112,
+    "qblade_library_sha256": "7d4d07401dddf65dcf25d7cb7d809a78fbf8ab9ecad629aaaf6d2a4308a0764d",
+    "qblade_threads_per_case": 112,
+    "result_filter_channel_count": 26,
+    "result_filter_role": "matched_26_channel_parked_fatigue_load_export",
+    "result_filter_sha256": "e3f051c4e9a347de39ebbd5d10836edc02ec194c7895302b22ef59c8dac29f0b",
+    "submission_entrypoint": "run_headless/submit_hvawt_response_pilot.sj"
+  },
+  "schema": "vorlap-hvawt-response-campaign-spec-v8",
+  "scope": "complete_three_path_hvawt_engineering_application_screen_not_hvawt_validation_or_certification",
+  "status": "ready_for_native_x86_full_submission"
+}

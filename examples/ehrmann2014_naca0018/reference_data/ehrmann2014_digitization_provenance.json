@@ -1,0 +1,35 @@
+{
+  "schema": "vorlap-ehrmann2014-publisher-figure-digitization-v1",
+  "citation": {
+    "authors": "R. S. Ehrmann, K. M. Loftin, S. Johnson, and E. B. White",
+    "doi": "10.1016/j.jfluidstructs.2013.10.008",
+    "journal": "Journal of Fluids and Structures 44 (2014) 205-215",
+    "title": "Lock-in of elastically mounted airfoils at a 90 degree angle of attack"
+  },
+  "digitization": {
+    "method": "Publisher JPEG markers thresholded at 30 percent grayscale, connected components classified by marker shape, and axes converted with the recorded linear or logarithmic pixel calibration.",
+    "uncertainty_policy": "The CSV uncertainty columns are graphical extraction allowances based on about two source pixels and are not experimental uncertainty bars.",
+    "figure_6": {
+      "publisher_image_url": "https://ars.els-cdn.com/content/image/1-s2.0-S0889974613002272-gr6.jpg",
+      "publisher_image_sha256": "4927964bf9511b4ac37ab159a6b9dd20e102d280778105e2d091c9728d564a89",
+      "publisher_image_pixels": [339, 260],
+      "series": "filled downward triangles labeled NACA 0018",
+      "axis_calibration": {
+        "reduced_velocity": "Ustar = 3 + (pixel_x - 42)*3/(338 - 42)",
+        "rms_acceleration_mps2": "a_rms = 2*(225 - pixel_y)/(225 - 3)"
+      },
+      "condition_boundary": "The publisher raster identifies the airfoil and plotted variables but does not visibly identify a unique mass-damping value. It is used as the reported representative NACA 0018 response sweep, not silently assigned to either simulated endpoint."
+    },
+    "figure_7": {
+      "publisher_image_url": "https://ars.els-cdn.com/content/image/1-s2.0-S0889974613002272-gr7.jpg",
+      "publisher_image_sha256": "052e0cee4d7b701e14770c3265c3d9ea4ce4103bafcf60370e484ea2f3daad2a",
+      "publisher_image_pixels": [345, 251],
+      "series": "filled downward triangles labeled NACA 0018",
+      "axis_calibration": {
+        "mass_damping": "mstar_zeta = 0.8 + (pixel_x - 47)*0.8/(337 - 47)",
+        "maximum_amplitude_over_chord": "log10(Amax/c) = -1 - (pixel_y - 56)/(172 - 56)"
+      },
+      "condition_boundary": "These points support a peak-amplitude versus mass-damping comparison. Interpolation is allowed only inside the digitized marker range; the simulated lower endpoint at 0.96 is reported against the nearest digitized boundary point without extrapolation."
+    }
+  }
+}

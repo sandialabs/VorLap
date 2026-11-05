@@ -1,0 +1,72 @@
+{
+  "axis_channel_probe": {
+    "applied_force": "+/- global Y",
+    "campaign_result_channel": "Y_b Tip Trl.Def. BLD_1 [m]",
+    "candidate_channels": [
+      {
+        "channel": "Y_b Tip Trl.Def. BLD_1 [m]",
+        "global_y_correlation": 1.0,
+        "paired_rms_m": 0.007306716869191377
+      },
+      {
+        "channel": "X_b Tip Trl.Def. BLD_1 [m]",
+        "global_y_correlation": -0.028812082133815652,
+        "paired_rms_m": 5.653073724236031e-17
+      }
+    ],
+    "global_y_paired_rms_m": 0.007306716869191377,
+    "global_y_position_channel": "Y_g Pos. BLD_1 pos 1.000 [m]",
+    "native_aerodynamics": false,
+    "passed": true,
+    "verified_body_tip_channel": "Y_b Tip Trl.Def. BLD_1 [m]"
+  },
+  "free_decay": [
+    {
+      "damping_pass": true,
+      "dominant_frequency_hz": 5.970149253732001,
+      "estimated_damping_ratio": 0.019558116132264873,
+      "frequency_pass": true,
+      "initial_decay_amplitude_m": 0.00539547971798597,
+      "mass_damping": 0.96,
+      "resolved_envelope_peaks": 40,
+      "target_damping_ratio": 0.02012578616352201
+    },
+    {
+      "damping_pass": true,
+      "dominant_frequency_hz": 5.970149253732001,
+      "estimated_damping_ratio": 0.02971382018706384,
+      "frequency_pass": true,
+      "initial_decay_amplitude_m": 0.004627500710316417,
+      "mass_damping": 1.44,
+      "resolved_envelope_peaks": 39,
+      "target_damping_ratio": 0.030188679245283016
+    }
+  ],
+  "generalized_mass_check": {
+    "generalized_mass_kg": 2.2199144519878358,
+    "implied_mass_ratio": 47.7,
+    "method": "generated_beam_mass_times_tip_normalized_Euler_Bernoulli_mode_quadrature; QBlade result export has no modal-mass channel",
+    "target_generalized_mass_kg": 2.2199144519878358
+  },
+  "orthogonal_mode_design": {
+    "EIx_over_EIy": 100.0,
+    "nominal_frequency_ratio": 10.0
+  },
+  "qualified_design": {
+    "EIx_over_EIy": 100.0,
+    "chord_m": 0.23,
+    "crossflow_bending_axis": "EIy_global_Y",
+    "mass_damping_bracket": [
+      0.96,
+      1.44
+    ],
+    "mass_ratio": 47.7,
+    "natural_frequency_hz": 6.0,
+    "orthogonal_bending_axis": "EIx_global_X",
+    "result_channel": "Y_b Tip Trl.Def. BLD_1 [m]",
+    "span_m": 0.9144,
+    "station_count": 21
+  },
+  "schema": "vorlap-ehrmann2014-structural-verification-v1",
+  "status": "passed"
+}

@@ -1,0 +1,260 @@
+{
+  "schema": "vorlap-prescribed-motion-wake-benchmark-v1",
+  "benchmark_id": "decuyper2026_re100_prescribed_motion_force",
+  "status": "pre_registered_before_raw_case_inventory",
+  "source": {
+    "doi": "10.4121/77985fa6-c546-4450-9d84-14b85f2d7e86.v1",
+    "reference_type": "Re=100 CFD simulation dataset; not a physical experiment",
+    "reference_citation": "Decuyper, De Troyer & Runacres (2024)",
+    "benchmark_report_url": "https://www.nonlinearbenchmark.org/benchmarks/unsteady-fluid-mechanics",
+    "principal_mat_basename": "oscillating_cylinder_benchmark_dataset_v4.mat",
+    "reynolds_number": 100,
+    "reported_metadata": {
+      "sampling_frequency_hz": 40.0,
+      "y_units": "m",
+      "p_on_cylinder_quantity": "kinematic pressure p_k=p/rho",
+      "p_on_cylinder_units": "m^2/s^2",
+      "initial_flow": "shared developed stationary initial flow"
+    },
+    "required_fields": [
+      "time",
+      "fs",
+      "y",
+      "cy",
+      "cx",
+      "Vx_grid",
+      "Vy_grid",
+      "p_grid",
+      "wz_grid",
+      "p_on_cylinder",
+      "grid_points",
+      "cylinder_points"
+    ]
+  },
+  "case_inventory": {
+    "expected_total": 35,
+    "families": {
+      "stationary": 1,
+      "swept_sine": 12,
+      "multisine": {
+        "records": 12,
+        "amplitude_groups": 6,
+        "independent_phase_realizations_per_group": 2
+      },
+      "monosine": 10
+    },
+    "raw_case_ids": null,
+    "raw_case_indices": null,
+    "mapping_status": "pending_verified_inventory",
+    "mapping_gate": "Before any fit, derive family, amplitude-group, and realization labels from source metadata; save a human-reviewed, hash-bound inventory. Do not infer or fabricate identifiers from presumed MAT ordering."
+  },
+  "split_lock": {
+    "assignment_basis": "semantic source metadata, never guessed raw indices",
+    "training": {
+      "expected_count": 13,
+      "selectors": [
+        {
+          "family": "stationary",
+          "selection": "all",
+          "expected_count": 1
+        },
+        {
+          "family": "swept_sine",
+          "selection": "all",
+          "expected_count": 12
+        }
+      ]
+    },
+    "development": {
+      "expected_count": 6,
+      "selectors": [
+        {
+          "family": "multisine",
+          "selection": "phase_realization_ordinal_within_each_amplitude_group",
+          "realization_ordinal": 1,
+          "expected_count": 6
+        }
+      ]
+    },
+    "final_holdout": {
+      "locked": true,
+      "expected_count": 16,
+      "selectors": [
+        {
+          "family": "multisine",
+          "selection": "phase_realization_ordinal_within_each_amplitude_group",
+          "realization_ordinal": 2,
+          "expected_count": 6
+        },
+        {
+          "family": "monosine",
+          "selection": "all",
+          "expected_count": 10
+        }
+      ]
+    }
+  },
+  "access_policy": {
+    "training_fit_reads": [
+      "training"
+    ],
+    "model_selection_reads": [
+      "training",
+      "development"
+    ],
+    "final_holdout_unlock_requires": [
+      "verified raw-case inventory fingerprint",
+      "frozen preprocessing and force-sign receipt",
+      "frozen nondimensionalization",
+      "frozen ROM equations and parameter bounds",
+      "frozen objective and scoring implementation hash",
+      "frozen fitted parameter fingerprint",
+      "recorded development decision"
+    ],
+    "prohibited_before_final_unlock": [
+      "reading final-holdout cy or cx values",
+      "plotting final-holdout force histories",
+      "using final holdout for sign selection",
+      "using final holdout for pressure quadrature decisions",
+      "using final holdout for preprocessing, architecture, bounds, thresholds, fitting, or stopping decisions"
+    ],
+    "invalidation_rule": "After final-holdout access, any change to signs, pressure quadrature, normalization, preprocessing, equations, bounds, coefficients, objective, or scoring creates a new benchmark version and cannot reuse the accessed holdout as final evidence."
+  },
+  "preprocessing": {
+    "time": "Retain source samples; require finite, strictly increasing time and consistency with fs before any resampling.",
+    "nondimensionalization": {
+      "time": "s = omega0 * t",
+      "displacement": "eta = y / D",
+      "transverse_velocity": "u = d(eta)/ds = dy/dt / (omega0 * D)",
+      "force_coefficients": "Use supplied cy and cx only after the force-sign gate; do not silently renormalize them.",
+      "stationary_frequency_anchor": {
+        "source": "stationary training cy only",
+        "peak_estimator": "Peak of the single-sided Hann-windowed periodogram of mean-removed cy in the frozen 2 to 4 Hz search band, using source samples and no zero padding.",
+        "nominal_frequency_hz": 3.0,
+        "relative_tolerance": 0.02,
+        "acceptance": "abs(f0_hz - 3.0) / 3.0 <= 0.02",
+        "angular_frequency": "omega0 = 2*pi*f0_hz",
+        "fit_boundary": "Freeze omega0 before ROM fitting; omega0 is not an optimized ROM parameter."
+      },
+      "required_metadata": [
+        "time units",
+        "y units",
+        "positive transverse coordinate and y sign convention",
+        "cylinder diameter D",
+        "free-stream speed U_inf",
+        "pressure representation and units",
+        "pressure reference p_ref",
+        "cy and cx coefficient normalization and sign convention"
+      ],
+      "metadata_gate": "Start from the source-reported y units of m, kinematic-pressure units of m^2/s^2, and fs=40 Hz, but verify those facts against the MAT inventory. Resolve every required_metadata entry from source metadata, verify that time is in seconds and consistent with fs, and write the evidence and conversions to the inventory receipt before frequency estimation, differentiation, pressure integration, or fitting. If time units, y units, transverse coordinate sign, D, U_inf, pressure units/reference, or coefficient convention remains ambiguous, stop; no defaults may be guessed."
+    },
+    "derivative": "Use one frozen differentiator selected from training only; store its boundary handling and coefficients in the preprocessing receipt.",
+    "record_independence": "Filtering, differentiation, and state initialization operate independently per record; no samples cross record boundaries."
+  },
+  "force_sign_and_pressure_gate": {
+    "status": "unresolved_fail_closed",
+    "eligible_data": "training split only",
+    "required_inputs": [
+      "cy",
+      "cx",
+      "p_on_cylinder",
+      "cylinder_points",
+      "source time and y units",
+      "source transverse coordinate sign",
+      "source D and U_inf",
+      "source pressure units and p_ref",
+      "source cy and cx coefficient convention"
+    ],
+    "pressure_resultants": {
+      "source_kinematic_pressure_p_over_rho": "If and only if metadata confirms p_on_cylinder is kinematic pressure p_kin=p/rho, use C_pforce = -2 integral((p_kin-p_ref)n ds)/(U_inf^2 D), with p_ref in the same kinematic-pressure units.",
+      "dimensional_pressure": "If and only if metadata confirms dimensional pressure, use C_pforce = -2 integral((p-p_ref)n ds)/(rho U_inf^2 D), with source-resolved rho and p_ref.",
+      "pressure_coefficient": "If and only if metadata confirms Cp=(p-p_ref)/(0.5 rho U_inf^2), use C_pforce = -integral(Cp n ds)/D."
+    },
+    "pressure_metadata_gate": "The source report identifies p_on_cylinder as kinematic pressure p/rho in m^2/s^2; verify that identity against the MAT inventory, then resolve its reference p_ref together with U_inf and D. If the reported representation, units, reference, U_inf, or D is unresolved or inconsistent, stop before pressure integration, sign selection, or ROM fitting.",
+    "required_checks": [
+      "establish cylinder-point ordering and close the contour",
+      "construct outward normals and verify their orientation geometrically",
+      "use source timestamps without an optimized phase shift",
+      "compare both sign candidates for transverse pressure force against supplied cy",
+      "check streamwise sign against supplied cx while treating viscous traction as a documented pressure-only closure limitation",
+      "record quadrature, normals, candidate metrics, selected sign, and input hashes"
+    ],
+    "transverse_acceptance": {
+      "minimum_absolute_pearson_correlation": 0.95,
+      "selected_sign_must_have_positive_correlation": true,
+      "minimum_correlation_margin_over_opposite_sign": 1.0
+    },
+    "amplitude_policy": "Do not impose exact pressure-versus-total-force amplitude closure unless source documentation establishes that cy excludes viscous traction.",
+    "failure_action": "Stop before ROM fitting. No default time or y units, transverse sign, D, U_inf, pressure units/reference, coefficient convention, cy sign, pressure sign, contour orientation, or phase correction is permitted."
+  },
+  "minimum_rom": {
+    "independent_variable": "s = omega0*t",
+    "input": "u = d(eta)/ds = dy/dt/(omega0*D)",
+    "states": [
+      "q",
+      "dq_ds"
+    ],
+    "equations": [
+      "d2q_ds2 + epsilon*(q^2 - 1)*dq_ds + q = b*u",
+      "cy_hat = c_q*q + c_v*u"
+    ],
+    "fit_parameters": [
+      "epsilon",
+      "b",
+      "c_q",
+      "c_v",
+      "q0",
+      "qdot0"
+    ],
+    "parameter_bounds": {
+      "epsilon": [0.001, 5.0],
+      "b": [-50.0, 50.0],
+      "c_q": [0.001, 3.0],
+      "c_v": [-5.0, 5.0],
+      "q0": [-4.0, 4.0],
+      "qdot0": [-4.0, 4.0]
+    },
+    "initial_state_definition": {
+      "q0": "q evaluated at s=0",
+      "qdot0": "dq/ds evaluated at s=0; the dot denotes differentiation with respect to dimensionless s, not physical time t"
+    },
+    "initial_state": "Fit one bounded q0=q(s=0) and qdot0=dq/ds at s=0 using training data only, then apply that identical shared state to every training, development, and final record. Record-specific phases or initial states are prohibited.",
+    "common_initialization_gate": "The source report states that the records use a shared developed stationary initial flow. Confirm that convention from the raw inventory before fitting. If the raw audit disproves common initialization, stop and issue a new protocol; do not repair the mismatch with record-specific force histories, phases, or states."
+  },
+  "fit_and_score": {
+    "fit_target": "cy",
+    "objective": "Minimize the training-only sum over records of mean((cy_hat-cy)^2) divided by that record's training cy variance; equal weight per record.",
+    "development_use": "One architecture and stopping decision after training; no coefficient fitting to development outputs.",
+    "reported_metrics": [
+      "per-record normalized RMSE",
+      "per-record Pearson correlation",
+      "force amplitude ratio",
+      "dominant-frequency error",
+      "aggregate median and worst-record metrics"
+    ],
+    "final_scoring": "Run once after unlock with the frozen model and report all 16 records, including failures; do not refit or suppress cases."
+  },
+  "evidence_boundary": {
+    "without_qblade": [
+      "prescribed-motion input replay",
+      "cy and cx force-history comparison",
+      "pressure-integration sign audit",
+      "ROM train/development/final predictive scores"
+    ],
+    "not_established": [
+      "experimental validation",
+      "free structural response closure",
+      "lock-in amplitude prediction",
+      "wind-blade fatigue conservatism",
+      "QBlade structural-response or QBlade-coupled aeroelastic code-to-code verification"
+    ],
+    "claim": "This Re=100 CFD dataset can support code-to-code prescribed-motion wake-force verification independently of QBlade; it is not experimental validation and is not by itself a two-way aeroelastic validation."
+  },
+  "license_boundary": {
+    "dataset_license": "CC-BY-NC-4.0",
+    "intended_use": "noncommercial research verification",
+    "repository_mit_license_relicenses_dataset": false,
+    "raw_or_processed_data_redistributed_by_this_scaffold": false,
+    "commercial_use": "Not authorized by this scaffold; obtain separate permission from the rights holders."
+  }
+}

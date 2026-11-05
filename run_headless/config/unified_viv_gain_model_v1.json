@@ -1,0 +1,123 @@
+{
+  "branches": {
+    "ffa_w3_iea10_tip_geometry": {
+      "domain": {
+        "geometry_families": [
+          "BASE",
+          "EXT",
+          "SWEEP",
+          "DIHE",
+          "COMB"
+        ],
+        "fu_configurations": [
+          "P80A310",
+          "P90A310",
+          "P95A310",
+          "P95A320"
+        ],
+        "fu_wind_speed_anchors_mps": [
+          6.0,
+          10.0,
+          14.0,
+          18.0,
+          22.0
+        ],
+        "inclination_anchors_deg": [
+          40.0,
+          42.5,
+          45.0,
+          47.5,
+          50.0,
+          52.5,
+          55.0,
+          57.5,
+          60.0,
+          65.0,
+          70.0
+        ],
+        "interpolation_policy": "exact_anchors_only",
+        "profile_family": "FFA-W3_family"
+      },
+      "gain_representation": "zero_amplitude_feedback_over_opposing_damping",
+      "parameters": {
+        "composition_order": [
+          "EXT",
+          "SWEEP",
+          "DIHE"
+        ],
+        "geometry_margin_weights": {
+          "DIHE": 0.3333333333333333,
+          "EXT": 0.3333333333333333,
+          "SWEEP": 0.3333333333333333
+        },
+        "limiting_amplitude_m": 1.57,
+        "normalization": "Lambda=1 and L_ref=1.57 m preserve the dimensional signed-power saturation without assigning a new physical reference length",
+        "response_frequency_ratio": 1.0
+      },
+      "sources": {
+        "geometry_composition": {
+          "path": "examples/horcas2020_iea10_tip_geometry/evidence/combined_tip_v1/model.json",
+          "path_basis": "repository_root",
+          "semantic_fingerprint": "8b067d6f3a049f665c451f545a25dc8a0345b0a5bc829a3715f691038f899891",
+          "sha256": "656a2dac90eda862ec02d6e893679b1118ca5043d962c19c518b978ba202a0dc"
+        },
+        "signed_work_shape": {
+          "path": "examples/fu2026_iea10/evidence/signed_work_shape_v1/model.json",
+          "path_basis": "repository_root",
+          "semantic_fingerprint": "e9b3449161d5eacf1fa94accd5ab64bd8e5175867dc51ca30b082c4b63887837",
+          "sha256": "da760c0e04a64a52f32066ca8856d2a2cba9d2647b150a09ce39d6e5f06ff6e5"
+        }
+      }
+    },
+    "naca0018_quasi_static_azimuth": {
+      "domain": {
+        "kinematic_family": "quasi_static_azimuth",
+        "profile": "NACA0018",
+        "reynolds_policy": "replicated_reynolds_independent_source_no_correction"
+      },
+      "gain_representation": "spectral_basis_stretch",
+      "gain_state": {
+        "capture_window": "compact_sine_squared",
+        "frequency_ratio_high": 1.023009665944805,
+        "frequency_ratio_low": 0.8393925464162503,
+        "frequency_ratio_peak": 0.9792913044320896,
+        "limiting_amplitude_ratio": 0.020343253217205814,
+        "static_spectrum_reynolds_model": "replicated_reynolds_independent",
+        "static_spectrum_sha256": "64399e25dc5008caaed88d42e5cf24160c1045f17a282a06234648202cece369",
+        "zero_amplitude_gain": 143.1939823335363
+      },
+      "source": {
+        "path": "geometry_blended_airfoil_calibration.json",
+        "path_basis": "artifact_directory",
+        "semantic_fingerprint": "67222e1e4e4d22b51185a124d57e1f80540890d2194b40bc3d9998f046d84a1a",
+        "sha256": "3916cef057d73b861a1c6c4853c8f6b102c6b4dcb98467819b07ed63c1018d97"
+      }
+    }
+  },
+  "claim_boundary": {
+    "fatigue_validated": false,
+    "horcas_result": "high_fidelity_numerical_validation_not_experimental_validation",
+    "hvawt_certification_validated": false,
+    "hvawt_experimentally_validated": false,
+    "hvawt_role": "untuned_quasi_static_azimuth_application"
+  },
+  "common_force_law": {
+    "generalized_force": "Q=c_a0*(1-(A/(Lambda*L_ref))^2)*qdot_filtered",
+    "opposing_damping_conversion": "c_a0=R*c_opposing",
+    "positive_work_sign": "positive force_velocity_work_supplies_negative_aerodynamic_damping",
+    "spectral_basis_conversion": "c_a0=H*B_spectral"
+  },
+  "model_fingerprint": "40cbbced0d0be36d23e3e016556b063e43e72a88020b4d6b76a9af4a12bce4c2",
+  "schema": "vorlap-unified-viv-gain-model-v1",
+  "status": "frozen_before_unified_parity_and_hvawt_application",
+  "training_roles": {
+    "ehrmann_naca0018_outer_amplitude_points": "airfoil_parameter_training",
+    "ehrmann_naca0018_three_interior_points": "same_profile_interpolation_holdout",
+    "fu_response_sweep": "training_after_preserved_failed_assessment",
+    "grinderslev_signed_power_curve": "signed_saturation_training",
+    "horcas_base_ext_sweep_dihe_44_rows": "turbine_geometry_training",
+    "horcas_comb_11_rows": "protected_high_fidelity_numerical_validation",
+    "mannini_rectangular_3x2": "sectional_transfer_training",
+    "marra_rectangular_4x1": "sectional_transfer_training"
+  }
+}

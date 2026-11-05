@@ -1,0 +1,55 @@
+{
+  "schema": "vorlap-hvawt-modal-decay-source-contract-v1",
+  "source_root_hint": "run_headless/runs/vorlap_changed_geometry_trial_hardened_v2_20260731/baseline/cases/U05p00ms",
+  "sim_relative_path": "baseline_10m_HVAWT_reference_turbine_Wwnd.sim",
+  "substructure_relative_path": "10m_HVAWT_reference_turbine/Structure/10m_HVAWT_reference_substructure.str",
+  "main_structural_relative_path": "10m_HVAWT_reference_turbine/Structure/10m_HVAWT_reference_main.str",
+  "legacy_external_config_relative_path": "10m_HVAWT_reference_turbine/Control/vorlap_qblade_external.json",
+  "blade_strut_station_damping_relative_paths": [
+    "10m_HVAWT_reference_turbine/Structure/10m_HVAWT_reference_blade.str",
+    "10m_HVAWT_reference_turbine/Structure/10m_HVAWT_reference_lower_strut.str",
+    "10m_HVAWT_reference_turbine/Structure/10m_HVAWT_reference_upper_strut.str"
+  ],
+  "rayleigh_scalar_relative_paths": [
+    "10m_HVAWT_reference_turbine/Structure/10m_HVAWT_reference_blade.str",
+    "10m_HVAWT_reference_turbine/Structure/10m_HVAWT_reference_lower_strut.str",
+    "10m_HVAWT_reference_turbine/Structure/10m_HVAWT_reference_upper_strut.str",
+    "10m_HVAWT_reference_turbine/Structure/10m_HVAWT_reference_torque_tube.str",
+    "10m_HVAWT_reference_turbine/Structure/10m_HVAWT_reference_tower.str"
+  ],
+  "expected_sim_settings": {
+    "ADDDAMP": "0",
+    "INCLUDEAERO": "1",
+    "INCLUDEHYDRO": "0",
+    "INITIAL_AZIMUTH": "0",
+    "MEANINF": "5",
+    "PRESCRIBETYPE": "1",
+    "RAMPUP": "0",
+    "RELAXSTEPS": "0",
+    "RPMPRESCRIBED": "1",
+    "TIMESTEP": "0.0075",
+    "WNDTYPE": "1"
+  },
+  "files_sha256": {
+    "10m_HVAWT_reference_turbine/10m_HVAWT_reference_turbine.trb": "2a5caa3e5c9eed5692293a995c242e2814fb8592e4189520dbe9798be0753be6",
+    "10m_HVAWT_reference_turbine/10m_HVAWT_reference_turbine.trb.vorlap.bak": "db4de24622d000dde82fdb58c5cf8dc8bbef125a36732e98dbd3fb2ceee5e0f2",
+    "10m_HVAWT_reference_turbine/Aero/10m_HVAWT_reference_rotor.bld": "fd817620a82154eb093d7c72515a6972438b4bf58f6fffcdf5bcde613d2f8400",
+    "10m_HVAWT_reference_turbine/Aero/Airfoils/NACA_0018_RFoil.afl": "c79d94607b7aa157fcc7279ad5616040affd15c0274a01971f2065b15f5b2dc4",
+    "10m_HVAWT_reference_turbine/Aero/Polars/NACA_0018_RFoil_MultiRePolar.plr": "030fb7e2caefba74f85f2eb03086f68a5170066ae783c094fb75aaa85f558ad2",
+    "10m_HVAWT_reference_turbine/Control/vorlap_10m_HVAWT_reference_external.json": "2a133d52e1cf70c5c2530f40c694a54ce6a72397defe04fac33f071b29ece12a",
+    "10m_HVAWT_reference_turbine/Control/vorlap_qblade_external.json": "ca14b779025acd71912d3d38a705ebfd5ed9cc3d8f76692d3a3fcb250b64a8b6",
+    "10m_HVAWT_reference_turbine/Control/vorlap_qblade_geometry_audit.csv": "77cd0ea69b093d3e55a1bc92dccec42046bd82f2bcbad33a6429a34739d4a766",
+    "10m_HVAWT_reference_turbine/Control/vorlap_stable_support_patch.json": "4eed9db6d105ca73b0ddbd8d9a4bae2bcf5a30fee413784d5600e8808dcfb574",
+    "10m_HVAWT_reference_turbine/Structure/10m_HVAWT_reference_blade.str": "45d9ef9e19ae152dd5cf9a64df8faaedf22f5b23c92b0e21c3fbd0e99577a619",
+    "10m_HVAWT_reference_turbine/Structure/10m_HVAWT_reference_lower_strut.str": "28730ddab09608e31b77d13403ad50c91e69e5cede845f41e42dbcc2e750a2fa",
+    "10m_HVAWT_reference_turbine/Structure/10m_HVAWT_reference_main.str": "406c21a732aa95524657374668504362eff96023dada186e3a6c1b50e0b141e9",
+    "10m_HVAWT_reference_turbine/Structure/10m_HVAWT_reference_main.str.vorlap.bak": "406c21a732aa95524657374668504362eff96023dada186e3a6c1b50e0b141e9",
+    "10m_HVAWT_reference_turbine/Structure/10m_HVAWT_reference_substructure.str": "0093c6970a257e7bbd206ee15d81f84c70b5e138decb15e752c838c388e747dc",
+    "10m_HVAWT_reference_turbine/Structure/10m_HVAWT_reference_torque_tube.str": "3a8b6142594a73e100ecc21e55ef35e956f6305a18130989a3e6a8f46f017a61",
+    "10m_HVAWT_reference_turbine/Structure/10m_HVAWT_reference_tower.str": "153e7ba28d9d93a9288763e24d126fcf8cb306e59f485e163091fc3d17327171",
+    "10m_HVAWT_reference_turbine/Structure/10m_HVAWT_reference_upper_strut.str": "6e376522b432b0e453e72f41ee8e9672de24bc074d46bace35dd2d0082a2d0ae",
+    "10m_HVAWT_reference_turbine/VorLapAirfoils/NACA0018.h5": "64399e25dc5008caaed88d42e5cf24160c1045f17a282a06234648202cece369",
+    "10m_HVAWT_reference_turbine/VorLapAirfoils/ffa_w3_211.h5": "7f968617b10dab530bba5418b0802b885195f585d70d6218ea0083d939dc95dc",
+    "baseline_10m_HVAWT_reference_turbine_Wwnd.sim": "2e671d592e860aa0523ceef05deba4ae9eb331564510041f7fd05677845b20f2"
+  }
+}

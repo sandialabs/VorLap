@@ -1,0 +1,4 @@
+scruton_number,natural_frequency_hz,equivalent_mass_kg_per_m,damping_ratio,g_prime_max,h_prime_max,u_star_max_figure_digitized
+2.94,20.02,0.2311,0.0030,10.578932,1.440342,6.8
+5.18,15.38,0.4311,0.0028,7.908404,1.797174,6.5
+7.02,13.18,0.6027,0.0027,5.714756,2.090286,6.2

@@ -1,0 +1,125 @@
+{
+  "source_data": "paper_drafts/NAWEA_QBladeBridge/presentation/data/full_load_histories/moments_full_600s_U11p25_samples.npz",
+  "source_sha256": "c23ad5bbe017a0679918c45bc61d44e33b0b140fc0b5930f197912c5faae87c7",
+  "generator_sha256": "74788993fdb0e54f8cc1b3f6c20ef8378cb127216a7d57d2bc59c32682637226",
+  "wind_speed_mps": 11.25,
+  "seed": 4433456,
+  "station": "Blade 1, z/H = 0.23",
+  "channel": "Local Y flapwise moment [Nm]",
+  "time_window_s": [
+    60,
+    660
+  ],
+  "samples": 80000,
+  "time_step_s": 0.0075,
+  "initial_recorded_phase_deg": 40.00749588012695,
+  "angular_speed_deg_per_s": 6.0,
+  "criterion": "Maximize median across 10 revolutions of high-pass flapwise RMS in a 10-degree circular window centered at each 1-degree grid angle. Zero-phase fourth-order Butterworth cutoff 0.5 Hz isolates fast oscillation from slow 1 rpm load variation.",
+  "selected_azimuth_deg": 147,
+  "selected_statistics": {
+    "azimuth_deg": 147,
+    "qblade_median_rms_Nm": 13.82399405329329,
+    "qblade_q25_rms_Nm": 13.485630313150669,
+    "qblade_q75_rms_Nm": 15.395374904741743,
+    "spectral_median_rms_Nm": 47.57232006813605,
+    "spectral_q25_rms_Nm": 36.379165019618725,
+    "spectral_q75_rms_Nm": 55.37721518956944,
+    "hybrid_median_rms_Nm": 99.71526637980102,
+    "hybrid_q25_rms_Nm": 75.74775717355989,
+    "hybrid_q75_rms_Nm": 115.54096113050659
+  },
+  "comparison_30deg": {
+    "azimuth_deg": 30,
+    "qblade_median_rms_Nm": 19.579280079955076,
+    "qblade_q25_rms_Nm": 18.684499396913427,
+    "qblade_q75_rms_Nm": 21.24241006127066,
+    "spectral_median_rms_Nm": 20.809517786069904,
+    "spectral_q25_rms_Nm": 19.21701817642363,
+    "spectral_q75_rms_Nm": 21.485769039558257,
+    "hybrid_median_rms_Nm": 21.277786729228758,
+    "hybrid_q25_rms_Nm": 19.992965700269846,
+    "hybrid_q75_rms_Nm": 22.378930039895963
+  },
+  "hybrid_each_revolution_selected_rms_Nm": [
+    41.24331708977198,
+    75.73944603283549,
+    110.97528013738916,
+    152.4446522758997,
+    110.9305752591532,
+    117.06285479487907,
+    133.54813633525086,
+    63.22430196180414,
+    75.7726905957331,
+    88.49995750044884
+  ],
+  "hybrid_each_revolution_30deg_rms_Nm": [
+    21.651783241349076,
+    22.62131230607826,
+    32.184391313337045,
+    21.263761809742434,
+    21.03697097260631,
+    19.644963942824358,
+    22.719750932097167,
+    19.155797518719567,
+    21.291811648715086,
+    17.183709849964547
+  ],
+  "sensitivity": [
+    {
+      "cutoff_hz": 0.2,
+      "window_width_deg": 5,
+      "maximizing_angle_deg": 147,
+      "peak_median_rms_Nm": 101.9482182335238
+    },
+    {
+      "cutoff_hz": 0.2,
+      "window_width_deg": 10,
+      "maximizing_angle_deg": 147,
+      "peak_median_rms_Nm": 99.75333968231838
+    },
+    {
+      "cutoff_hz": 0.2,
+      "window_width_deg": 20,
+      "maximizing_angle_deg": 227,
+      "peak_median_rms_Nm": 80.99180237635483
+    },
+    {
+      "cutoff_hz": 0.5,
+      "window_width_deg": 5,
+      "maximizing_angle_deg": 147,
+      "peak_median_rms_Nm": 101.45844066189696
+    },
+    {
+      "cutoff_hz": 0.5,
+      "window_width_deg": 10,
+      "maximizing_angle_deg": 147,
+      "peak_median_rms_Nm": 99.71526637980102
+    },
+    {
+      "cutoff_hz": 0.5,
+      "window_width_deg": 20,
+      "maximizing_angle_deg": 146,
+      "peak_median_rms_Nm": 80.39259814762417
+    },
+    {
+      "cutoff_hz": 1.0,
+      "window_width_deg": 5,
+      "maximizing_angle_deg": 147,
+      "peak_median_rms_Nm": 101.25023996264211
+    },
+    {
+      "cutoff_hz": 1.0,
+      "window_width_deg": 10,
+      "maximizing_angle_deg": 147,
+      "peak_median_rms_Nm": 99.52199399934253
+    },
+    {
+      "cutoff_hz": 1.0,
+      "window_width_deg": 20,
+      "maximizing_angle_deg": 146,
+      "peak_median_rms_Nm": 80.35283762794323
+    }
+  ],
+  "independent_local_linear_detrend_peak_deg": 147,
+  "scope": "Candidate selected from one matched-seed rotating record, not a proven worst fixed angle. A fixed-rotor run changes wake, feedback and response history; no equilibrium or universal worst angle is claimed."
+}

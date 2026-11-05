@@ -1,0 +1,322 @@
+{
+  "schema": "vorlap-fu2026-p80-v6-local-screen-analysis-v3",
+  "status": "passed",
+  "model_type": "single_mode_airfoil_geometry_blended_fu_signed_work_shape_reproduction_v6",
+  "minimum_screen_duration_s": 300.0,
+  "case_count": 5,
+  "strict_all_five_pass": true,
+  "claim_boundary": "Local P80 convergence screen using proxy native-damping calibration; not the production 40-case reproduction and not independent validation. The inactive-row stationarity rule was corrected after the local U22 screen exposed the ill conditioning of relative drift near zero; no closure coefficient or response limit was changed.",
+  "cases": [
+    {
+      "case_id": "P80A310_U06_complete",
+      "wind_speed_mps": 6.0,
+      "executed_duration_s": 300.0,
+      "target_amplitude_m": 0.063285,
+      "target_frequency_hz": 0.659216,
+      "result": {
+        "path": "P80A310_U06_complete_v6_screen.txt",
+        "sha256": "b2bda986a21df548dd94ea402a6822efb68ada8517d25d00242535e8963ba5ff"
+      },
+      "run_summary": {
+        "path": "grinderslev2022_p100_i50_iea10_single_blade_run_summary.json",
+        "sha256": "2b4be2fe3980e5594651078de3cbbd2e32c8d752ce1da368530368a162f6c3d5"
+      },
+      "history": {
+        "path": "P80A310_U06_complete_v6_screen_sil_vorlap_history.csv",
+        "sha256": "a8b1aecf20fd8dde64b8db2a3b06e2d641410c1a4d638282f8937009d96d7083",
+        "rows": 50000,
+        "maximum_energy_closure_error": 1.3554221221963314e-17,
+        "maximum_abs_generated_force_n": 7996.868144706586,
+        "force_or_power_limit_activated": false
+      },
+      "metrics": {
+        "fu_sqrt2_rms_amplitude_m": 0.06238516026316851,
+        "dominant_frequency_hz": 0.6698975798264182,
+        "frequency_bin_width_hz": 0.016666666666666035,
+        "assessment_start_s": 240.0,
+        "assessment_end_s": 300.0,
+        "stationarity_window_start_s": 246.25662461745168,
+        "stationarity_window_split_s": 273.1283123087258,
+        "stationarity_window_end_s": 300.0,
+        "stationarity_first_half_amplitude_m": 0.06225623168263385,
+        "stationarity_second_half_amplitude_m": 0.06320196788664002,
+        "stationarity_relative_change": 0.01507651484324022,
+        "stationarity_first_half_frequency_hz": 0.6701216400719828,
+        "stationarity_second_half_frequency_hz": 0.6692607575161124,
+        "stationarity_half_frequency_bin_width_hz": 0.03721899657602721,
+        "stationarity_frequency_change_hz": 0.000860882555870468,
+        "stationarity_amplitude_pass": true,
+        "stationarity_frequency_pass": true,
+        "stationarity_pass": true
+      },
+      "score": {
+        "target_active": true,
+        "amplitude_rule": "active_strict_relative_error_at_most_30_percent",
+        "amplitude_absolute_error_m": 0.0008998397368314842,
+        "amplitude_relative_error": 0.014218847070103253,
+        "amplitude_allowance_m": 0.0189855,
+        "amplitude_digitization_inclusive_allowance_m": 0.026425499999999998,
+        "amplitude_digitization_inclusive_pass": true,
+        "amplitude_pass": true,
+        "frequency_scoreable": true,
+        "frequency_error_ratio_of_fu_fn2": 0.01585039297583937,
+        "frequency_pass": true,
+        "stationarity_policy": "active_relative_amplitude_and_frequency",
+        "stationarity_amplitude_change_m": 0.0009457362040061756,
+        "stationarity_amplitude_pass": true,
+        "stationarity_frequency_pass": true,
+        "stationarity_pass": true
+      },
+      "pass": true
+    },
+    {
+      "case_id": "P80A310_U10_complete",
+      "wind_speed_mps": 10.0,
+      "executed_duration_s": 300.0,
+      "target_amplitude_m": 0.780549,
+      "target_frequency_hz": 0.659216,
+      "result": {
+        "path": "P80A310_U10_complete_v6_screen.txt",
+        "sha256": "0bc8ba6e3cd946a8f992131d7d3a908636d674d0a63f7f7a0c7e7463dc49196f"
+      },
+      "run_summary": {
+        "path": "grinderslev2022_p100_i50_iea10_single_blade_run_summary.json",
+        "sha256": "b78cd76c694a8abe4645a3d91d81bd3ec9e435436e2d370a52f5b8a56f58f169"
+      },
+      "history": {
+        "path": "P80A310_U10_complete_v6_screen_sil_vorlap_history.csv",
+        "sha256": "3b670e14313994de5f4e302859b34c54eeb6ae4ced37008d12c529090164e94c",
+        "rows": 50000,
+        "maximum_energy_closure_error": 5.400682071693419e-18,
+        "maximum_abs_generated_force_n": 7996.596410940041,
+        "force_or_power_limit_activated": false
+      },
+      "metrics": {
+        "fu_sqrt2_rms_amplitude_m": 0.7837419575698269,
+        "dominant_frequency_hz": 0.6694066375768007,
+        "frequency_bin_width_hz": 0.016666666666666035,
+        "assessment_start_s": 240.0,
+        "assessment_end_s": 300.0,
+        "stationarity_window_start_s": 246.25662461745168,
+        "stationarity_window_split_s": 273.1283123087258,
+        "stationarity_window_end_s": 300.0,
+        "stationarity_first_half_amplitude_m": 0.7841056874453701,
+        "stationarity_second_half_amplitude_m": 0.7860444948776243,
+        "stationarity_relative_change": 0.0024695821509070565,
+        "stationarity_first_half_frequency_hz": 0.6689617795623645,
+        "stationarity_second_half_frequency_hz": 0.6691689552744008,
+        "stationarity_half_frequency_bin_width_hz": 0.03721899657602721,
+        "stationarity_frequency_change_hz": 0.00020717571203632268,
+        "stationarity_amplitude_pass": true,
+        "stationarity_frequency_pass": true,
+        "stationarity_pass": true
+      },
+      "score": {
+        "target_active": true,
+        "amplitude_rule": "active_strict_relative_error_at_most_30_percent",
+        "amplitude_absolute_error_m": 0.0031929575698268486,
+        "amplitude_relative_error": 0.004090656153331628,
+        "amplitude_allowance_m": 0.2341647,
+        "amplitude_digitization_inclusive_allowance_m": 0.2416047,
+        "amplitude_digitization_inclusive_pass": true,
+        "amplitude_pass": true,
+        "frequency_scoreable": true,
+        "frequency_error_ratio_of_fu_fn2": 0.015121883924618964,
+        "frequency_pass": true,
+        "stationarity_policy": "active_relative_amplitude_and_frequency",
+        "stationarity_amplitude_change_m": 0.0019388074322541637,
+        "stationarity_amplitude_pass": true,
+        "stationarity_frequency_pass": true,
+        "stationarity_pass": true
+      },
+      "pass": true
+    },
+    {
+      "case_id": "P80A310_U14_complete",
+      "wind_speed_mps": 14.0,
+      "executed_duration_s": 300.0,
+      "target_amplitude_m": 1.82415,
+      "target_frequency_hz": 0.659216,
+      "result": {
+        "path": "P80A310_U14_complete_v6_screen.txt",
+        "sha256": "bad2f7c87e868861059e6208bf0bdcccd32d3ae7c2b1d4ff60062e2c51328145"
+      },
+      "run_summary": {
+        "path": "grinderslev2022_p100_i50_iea10_single_blade_run_summary.json",
+        "sha256": "df2357bc2946958be31a0799f2c61dcca94d67087e24ac78c4e964f5efeb8537"
+      },
+      "history": {
+        "path": "P80A310_U14_complete_v6_screen_sil_vorlap_history.csv",
+        "sha256": "d9ff4f8b22fd032e0be447956ef460e2b594959e6d49cde6a60a46654651752f",
+        "rows": 50000,
+        "maximum_energy_closure_error": 9.730714498057402e-18,
+        "maximum_abs_generated_force_n": 7996.228417063933,
+        "force_or_power_limit_activated": false
+      },
+      "metrics": {
+        "fu_sqrt2_rms_amplitude_m": 1.8887524598816274,
+        "dominant_frequency_hz": 0.66860707540809,
+        "frequency_bin_width_hz": 0.016666666666666035,
+        "assessment_start_s": 240.0,
+        "assessment_end_s": 300.0,
+        "stationarity_window_start_s": 246.25662461745168,
+        "stationarity_window_split_s": 273.1283123087258,
+        "stationarity_window_end_s": 300.0,
+        "stationarity_first_half_amplitude_m": 1.885909266330487,
+        "stationarity_second_half_amplitude_m": 1.8841926856849285,
+        "stationarity_relative_change": 0.0009106282362687445,
+        "stationarity_first_half_frequency_hz": 0.6684099504148152,
+        "stationarity_second_half_frequency_hz": 0.6683753123252665,
+        "stationarity_half_frequency_bin_width_hz": 0.03721899657602721,
+        "stationarity_frequency_change_hz": 3.463808954873304e-05,
+        "stationarity_amplitude_pass": true,
+        "stationarity_frequency_pass": true,
+        "stationarity_pass": true
+      },
+      "score": {
+        "target_active": true,
+        "amplitude_rule": "active_strict_relative_error_at_most_30_percent",
+        "amplitude_absolute_error_m": 0.0646024598816275,
+        "amplitude_relative_error": 0.03541510285975797,
+        "amplitude_allowance_m": 0.547245,
+        "amplitude_digitization_inclusive_allowance_m": 0.554685,
+        "amplitude_digitization_inclusive_pass": true,
+        "amplitude_pass": true,
+        "frequency_scoreable": true,
+        "frequency_error_ratio_of_fu_fn2": 0.01393541387162772,
+        "frequency_pass": true,
+        "stationarity_policy": "active_relative_amplitude_and_frequency",
+        "stationarity_amplitude_change_m": 0.0017165806455585741,
+        "stationarity_amplitude_pass": true,
+        "stationarity_frequency_pass": true,
+        "stationarity_pass": true
+      },
+      "pass": true
+    },
+    {
+      "case_id": "P80A310_U18_complete",
+      "wind_speed_mps": 18.0,
+      "executed_duration_s": 300.0,
+      "target_amplitude_m": 1.187186,
+      "target_frequency_hz": 0.683655,
+      "result": {
+        "path": "P80A310_U18_complete_v6_screen.txt",
+        "sha256": "f43eae92792ec513690ff245b086e10f41de13eccad1c65aefbef8880e770769"
+      },
+      "run_summary": {
+        "path": "grinderslev2022_p100_i50_iea10_single_blade_run_summary.json",
+        "sha256": "7458e847c6607d93fa5c5f039c3650582fb1f17fd6ee6dc8e42cbe36a74abc56"
+      },
+      "history": {
+        "path": "P80A310_U18_complete_v6_screen_sil_vorlap_history.csv",
+        "sha256": "0e01017ea777ebb588edcc919507ce9ab2c0815d3a230b9cd50ef533ef3313d3",
+        "rows": 50000,
+        "maximum_energy_closure_error": 8.72782748850831e-18,
+        "maximum_abs_generated_force_n": 7995.575702307051,
+        "force_or_power_limit_activated": false
+      },
+      "metrics": {
+        "fu_sqrt2_rms_amplitude_m": 1.198037064588331,
+        "dominant_frequency_hz": 0.6677568565510186,
+        "frequency_bin_width_hz": 0.016666666666666035,
+        "assessment_start_s": 240.0,
+        "assessment_end_s": 300.0,
+        "stationarity_window_start_s": 246.25662461745168,
+        "stationarity_window_split_s": 273.1283123087258,
+        "stationarity_window_end_s": 300.0,
+        "stationarity_first_half_amplitude_m": 1.199001217184474,
+        "stationarity_second_half_amplitude_m": 1.2002261634725446,
+        "stationarity_relative_change": 0.001021117296298308,
+        "stationarity_first_half_frequency_hz": 0.6674540575844471,
+        "stationarity_second_half_frequency_hz": 0.6674867822857827,
+        "stationarity_half_frequency_bin_width_hz": 0.03721899657602721,
+        "stationarity_frequency_change_hz": 3.2724701335640205e-05,
+        "stationarity_amplitude_pass": true,
+        "stationarity_frequency_pass": true,
+        "stationarity_pass": true
+      },
+      "score": {
+        "target_active": true,
+        "amplitude_rule": "active_strict_relative_error_at_most_30_percent",
+        "amplitude_absolute_error_m": 0.01085106458833085,
+        "amplitude_relative_error": 0.009140155450225028,
+        "amplitude_allowance_m": 0.3561558,
+        "amplitude_digitization_inclusive_allowance_m": 0.3635958,
+        "amplitude_digitization_inclusive_pass": true,
+        "amplitude_pass": true,
+        "frequency_scoreable": true,
+        "frequency_error_ratio_of_fu_fn2": 0.023591250109781033,
+        "frequency_pass": true,
+        "stationarity_policy": "active_relative_amplitude_and_frequency",
+        "stationarity_amplitude_change_m": 0.001224946288070683,
+        "stationarity_amplitude_pass": true,
+        "stationarity_frequency_pass": true,
+        "stationarity_pass": true
+      },
+      "pass": true
+    },
+    {
+      "case_id": "P80A310_U22_complete",
+      "wind_speed_mps": 22.0,
+      "executed_duration_s": 600.0,
+      "target_amplitude_m": 0.000934,
+      "target_frequency_hz": 0.585901,
+      "result": {
+        "path": "P80A310_U22_complete_v6_screen_600.txt",
+        "sha256": "e89a2c749f4bfe756eca0b36db73bb5d6da199d7f8bebb640b380ce68f26ab21"
+      },
+      "run_summary": {
+        "path": "grinderslev2022_p100_i50_iea10_single_blade_run_summary.json",
+        "sha256": "a5a2e2045e7e89b0d40840f4b7cc72bd1db1313e60448f2d061af0adef160047"
+      },
+      "history": {
+        "path": "P80A310_U22_complete_v6_screen_600_sil_vorlap_history.csv",
+        "sha256": "5e4b6f9503a02e5fa7c588a8884c6515f411e66f51f57d0bb165c026aedab048",
+        "rows": 100000,
+        "maximum_energy_closure_error": 1.0408340855860843e-17,
+        "maximum_abs_generated_force_n": 7995.845056781042,
+        "force_or_power_limit_activated": false
+      },
+      "metrics": {
+        "fu_sqrt2_rms_amplitude_m": 0.019921372096360298,
+        "dominant_frequency_hz": 0.6584068527614646,
+        "frequency_bin_width_hz": 0.016666666666744986,
+        "assessment_start_s": 540.0,
+        "assessment_end_s": 600.0,
+        "stationarity_window_start_s": 546.2566246174516,
+        "stationarity_window_split_s": 573.1283123087259,
+        "stationarity_window_end_s": 600.0,
+        "stationarity_first_half_amplitude_m": 0.019759959846395572,
+        "stationarity_second_half_amplitude_m": 0.021357401848324326,
+        "stationarity_relative_change": 0.07770158084505162,
+        "stationarity_first_half_frequency_hz": 0.6561628341214149,
+        "stationarity_second_half_frequency_hz": 0.6636770071579293,
+        "stationarity_half_frequency_bin_width_hz": 0.03721899657602721,
+        "stationarity_frequency_change_hz": 0.007514173036514471,
+        "stationarity_amplitude_pass": false,
+        "stationarity_frequency_pass": true,
+        "stationarity_pass": false
+      },
+      "score": {
+        "target_active": false,
+        "amplitude_rule": "inactive_Ay_over_cbar_at_most_0p02",
+        "amplitude_absolute_error_m": 0.018987372096360297,
+        "amplitude_relative_error": null,
+        "amplitude_allowance_m": 0.07440000000000001,
+        "amplitude_digitization_inclusive_allowance_m": null,
+        "amplitude_digitization_inclusive_pass": null,
+        "amplitude_pass": true,
+        "frequency_scoreable": false,
+        "frequency_error_ratio_of_fu_fn2": 0.10759141231854072,
+        "frequency_pass": true,
+        "stationarity_policy": "inactive_both_halves_below_0p02cbar_and_absolute_drift_at_most_0p005cbar",
+        "stationarity_amplitude_change_m": 0.0015974420019287533,
+        "stationarity_amplitude_pass": true,
+        "stationarity_frequency_pass": true,
+        "stationarity_pass": true
+      },
+      "pass": true
+    }
+  ],
+  "fingerprint": "e22fd19c028724e38da027fc563bf425cd8264d8ef186a045990d90c4c93a7c6"
+}

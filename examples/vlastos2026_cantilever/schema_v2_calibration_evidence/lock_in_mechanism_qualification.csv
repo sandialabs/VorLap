@@ -1,0 +1,4 @@
+scruton_number,evaluated,pass,active_threshold_amplitude_over_diameter,active_point_count,longest_consecutive_active_point_count,minimum_consecutive_active_points,frequency_pass,frequency_tolerance_over_fn,minimum_mode_band_power_fraction,reference_peak_neighborhood_present,reference_peak_neighborhood_tolerance_u_star
+2.94,False,False,0.054000000000000006,0,0,3,False,0.05,0.8,False,0.3
+5.18,True,True,0.027000000000000003,4,4,3,True,0.05,0.8,True,0.3
+7.02,False,False,0.015,0,0,3,False,0.05,0.8,False,0.3

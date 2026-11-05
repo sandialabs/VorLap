@@ -1,0 +1,78 @@
+{
+  "assessment": {
+    "failure_interpretation": "A fixed Rayleigh saturation shape remains nearly insensitive to structural damping and cannot reproduce the reciprocal-amplitude Griffin trend.",
+    "maximum_allowed_relative_error": 0.3,
+    "maximum_observed_relative_error": 3.687202831299393
+  },
+  "claim_boundary": {
+    "4x1_may_now_be_used_for_training": true,
+    "does_not_validate_hvawt_or_fatigue": true,
+    "failure_preserved_before_next_revision": true,
+    "independent_4x1_assessment": true
+  },
+  "pass": false,
+  "revision": {
+    "fitted_only_to": "Mannini 3:2 Sc=87.7 peak",
+    "frequency_ratio_at_peak": 1.166666667,
+    "hypothesis": "lambda_eff=lambda_ref*(Ceff/Cref)^q",
+    "name": "fixed_body_force_scaled_rayleigh_saturation",
+    "not_fitted_to_4x1": true,
+    "q": 0.3271098634035249,
+    "reference_coefficient": 0.03925587880977077,
+    "single_fitted_parameter": "q"
+  },
+  "schema": "vorlap-spectrum-scaled-saturation-transfer-screen-v1",
+  "sources": {
+    "calibration_sha256": "d96c0b73a708b918360a15e79224f6a3a3f4e80702edf721bc606501a46fa02d",
+    "mannini_training_sha256": "8efffe64a53ee9fb3c15dd9b014f4e4af0c96d011e661b2796720c4686ca63db",
+    "marra_provenance_sha256": "19432f84399165190820788b865974a256c097e3ab0c9ccaebf1dfe489a6c027",
+    "marra_table_sha256": "817c3999cfd4a47628dfcfd744660caba63c9a1477fd0a88d860ec3cecc98e9d"
+  },
+  "status": "failed_untouched_4x1",
+  "training_3x2": {
+    "required_limiting_amplitude_ratio": 0.05110642296587807,
+    "structural_damping_coefficient_kgps": 8.446548965958295,
+    "zero_amplitude_aerodynamic_coefficient_kgps": 116.49132917700409
+  },
+  "untouched_4x1_results": [
+    {
+      "absolute_relative_error": 0.13475828950074442,
+      "air_density_kgpm3": 1.19,
+      "mass_per_span_kgpm": 7.089,
+      "natural_frequency_hz": 7.97,
+      "passes_30_percent": true,
+      "peak_amplitude_over_depth": 0.06551,
+      "predicted_peak_amplitude_over_depth": 0.05668198445480623,
+      "reduced_frequency_omega_d_over_u": 0.6549,
+      "scruton_number": 1.9,
+      "structural_damping_ratio": 0.00058,
+      "wind_speed_mps": 5.734881687840276
+    },
+    {
+      "absolute_relative_error": 0.9012620378893795,
+      "air_density_kgpm3": 1.22,
+      "mass_per_span_kgpm": 7.292,
+      "natural_frequency_hz": 7.87,
+      "passes_30_percent": false,
+      "peak_amplitude_over_depth": 0.0292,
+      "predicted_peak_amplitude_over_depth": 0.05551685150636988,
+      "reduced_frequency_omega_d_over_u": 0.7364,
+      "scruton_number": 21.7,
+      "structural_damping_ratio": 0.0065,
+      "wind_speed_mps": 5.036189744110199
+    },
+    {
+      "absolute_relative_error": 3.687202831299393,
+      "air_density_kgpm3": 1.22,
+      "mass_per_span_kgpm": 7.292,
+      "natural_frequency_hz": 7.88,
+      "passes_30_percent": false,
+      "peak_amplitude_over_depth": 0.01106,
+      "predicted_peak_amplitude_over_depth": 0.05184046331417129,
+      "reduced_frequency_omega_d_over_u": 0.7733,
+      "scruton_number": 78.1,
+      "structural_damping_ratio": 0.0234,
+      "wind_speed_mps": 4.801968856256479
+    }
+  ]
+}

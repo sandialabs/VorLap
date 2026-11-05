@@ -1,0 +1,123 @@
+{
+  "status": "approved",
+  "study_id": "nawea_parked_dlc_three_realization_approved_20260805",
+  "basis": {
+    "iec_edition": "IEC 61400-1:2005 FDIS local study basis",
+    "wind_class": "IEC IA",
+    "fatigue_weighting_source": "Paper-case 1 percent annual parked downtime distributed over all wind speeds by the IEC standard-class Rayleigh distribution with Vave=0.2 Vref; DLC 6.4 bins end at 0.7 Vref",
+    "matrix_approval": "Approved by the project owner on 2026-08-05 after review of the completed 88000-step U05 and U50 baseline/VorLap pilots; scope revised to three 10-minute TurbSim realizations per DLC 6.4 wind speed",
+    "airfoil_source_sha256": "fdb7e49e52a292271e4bf09ef2c5464d0df4c2ffe4193542b2ccc6a4d49610fb",
+    "modal_timestep_qualification_path": "/pscratch/kevmoor/vorlap/run_headless/config/modal_timestep_qualification.json",
+    "modal_timestep_qualification_sha256": "456c0b83206bb05ceb038e8591696b9ff01a309268f570abb81b11d47ab6b29f",
+    "fatigue_weighting_review_path": "/pscratch/kevmoor/vorlap/run_headless/config/dlc64_fatigue_weighting_review.json",
+    "fatigue_weighting_review_sha256": "f842a088db0bd392e5a801bdba29fc6b3ca11c3c46c5041576bc009976f8736d",
+    "modal_overlap_review_path": "/pscratch/kevmoor/vorlap/run_headless/config/vorlap_modal_overlap_review.json",
+    "modal_overlap_review_sha256": "da3662eff4c3e72e15849c32e51bfcf9cc9595c599317893e1fdda3f07f3ac75",
+    "grid_domain_review_path": "/pscratch/kevmoor/vorlap/run_headless/config/turbsim_grid_domain_review.json",
+    "grid_domain_review_sha256": "c4181ad811eeaf4ce50887050ed18fa21195a7de7ef148ea65d8300f9ca628f6",
+    "notes": "Approved 34-row paper-study matrix with three 10-minute TurbSim realizations at each DLC 6.4 wind speed and one DLC 6.1 U50 row. The three realizations provide an initial observed spread only; they are not a converged uncertainty estimate or a certification seed campaign. U05 and U50 full-record pilots completed 88000 steps per baseline/VorLap scenario with exact 1 RPM, valid changing SIL velocities, zero retained source violations, and stable parked-reduced-v2 wakes. A 0.01 s postprocess duration tolerance accepts QBlade exports spanning 599.992 s as the intended 600 s retained record. Raw annual parked-time probability fractions are normalized by the aggregator for the conditional parked DEL; DLC 6.1 U50 is ultimate-only. Baseline and VorLap remain paired on the exact same immutable field within each wind-speed/seed row. Exact Nyquist truncation has essentially zero anti-alias margin and is an explicit project-study assumption."
+  },
+  "wind_root": "/pscratch/kevmoor/vorlap_wind_fields",
+  "run_root": "/pscratch/kevmoor/vorlap/run_headless/runs/parked_dlc_three_realization_approved_20260805",
+  "duration_s": 660,
+  "store_from_s": 60,
+  "timestep_s": 0.0075,
+  "parked_azimuth_deg": 0,
+  "rpm": 1,
+  "scenarios": [
+    "baseline",
+    "vorlap"
+  ],
+  "wind_analysis_time_s": 660,
+  "wind_timestep_s": 0.0075,
+  "num_grid_y": 26,
+  "num_grid_z": 38,
+  "grid_width_m": 26,
+  "grid_height_m": 26,
+  "hub_height_m": 18,
+  "ref_height_m": 18,
+  "horizontal_inflow_angle_deg": 0,
+  "vertical_inflow_angle_deg": 0,
+  "shear_exponent": 0.23,
+  "air_density_kg_m3": 1.0296,
+  "air_kinematic_viscosity_m2_s": 0.00001647,
+  "min_seeds_by_dlc": {
+    "6.1": 1,
+    "6.4": 3
+  },
+  "require_fatigue_weights": true,
+  "execution_settings": {
+    "source_frequency_truncation": "nyquist",
+    "source_bounds_policy": "raise",
+    "wake_profile": "parked-reduced-v2",
+    "result_filter_path": "/pscratch/kevmoor/vorlap/run_headless/config/parked_fatigue_results.filter",
+    "result_filter_sha256": "e3f051c4e9a347de39ebbd5d10836edc02ec194c7895302b22ef59c8dac29f0b",
+    "result_filter_channel_count": 26,
+    "checkpoint_every": 4000,
+    "store_replay": false,
+    "store_project": false,
+    "use_opencl": false,
+    "case_workers": 1,
+    "auto_node_threads": true,
+    "run_final_audit": true,
+    "require_source_coverage": true,
+    "require_postprocess_artifacts": true
+  },
+  "groups": [
+    {
+      "dlc": "6.4",
+      "wind_speeds_mps": [
+        3,
+        7,
+        8,
+        8.75,
+        11.25,
+        13,
+        14.75,
+        18,
+        19.25,
+        21.5,
+        35
+      ],
+      "seeds": [
+        4433456,
+        4433457,
+        4433458
+      ],
+      "turbsim_iec_wind_type": "NTM",
+      "turbsim_turb_model": "IECKAI",
+      "turbsim_iec_standard": "1",
+      "turbsim_iec_turbc": "A",
+      "include_in_fatigue": true,
+      "include_in_ultimate": true,
+      "fatigue_weights_by_speed": {
+        "3": 0.0006824542890062364,
+        "7": 0.002511985249715154,
+        "8": 0.0007563348336359039,
+        "8.75": 0.0005683513708698844,
+        "11.25": 0.0017800130822315456,
+        "13": 0.0010489987447227687,
+        "14.75": 0.0008409094520925261,
+        "18": 0.00102597919253122,
+        "19.25": 0.0002404294826746347,
+        "21.5": 0.00027951580403126755,
+        "35": 0.00026436537041197997
+      }
+    },
+    {
+      "dlc": "6.1",
+      "wind_speeds_mps": [
+        50
+      ],
+      "seeds": [
+        5533456
+      ],
+      "turbsim_iec_wind_type": "1EWM50",
+      "turbsim_turb_model": "IECKAI",
+      "turbsim_iec_standard": "1",
+      "turbsim_iec_turbc": "A",
+      "include_in_fatigue": false,
+      "include_in_ultimate": true
+    }
+  ]
+}

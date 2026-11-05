@@ -1,0 +1,96 @@
+{
+  "schema": "fu2026-iea10-multicondition-validation-protocol-v1",
+  "status": "frozen_before_turbine_model_evaluation",
+  "objective": "Primary turbine-system validation of a frozen semi-empirical VIV closure against the Fu et al. IEA-10-MW high-fidelity response sweep over multiple blade orientations and wind speeds.",
+  "reference": {
+    "targets_path": "targets.csv",
+    "targets_sha256": "64e958175ade5423bf51c15ed68756a8458199fc06601b60205f2bf14ff39ff1",
+    "publication_doi": "10.1016/j.jfluidstructs.2026.104537",
+    "source_pdf_sha256": "304bc4e37021f4dd64e17d0a6e3a4b0ed06eddf232a10878031269b9014485e7"
+  },
+  "allowed_training_evidence": [
+    {
+      "study": "Horcas et al. 2022 IEA-10-MW inflow-angle map",
+      "doi": "10.1063/5.0088036",
+      "source_pdf_sha256": "5f348d75dd137e7dd14010d089be7b7a6f2c238a4d63e412431c208fbbc2c8e3",
+      "operating_speed_mps": 18.0,
+      "allowed_role": "Angular activation, configuration dependence, and approximate peak-to-peak edgewise response at U=18 m/s; the Figure 4 map is graphical HFM evidence rather than author-provided raw data.",
+      "prohibited_role": "No Fu non-18-m/s response value may enter fitting through this source."
+    },
+    {
+      "study": "Grinderslev et al. 2022 IEA-10-MW forced-motion and FSI response",
+      "doi": "10.5194/wes-7-2201-2022",
+      "artifact_path": "../grinderslev2022_iea10/reference_data/p100_i50_figure6_power_digitized.csv",
+      "artifact_sha256": "016ce5265b77dc0c9e577d7548e453d09f67ef732dda817618f79909546f323d",
+      "operating_speed_mps": 18.0,
+      "allowed_role": "Signed aerodynamic-power shape, nonlinear saturation, structural-damping balance, and trigger-dependent multiple-amplitude behavior.",
+      "prohibited_role": "It cannot identify the wind-speed dependence of the Fu sweep."
+    }
+  ],
+  "training_linked_case_ids": [
+    "P80A310_U18",
+    "P90A310_U18",
+    "P95A310_U18",
+    "P95A320_U18"
+  ],
+  "primary_scored_case_ids": [
+    "P80A310_U06",
+    "P80A310_U10",
+    "P80A310_U14",
+    "P80A310_U22",
+    "P90A310_U06",
+    "P90A310_U10",
+    "P90A310_U14",
+    "P90A310_U22",
+    "P95A310_U06",
+    "P95A310_U10",
+    "P95A310_U14",
+    "P95A310_U22",
+    "P95A320_U06",
+    "P95A320_U10",
+    "P95A320_U14",
+    "P95A320_U22"
+  ],
+  "matrix_requirements": {
+    "configuration_count": 4,
+    "scored_speed_count_per_configuration": 4,
+    "scored_wind_speeds_mps": [
+      6,
+      10,
+      14,
+      22
+    ],
+    "minimum_scoreable_viv_points": 10,
+    "training_linked_speed_mps": 18
+  },
+  "acceptance": {
+    "active_target_threshold_Ay_over_cbar": 0.01,
+    "active_amplitude_rule": "abs(predicted-target) <= 0.30*target + target_digitization_uncertainty",
+    "maximum_active_amplitude_relative_error_after_digitization_allowance": 0.30,
+    "inactive_amplitude_rule": "predicted_Ay_over_cbar <= 0.02",
+    "maximum_inactive_predicted_Ay_over_cbar": 0.02,
+    "frequency_rule": "For every active target, abs(predicted_fy_over_fn2-target_fy_over_fn2) <= 0.10.",
+    "maximum_frequency_ratio_absolute_error": 0.10,
+    "configuration_peak_speed_rule": "Within each configuration, the predicted and target maximum-amplitude speeds among the four scored speeds may differ by at most one 4 m/s sampling interval.",
+    "maximum_configuration_peak_speed_error_mps": 4.0,
+    "aggregate_rule": "Every active-amplitude, inactive-classification, active-frequency, and configuration-peak-speed gate must pass; no averaging may hide a failed operating point."
+  },
+  "freeze_rule": {
+    "required_before_predictions": [
+      "model equation and fitted coefficients",
+      "training row identities and source hashes",
+      "structural mass, stiffness/frequency, and damping",
+      "static-spectrum or shedding-frequency inputs",
+      "trigger and initial-condition policy",
+      "analysis windows and timestep gates",
+      "model and code fingerprint"
+    ],
+    "no_retuning": "No coefficient, input, structural property, trigger, scoring threshold, or analysis choice may be changed after the 16 primary target rows are evaluated while retaining a validation claim.",
+    "failure_policy": "A failure is preserved as evidence. Any failed Fu row subsequently used for fitting becomes training data and cannot later be relabeled as validation."
+  },
+  "claim_boundary": {
+    "supports": "High-fidelity numerical turbine-system validation of edgewise tip-response amplitude, VIV/non-VIV classification, response frequency, and sampled peak-speed location over the scored matrix.",
+    "does_not_support": "Experimental validation, H-VAWT validation, spanwise load validation, rainflow/DEL agreement, fatigue life, or certification.",
+    "h_vawt_promotion": "The H-VAWT pilot may be submitted only after this primary turbine-system protocol passes for a frozen model."
+  }
+}

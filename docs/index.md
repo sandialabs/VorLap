@@ -1,0 +1,40 @@
+# VorLap
+
+<p align="center">
+  <img src="VorLapLogo.png" alt="VorLap Logo" width="420" />
+</p>
+
+VorLap estimates aerodynamic loading and resonance risk for rotating structures by combining:
+
+- Geometry-driven local flow orientation.
+- FFT-based airfoil force spectra (`CL`, `CD`, `CF`, `CM`) across Reynolds number and angle of attack.
+- Frequency overlap checks between shedding frequencies and structural natural frequencies.
+
+## What VorLap Produces
+
+- Global force maps over inflow speed and azimuth.
+- Global moment maps (computed as physical cross products, `r × F`).
+- Node-level reconstructed time series for a selected operating point.
+- Node-level reconstructed time series for time-varying inflow profiles (`time`, `inflow_speed`, `inflow_direction_deg`).
+- QBlade fast-path conversion and export of external loading files (`LOADINGFILE`) for one-way structural forcing.
+- Worst-case frequency mismatch metrics and detailed trace strings.
+
+## Verification and Testing
+
+The automated test suite includes:
+
+- Analytical tests for interpolation, rotation, reconstruction, and moment equations.
+- File I/O validation tests.
+- A single-blade verification case using repository reference data.
+
+See `tests/test_verification_case.py` for the verification-based regression test.
+
+## Developer References
+
+- [Developer Architecture](developer_architecture.md) maps the offline sweep,
+  loading-file export, Python SIL bridge, and native callback paths to modules
+  and data flow.
+- [Coordinate Frames and Sign Conventions](coordinate_frames.md) records the
+  implemented chord/normal basis, AOA, ADDFORCE, and mean-load conventions.
+- [QBlade Coupling Timing](qblade_timing.md) documents the proven Python SIL
+  step ordering and the remaining native callback evidence gap.
