@@ -31,7 +31,11 @@ jobs:
           fi
 
       - name: Build the pinned verification environment
-        run: docker build --platform linux/amd64 -f scripts/ci/Dockerfile.qblade -t vorlap-qblade-ci .
+        run: |
+          docker build --platform linux/amd64 \
+            --build-arg QBLADE_CI_UID="$(id -u)" \
+            --build-arg QBLADE_CI_GID="$(id -g)" \
+            -f scripts/ci/Dockerfile.qblade -t vorlap-qblade-ci .
 
       - name: Fetch the immutable private runtime snapshot
         uses: actions/checkout@v4

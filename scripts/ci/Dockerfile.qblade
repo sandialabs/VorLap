@@ -23,6 +23,14 @@ RUN --mount=type=secret,id=local_ca \
     else \
       python3 -m pip install --no-cache-dir -r /tmp/requirements.txt; \
     fi
+# A numeric --user without a passwd entry resolves its home to / on Docker.
+# Give the runner a real home so results-directory safety checks stay meaningful.
+ARG QBLADE_CI_UID=1001
+ARG QBLADE_CI_GID=1001
+RUN getent group "${QBLADE_CI_GID}" >/dev/null || groupadd --gid "${QBLADE_CI_GID}" vorlap-ci
+RUN getent passwd "${QBLADE_CI_UID}" >/dev/null || \
+    useradd --uid "${QBLADE_CI_UID}" --gid "${QBLADE_CI_GID}" --create-home vorlap-ci
+RUN install -d --owner="${QBLADE_CI_UID}" --group="${QBLADE_CI_GID}" /work/VorLap
 ENV PYTHONUNBUFFERED=1 PYTHONDONTWRITEBYTECODE=1 \
     PYTHON_EXE=/usr/bin/python3 CC=gcc-11 CXX=g++-11 \
     QT_QPA_PLATFORM=offscreen MPLBACKEND=Agg MPLCONFIGDIR=/tmp/matplotlib \

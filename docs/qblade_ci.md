@@ -99,6 +99,8 @@ vendor binaries are excluded. The Docker build context includes only the pinned
 dependency list, even when local paper files or archives exist beside the code.
 The runtime container uses the hosted runner's user and group, preserving readable
 ownership of atomic run receipts without relaxing their file permissions.
+The image provides that identity with a real home directory, keeping the campaign
+guard against writing results into a user's home effective.
 
 Fork pull requests do not receive secrets. Their QBlade job fails with an access
 message rather than skipping tests or claiming success. A maintainer must review
