@@ -44,6 +44,10 @@ claims for other models. No finite suite guarantees detection of every defect.
 
 ## Qualified environment and runtime
 
+The hosted Linux jobs use an explicit Ubuntu 24.04 runner label so a rollout of
+`ubuntu-latest` cannot silently migrate their host OS. The solver's pinned
+environment is provided by Docker, independently of that host image.
+
 `scripts/ci/Dockerfile.qblade` specifies Ubuntu 22.04, Python 3.10.12, GCC 11.4,
 CMake 3.22.1 and the numerical versions in
 `reproducibility/requirements-qblade-ci.txt`. Compiler and Python development
