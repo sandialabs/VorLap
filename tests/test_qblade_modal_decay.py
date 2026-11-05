@@ -494,10 +494,43 @@ def test_constructor_rejects_target_and_offtarget_force_dual_failures(
         direct_clone(good, force_dual=off_target_bad)
 
 
+def test_nontarget_basis_permutation_preserves_force_audit(synthetic_artifacts):
+    original = make_coupler(synthetic_artifacts)
+    swapped_basis = np.array(original.action_basis, copy=True)
+    swapped_basis[:, [0, 1]] = swapped_basis[:, [1, 0]]
+    swapped = direct_clone(original, action_basis=swapped_basis)
+
+    original_audit = dict(original.generalized_force_audit)
+    swapped_audit = dict(swapped.generalized_force_audit)
+    # This phase-only orthonormal basis has condition number one. LAPACK
+    # may round its singular values differently after a column permutation.
+    for audit in (original_audit, swapped_audit):
+        assert audit.pop("condition_number") == pytest.approx(
+            1.0, rel=8 * np.finfo(float).eps, abs=0.0
+        )
+    assert swapped_audit == original_audit
+
+    sample = original.plan.burst_start_sample + 7
+    original_force = original.force_sample(sample, azimuth_deg=37.0)
+    swapped_force = swapped.force_sample(sample, azimuth_deg=37.0)
+    np.testing.assert_array_equal(swapped_force.body_force_n, original_force.body_force_n)
+    np.testing.assert_array_equal(swapped_force.global_force_n, original_force.global_force_n)
+
+
 def test_identity_binds_complete_complex_basis_and_basis_frequency_order(
     synthetic_artifacts,
 ):
-    original = make_coupler(synthetic_artifacts)
+    loaded = make_coupler(synthetic_artifacts)
+    # Exact coordinate vectors and Gaussian unit phases keep the audit
+    # identical, so fingerprint changes must bind the basis, not SVD roundoff.
+    exact_basis = np.zeros_like(loaded.action_basis)
+    columns = np.arange(exact_basis.shape[1])
+    exact_basis[3 * columns, columns] = np.array([1, 1j, -1, -1j])[columns % 4]
+    original = direct_clone(
+        loaded,
+        action_basis=exact_basis,
+        force_dual=exact_basis[:, loaded.target_basis_column],
+    )
     swapped_basis = np.array(original.action_basis, copy=True)
     swapped_basis[:, [0, 1]] = swapped_basis[:, [1, 0]]
     swapped = direct_clone(original, action_basis=swapped_basis)
