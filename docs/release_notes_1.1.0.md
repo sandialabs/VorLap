@@ -5,6 +5,20 @@ tests and examples accompanying the engineering VIV paper. It is prepared as
 one release commit on the existing GitHub history. The default branch is
 `master`.
 
+## QBlade verification corrections after the tag
+
+Real-solver integration checks exposed and corrected native callback scheduling,
+parameter paths after QBlade relocates its JSON into TEMP, and a second application
+of the initial rotor azimuth during force evaluation. A native run cannot report
+completion without evidence that its VorLap runtime initialized and updated.
+The [integration guide](qblade_ci.md) describes the independent physical checks
+and deliberate fault controls. Qualified upstream and native-library hashes are
+retained; the native bridge is rebuilt from current source.
+
+Applied forces can change for cases with nonzero `INITIAL_AZIMUTH`. Reverify
+affected cases before comparing them with retained campaign results. This
+verification work does not regenerate or replace retained paper results.
+
 ## Public H-VAWT example
 
 The 10 m H-VAWT example uses independently generated blade and torque-tube

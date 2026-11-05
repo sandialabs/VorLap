@@ -2208,3 +2208,62 @@ def test_run_rejects_mismatched_coupling_label_and_active_mechanism(
                 manage_loader_env=False,
             )
         )
+
+
+def test_native_step_loop_advances_each_external_controller_before_structure(tmp_path):
+    sim = tmp_path / "case.sim"
+    sim.write_text("3 NUMTIMESTEPS\nfirst.trb TURBFILE\nsecond.trb TURBFILE\n")
+    (tmp_path / "first.trb").write_text("native_bridge LIBFILE_1\n")
+    (tmp_path / "second.trb").write_text("native_bridge LIBFILE_1\n")
+    qroot = tmp_path / "qblade"
+    qroot.mkdir()
+    library = qroot / "libQBladeCE_test.so"
+    library.write_text("unit-test placeholder")
+    order = []
+
+    class ScheduledQBlade(FakeQBlade):
+        def advanceController_at_num(self, variables, number):
+            assert len(variables) == 5
+            order.append(("controller", number))
+
+        def advanceTurbineSimulation(self):
+            order.append(("structure", self.advance_calls))
+            return super().advanceTurbineSimulation()
+
+    fake = ScheduledQBlade()
+    result = run_qblade_case(QBladeRunRequest(
+        sim_path=sim, qblade_root=qroot, output_dir=tmp_path / "out",
+        coupling_mode="qblade-external", manage_loader_env=False,
+        qblade_api_loader=lambda _root: (fake, library),
+    ))
+    assert result.summary["completed_steps"] == 3
+    assert order == [("controller", 0), ("controller", 1), ("structure", 0),
+                     ("controller", 0), ("controller", 1), ("structure", 1),
+                     ("controller", 0), ("controller", 1), ("structure", 2)]
+
+
+def test_native_run_cannot_report_success_without_initialized_vorlap_callbacks(tmp_path):
+    sim = tmp_path / "case.sim"
+    sim.write_text("3 NUMTIMESTEPS\nmodel.trb TURBFILE\n")
+    (tmp_path / "model.trb").write_text(
+        "libvorlap_qblade_bridge LIBFILE_1\nupdate LIBFUNCTION_1\n"
+        "12 LIBARRAYSIZE_1\ncontrol.json LIBPARAMETERFILE_1\n")
+    (tmp_path / "control.json").write_text(json.dumps({"swap_layout": {}, "airfoil_dir": "airfoils"}))
+    qroot = tmp_path / "qblade"
+    qroot.mkdir()
+    library = qroot / "libQBladeCE_test.so"
+    library.write_text("unit-test placeholder")
+
+    class UncoupledQBlade(FakeQBlade):
+        def advanceController_at_num(self, variables, number):
+            pass  # Deliberately completes without executing a native callback.
+
+    fake = UncoupledQBlade()
+    with pytest.raises(RuntimeError, match="without initialized VorLap native callbacks"):
+        run_qblade_case(QBladeRunRequest(
+            sim_path=sim, qblade_root=qroot, output_dir=tmp_path / "out",
+            coupling_mode="qblade-external", manage_loader_env=False,
+            qblade_api_loader=lambda _root: (fake, library),
+        ))
+    assert fake.advance_calls == 3  # Solver status was successful; coupling was not.
+    assert fake.unloaded is True

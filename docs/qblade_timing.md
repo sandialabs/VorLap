@@ -1,8 +1,8 @@
 # QBlade Coupling Timing
 
 This page documents the timing semantics that are implemented and tested in the
-current QBlade bridge. It separates the proven Python SIL path from the native
-external-library callback path, which still needs executed QBlade evidence.
+current QBlade bridge. Both Python SIL and native callbacks are exercised against
+the qualified upstream solver by the [QBlade integration checks](qblade_ci.md).
 
 ## Python SIL Step Ordering
 
@@ -41,7 +41,24 @@ must show:
 - force/sign behavior consistent with the Python SIL or loading-file reference
   for a controlled diagnostic case.
 
-Until then, native timing should be described as unproven inside QBlade.
+The generic cantilever integration tests now obtain that evidence for QBlade CE
+2.0.9.7 on Linux x86_64. They compare static reaction and deflection, and harmonic
+amplitude and phase, with beam theory and an independent QBlade loading file.
+Deliberately corrupted exchanged loads must fail those physical assertions even
+when every callback completes successfully. This qualifies the tested fixture
+and runtime; it does not establish arbitrary campaign or GUI timing.
+
+In step-loop mode the runner explicitly calls `advanceController_at_num()` before
+`advanceTurbineSimulation()` for each turbine with external libraries. In
+`run-full-simulation` mode QBlade owns controller scheduling. The qualified
+2-second fixture exports N samples with step-loop mode and N+1 samples with the
+full scheduler. The tests assert both exact time grids and compare the same
+physical time interval rather than equating wrapper step counts with samples.
+
+Native case preparation writes an absolute source parameter directory because
+QBlade copies its JSON into TEMP. Imported section bases already include the
+initial rotor azimuth; runtime rotation applies the change from that reference
+angle, avoiding a second application of the initial azimuth.
 
 ## Timestep, Sample Step, and Output Time
 

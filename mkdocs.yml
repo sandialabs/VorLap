@@ -33,4 +33,5 @@ nav:
   - Developer Architecture: developer_architecture.md
   - Coordinate Frames: coordinate_frames.md
   - QBlade Timing: qblade_timing.md
+  - QBlade Integration Checks: qblade_ci.md
   - API Reference: api.md

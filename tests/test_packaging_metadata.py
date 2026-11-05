@@ -1,7 +1,10 @@
 from __future__ import annotations
 
 from pathlib import Path
-import tomllib
+try:
+    import tomllib
+except ModuleNotFoundError:  # Python 3.9/3.10 remain supported.
+    import tomli as tomllib
 
 
 def test_pyproject_declares_entry_points_and_dependencies():

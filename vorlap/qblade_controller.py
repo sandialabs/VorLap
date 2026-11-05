@@ -409,6 +409,9 @@ class VorLapQBladeController:
         self.fluid_density = float(self.viv_params.fluid_density)
         self.fluid_dynamicviscosity = float(self.viv_params.fluid_dynamicviscosity)
         self.rotation_axis = _normalize_vector(self.viv_params.rotation_axis, "rotation_axis")
+        self.geometry_reference_azimuth_deg = float(self.viv_params.geometry_reference_azimuth_deg)
+        if not math.isfinite(self.geometry_reference_azimuth_deg):
+            raise ValueError("geometry_reference_azimuth_deg must be finite.")
         self.rotation_axis_offset = np.asarray(self.viv_params.rotation_axis_offset, dtype=float).reshape(3)
 
         self._prepare_static_state()
@@ -1592,7 +1595,7 @@ class VorLapQBladeController:
         )
         from .interpolation import interpolate_fft_spectrum_batch
 
-        rot = _axis_angle_matrix(self.rotation_axis, az)
+        rot = _axis_angle_matrix(self.rotation_axis, az - self.geometry_reference_azimuth_deg)
         chord = self._base_chord @ rot.T
         normal = self._base_normal @ rot.T
 

@@ -70,3 +70,6 @@ run_headless/docker_host_ca.crt
 /archive/
 
 /.release/
+
+# Private vendor runtime checkout used only by the qualified GitHub job.
+.qblade-ci-runtime/

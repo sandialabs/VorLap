@@ -40,8 +40,11 @@ python -m pytest --require-qblade -m requires_qblade
 ```
 
 Install the qualified QBlade CE 2.0.9.7 runtime, its SIL wrapper and the VorLap
-bridge at `run_headless/QBladeCE_2.0.9.7/`. The presence check does not bypass
-byte identities. Historical integrations use their recorded source and run
+bridge at `run_headless/QBladeCE_2.0.9.7/`. Required mode verifies solver,
+wrapper, Chrono, native bridge and dependency identities and fails if selected
+QBlade cases skip or do not execute. The [QBlade CI guide](qblade_ci.md) records
+the pinned environment, physical oracles, fault controls and mandatory inventory.
+Historical integrations use their recorded source and run
 inputs. Campaign provenance checks require an installed Git checkout; the
 Python distribution itself can install without Git history.
 

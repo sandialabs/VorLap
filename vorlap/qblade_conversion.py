@@ -417,6 +417,7 @@ def convert_qblade_to_vorlap_inputs(
     output_time = np.arange(0.0, (numsteps + 1) * timestep, timestep, dtype=float)
 
     viv_params = VIV_Params(
+        geometry_reference_azimuth_deg=float(sim["initial_azimuth_deg"]),
         fluid_density=float(sim["fluid_density"]),
         fluid_dynamicviscosity=float(sim["fluid_dynamic_viscosity"]),
         rotation_axis=(

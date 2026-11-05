@@ -1,6 +1,7 @@
 include LICENSE NOTICE README.md CHANGELOG.md CONTRIBUTING.md CITATION.cff
 include pyproject.toml setup.py pytest.ini mkdocs.yml default_parameters.csv
-include .gitignore .gitattributes
+include .gitignore .gitattributes .dockerignore
+include scripts/ci/Dockerfile.qblade
 recursive-include .github *.yml
 recursive-include vorlap *.py
 recursive-include scripts *.py *.sh *.ps1

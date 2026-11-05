@@ -25,12 +25,12 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y python3-tk xvfb
+          sudo apt-get install -y python3-tk xvfb clang lld
           python -m pip install --upgrade pip
           python -m pip install -c reproducibility/requirements-software-checks.txt -e ".[dev,gui]"
 
       - name: Run tests with coverage
-        run: xvfb-run -a python -m pytest --cov=vorlap --cov-report=term-missing
+        run: xvfb-run -a python -m pytest -m "not requires_qblade" --cov=vorlap --cov-report=term-missing
 
   packaging:
     runs-on: ubuntu-latest

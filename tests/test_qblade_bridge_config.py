@@ -365,3 +365,9 @@ def test_bridge_config_rejects_invalid_model_override_values(tmp_path):
 
     assert "wind_speed must be non-negative when provided." in errors
     assert "store_from_s must be non-negative when provided." in errors
+
+
+@pytest.mark.parametrize("mode,native", [("sil-vorlap", False), ("qblade-external", True)])
+def test_native_case_keeps_paths_anchored_when_qblade_relocates_parameters(tmp_path, mode, native):
+    config = bridge_config(tmp_path, coupling_mode=mode)
+    assert config.to_case_prep_request().absolute_source_parameter_dir is native

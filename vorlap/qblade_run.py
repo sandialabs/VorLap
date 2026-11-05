@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from collections.abc import Callable, Sequence
 from dataclasses import asdict, dataclass, fields
+import ctypes
 from decimal import Decimal, InvalidOperation
 import json
 import math
@@ -1191,6 +1192,22 @@ def _validate_qblade_execution_mode(
         raise ValueError("--native-run-full-simulation cannot export partial results.")
 
 
+def _native_controller_indices(sim_path: Path) -> list[int]:
+    """Find turbines whose native controllers need explicit SIL advancement.
+
+    advanceTurbineSimulation does not advance external libraries. QBlade's
+    runFullSimulation owns that schedule; the step-loop caller must own it.
+    Turbine blocks in a .sim are ordered, whereas SIL turbine indices start at 0.
+    """
+    indices = []
+    turbine_files = re.findall(r"^\s*(.*?)\s+TURBFILE\b", sim_path.read_text(encoding="utf-8"), re.M)
+    for index, name in enumerate(turbine_files):
+        turbine = resolve_qblade_path(sim_path, name.strip())
+        if read_qblade_keyword(turbine, "LIBFILE_1"):
+            indices.append(index)
+    return indices
+
+
 def run_qblade_case(request: QBladeRunRequest) -> QBladeRunResult:
     """Run one QBlade simulation definition and write the standard run summary."""
     started = time.time()
@@ -1505,6 +1522,10 @@ def run_qblade_case(request: QBladeRunRequest) -> QBladeRunResult:
                 completed_steps = steps
                 _emit(request.message_callback, f"Completed {completed_steps}/{steps} timesteps via runFullSimulation().")
         else:
+            native_controllers = (
+                _native_controller_indices(sim_path)
+                if coupling_mode == "qblade-external" else []
+            )
             for i in range(completed_steps, steps):
                 if request.stop_requested is not None and request.stop_requested():
                     stopped = True
@@ -1523,6 +1544,11 @@ def run_qblade_case(request: QBladeRunRequest) -> QBladeRunResult:
                     )
                 if sil_constant_force is not None:
                     sil_constant_force.step(qblade, i)
+                for turbine_index in native_controllers:
+                    # Match the explicit controller scheduling in QBlade's SIL
+                    # interface. Do not also schedule Python SIL coupling here.
+                    control_vars = (ctypes.c_double * 5)()
+                    qblade.advanceController_at_num(control_vars, turbine_index)
                 advance_started_ns = time.perf_counter_ns()
                 advanced = qblade.advanceTurbineSimulation()
                 if aggregate_timing is not None:
@@ -1675,6 +1701,22 @@ def run_qblade_case(request: QBladeRunRequest) -> QBladeRunResult:
     store_from_s = 0.0 if raw_store_from is None else float(raw_store_from)
     rpm_audit_start_s = max(store_from_s, 0.1)
     native_evidence = native_callback_evidence(sim_path, qblade_root=qblade_root)
+    _, native_config, _ = load_vorlap_config_for_sim(sim_path)
+    if (
+        coupling_mode == "qblade-external"
+        and completed_steps > 0 and not stopped and failure_message is None
+        and not request.completed_checkpoint_export_only
+        and isinstance(native_config, dict)
+        and "swap_layout" in native_config and "airfoil_dir" in native_config
+        and not (
+            native_evidence.get("runtime_initialized_message_seen")
+            and int(native_evidence.get("update_count_observed_max", 0)) > 0
+        )
+    ):
+        raise RuntimeError(
+            "QBlade advanced without initialized VorLap native callbacks; "
+            "refusing to report an uncoupled run as complete. Inspect the native bridge log."
+        )
     unexpected_native_message: str | None = None
     discarded_contaminated_checkpoint_files: list[str] = []
     discarded_contaminated_stored_project: str | None = None

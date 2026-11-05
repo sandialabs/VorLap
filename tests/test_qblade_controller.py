@@ -1246,3 +1246,26 @@ def test_swap_array_adapter_validates_overlap_and_bounds():
                 "a": SwapBlockSpec(offset=9, shape=(2,)),
             },
         )
+
+
+def test_rotated_initial_geometry_uses_relative_azimuth_once():
+    component = make_component(n_nodes=2, span=1)
+    component.chord[:] = .1
+    component.shape_xyz_global = np.array([[0, 0, 0], [0, -1, 0]], dtype=float)
+    component.chord_vector = np.tile([0., 0., 1.], (2, 1))
+    component.normal_vector = np.tile([-1., 0., 0.], (2, 1))
+    params = make_viv_params()
+    params.rotation_axis = np.array([1., 0., 0.])
+    params.geometry_reference_azimuth_deg = 90
+    params.fluid_density = 1.225
+    params.fluid_dynamicviscosity = 1e-5
+    controller = QBladeController.from_components(
+        [component], {"default": make_constant_airfoil_fft(cl_dc=-1, cd_dc=.5, cf_dc=0)},
+        viv_params=params, include_mean_load=True,
+    )
+    velocity = np.tile([4., 0., 0.], (2, 1))
+    initial = controller.step({"velocity": velocity, "time": 0., "azimuth_deg": 90})
+    # q=.98 N/m, half-metre tributary length at each end; chord is +global Z.
+    np.testing.assert_allclose(initial, np.tile([.49, 0, .245], (2, 1)), atol=1e-14)
+    rotated = controller.step({"velocity": velocity, "time": .1, "azimuth_deg": 180})
+    np.testing.assert_allclose(rotated, np.tile([.49, -.245, 0], (2, 1)), atol=1e-14)

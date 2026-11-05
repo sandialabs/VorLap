@@ -1,0 +1,12 @@
+{
+  "version": "QBlade CE 2.0.9.7 Linux x86_64",
+  "platform": "Linux",
+  "machine": "x86_64",
+  "files": {
+    "libQBladeCE_2.0.9.7.so.1.0.0": "7d4d07401dddf65dcf25d7cb7d809a78fbf8ab9ecad629aaaf6d2a4308a0764d",
+    "SIL_Interface/QBladeLibrary.py": "109ef49481381edd715a62033c56163ac7d87661a02f34d4226c71d98d6928bb",
+    "Libraries/libChronoEngine.so": "c4f0a5a7a8b24c5efabe27fb1dfddffc87ebb591679989660d60bba6dcb2bf0b",
+    "ControllerFiles/libvorlap_qblade_bridge.so": "63401df29cf74bc41f5395be0d0ded40f5d371c228a6ffe1b77ad550220769c8"
+  },
+  "dependency_fingerprint": "c50c6909317c754caec4130ccbc8e2ed3f705f810f07da11e7ce3ad003499089"
+}

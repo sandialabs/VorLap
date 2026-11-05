@@ -313,6 +313,9 @@ class VIV_Params:
     amplitude_coeff_cutoff: float = 0.01
     n_freq_depth: int = 3
     output_azimuth_vinf: Tuple[float, float] = (5.0, 2.0)
+    # Azimuth already applied to the supplied global section bases. Subsequent
+    # controller rotations are relative to this angle, avoiding double rotation.
+    geometry_reference_azimuth_deg: float = 0.0
 
     def __post_init__(self):
         self.fluid_density = float(self.fluid_density)

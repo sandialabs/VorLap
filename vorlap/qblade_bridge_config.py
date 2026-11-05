@@ -620,6 +620,10 @@ class QBladeBridgeConfig:
             log_file=self.log_file,
             python_path_entries=self.python_path_entries,
             include_default_python_path=self.include_default_python_path,
+            # QBlade copies native-library parameters into TEMP before calling
+            # update_init. Keep model/data/log paths anchored to the prepared
+            # case rather than resolving them against that temporary copy.
+            absolute_source_parameter_dir=self.coupling_mode == "qblade-external",
             geometry_audit_file=self.geometry_audit_file,
             write_geometry_audit=self.write_geometry_audit,
         )

@@ -1,0 +1,31 @@
+FROM --platform=linux/amd64 ubuntu:22.04
+ENV DEBIAN_FRONTEND=noninteractive
+# An optional local CA is a build secret, never a repository/runtime artifact.
+RUN --mount=type=secret,id=local_ca,mode=0444 \
+    if [ -s /run/secrets/local_ca ]; then \
+      printf 'Acquire::https::CaInfo "/run/secrets/local_ca";\n' > /etc/apt/apt.conf.d/99-local-ci-ca; \
+      sed -i 's|http://archive.ubuntu.com|https://archive.ubuntu.com|g; s|http://security.ubuntu.com|https://security.ubuntu.com|g' /etc/apt/sources.list; \
+    fi; \
+    apt-get update \
+    && apt-get install -y --no-install-recommends \
+       ca-certificates cmake=3.22.1-1ubuntu1.22.04.2 \
+       gcc-11=11.4.0-1ubuntu1~22.04.3 g++-11=11.4.0-1ubuntu1~22.04.3 \
+       python3 python3-dev python3-pip python3-tk \
+       python3.10=3.10.12-1~22.04.18 python3.10-dev=3.10.12-1~22.04.18 \
+       git make clang lld file unzip curl \
+       libgl1 libglu1-mesa ocl-icd-libopencl1 libqt5opengl5 libqt5xml5 \
+    && rm -rf /var/lib/apt/lists/* \
+    && rm -f /etc/apt/apt.conf.d/99-local-ci-ca
+COPY reproducibility/requirements-qblade-ci.txt /tmp/requirements.txt
+RUN --mount=type=secret,id=local_ca \
+    if [ -s /run/secrets/local_ca ]; then \
+      PIP_CERT=/run/secrets/local_ca python3 -m pip install --no-cache-dir -r /tmp/requirements.txt; \
+    else \
+      python3 -m pip install --no-cache-dir -r /tmp/requirements.txt; \
+    fi
+ENV PYTHONUNBUFFERED=1 PYTHONDONTWRITEBYTECODE=1 \
+    PYTHON_EXE=/usr/bin/python3 CC=gcc-11 CXX=g++-11 \
+    QT_QPA_PLATFORM=offscreen MPLBACKEND=Agg MPLCONFIGDIR=/tmp/matplotlib \
+    OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 \
+    GIT_CONFIG_COUNT=1 GIT_CONFIG_KEY_0=safe.directory GIT_CONFIG_VALUE_0=/work/VorLap
+WORKDIR /work/VorLap

@@ -1,0 +1,66 @@
+name: QBlade integration
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qblade:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Require access to the qualified private runtime
+        env:
+          RUNTIME_REPOSITORY: ${{ vars.QBLADE_CI_RUNTIME_REPOSITORY }}
+          RUNTIME_REF: ${{ vars.QBLADE_CI_RUNTIME_REF }}
+          RUNTIME_KEY_AVAILABLE: ${{ secrets.QBLADE_CI_DEPLOY_KEY != '' }}
+        run: |
+          if [[ -z "$RUNTIME_REPOSITORY" || ! "$RUNTIME_REF" =~ ^[0-9a-f]{40}$ || "$RUNTIME_KEY_AVAILABLE" != true ]]; then
+            echo 'Qualified QBlade runtime access is unavailable. This required job cannot skip its tests.' >&2
+            echo 'Fork PRs need maintainer review and a trusted branch run; secrets are never exposed to fork workflows.' >&2
+            exit 1
+          fi
+
+      - name: Build the pinned verification environment
+        run: docker build --platform linux/amd64 -f scripts/ci/Dockerfile.qblade -t vorlap-qblade-ci .
+
+      - name: Fetch the immutable private runtime snapshot
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ vars.QBLADE_CI_RUNTIME_REPOSITORY }}
+          ref: ${{ vars.QBLADE_CI_RUNTIME_REF }}
+          path: .qblade-ci-runtime
+          ssh-key: ${{ secrets.QBLADE_CI_DEPLOY_KEY }}
+          persist-credentials: false
+
+      - name: Install the verified solver and run every required QBlade case
+        env:
+          QBLADE_CI_ARCHIVE_SHA256: 8be7e5ab6125908e0e898a0b3e91e52bd6354f88597d7acf6e30d03e6577e1b3
+        run: |
+          docker run --rm --platform linux/amd64 \
+            --volume "$GITHUB_WORKSPACE:/work/VorLap" \
+            --workdir /work/VorLap \
+            --env QBLADE_CI_ARCHIVE_SHA256 \
+            vorlap-qblade-ci bash -euo pipefail -c '
+              python3 scripts/ci/install_qblade_runtime.py run_headless/QBladeCE_2.0.9.7 \
+                --archive .qblade-ci-runtime/QBladeCE_2.0.9.7-ci.tar.gz
+              bash scripts/ci/run_qblade_checks.sh
+            '
+
+      - name: Upload public generic-case verification evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: qblade-verification-${{ github.sha }}
+          path: build/qblade-ci-evidence/
+          if-no-files-found: warn
+          retention-days: 30

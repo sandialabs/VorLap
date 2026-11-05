@@ -1,5 +1,8 @@
 import numpy as np
 from pathlib import Path
+import json
+import os
+import platform
 import pytest
 
 from vorlap.structs import AirfoilFFT, Component, VIV_Params
@@ -14,14 +17,21 @@ def pytest_addoption(parser):
         "--require-qblade", action="store_true",
         help="Fail if the qualified QBlade and native bridge installation is absent.",
     )
+    parser.addoption(
+        "--qblade-inventory", type=Path,
+        help="With --require-qblade, require every test node in this JSON inventory (CI completeness gate).",
+    )
 
 
 def pytest_configure(config):
-    if config.getoption("--require-qblade") and _missing_qblade_files():
-        raise pytest.UsageError(
-            "Qualified QBlade test installation is incomplete: "
-            + ", ".join(str(path) for path in _missing_qblade_files())
-        )
+    if config.getoption("--require-qblade"):
+        from scripts.verify_qblade_runtime import verify_runtime
+
+        try:
+            verify_runtime(Path(__file__).resolve().parents[1] / "run_headless/QBladeCE_2.0.9.7")
+        except (OSError, ValueError, RuntimeError) as exc:
+            raise pytest.UsageError(f"Qualified QBlade test installation failed verification: {exc}") from exc
+        config._qblade_reports = {}
     if config.getoption("--require-paper"):
         paper = Path(__file__).resolve().parents[1] / "paper_drafts/NAWEA_QBladeBridge"
         required = [
@@ -44,13 +54,58 @@ def _missing_qblade_files():
 
 
 def pytest_collection_modifyitems(items):
-    if _missing_qblade_files():
+    if _missing_qblade_files() or (platform.system(), platform.machine()) != ("Linux", "x86_64"):
         skip = pytest.mark.skip(
-            reason="Qualified external QBlade/bridge installation is absent; see docs/reproducibility.md",
+            reason="Qualified Linux x86_64 QBlade/bridge installation is unavailable; see docs/reproducibility.md",
         )
         for item in items:
             if item.get_closest_marker("requires_qblade"):
                 item.add_marker(skip)
+
+
+def pytest_collection_finish(session):
+    if session.config.getoption("--require-qblade"):
+        session.config._qblade_selected = {
+            item.nodeid for item in session.items if item.get_closest_marker("requires_qblade")
+        }
+        if not session.config._qblade_selected:
+            raise pytest.UsageError("--require-qblade selected no QBlade tests.")
+        inventory = session.config.getoption("--qblade-inventory")
+        if inventory:
+            required = set(json.loads(inventory.read_text(encoding="utf-8"))["required_nodeids"])
+            missing = sorted(required - session.config._qblade_selected)
+            if missing:
+                raise pytest.UsageError("Required QBlade coverage is missing: " + ", ".join(missing))
+
+
+@pytest.hookimpl(hookwrapper=True)
+def pytest_runtest_makereport(item, call):
+    result = yield
+    if item.config.getoption("--require-qblade") and item.get_closest_marker("requires_qblade"):
+        report = result.get_result()
+        item.config._qblade_reports.setdefault(item.nodeid, {})[report.when] = report.outcome
+
+
+def pytest_sessionfinish(session, exitstatus):
+    if not session.config.getoption("--require-qblade"):
+        return
+    selected = getattr(session.config, "_qblade_selected", set())
+    reports = getattr(session.config, "_qblade_reports", {})
+    incomplete = sorted(node for node in selected if reports.get(node) != {
+        "setup": "passed", "call": "passed", "teardown": "passed",
+    })
+    evidence = {"selected": sorted(selected), "reports": reports, "incomplete": incomplete}
+    output = os.environ.get("VORLAP_QBLADE_TEST_RECEIPT")
+    if output:
+        Path(output).parent.mkdir(parents=True, exist_ok=True)
+        Path(output).write_text(json.dumps(evidence, indent=2) + "\n", encoding="utf-8")
+    if incomplete or not selected:
+        session.exitstatus = pytest.ExitCode.TESTS_FAILED
+        terminal = session.config.pluginmanager.get_plugin("terminalreporter")
+        if terminal:
+            terminal.write_sep("!", "Required QBlade tests did not all execute and pass")
+            for node in incomplete:
+                terminal.write_line(node)
 
 
 def make_constant_airfoil_fft(

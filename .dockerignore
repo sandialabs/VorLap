@@ -1,0 +1,5 @@
+# The CI image only needs its pinned Python dependency list. Keep local paper
+# files, archives, credentials, Git history and vendor runtimes out of context.
+**
+!reproducibility/
+!reproducibility/requirements-qblade-ci.txt
